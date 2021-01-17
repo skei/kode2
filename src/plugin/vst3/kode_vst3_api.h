@@ -1,5 +1,5 @@
-#ifndef kode_vst3_base_included
-#define kode_vst3_base_included
+#ifndef kode_vst3_api_included
+#define kode_vst3_api_included
 //----------------------------------------------------------------------
 // based on (extracted from) steinberg vst3 sdk (gpl3)
 
