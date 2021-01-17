@@ -1,18 +1,38 @@
+[TODO]
 
-----------------------------------------------------------------------
-author
-----------------------------------------------------------------------
+code
 
-tor-helge skei
-torhelgeskei@gmail.com
-https://torhelgeskei.com
+- other toolkits
+- header files
+- stdlib replacements
+- existing libraries
+- "c with classes"
+- linux
 
-----------------------------------------------------------------------
-license
-----------------------------------------------------------------------
+plugin
 
-still thinking about it, considering triple-licensing..
-- opensource (free, and open source)
-- freeware (free, but closed source)
-- commercial (proprietary, for money)
+  - formats
+    - vst2, vst3, exe
+    - ladspa, dssi, lv2
+  - entrypoint
+  - overview
+    - plugin
+    - descriptor
+    - parameters
+    - instance
+    - editor
+
+gui
+
+- os/system
+  - painter
+  - window
+  - surface
+  - image, bitmap
+- widgets
+  - painting
+  - layout
+  - events
+  - value
+
 

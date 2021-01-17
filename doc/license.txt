@@ -1,0 +1,6 @@
+gpl3
+the files in /extern have their own license.. 
+and some of the KODE_* files are derived from sources with varying licenses (gpl, bsd, mit, public domain).. 
+if you use any of these, or anything derived from them, you have to respect all the licenses..
+see the relevant files for more info..
+

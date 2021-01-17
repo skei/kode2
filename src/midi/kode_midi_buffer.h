@@ -1,0 +1,1 @@
+// public KODE_StaticBuffer

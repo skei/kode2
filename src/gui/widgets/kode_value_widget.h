@@ -1,0 +1,121 @@
+#ifndef kode_value_widget_included
+#define kode_value_widget_included
+//----------------------------------------------------------------------
+
+#include "base/kode.h"
+#include "base/types/kode_rect.h"
+#include "gui/kode_painter.h"
+#include "gui/kode_widget.h"
+#include "plugin/kode_parameter.h"
+
+//----------------------------------------------------------------------
+
+class KODE_ValueWidget
+: public KODE_Widget {
+
+//------------------------------
+protected:
+//------------------------------
+
+  uint32_t  MValueTextColor = 0xff000000;
+
+  //uint32_t  MColor        = 0xff000000;
+  //uint32_t  MHoverColor   = 0xff880000;
+  //uint32_t  MClickColor   = 0xffff0000;
+  //uint32_t  MOnColor      = 0xff008800;
+
+//------------------------------
+public:
+//------------------------------
+
+  KODE_ValueWidget(KODE_FRect ARect)
+  : KODE_Widget(ARect) {
+    //KODE_Print("x %.1f y %.1f w %.1f h %.1f\n",ARect.x,ARect.y,ARect.w,ARect.h);
+  }
+
+  virtual ~KODE_ValueWidget() {
+    //KODE_Print("\n");
+  };
+
+//------------------------------
+public: // widget
+//------------------------------
+
+  void on_widget_setPos(float AXpos, float AYpos) final {
+    //KODE_Print("x %.1f y %.1f\n",AXpos,AYpos);
+  }
+
+  void on_widget_setSize(float AWidth, float AHeight) final {
+    //KODE_Print("w %.1f h %.1f\n",AWidth,AHeight);
+  }
+
+  void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode=0) final {
+    //KODE_Print("x %.1f y %.1f w %.1f h %.1f (m %i)\n",ARect.x,ARect.y,ARect.w,ARect.h,AMode);
+    uint32_t color = MValueTextColor;
+    KODE_Parameter* parameter = (KODE_Parameter*)getParameter();
+    float value = MValue;//parameter->from01(MValue);
+    KODE_Print("value %.3f\n",value);
+    char buffer[16];
+    //KODE_FloatToString(buffer,value);
+    parameter->getDisplayText(value,buffer);
+    APainter->drawText(MRect.x,MRect.y,buffer,color);
+  }
+
+  void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) final {
+    //KODE_Print("x %.1f y %.1f b %i s %i\n",AXpos,AYpos,AButton,AState);
+//    MValue = 1.f;
+//    do_widget_update(this);
+//    MState.isInteracting = true;
+//    do_widget_redraw(this,MRect,0);
+  }
+
+  void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) final {
+    //KODE_Print("x %.1f y %.1f b %i s %i\n",AXpos,AYpos,AButton,AState);
+//    MValue = 0.f;
+//    do_widget_update(this);
+//    MState.isInteracting = false;
+//    do_widget_redraw(this,MRect,0);
+  }
+
+  void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState) final {
+    //KODE_Print("x %.1f y %.1f s %i\n",AXpos,AYpos,AState);
+  }
+
+  void on_widget_keyPress(uint32_t AKey, uint32_t AChar, uint32_t AState) final {
+    //KODE_Print("k %.1f c %.1f s %i\n",AKey,AChar,AState);
+  }
+
+  void on_widget_keyRelease(uint32_t AKey, uint32_t AChar, uint32_t AState) final {
+    //KODE_Print("k %.1f c %.1f s %i\n",AKey,AChar,AState);
+  }
+
+  void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom) final {
+    //KODE_Print("x %.1f y %.1f from %p\n",AXpos,AYpos,AFrom);
+//    MState.isHovering = true;
+//    do_widget_redraw(this,MRect,0);
+  }
+
+  void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo) final {
+    //KODE_Print("x %.1f y %.1f to %p\n",AXpos,AYpos,ATo);
+//    MState.isHovering = false;
+//    do_widget_redraw(this,MRect,0);
+  }
+
+//------------------------------
+public: // "widget listener"
+//------------------------------
+
+  //void do_widget_update(KODE_Widget* ASender) final {
+  //  //KODE_Print("w %p\n",ASender);
+  //  KODE_Widget::do_widget_update(ASender);
+  //}
+
+  //void do_widget_redraw(KODE_Widget* ASender, KODE_FRect ARect, uint32_t AMode=0) final {
+  //  //KODE_Print("w %p x %.1f y %.1f w %.1f h %.1f (m %i)\n",ASender,ARect.x,ARect.y,ARect.w,ARect.h,AMode);
+  //  KODE_Widget::do_widget_redraw(ASender,ARect,AMode);
+  //}
+
+};
+
+//----------------------------------------------------------------------
+#endif
