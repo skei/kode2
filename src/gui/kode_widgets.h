@@ -10,7 +10,7 @@
 //----------------------------------------------------------------------
 
 #include "gui/widgets/kode_panel_widget.h"
-#include "gui/widgets/kode_value_widget.h"
+#include "gui/widgets/kode_slider_widget.h"
 
 //----------------------------------------------------------------------
 #endif

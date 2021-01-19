@@ -340,8 +340,8 @@
 		<Unit filename="../../src/gui/kode_window.h" />
 		<Unit filename="../../src/gui/wayland/kode_wayland.h" />
 		<Unit filename="../../src/gui/widgets/kode_panel_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_slider_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_test_widget.h" />
-		<Unit filename="../../src/gui/widgets/kode_value_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_widget_template.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_image.h" />

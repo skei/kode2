@@ -170,10 +170,10 @@ public:
   void paintWidget(KODE_Widget* AWidget, KODE_FRect ARect, uint32_t AMode=0) {
     //KODE_Print("x %i y %i w %i h %i\n",AXpos,AYpos,AWidth,AHeight);
     #ifdef KODE_NO_WINDOW_BUFFERING
-//      if (MFillWindowBackground) fillBackground(MWindowPainter,ARect);
+      //if (MFillWindowBackground) fillBackground(MWindowPainter,ARect);
       AWidget->on_widget_paint(MWindowPainter,ARect,AMode);
     #else
-//      if (MFillWindowBackground) fillBackground(ARect);
+      //if (MFillWindowBackground) fillBackground(ARect);
       AWidget->on_widget_paint(MBufferPainter,ARect,AMode);
       int32_t x = ARect.x;
       int32_t y = ARect.y;

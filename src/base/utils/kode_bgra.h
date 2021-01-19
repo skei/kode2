@@ -19,6 +19,20 @@ uint32_t KODE_BGRA(uint8_t r, uint8_t g, uint8_t b, uint8_t a=255) {
     + b;
 }
 
+/*
+uint32_t KODE_BGRA(float r, float g, float b, float a=1.0f) {
+  uint8_t R = 255.0f * r;
+  uint8_t G = 255.0f * g;
+  uint8_t B = 255.0f * b;
+  uint8_t A = 255.0f * a;
+  return
+      ((uint32_t)a << 24)
+    + ((uint32_t)r << 16)
+    + ((uint32_t)g << 8 )
+    + b;
+}
+*/
+
 //----------------------------------------------------------------------
 //
 //

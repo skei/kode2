@@ -231,7 +231,6 @@ public: // widget
     //setWidgetSize(AWidth,AHeight);
     //alignChildWidgets(0);
     //redrawWidgets();
-
   }
 
   virtual void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode=0) {

@@ -56,8 +56,8 @@ public:
 public:
 
   void drawLine(float x1, float y1, float x2, float y2, uint32_t color) final {
-    moveTo(x1,y1);
-    lineTo(x2,y2);
+    moveTo(x1 + 0.5f,y1 + 0.5f);
+    lineTo(x2 + 0.5f,y2 + 0.5f);
     setColor(color);
     stroke();
   }
@@ -65,7 +65,7 @@ public:
   //----------
 
   void drawRect(KODE_FRect rect, uint32_t color) final {
-    rectangle(rect.x,rect.y,rect.w,rect.h);
+    rectangle(rect.x + 0.5f,rect.y + 0.5f,rect.w,rect.h);
     setColor(color);
     stroke();
   }
@@ -121,7 +121,7 @@ public:
   //----------
 
   void fillRect(KODE_FRect rect, uint32_t color) final {
-    rectangle(rect.x,rect.y,rect.w,rect.h);
+    rectangle(rect.x + 0.5f,rect.y + 0.5f,rect.w,rect.h);
     setColor(color);
     fill();
   }

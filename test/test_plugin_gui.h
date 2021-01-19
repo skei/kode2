@@ -1,18 +1,7 @@
 
-//#define KODE_DEBUG_EXE
-//#define KODE_DEBUG_VST3
-//#define KODE_DEBUG_XCB
-
-//#define KODE_CAIRO
-//#define KODE_CTX
-//#define KODE_XCB
-//#define KODE_GUI_CAIRO
 #define KODE_GUI_XCB
+#define KODE_PAINTER_CAIRO
 #define KODE_NO_WINDOW_BUFFERING
-
-//#define KODE_DEBUG_PRINT_TIME
-//#define KODE_DEBUG_PRINT_THREAD
-//#define KODE_DEBUG_PRINT_SOCKET
 
 //----------------------------------------------------------------------
 
@@ -26,6 +15,9 @@
 
 //----------------------------------------------------------------------
 
+#define EDITOR_WIDTH  256
+#define EDITOR_HEIGHT 256
+
 uint8_t myPluginId[16]  = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 uint8_t myEditorId[16]  = {15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0};
 
@@ -36,7 +28,12 @@ public:
 
   myDescriptor() {
     //KODE_PRINT;
+    #ifdef KODE_DEBUG
+    MName             = "test_plugin1 (debug)";
+    #else
     MName             = "test_plugin1";
+    #endif
+
     MAuthor           = "skei.audio";
     MLongId           = myPluginId;
     MLongEditorId     = myEditorId;
@@ -47,9 +44,11 @@ public:
     MCanReceiveMidi   = true;
     MHasEditor        = true;
     MCanResizeEditor  = false;
-    MEditorWidth      = 640;
-    MEditorHeight     = 480;
-    appendParameter( KODE_New KODE_Parameter("param1", 0.25f) );
+    MEditorWidth      = EDITOR_WIDTH;
+    MEditorHeight     = EDITOR_HEIGHT;
+    appendParameter( KODE_New KODE_Parameter("param1", 0.1f) );
+    appendParameter( KODE_New KODE_Parameter("param2", 0.2f) );
+    appendParameter( KODE_New KODE_Parameter("param3", 0.3f) );
   }
 
   virtual ~myDescriptor() {
@@ -67,11 +66,24 @@ public:
   myEditor(KODE_Descriptor* ADescriptor, KODE_EditorListener* AListener, void* AParent)
   : KODE_Editor(ADescriptor,AListener,AParent) {
 
-    //setFillBackground();
-
-    KODE_PanelWidget* panel = KODE_New KODE_PanelWidget( KODE_FRect(10,10,128,16) );
-    panel->setBackgroundColor(0xff800000);
+    KODE_PanelWidget* panel;
+    panel = KODE_New KODE_PanelWidget( KODE_FRect(0,0,EDITOR_WIDTH,EDITOR_HEIGHT) );
+    panel->setBackgroundColor(0xff606060);
     appendChildWidget(panel);
+
+    KODE_Widget* widget;
+
+    widget = KODE_New KODE_SliderWidget(KODE_FRect(10,10,236,25));
+    panel->appendChildWidget(widget);
+    connectParameterIndex(widget,0);
+
+    widget = KODE_New KODE_SliderWidget(KODE_FRect(10,40,236,25));
+    panel->appendChildWidget(widget);
+    connectParameterIndex(widget,1);
+
+    widget = KODE_New KODE_SliderWidget(KODE_FRect(10,70,236,25));
+    panel->appendChildWidget(widget);
+    connectParameterIndex(widget,2);
 
   }
 

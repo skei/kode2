@@ -110,7 +110,7 @@ public: // editor listener
     //  on_parameter(AIndex,value,0);
     //}
 
-    KODE_Print("AIndex %i AValur %.3f+n",AIndex,AValue);
+//    KODE_Print("AIndex %i AValur %.3f\n",AIndex,AValue);
 
     MParameterValues[AIndex] = AValue;
     queueParameterToHost(AIndex,AValue);
@@ -469,6 +469,7 @@ private:
 
   //----------
 
+  #ifndef KODE_NO_GUI
   void updateEditorWidgetValues() {
     uint32_t num = MDescriptor->getNumParameters();
     for (uint32_t i=0; i<num; i++) {
@@ -479,7 +480,7 @@ private:
       //on_parameter(i,v,KODE_PARAMETER_UPDATE_ALL);
     }
   }
-
+  #endif
 
 //----------------------------------------
 public:

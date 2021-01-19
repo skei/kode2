@@ -88,8 +88,9 @@
 
 #undef KODE_PAINTER_DEFINED
 
-//#ifdef KODE_NO_PAINTER
-//#endif
+#ifdef KODE_NO_PAINTER
+  #define KODE_PAINTER_DEFINED
+#endif
 
 //----------
 
@@ -125,8 +126,9 @@
 
 #undef KODE_GUI_DEFINED
 
-//#ifdef KODE_NO_GUI
-//#endif
+#ifdef KODE_NO_GUI
+  #define KODE_GUI_DEFINED
+#endif
 
 //----------
 

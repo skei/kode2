@@ -38,7 +38,7 @@ protected:
 
   const char*   MName       = "";
   const char*   MShortName  = "";
-  const char*   MLabel      = "";
+  const char*   MLabel      = "dB";
   float         MDefValue   = 0.0f;
   float         MMinValue   = 0.0f;
   float         MMaxValue   = 1.0f;

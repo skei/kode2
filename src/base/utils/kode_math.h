@@ -9,9 +9,15 @@
 
 //----------------------------------------------------------------------
 
-bool KODE_AlmostEqual(float f1, float f2) {
+//bool KODE_AlmostEqual(float f1, float f2) {
+//  float diff = fabs(f2 - f1);
+//  if (diff < KODE_VERY_TINY) return true;
+//  return false;
+//}
+
+bool KODE_AlmostEqual(float f1, float f2, float tol) {
   float diff = fabs(f2 - f1);
-  if (diff < KODE_VERY_TINY) return true;
+  if (diff < tol) return true;
   return false;
 }
 
