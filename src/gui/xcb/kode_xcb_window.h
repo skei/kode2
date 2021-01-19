@@ -142,105 +142,6 @@ public: // paint target
   xcb_visualid_t      getXcbVisual()      final { return MScreenVisual; }
 
 //------------------------------
-//
-//------------------------------
-
-  void fill(uint32_t AColor) final {
-    fill(0,0,MWindowWidth,MWindowHeight,AColor);
-  }
-
-  //----------
-
-  void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, uint32_t AColor) final {
-    // set color
-    uint32_t mask = XCB_GC_FOREGROUND;
-    uint32_t values[1];
-    values[0] = AColor;
-    xcb_change_gc(MConnection,MScreenGC,mask,values);
-    // fill rectangle
-    xcb_rectangle_t rectangles[] = {{
-      (int16_t)AXpos,//0,
-      (int16_t)AYpos,//0,
-      (uint16_t)AWidth,//MWindowWidth,
-      (uint16_t)AHeight,//MWindowHeight
-    }};
-    xcb_poly_fill_rectangle(MConnection,MWindow,MScreenGC,1,rectangles);
-    xcb_flush(MConnection);
-  }
-
-  //----------
-
-  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) final {
-    if (ASource->isImage()) {
-      xcb_image_put(
-        MConnection,            // xcb_connection_t *  conn,
-        MWindow,                // xcb_drawable_t      draw,
-        MScreenGC,              // xcb_gcontext_t      gc,
-        ASource->getXcbImage(), // xcb_image_t *       image,
-        ADstX,                  // int16_t             x,
-        ADstY,                  // int16_t             y,
-        0                       // uint8_t             left_pad
-      );
-      xcb_flush(MConnection);
-    }
-    else if (ASource->isSurface()) {
-      xcb_copy_area(
-        MConnection,                // Pointer to the xcb_connection_t structure
-        ASource->getXcbDrawable(),  // The Drawable we want to paste
-        MWindow,                    // The Drawable on which we copy the previous Drawable
-        MScreenGC,                  // A Graphic Context
-        0,                          // Top left x coordinate of the region we want to copy
-        0,                          // Top left y coordinate of the region we want to copy
-        ADstX,                      // Top left x coordinate of the region where we want to copy
-        ADstY,                      // Top left y coordinate of the region where we want to copy
-        ASource->getWidth(),        // Width                 of the region we want to copy
-        ASource->getHeight()        // Height of the region we want to copy
-      );
-      xcb_flush(MConnection);
-    }
-    //else {
-    //  KODE_Trace("unknown ADrawable for blit()\n");
-    //}
-  }
-
-
-  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) final {
-    if (ASource->isImage()) {
-      kode_xcb_put_image(
-        MConnection,
-        MWindow,
-        MScreenGC,
-        ASrcW,
-        ASrcH,
-        ADstX,
-        ADstY,
-        MScreenDepth,//ASource->getDepth(),
-        ASource->getStride(),
-        ASource->getBitmap()->getPixelPtr(ASrcX,ASrcY)//getBuffer()
-      );
-      xcb_flush(MConnection);
-    }
-    else if (ASource->isSurface()) {
-      xcb_copy_area(
-        MConnection,                // Pointer to the xcb_connection_t structure
-        ASource->getXcbDrawable(),  // The Drawable we want to paste
-        MWindow,                    // The Drawable on which we copy the previous Drawable
-        MScreenGC,                  // A Graphic Context
-        ASrcX,                      // Top left x coordinate of the region we want to copy
-        ASrcY,                      // Top left y coordinate of the region we want to copy
-        ADstX,                      // Top left x coordinate of the region where we want to copy
-        ADstY,                      // Top left y coordinate of the region where we want to copy
-        ASrcW,                      // Width                 of the region we want to copy
-        ASrcH                       // Height of the region we want to copy
-      );
-      xcb_flush(MConnection);
-    }
-    //else {
-    //  KODE_Trace("unknown ADrawable for blit()\n");
-    //}
-  }
-
-//------------------------------
 private:
 //------------------------------
 
@@ -1328,7 +1229,104 @@ public:
     xcb_aux_sync(MConnection);
   }
 
+//------------------------------
+//
+//------------------------------
+
+  void fill(uint32_t AColor) final {
+    fill(0,0,MWindowWidth,MWindowHeight,AColor);
+  }
+
   //----------
+
+  void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, uint32_t AColor) final {
+    // set color
+    uint32_t mask = XCB_GC_FOREGROUND;
+    uint32_t values[1];
+    values[0] = AColor;
+    xcb_change_gc(MConnection,MScreenGC,mask,values);
+    // fill rectangle
+    xcb_rectangle_t rectangles[] = {{
+      (int16_t)AXpos,     //0,
+      (int16_t)AYpos,     //0,
+      (uint16_t)AWidth,   //MWindowWidth,
+      (uint16_t)AHeight,  //MWindowHeight
+    }};
+    xcb_poly_fill_rectangle(MConnection,MWindow,MScreenGC,1,rectangles);
+    xcb_flush(MConnection);
+  }
+
+  //----------
+
+  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) final {
+    if (ASource->isImage()) {
+      xcb_image_put(
+        MConnection,            // xcb_connection_t *  conn,
+        MWindow,                // xcb_drawable_t      draw,
+        MScreenGC,              // xcb_gcontext_t      gc,
+        ASource->getXcbImage(), // xcb_image_t *       image,
+        ADstX,                  // int16_t             x,
+        ADstY,                  // int16_t             y,
+        0                       // uint8_t             left_pad
+      );
+      xcb_flush(MConnection);
+    }
+    else if (ASource->isSurface()) {
+      xcb_copy_area(
+        MConnection,                // Pointer to the xcb_connection_t structure
+        ASource->getXcbDrawable(),  // The Drawable we want to paste
+        MWindow,                    // The Drawable on which we copy the previous Drawable
+        MScreenGC,                  // A Graphic Context
+        0,                          // Top left x coordinate of the region we want to copy
+        0,                          // Top left y coordinate of the region we want to copy
+        ADstX,                      // Top left x coordinate of the region where we want to copy
+        ADstY,                      // Top left y coordinate of the region where we want to copy
+        ASource->getWidth(),        // Width                 of the region we want to copy
+        ASource->getHeight()        // Height of the region we want to copy
+      );
+      xcb_flush(MConnection);
+    }
+    //else {
+    //  KODE_Trace("unknown ADrawable for blit()\n");
+    //}
+  }
+
+
+  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) final {
+    if (ASource->isImage()) {
+      kode_xcb_put_image(
+        MConnection,
+        MWindow,
+        MScreenGC,
+        ASrcW,
+        ASrcH,
+        ADstX,
+        ADstY,
+        MScreenDepth,//ASource->getDepth(),
+        ASource->getStride(),
+        ASource->getBitmap()->getPixelPtr(ASrcX,ASrcY)//getBuffer()
+      );
+      xcb_flush(MConnection);
+    }
+    else if (ASource->isSurface()) {
+      xcb_copy_area(
+        MConnection,                // Pointer to the xcb_connection_t structure
+        ASource->getXcbDrawable(),  // The Drawable we want to paste
+        MWindow,                    // The Drawable on which we copy the previous Drawable
+        MScreenGC,                  // A Graphic Context
+        ASrcX,                      // Top left x coordinate of the region we want to copy
+        ASrcY,                      // Top left y coordinate of the region we want to copy
+        ADstX,                      // Top left x coordinate of the region where we want to copy
+        ADstY,                      // Top left y coordinate of the region where we want to copy
+        ASrcW,                      // Width                 of the region we want to copy
+        ASrcH                       // Height of the region we want to copy
+      );
+      xcb_flush(MConnection);
+    }
+    //else {
+    //  KODE_Trace("unknown ADrawable for blit()\n");
+    //}
+  }
 
 };
 

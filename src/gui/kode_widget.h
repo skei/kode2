@@ -12,8 +12,8 @@
 
 struct KODE_WidgetOptions {
   bool autoCursor = false;
-  bool autoHint = false;
-  bool autoClip = false;
+  bool autoHint   = false;
+  bool autoClip   = false;
 };
 
 //----------
@@ -22,13 +22,13 @@ struct KODE_WidgetLayout {
   uint32_t    alignment       = KODE_WIDGET_ALIGN_NONE;
   KODE_FPoint widgetSpacing   = KODE_FPoint(0,0);
   KODE_FRect  innerBorder     = KODE_FRect(0,0,0,0);
-  //KODE_FRect  outerBorder     = KODE_FRect(0,0,0,0);
+//KODE_FRect  outerBorder     = KODE_FRect(0,0,0,0);
 };
 
 //----------
 
 struct KODE_WidgetState {
-  bool  isActive        = false;
+  bool  isActive        = true;
   bool  isVisible       = true;
   bool  isHovering      = false;
   bool  isInteracting   = false;
@@ -51,21 +51,24 @@ class KODE_Widget {
 protected:
 //------------------------------
 
+  const char*         MName           = "Widget";
+
   KODE_Widgets        MChildWidgets;
+
   KODE_WidgetOptions  MOptions;
   KODE_WidgetLayout   MLayout;
   KODE_WidgetState    MState;
 
-  int32_t             MIndex        = 0;
-  KODE_Widget*        MParent       = KODE_NULL;
-  KODE_FRect          MRect         = KODE_FRect(0);
-  KODE_FRect          MInitialRect  = KODE_FRect(0);
-  KODE_FRect          MContentRect  = KODE_FRect(0);
-  int32_t             MMouseCursor  = KODE_CURSOR_DEFAULT;
-  const char*         MHint         = "";
+  int32_t             MIndex          = 0;
+  KODE_Widget*        MParent         = KODE_NULL;
+  KODE_FRect          MRect           = KODE_FRect(0);
+  KODE_FRect          MInitialRect    = KODE_FRect(0);
+  KODE_FRect          MContentRect    = KODE_FRect(0);
+  int32_t             MMouseCursor    = KODE_CURSOR_DEFAULT;
+  const char*         MHint           = "";
 
-  float               MValue        = 0.0f;
-  void*               MParameter    = KODE_NULL;
+  float               MValue          = 0.0f;
+  void*               MParameter      = KODE_NULL;
 
 //------------------------------
 public:
@@ -73,11 +76,9 @@ public:
 
   KODE_Widget(KODE_FRect ARect) {
     MRect         = ARect;
-    MInitialRect  = ARect;
+    MInitialRect  = MRect;
     MContentRect  = KODE_FRect(0);
   }
-
-  //----------
 
   virtual ~KODE_Widget() {
     #ifndef KODE_NO_AUTODELETE
@@ -107,6 +108,9 @@ public:
   float               getValue()            { return MValue; }
   void*               getParameter()        { return MParameter; }
 
+  const char* getName() { return MName; }
+  void setName(const char* AName) { MName = AName; }
+
   //----------
 
 //  void setIndex(int32_t AIndex)         { MIndex = AIndex; }
@@ -115,8 +119,25 @@ public:
   //void setMouseCursor(int32_t c)        { MMouseCursor = c; }
   //void setHint(const char* h)           { MHint = h; }
 
-  void setValue(float AValue)         { MValue = AValue; }
-  void setParameter(void* AParameter) { MParameter = AParameter; }
+  void setValue(float AValue) {
+    MValue = AValue;
+  }
+
+  void setParameter(void* AParameter) {
+    MParameter = AParameter;
+  }
+
+  //virtual void setSkin(KODE_Skin* ASkin) {
+  //  MSkin = ASkin;
+  //}
+
+  //virtual KODE_Skin* getSkin() {
+  //  if (MSkin == KODE_NULL) {
+  //    if (MParent) MSkin = MParent->getSkin();
+  //    else MSkin = KODE_NULL;
+  //  }
+  //  return MSkin;
+  //}
 
 //------------------------------
 public:
@@ -233,9 +254,11 @@ public: // widget
   }
 
   virtual void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom) {
+    MState.isHovering = true;
   }
 
   virtual void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo) {
+    MState.isHovering = false;
   }
 
 //------------------------------

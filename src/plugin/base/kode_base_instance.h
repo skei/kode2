@@ -82,7 +82,7 @@ public:
 //------------------------------
 
   void setDefaultParameterValues() {
-    KODE_PRINT;
+    //KODE_PRINT;
     uint32_t num = MDescriptor->getNumParameters();
     for (uint32_t i=0; i<num; i++) {
       KODE_Parameter* parameter = MDescriptor->getParameter(i);
@@ -93,8 +93,9 @@ public:
 
   //----------
 
-  void updateAllParameters() {
-    KODE_PRINT;
+  //void updateAllParameters() {
+  void notifyAllParameters() {
+    //KODE_PRINT;
     uint32_t num = MDescriptor->getNumParameters();
     for (uint32_t i=0; i<num; i++) {
       KODE_Parameter* parameter = MDescriptor->getParameter(i);

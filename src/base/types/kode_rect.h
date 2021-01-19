@@ -109,15 +109,15 @@ public:
   void grow(KODE_Rect<T> R) {
     x -= R.x;
     y -= R.y;
-    w += R.w * 2;
-    h += R.h * 2;
+    w += (R.x + R.w);
+    h += (R.y + R.h);
   }
 
   void shrink(KODE_Rect<T> R) {
     x += R.x;
     y += R.y;
-    w -= R.w * 2;
-    h -= R.h * 2;
+    w -= (R.x + R.w);
+    h -= (R.y + R.h);
   }
 
   void addLeft(T ASize)    { x -= ASize; w += ASize; }

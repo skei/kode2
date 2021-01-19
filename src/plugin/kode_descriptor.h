@@ -36,14 +36,13 @@ protected:
   uint32_t        MEditorWidth    = 0;
   uint32_t        MEditorHeight   = 0;
 
-  KODE_Parameters MParameters;
-
   bool            MHasEditor        = false;
   bool            MCanResizeEditor  = false;
   bool            MIsSynth          = false;
   bool            MCanSendMidi      = false;
   bool            MCanReceiveMidi   = false;
 
+  KODE_Parameters MParameters;
 
 //------------------------------
 public:

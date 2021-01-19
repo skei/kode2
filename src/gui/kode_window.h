@@ -30,24 +30,24 @@ class KODE_Window
 private:
 //------------------------------
 
-  uint32_t      MWindowWidth        = 0;  // overrides xcbWindow
-  uint32_t      MWindowHeight       = 0;
-  KODE_Painter* MWindowPainter      = KODE_NULL;
+  uint32_t      MWindowWidth            = 0;  // overrides xcbWindow
+  uint32_t      MWindowHeight           = 0;
+  KODE_Painter* MWindowPainter          = KODE_NULL;
 
   #ifndef KODE_NO_WINDOW_BUFFERING
-    uint32_t      MBufferWidth      = 0;
-    uint32_t      MBufferHeight     = 0;
-    KODE_Painter* MBufferPainter    = KODE_NULL;
-    KODE_Surface* MBufferSurface    = KODE_NULL;
+  uint32_t      MBufferWidth            = 0;
+  uint32_t      MBufferHeight           = 0;
+  KODE_Painter* MBufferPainter          = KODE_NULL;
+  KODE_Surface* MBufferSurface          = KODE_NULL;
   #endif
 
-  KODE_Widget* MHoverWidget         = KODE_NULL;
-  KODE_Widget* MModalWidget         = KODE_NULL;
-  KODE_Widget* MMouseCaptureWidget  = KODE_NULL;
-  KODE_Widget* MKeyCaptureWidget    = KODE_NULL;
+  KODE_Widget*  MHoverWidget            = KODE_NULL;
+  KODE_Widget*  MModalWidget            = KODE_NULL;
+  KODE_Widget*  MMouseCaptureWidget     = KODE_NULL;
+  KODE_Widget*  MKeyCaptureWidget       = KODE_NULL;
 
-  bool          MFillBackground   = false;
-  uint32_t      MBackgroundColor  = 0x666666;
+  bool          MFillWindowBackground   = false;
+  uint32_t      MBackgroundColor        = 0xff000000;
 
 //------------------------------
 public:
@@ -58,19 +58,23 @@ public:
   , KODE_Widget(KODE_FRect(AWidth,AHeight)) {
     MWindowWidth = AWidth;
     MWindowHeight = AHeight;
+
     MWindowPainter = KODE_New KODE_Painter(this);
+
     #ifndef KODE_NO_WINDOW_BUFFERING
       createBuffer(AWidth,AHeight);
     #endif
     //#ifdef KODE_PLUGIN_EXE
-    //  MFillBackground = true;
+    //  MFillWindowBackground = true;
     //#endif
+
   }
 
   //----------
 
   virtual ~KODE_Window() {
     if (MWindowPainter) KODE_Delete MWindowPainter;
+    //if (MSkin) KODE_Delete MSkin;
     #ifndef KODE_NO_WINDOW_BUFFERING
       destroyBuffer();
     #endif
@@ -83,13 +87,30 @@ public:
   virtual uint32_t getWindowWidth() { return MWindowWidth; }
   virtual uint32_t getWindowHeight() { return MWindowHeight; }
 
+  virtual KODE_Painter* getPainter() { return MWindowPainter; }
+
+//------------------------------
+public:
+//------------------------------
+
+  //void setSkin(KODE_Skin* ASkin) override {
+  //  //if (MSkin) KODE_Delete MSkin;
+  //  MSkin = ASkin;
+  //}
+
+  //KODE_Skin* getSkin() override {
+  //  return MSkin;
+  //}
+
 //------------------------------
 public:
 //------------------------------
 
   void setFillBackground(bool AFill=true) {
-    MFillBackground = AFill;
+    MFillWindowBackground = AFill;
   }
+
+  //----------
 
   void setBackgroundColor(uint32_t AColor) {
     MBackgroundColor = AColor;
@@ -98,11 +119,11 @@ public:
   //----------
 
   void fillBackground(KODE_FRect ARect) {
-  #ifdef KODE_NO_WINDOW_BUFFERING
-    MWindowPainter->fillRect(ARect.x,ARect.y,ARect.w,ARect.h,MBackgroundColor);
-  #else
-    MBufferPainter->fillRect(ARect.x,ARect.y,ARect.w,ARect.h,MBackgroundColor);
-  #endif
+    #ifdef KODE_NO_WINDOW_BUFFERING
+      MWindowPainter->fillRect(ARect,MBackgroundColor);
+    #else
+      MBufferPainter->fillRect(ARect,MBackgroundColor);
+    #endif
   }
 
 //------------------------------
@@ -135,24 +156,9 @@ public: // buffer
     uint32_t w = KODE_NextPowerOfTwo(AWidth);
     uint32_t h = KODE_NextPowerOfTwo(AHeight);
     if ((w != MBufferWidth) || (h != MBufferHeight)) {
-      //KODE_Print("w %i h %i\n",w,h);
       destroyBuffer();
       createBuffer(w,h);
-      //MBufferWidth = w;
-      //MBufferHeight = h;
     }
-  }
-
-  //----------
-
-  void paintBuffer(KODE_Widget* AWidget, KODE_FRect ARect, uint32_t AMode) {
-    //KODE_Print("x %.2f y %.2f w %.2f h %.2f\n",ARect.x,ARect.y,ARect.w,ARect.h);
-    AWidget->on_widget_paint(MBufferPainter,ARect,AMode);
-    int32_t x = ARect.x;
-    int32_t y = ARect.y;
-    int32_t w = ARect.w;
-    int32_t h = ARect.h;
-    MWindowPainter->blit(x,y,MBufferSurface,x,y,w,h);
   }
 
   #endif // KODE_NO_WINDOW_BUFFERING
@@ -161,30 +167,20 @@ public: // buffer
 public:
 //------------------------------
 
-  void paintWindow(KODE_Widget* AWidget, KODE_FRect ARect, uint32_t AMode) {
-    //KODE_Print("x %.2f y %.2f w %.2f h %.2f\n",ARect.x,ARect.y,ARect.w,ARect.h);
-    AWidget->on_widget_paint(MWindowPainter,ARect,AMode);
-  }
-
-  //----------
-
   void paintWidget(KODE_Widget* AWidget, KODE_FRect ARect, uint32_t AMode=0) {
+    //KODE_Print("x %i y %i w %i h %i\n",AXpos,AYpos,AWidth,AHeight);
     #ifdef KODE_NO_WINDOW_BUFFERING
-      //paintWindow(this,ARect,AMode);
-      paintWindow(AWidget,ARect,AMode);
+//      if (MFillWindowBackground) fillBackground(MWindowPainter,ARect);
+      AWidget->on_widget_paint(MWindowPainter,ARect,AMode);
     #else
-      //paintBuffer(this,ARect,AMode);
-      paintBuffer(AWidget,ARect,AMode);
+//      if (MFillWindowBackground) fillBackground(ARect);
+      AWidget->on_widget_paint(MBufferPainter,ARect,AMode);
+      int32_t x = ARect.x;
+      int32_t y = ARect.y;
+      int32_t w = ARect.w;
+      int32_t h = ARect.h;
+      blit(x,y,MBufferSurface,x,y,w,h);
     #endif
-  }
-
-  //----------
-
-  void paintWidget(KODE_Widget* AWidget, uint32_t AMode=0) {
-    KODE_PRINT;
-    KODE_FRect  rect = AWidget->getRect();
-    uint32_t    mode = AMode;
-    paintWidget(AWidget,rect,mode);
   }
 
   //----------
@@ -198,6 +194,7 @@ public:
     setWidgetSize(AWidth,AHeight);
     //alignChildWidgets(0);
     //redrawWidgets();
+    if (MWindowPainter) MWindowPainter->resize(AWidth,AHeight);
   }
 
 //------------------------------
@@ -232,14 +229,15 @@ public: // base window
 
   void on_window_resize(uint32_t AWidth, uint32_t AHeight) override {
     resizeWindow(AWidth,AHeight);
+    //MWindowPainter->resize(AWidth,AHeight);
   }
 
   //----------
 
   void on_window_paint(uint32_t AXpos, uint32_t AYpos, uint32_t AWidth, uint32_t AHeight) override {
-    //KODE_PRINT;
+    //KODE_Print("x %i y %i w %i h %i\n",AXpos,AYpos,AWidth,AHeight);
     KODE_FRect rect = KODE_FRect(AXpos,AYpos,AWidth,AHeight);
-    if (MFillBackground) fillBackground(rect);
+    if (MFillWindowBackground) fillBackground(rect);
     paintWidget(this,rect,0);
     //on_widget_paint(MWindowPainter,rect,0);
   }
@@ -339,6 +337,7 @@ public: // "widget listener"
   //----------
 
   void do_widget_redraw(KODE_Widget* AWidget, KODE_FRect ARect, uint32_t AMode=0) override {
+    //KODE_PRINT;
     invalidate(ARect.x,ARect.y,ARect.w + 1,ARect.h + 1);
   }
 

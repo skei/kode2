@@ -339,6 +339,7 @@
 		<Unit filename="../../src/gui/kode_widgets.h" />
 		<Unit filename="../../src/gui/kode_window.h" />
 		<Unit filename="../../src/gui/wayland/kode_wayland.h" />
+		<Unit filename="../../src/gui/widgets/kode_panel_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_test_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_value_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_widget_template.h" />
@@ -377,14 +378,9 @@
 		<Unit filename="../../src/plugin/vst3/kode_vst3_instance.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_plugin.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_utils.h" />
-		<Unit filename="../../test/test_buffer.h" />
 		<Unit filename="../../test/test_gui.h" />
-		<Unit filename="../../test/test_gui2.h" />
 		<Unit filename="../../test/test_plugin.h" />
 		<Unit filename="../../test/test_plugin_gui.h" />
-		<Unit filename="../../test/test_string.h" />
-		<Unit filename="../../test/test_widgets1.h" />
-		<Unit filename="../../test/vst3_plugin.h" />
 		<Unit filename="../build.cpp" />
 		<Extensions />
 	</Project>

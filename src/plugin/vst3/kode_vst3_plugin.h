@@ -163,7 +163,8 @@ public:
       INST* instance = KODE_New INST(MDescriptor);
       instance->on_create();
       instance->setDefaultParameterValues();
-      instance->updateAllParameters();
+      //instance->updateAllParameters();
+      instance->notifyAllParameters();
       *obj = (VST3_IComponent*)instance;
       return kResultOk;
     }

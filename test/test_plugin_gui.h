@@ -5,10 +5,10 @@
 
 //#define KODE_CAIRO
 //#define KODE_CTX
-#define KODE_XCB
+//#define KODE_XCB
+//#define KODE_GUI_CAIRO
 #define KODE_GUI_XCB
-
-//#define KODE_NO_WINDOW_BUFFERING
+#define KODE_NO_WINDOW_BUFFERING
 
 //#define KODE_DEBUG_PRINT_TIME
 //#define KODE_DEBUG_PRINT_THREAD
@@ -46,12 +46,10 @@ public:
     MCanSendMidi      = false;
     MCanReceiveMidi   = true;
     MHasEditor        = true;
-    MCanResizeEditor  = true;
+    MCanResizeEditor  = false;
     MEditorWidth      = 640;
     MEditorHeight     = 480;
     appendParameter( KODE_New KODE_Parameter("param1", 0.25f) );
-    //appendParameter( KODE_New KODE_Parameter("param2", 0.5f) );
-    //appendParameter( KODE_New KODE_Parameter("param3", 1.0f) );
   }
 
   virtual ~myDescriptor() {
@@ -68,16 +66,13 @@ public:
 
   myEditor(KODE_Descriptor* ADescriptor, KODE_EditorListener* AListener, void* AParent)
   : KODE_Editor(ADescriptor,AListener,AParent) {
-    //KODE_PRINT;
-    setFillBackground();
-    KODE_Widget* widget;
-    //widget = KODE_New KODE_WidgetTemplate( KODE_FRect(10,10,100,100) );
-    widget = KODE_New KODE_ValueWidget( KODE_FRect(10,20,128,16) );
-    connectParameterIndex(widget,0);
-    appendChildWidget(widget);
-    //widget = KODE_New KODE_WidgetTemplate( KODE_FRect(120,10,100,100) );
-    //connectParameterIndex(widget,1);
-    //appendChildWidget(widget);
+
+    //setFillBackground();
+
+    KODE_PanelWidget* panel = KODE_New KODE_PanelWidget( KODE_FRect(10,10,128,16) );
+    panel->setBackgroundColor(0xff800000);
+    appendChildWidget(panel);
+
   }
 
   virtual ~myEditor() {

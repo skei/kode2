@@ -48,7 +48,8 @@ public:
     KODE_EXEPRINT;
 
     setDefaultParameterValues();
-    updateAllParameters();
+    //updateAllParameters();
+    notifyAllParameters();
 
     on_initialize();
     on_prepare(44100);

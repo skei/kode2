@@ -110,6 +110,8 @@ public: // editor listener
     //  on_parameter(AIndex,value,0);
     //}
 
+    KODE_Print("AIndex %i AValur %.3f+n",AIndex,AValue);
+
     MParameterValues[AIndex] = AValue;
     queueParameterToHost(AIndex,AValue);
 
@@ -464,6 +466,20 @@ private:
       } // for all events
     } // if input events
   }
+
+  //----------
+
+  void updateEditorWidgetValues() {
+    uint32_t num = MDescriptor->getNumParameters();
+    for (uint32_t i=0; i<num; i++) {
+      float v = MParameterValues[i];
+      //KODE_Parameter* parameter = MDescriptor->getParameter(i);
+      //v = parameter->from01(v);
+      MEditor->setParameterValue(i,v);
+      //on_parameter(i,v,KODE_PARAMETER_UPDATE_ALL);
+    }
+  }
+
 
 //----------------------------------------
 public:
@@ -969,7 +985,8 @@ public:
           state->read(&v,sizeof(float),&num_read);
           MParameterValues[i] = v;
         }
-        updateAllParameters();
+        //updateAllParameters();
+        notifyAllParameters();
         break;
     }
     return kResultOk;
@@ -1977,6 +1994,7 @@ public:
   // bitwig sends a ParamID = 0x3f800000
 
   int32_t VST3_PLUGIN_API setParamNormalized(uint32_t id, double value) final {
+    //KODE_Print("id %i value %f\n",id,value);
     //KODE_VST3PRINT;
     if (id >= MDescriptor->getNumParameters()) {
       return kResultFalse; // ???
@@ -1985,13 +2003,13 @@ public:
     //MEditorValues[id] = value;
 
     #ifdef KODE_NO_GUI
-      KODE_Parameter* parameter = MDescriptor->getParameter(id);
-      float v = parameter->from01(value);
-      on_parameter(id,v,0);
+//      KODE_Parameter* parameter = MDescriptor->getParameter(id);
+//      float v = parameter->from01(value);
+//      on_parameter(id,v,0);
     #else
       if (MEditor) {
-        //MEditor->setParameterValueAndRedraw(id,value);
-        MEditor->parameterUpdatedFromHost(id,value);
+        MEditor->setParameterValueAndRedraw(id,value);
+        //MEditor->setPar parameterUpdatedFromHost(id,value);
       }
     #endif // KODE_NO_GUI
     //KODE_Parameter* parameter = MDescriptor->getParameter(id);
@@ -2125,7 +2143,7 @@ public:
         MEditorHeight = MDescriptor->getEditorHeight();
         //KODE_Print("MEditorWidth %i MEditorHeight %i\n",MEditorWidth,MEditorHeight);
 
-// set widget values?
+updateEditorWidgetValues();
 
         MEditor->open();
         //if (MRunLoop)

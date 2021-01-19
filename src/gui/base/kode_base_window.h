@@ -3,7 +3,7 @@
 //----------------------------------------------------------------------
 
 #include "base/kode.h"
-//#include "gui/kode_drawable.h"
+#include "gui/kode_drawable.h"
 
 class KODE_BaseWindow
 /*: public KODE_Drawable*/ {
@@ -54,6 +54,11 @@ public:
   virtual void sendEvent(uint32_t AData, uint32_t AType) {}
   virtual void flush() {}
   virtual void sync() {}
+
+  virtual void fill(uint32_t AColor) {}
+  virtual void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, uint32_t AColor) {}
+  virtual void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) {}
+  virtual void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) {}
 
 };
 

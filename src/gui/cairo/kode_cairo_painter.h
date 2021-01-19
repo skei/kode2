@@ -14,6 +14,7 @@
 #include "gui/kode_drawable.h"
 #include "gui/base/kode_base_painter.h"
 #include "gui/cairo/kode_cairo.h"
+#include "gui/xcb/kode_xcb_utils.h"
 
 //----------------------------------------------------------------------
 
@@ -46,6 +47,7 @@ const cairo_fill_rule_t KODE_CAIRO_FILL_RULES[3] = {
 };
 
 //----------------------------------------------------------------------
+
 class KODE_CairoPainter
 : public KODE_BasePainter {
 
@@ -83,14 +85,13 @@ public:
 
   KODE_CairoPainter(KODE_Drawable* ATarget)
   : KODE_BasePainter(ATarget) {
-
+    //KODE_PRINT;
     MTarget = ATarget;
     if (ATarget->isWindow()) MIsWindow = true;
     MCairoSurface = _create_surface(ATarget);
     MCairo = cairo_create(MCairoSurface);
     //kode_check_cairo_errors(MCairo);
     cairo_set_line_width(MCairo,1);
-
   }
 
   //----------
@@ -105,7 +106,7 @@ public:
 public:
 //------------------------------
 
-  KODE_Drawable*            getTarget()       {return MTarget; }
+  virtual KODE_Drawable*    getTarget()       { return MTarget; }
   virtual cairo_t*          getCairo()        { return MCairo; }
   virtual cairo_surface_t*  getCairoSurface() { return MCairoSurface; }
 
@@ -158,21 +159,15 @@ private:
 public:
 //------------------------------
 
-  void resize(float w, float h) {
-    if (MIsWindow) {
-      cairo_xcb_surface_set_size(MCairoSurface,w,h);
-    }
-  }
-
-
-//------------------------------
-public:
-//------------------------------
-
   void clear() final {
+    setColor(0xff000000);
+    cairo_paint(MCairo);
   }
 
-  void empty() final {
+  void clear(uint32_t color) final {
+    //cairo_set_source_rgb (cr, r, g, b);
+    setColor(color);
+    cairo_paint(MCairo);
   }
 
   /*
@@ -227,6 +222,16 @@ public:
     cairo_restore(MCairo);
   }
 
+  void resize(uint32_t w, uint32_t h) final {
+    if (MIsWindow) {
+      cairo_xcb_surface_set_size(MCairoSurface,w,h);
+    }
+  }
+
+//------------------------------
+//
+//------------------------------
+
   void rotate(float a) final {
     cairo_rotate(MCairo,a);
   }
@@ -239,8 +244,12 @@ public:
     cairo_translate(MCairo,x,y);
   }
 
+//------------------------------
+//
+//------------------------------
+
   void setFillRule(uint32_t rule) final {
-    cairo_set_fill_rule(MCairo,kode_cairo_fill_rules[rule]);
+    cairo_set_fill_rule(MCairo,KODE_CAIRO_FILL_RULES[rule]);
   }
 
   void setGlobalAlpha(float alpha) final {
@@ -269,11 +278,11 @@ public:
   }
 
   void setLineCap(uint32_t cap) final {
-    cairo_set_line_cap(MCairo,kode_cairo_line_caps[cap]);
+    cairo_set_line_cap(MCairo,KODE_CAIRO_LINE_CAPS[cap]);
   }
 
   void setLineJoin(uint32_t join) final {
-    cairo_set_line_join(MCairo,kode_cairo_line_joins[join]);
+    cairo_set_line_join(MCairo,KODE_CAIRO_LINE_JOINS[join]);
   }
 
   /*
@@ -282,12 +291,14 @@ public:
     other references to it.
   */
 
+  //"arial"
+
   void setFont(const char* name) final {
     cairo_select_font_face(
       MCairo,
       name,
-      kode_cairo_font_slants[MFontSlant],
-      kode_cairo_font_weights[MFontWeight]
+      KODE_CAIRO_FONT_SLANTS[MFontSlant],
+      KODE_CAIRO_FONT_WEIGHTS[MFontWeight]
     );
   }
 
@@ -302,11 +313,19 @@ public:
 
   void setFontSlant(uint32_t slant) final {
     //cairo_set_font_options
+    //MFontSlant = slant;
   }
 
   void setFontWeight(uint32_t weight) final {
     //cairo_set_font_options
+    //MFontWeight = weight;
   }
+
+//------------------------------
+//
+//------------------------------
+
+  // "arial", "/fonts/ttf/arial.ttf"
 
   void loadFont(const char* name, const char* filepath) final {
   }
@@ -323,6 +342,10 @@ public:
     cairo_get_current_point(MCairo,&x,&y);
     return x;
   }
+
+//------------------------------
+//
+//------------------------------
 
   float getCurrentYPos() final {
     double x,y;
@@ -342,6 +365,10 @@ public:
     return e.height;
   }
 
+//------------------------------
+//
+//------------------------------
+
   void newPath() final {
     cairo_new_path(MCairo); // sub_path
   }
@@ -350,15 +377,15 @@ public:
     cairo_close_path(MCairo);
   }
 
-  void fill(/*bool APreserve=false*/) final {
-    //if (APreserve) cairo_fill_preserve(MCairo);
-    //else
+  void fill(bool APreserve=false) final {
+    if (APreserve) cairo_fill_preserve(MCairo);
+    else
     cairo_fill(MCairo);
   }
 
-  void stroke(/*bool APreserve=false*/) final {
-    //if (APreserve) cairo_stroke_preserve(MCairo);
-    //else
+  void stroke(bool APreserve=false) final {
+    if (APreserve) cairo_stroke_preserve(MCairo);
+    else
     cairo_stroke(MCairo);
   }
 
@@ -366,15 +393,19 @@ public:
     cairo_paint(MCairo);
   }
 
-  void clip() final {
-    //if (APreserve) cairo_clip_preserve(MCairo);
-    //else
+  void clip(bool APreserve=false) final {
+    if (APreserve) cairo_clip_preserve(MCairo);
+    else
     cairo_clip(MCairo);
   }
 
   void resetClip() final {
     cairo_reset_clip(MCairo);
   }
+
+//------------------------------
+//
+//------------------------------
 
   void linearGradient(float x0, float y0, float x1, float y1) final {
     //cairo_pattern_t *pat;
@@ -386,6 +417,10 @@ public:
   void radialGradient(float x0, float y0, float r0, float x1, float y1, float r1) final {
     //cairo_pattern_create_radial
   }
+
+//------------------------------
+//
+//------------------------------
 
   void moveTo(float x, float y) final {
     cairo_move_to(MCairo,x,y);
@@ -401,6 +436,10 @@ public:
 
   void quadTo(float cx, float cy, float x, float y) final {
   }
+
+//------------------------------
+//
+//------------------------------
 
   void relMoveTo(float x, float y) final {
     cairo_rel_move_to(MCairo,x,y);
@@ -421,7 +460,12 @@ public:
   }
 
   void arcTo(float x1, float y1, float x2, float y2, float radius) final {
+    //cairo_arc(xc,yc,radius,a1,a2);
   }
+
+//------------------------------
+//
+//------------------------------
 
   void setPixel(uint32_t x, uint32_t y, uint32_t color) final {
   }
@@ -430,25 +474,102 @@ public:
     cairo_rectangle(MCairo,x,y,w,h);
   }
 
-  void arc(float x, float y, float radius, float angle1, float angle2, int direction) final {
-    // if direction
-    cairo_arc(MCairo,x,y,radius,angle1,angle2);
+  void arc(float x, float y, float w, float h, float angle1, float angle2, int direction) final {
+    float w2 = w * 0.5f;
+    float h2 = h * 0.5f;
+    float a1 = (angle1+0.75) * (KODE_PI2);
+    float a2 = (angle1+angle2+0.75) * (KODE_PI2);
+//    cairo_move_to(MCairo,x+w2,y+h2);
+    cairo_save(MCairo);
+    cairo_translate(MCairo,x+w2,y+h2);
+    cairo_scale(MCairo,w2,h2);
+    //cairo_new_sub_path(MCairo);
+    cairo_arc(MCairo,0,0,1,a1,a2);
+    cairo_restore(MCairo);
+    //cairo_arc(MCairo,x,y,radius,angle1,angle2);
   }
 
-  void drawText(const char* txt) final {
+//------------------------------
+//
+//------------------------------
+
+  void fillText(const char* txt) final {
     cairo_show_text(MCairo,txt);
   }
 
   void strokeText(const char* txt) final {
   }
 
-  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) final {
+  //----------
+
+  void alignText(float x1, float y1, float x2, float y2, const char* text, uint32_t alignment, float* outx, float* outy) final {
+    //KODE_Assert(AText);
+    cairo_text_extents_t e;
+    float xx,yy;
+    int32_t x = x1;
+    int32_t y = y1;
+    int32_t w = x2 - x1;// + 1;
+    int32_t h = y2 - y1;// + 1;
+    cairo_text_extents(MCairo,text,&e);
+    switch (alignment) {
+      case KODE_TEXT_ALIGN_LEFT:
+        xx = x;
+        yy = (y+h/2) - (e.height/2 + e.y_bearing);
+        break;
+      case KODE_TEXT_ALIGN_RIGHT:
+        xx = (x+w-1) - (e.width + e.x_bearing);
+        yy = (y+h/2) - (e.height/2 + e.y_bearing);
+        break;
+      case KODE_TEXT_ALIGN_TOP:
+        xx = (x + w/2) - (e.width/2  + e.x_bearing);
+        yy = y + e.height;
+        break;
+      case KODE_TEXT_ALIGN_BOTTOM:
+        xx = (x + w/2) - (e.width/2  + e.x_bearing);
+        yy = (y+h-1) - (e.height + e.y_bearing);
+        break;
+      case KODE_TEXT_ALIGN_CENTER:
+        xx = (x + w/2) - (e.width/2  + e.x_bearing);
+        yy = (y+h/2) - (e.height/2 + e.y_bearing);
+        break;
+      default:
+        xx = x1;
+        yy = y1;
+    }
+    *outx = xx;
+    *outy = yy;
   }
 
-  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) final {
-  }
+//------------------------------
+//
+//------------------------------
 
-  void stretch(float ADstX, float ADstY, float ADstW, float ADstH, KODE_Drawable* ASource, float ASrcX, float ASrcY, float ASrcW, float ASrcH) final {
+  //void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) final {
+  //  KODE_PRINT;
+  //  if (ASource->isCairo()) {
+  //    cairo_set_source_surface(MCairo,ASource->getCairoSurface(),/*0,0*/ADstX-ASrcX,ADstY-ASrcY);
+  //    cairo_rectangle(MCairo,ADstX,ADstY,ASrcW,ASrcH);
+  //    cairo_fill(MCairo);
+  //  }
+  //}
+
+  //void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) final {
+  //  KODE_PRINT;
+  //  if (ASource->isCairo()) {
+  //    float xscale = (float)ADstW / (float)ASrcW;
+  //    float yscale = (float)ADstH / (float)ASrcH;
+  //    cairo_rectangle(MCairo,ADstX,ADstY,ADstW,ADstH);
+  //    cairo_save(MCairo);
+  //    cairo_translate(MCairo,ADstX,ADstY);
+  //    cairo_scale(MCairo,xscale,yscale);
+  //    cairo_set_source_surface(MCairo,ASource->getCairoSurface(),0,0/*ASrcX,ASrcY*/);
+  //    cairo_fill(MCairo);
+  //    cairo_restore(MCairo);
+  //  }
+  //}
+
+  //void stretch(float ADstX, float ADstY, float ADstW, float ADstH, KODE_Drawable* ASource, float ASrcX, float ASrcY, float ASrcW, float ASrcH) final {
+  //  KODE_PRINT;
     //if (ASource->isCairo()) {
     //  float xscale = (float)ADstW / (float)ASrcW;
     //  float yscale = (float)ADstH / (float)ASrcH;
@@ -460,12 +581,53 @@ public:
     //  cairo_fill(MCairo);
     //  cairo_restore(MCairo);
     //}
-  }
+  //}
 
 };
 
 //----------------------------------------------------------------------
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

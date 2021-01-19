@@ -80,19 +80,30 @@
   public:
   //------------------------------
 
-    void parameterUpdatedFromHost(uint32_t AIndex, float AValue) {
-      //KODE_Print("index %i valuer %.3f\n",AIndex,AValue);
+    void setParameterValue(uint32_t AIndex, float AValue) {
       KODE_Widget* widget = MParameterToWidget[AIndex];
       if (widget) {
-        //KODE_Print("index %i valuer %.3f\n",AIndex,AValue);
         widget->setValue(AValue);
-        paintWidget(widget);
       }
     }
 
     //----------
 
-    void widgetUpdatedFromGui(KODE_Widget* AWidget) {
+    void setParameterValueAndRedraw(uint32_t AIndex, float AValue) {
+      //KODE_Print("AIndex %i AValuer %.3f\n",AIndex,AValue);
+      KODE_Widget* widget = MParameterToWidget[AIndex];
+      if (widget) {
+        //KODE_Print("index %i valuer %.3f\n",AIndex,AValue);
+        widget->setValue(AValue);
+        //paintWidget(widget);
+        widget->do_widget_redraw(widget,widget->getRect(),0);
+      }
+    }
+
+    //----------
+
+    //void widgetUpdatedFromGui(KODE_Widget* AWidget) {
+    void notifyInstanceParameterChanged(KODE_Widget* AWidget) {
       //KODE_PRINT;
       if (!MListener) return;
       KODE_Parameter* parameter = (KODE_Parameter*)AWidget->getParameter();
@@ -123,7 +134,8 @@
 
     void do_widget_update(KODE_Widget* AWidget) override {
       //KODE_PRINT;
-      widgetUpdatedFromGui(AWidget);
+      //widgetUpdatedFromGui(AWidget);
+      notifyInstanceParameterChanged(AWidget);
       KODE_Window::do_widget_update(AWidget);
     }
 

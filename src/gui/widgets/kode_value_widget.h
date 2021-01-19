@@ -17,12 +17,20 @@ class KODE_ValueWidget
 protected:
 //------------------------------
 
-  uint32_t  MValueTextColor = 0xff000000;
+  bool        MFillBackground     = true;
+  bool        MDrawNameText       = true;
+  bool        MDrawValueText      = true;
+  bool        MDrawLabelText      = true;
+  uint32_t    MBackgroundColor    = 0xff555555;
+  uint32_t    MNameTextColor      = 0xffaaaaaa;
+  uint32_t    MValueTextColor     = 0xffffffff;
+  uint32_t    MLabelTextColor     = 0xffaaaaaa;
 
-  //uint32_t  MColor        = 0xff000000;
-  //uint32_t  MHoverColor   = 0xff880000;
-  //uint32_t  MClickColor   = 0xffff0000;
-  //uint32_t  MOnColor      = 0xff008800;
+  KODE_FRect  MInnerBorder        = KODE_FRect(5,0,5,0);
+
+  //uint32_t    MHoverTextColor       = 0xff000000;
+  //uint32_t    MInteractiveTextColor = 0xff000000;
+  //char        MDisplayText[64]      = {0};
 
 //------------------------------
 public:
@@ -38,67 +46,74 @@ public:
   };
 
 //------------------------------
+public:
+//------------------------------
+
+//------------------------------
 public: // widget
 //------------------------------
 
-  void on_widget_setPos(float AXpos, float AYpos) final {
-    //KODE_Print("x %.1f y %.1f\n",AXpos,AYpos);
-  }
-
-  void on_widget_setSize(float AWidth, float AHeight) final {
-    //KODE_Print("w %.1f h %.1f\n",AWidth,AHeight);
-  }
-
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode=0) final {
-    //KODE_Print("x %.1f y %.1f w %.1f h %.1f (m %i)\n",ARect.x,ARect.y,ARect.w,ARect.h,AMode);
-    uint32_t color = MValueTextColor;
-    KODE_Parameter* parameter = (KODE_Parameter*)getParameter();
-    float value = MValue;//parameter->from01(MValue);
-    KODE_Print("value %.3f\n",value);
-    char buffer[16];
-    //KODE_FloatToString(buffer,value);
-    parameter->getDisplayText(value,buffer);
-    APainter->drawText(MRect.x,MRect.y,buffer,color);
+
+    KODE_FRect rect = MRect;
+    rect.shrink(MInnerBorder);
+
+    const char* name  = getName();
+    float       value = getValue();
+    const char* label = "%";
+
+    KODE_Parameter* param = (KODE_Parameter*)getParameter();
+    if (param) {
+      name  = param->getName();
+      value = param->from01( value );
+      label = param->getLabel();
+    }
+
+    if (MFillBackground) {
+      uint32_t color = MBackgroundColor;
+      if (MState.isHovering)  color = 0xff664444;
+      APainter->fillRect(MRect,color);
+    }
+
+    if (MDrawNameText) {
+      //KODE_Strcat(MDisplayText,name);
+      //KODE_Strcat(MDisplayText," ");
+      APainter->drawText(rect,name,MNameTextColor,KODE_TEXT_ALIGN_LEFT);
+    }
+
+    if (MDrawLabelText & (label[0] != 0)) {
+      //KODE_Strcpy(buffer," ");
+      //KODE_Strcat(buffer,label);
+      float labelwidth = APainter->getTextWidth("-");
+      labelwidth += APainter->getTextWidth(label);
+      APainter->drawText(rect,label,MLabelTextColor,KODE_TEXT_ALIGN_RIGHT);
+      rect.w -= labelwidth;
+    }
+
+    if (MDrawValueText) {
+      char buffer[64];
+      KODE_FloatToString(buffer,value);
+      APainter->drawText(rect,buffer,MValueTextColor,KODE_TEXT_ALIGN_RIGHT);
+    //}
+    }
+
   }
 
-  void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) final {
-    //KODE_Print("x %.1f y %.1f b %i s %i\n",AXpos,AYpos,AButton,AState);
-//    MValue = 1.f;
-//    do_widget_update(this);
-//    MState.isInteracting = true;
-//    do_widget_redraw(this,MRect,0);
-  }
+  //void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) final {
+  //}
 
-  void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) final {
-    //KODE_Print("x %.1f y %.1f b %i s %i\n",AXpos,AYpos,AButton,AState);
-//    MValue = 0.f;
-//    do_widget_update(this);
-//    MState.isInteracting = false;
-//    do_widget_redraw(this,MRect,0);
-  }
+  //void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) final {
+  //}
 
-  void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState) final {
-    //KODE_Print("x %.1f y %.1f s %i\n",AXpos,AYpos,AState);
-  }
-
-  void on_widget_keyPress(uint32_t AKey, uint32_t AChar, uint32_t AState) final {
-    //KODE_Print("k %.1f c %.1f s %i\n",AKey,AChar,AState);
-  }
-
-  void on_widget_keyRelease(uint32_t AKey, uint32_t AChar, uint32_t AState) final {
-    //KODE_Print("k %.1f c %.1f s %i\n",AKey,AChar,AState);
-  }
+  //void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState) final {
+  //}
 
   void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom) final {
-    //KODE_Print("x %.1f y %.1f from %p\n",AXpos,AYpos,AFrom);
-//    MState.isHovering = true;
-//    do_widget_redraw(this,MRect,0);
+    do_widget_redraw(this,MRect,0);
   }
 
   void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo) final {
-    //KODE_Print("x %.1f y %.1f to %p\n",AXpos,AYpos,ATo);
-//    MState.isHovering = false;
-//    do_widget_redraw(this,MRect,0);
+    do_widget_redraw(this,MRect,0);
   }
 
 //------------------------------

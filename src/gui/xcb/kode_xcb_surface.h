@@ -113,15 +113,15 @@ public: // paint target
 //
 //------------------------------
 
-  void fill(uint32_t AColor) final {
+//  void fill(uint32_t AColor) final {
 //    fill(0,0,MWidth,MHeight,AColor);
-  }
+//  }
 
   //----------
 
   // can't fill without gc?
 
-  void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, uint32_t AColor) final {
+//  void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, uint32_t AColor) final {
 //    // set color
 //    uint32_t mask = XCB_GC_FOREGROUND;
 //    uint32_t values[1];
@@ -136,11 +136,11 @@ public: // paint target
 //    }};
 //    xcb_poly_fill_rectangle(MConnection,MWindow,MScreenGC,1,rectangles);
 //    xcb_flush(MConnection);
-  }
+//  }
 
   //----------
 
-  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) final {
+//  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) final {
 //    if (ASource->isImage()) {
 //      xcb_image_put(
 //        MConnection,            // xcb_connection_t *  conn,
@@ -171,10 +171,10 @@ public: // paint target
 //    //else {
 //    //  KODE_Trace("unknown ADrawable for blit()\n");
 //    //}
-  }
+//  }
 
 
-  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) final {
+//  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) final {
 //    if (ASource->isImage()) {
 //
 //      kode_xcb_put_image(
@@ -210,7 +210,7 @@ public: // paint target
 //    //else {
 //    //  KODE_Trace("unknown ADrawable for blit()\n");
 //    //}
-  }
+//  }
 
 };
 

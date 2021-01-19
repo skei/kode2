@@ -104,6 +104,8 @@ public:
 public:
 //------------------------------
 
+  #if 0
+
   void clear() final {
     // set color
     uint32_t mask = XCB_GC_FOREGROUND;
@@ -546,6 +548,31 @@ public:
 private:
 //------------------------------
 
+//  //----------
+//
+//  // taken from http://lists.freedesktop.org/archives/xcb/2009-April/004611.html
+//  // but https://bitbucket.org/ryanflannery/xtabs/src/4a36b745532d3a75f98ea115ceaabfac839fb8bc/xutil.c
+//
+//  /*
+//  typedef struct xcb_char2b_t {
+//    uint8_t byte1;
+//    uint8_t byte2;
+//  } xcb_char2b_t;
+//  */
+//
+//  xcb_char2b_t* _buildChars(const char *str, size_t length) {
+//    unsigned int i;
+//    xcb_char2b_t* ret = (xcb_char2b_t *)KODE_Malloc(length * sizeof(xcb_char2b_t));
+//    if (!ret) return nullptr;
+//    for (i = 0; i < length; i++) {
+//      ret[i].byte1 = 0;
+//      ret[i].byte2 = str[i];
+//    }
+//    return ret;
+//  }
+//
+//  //----------
+
   void _measureString(const char *string) {
     //xcb_char2b_t* xcb_str = buildChars(string, KODE_Strlen(string));
     xcb_char2b_t xcb_str[256];
@@ -583,13 +610,14 @@ public:
 
   //----------
 
-  void drawRect(float x1, float y1, float x2, float y2, uint32_t color) final {
+  //void drawRect(float x1, float y1, float x2, float y2, uint32_t color) final {
+  void drawRect(KODE_FRect rect, uint32_t color) final {
     setColor(color);
     xcb_rectangle_t rectangles[] = {{
-      (int16_t)x1,
-      (int16_t)y1,
-      (uint16_t)(x2-x1+0), // +1
-      (uint16_t)(y2-y1+0)  // +1
+      (int16_t)rect.x,
+      (int16_t)rect.y,
+      (uint16_t)rect.w, // +1
+      (uint16_t)rect.h  // +1
     }};
     xcb_poly_rectangle(MConnection,MDrawable,MGC,1,rectangles);
   }
@@ -601,7 +629,8 @@ public:
     angle 2 = 'distance' 0..1, counter-clockwise
   */
 
-  void drawArc(float x1, float y1, float x2, float y2, float a1, float a2, uint32_t color) final {
+  //void drawArc(float x1, float y1, float x2, float y2, float a1, float a2, uint32_t color) final {
+  void drawArc(KODE_FRect rect, float a1, float a2, uint32_t color) final {
     setColor(color);
     // start angle = 12 o'clock
     float A1 = -a1 + 0.25f;
@@ -609,10 +638,10 @@ public:
     float A2 = -a2;
     //XDrawArc(MDisplay, MDrawable,MGC, AX1,AY1,(AX2-AX1+1),(AY2-AY1+1),(a1*(360.0f*64.0f)),(a2*(360.0f*64.0f)));
     xcb_arc_t arcs[] = {
-      (int16_t)x1,
-      (int16_t)y1,
-      (uint16_t)(x2 - x1 + 0),  // +1
-      (uint16_t)(y2 - y1 + 0),  // +1
+      (int16_t)rect.x,
+      (int16_t)rect.y,
+      (uint16_t)rect.w,  // +1
+      (uint16_t)rect.h,  // +1
       (int16_t)(A1 * 360.0f * 64.0f),
       (int16_t)(A2 * 360.0f * 64.0f)
     };
@@ -640,13 +669,33 @@ public:
 
   //----------
 
-  void fillRect(float x1, float y1, float x2, float y2, uint32_t color) final {
+  void drawText(KODE_FRect rect, const char* txt, uint32_t color, uint32_t alignment) final {
+    _measureString(txt);
+    //int32_t x,y,w;
+    float x,y,w;
+    if (alignment & KODE_TEXT_ALIGN_TOP) y = rect.y + MFontAscent;//MFontStruct->ascent;
+    else if (alignment & KODE_TEXT_ALIGN_BOTTOM) y = rect.y2() - MFontDescent;//MFontStruct->descent;
+    else y = rect.y + (/*MFontStruct->ascent*/MFontAscent * 0.5f) + (rect.h * 0.5f );
+
+    w = MFontWidth;
+
+    if (alignment & KODE_TEXT_ALIGN_LEFT) x = rect.x;
+    else if (alignment & KODE_TEXT_ALIGN_RIGHT) x = rect.x2() - w;
+    else x = rect.x + (rect.w * 0.5f) - ( w * 0.5f );
+    drawText(x,y,txt,color);
+
+  }
+
+  //----------
+
+  //void fillRect(float x1, float y1, float x2, float y2, uint32_t color) final {
+  void fillRect(KODE_FRect ARect, uint32_t color) final {
     setColor(color);
     xcb_rectangle_t rectangles[] = {{
-      (int16_t)x1,
-      (int16_t)y1,
-      (uint16_t)(x2-x1+1),
-      (uint16_t)(y2-y1+1)
+      (int16_t)ARect.x,
+      (int16_t)ARect.y,
+      (uint16_t)ARect.w, // +1
+      (uint16_t)ARect.h  // +1
     }};
     xcb_poly_fill_rectangle(MConnection,MDrawable,MGC,1,rectangles);
   }
@@ -656,7 +705,8 @@ public:
   // angle 1 = start angle, relative to 3 o'clock
   // angle 2 = 'distance' 0..1, counter-clockwise
 
-  void fillArc(float x1, float y1, float x2, float y2, float a1, float a2, uint32_t color) final {
+  //void fillArc(float x1, float y1, float x2, float y2, float a1, float a2, uint32_t color) final {
+  void fillArc(KODE_FRect ARect, float a1, float a2, uint32_t color) final {
     setColor(color);
     //if (abs(AAngle2) >= 0.01) EPSILON
     // start angle = 12 o'clock
@@ -664,10 +714,10 @@ public:
     // positive = clockwise, negative = counter-clockwise
     float A2 = -a2;
     xcb_arc_t arcs[] = {
-      (int16_t)x1,
-      (int16_t)y1,
-      (uint16_t)(x2 - x1 + 1),
-      (uint16_t)(y2 - y1 + 1),
+      (int16_t)ARect.x,
+      (int16_t)ARect.y,
+      (uint16_t)ARect.w, // +1
+      (uint16_t)ARect.h, // +1
       (int16_t)(A1 * 360 * 64),
       (int16_t)(A2 * 360 * 64)
     };
@@ -677,13 +727,14 @@ public:
 
   //----------
 
-  void setClip(float x1, float y1, float x2, float y2) final {
+  //void setClip(float x1, float y1, float x2, float y2) final {
+  void setClip(KODE_FRect ARect) final {
     //resetClip();
     xcb_rectangle_t rectangles[] = {{
-      (int16_t)x1,
-      (int16_t)y1,
-      (uint16_t)(x2-x1+1),
-      (uint16_t)(y2-y1+1)
+      (int16_t)ARect.x,
+      (int16_t)ARect.y,
+      (uint16_t)ARect.w, // +1
+      (uint16_t)ARect.h  // +1
     }};
     xcb_set_clip_rectangles(
       MConnection,
@@ -698,6 +749,8 @@ public:
   }
 
   //----------
+
+  #endif // 0
 
 };
 
