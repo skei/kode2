@@ -13,6 +13,16 @@
 
 //----------
 
+//void _kode_handle_new(const char* file, const char* func, int line) {
+//}
+//
+//void _kode_handle_delete(const char* file, const char* func, int line) {
+//}
+//
+//#define KODE_New(x) { _kode_new_prefix( __FILE__, __FUNCTION__, __LINE__ ); new x; }
+//
+//#define KODE_Delete(x) { _kode_delete_prefix(__FILE__,__FUNCTION__,__LINE__); delete x; }
+
 #define KODE_New      new
 #define KODE_Delete   delete
 

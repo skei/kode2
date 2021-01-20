@@ -374,7 +374,6 @@
 		<Unit filename="../../src/plugin/vst2/kode_vst2.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_api.h" />
-		<Unit filename="../../src/plugin/vst3/kode_vst3_host.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_instance.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_plugin.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_utils.h" />

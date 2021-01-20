@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1611093840 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+1611171751 source:/DISKS/sda2/code/git/kode2/build/build.cpp
 	"../test/test_plugin_gui.h"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
@@ -23,7 +23,7 @@
 
 1610839876 /DISKS/sda2/code/git/kode2/src/base/kode_config.h
 
-1610913475 /DISKS/sda2/code/git/kode2/src/base/kode_defines.h
+1611099216 /DISKS/sda2/code/git/kode2/src/base/kode_defines.h
 
 1610840247 /DISKS/sda2/code/git/kode2/src/base/kode_attributes.h
 
@@ -34,7 +34,7 @@
 
 1610999468 /DISKS/sda2/code/git/kode2/src/base/kode_enums.h
 
-1610840150 /DISKS/sda2/code/git/kode2/src/base/kode_stdlib.h
+1611172408 /DISKS/sda2/code/git/kode2/src/base/kode_stdlib.h
 	<inttypes.h>
 	<memory.h>
 	<stdio.h>
@@ -235,14 +235,14 @@
 	"base/kode.h"
 	"gui/kode_drawable.h"
 
-1611092015 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
+1611172428 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
 	"base/kode.h"
 	"base/types/kode_array.h"
 	"base/types/kode_point.h"
 	"base/types/kode_rect.h"
 	"gui/kode_painter.h"
 
-1606532442 /DISKS/sda2/code/git/kode2/src/base/types/kode_array.h
+1611172389 /DISKS/sda2/code/git/kode2/src/base/types/kode_array.h
 	"base/utils/kode_integer.h"
 
 1608586495 /DISKS/sda2/code/git/kode2/src/base/types/kode_point.h
@@ -301,7 +301,7 @@
 	"plugin/kode_process_context.h"
 	"plugin/kode_editor.h"
 
-1610901204 /DISKS/sda2/code/git/kode2/src/plugin/exe/kode_exe_instance.h
+1611153954 /DISKS/sda2/code/git/kode2/src/plugin/exe/kode_exe_instance.h
 	"base/kode.h"
 	"plugin/kode_editor_listener.h"
 	"plugin/base/kode_base_instance.h"
@@ -310,7 +310,7 @@
 
 1610842443 /DISKS/sda2/code/git/kode2/src/plugin/exe/kode_exe.h
 
-1611094410 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_instance.h
+1611098518 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_instance.h
 	"base/kode.h"
 	"base/types/kode_queue.h"
 	"plugin/kode_descriptor.h"
@@ -380,7 +380,7 @@
 	"plugin/kode_plugin.h"
 	"plugin/kode_process_context.h"
 
-1611098411 /DISKS/sda2/code/git/kode2/test/test_plugin_gui.h
+1611157350 /DISKS/sda2/code/git/kode2/test/test_plugin_gui.h
 	"base/kode.h"
 	"gui/kode_widgets.h"
 	"plugin/kode_descriptor.h"

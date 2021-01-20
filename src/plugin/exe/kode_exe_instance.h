@@ -41,6 +41,20 @@ public:
   }
 
 //------------------------------
+public: // editor listener
+//------------------------------
+
+  void updateParameterFromEditor(uint32_t AIndex, float AValue) final {
+    //KODE_PRINT;
+    on_parameter(AIndex,AValue,0);
+  }
+
+  void resizeWindowFromEditor(uint32_t AWidth, uint32_t AHeight) final {
+    //KODE_PRINT;
+  }
+
+
+//------------------------------
 public:
 //------------------------------
 
