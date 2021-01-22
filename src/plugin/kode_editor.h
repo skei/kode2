@@ -64,6 +64,7 @@
 
     void connectParameter(KODE_Widget* AWidget, KODE_Parameter* AParameter) {
       AWidget->setParameter(AParameter);
+      AWidget->on_widget_connect(AParameter);
       int32_t index = AParameter->getIndex();
       MParameterToWidget[index] = AWidget;
     }
@@ -73,6 +74,7 @@
     void connectParameterIndex(KODE_Widget* AWidget, uint32_t AIndex) {
       KODE_Parameter* parameter = MDescriptor->getParameter(AIndex);
       AWidget->setParameter(parameter);
+      AWidget->on_widget_connect(parameter);
       MParameterToWidget[AIndex] = AWidget;
     }
 

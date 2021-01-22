@@ -53,7 +53,7 @@ void KODE_GetLocalTime(KODE_CurrentTime* ATime) {
   ATime->hour    = tm.tm_hour;
   ATime->minutes = tm.tm_min;
   ATime->seconds = tm.tm_sec;
-  //KTrace("now: %d-%d-%d %d:%d:%d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+  //KODE_Print("now: %d-%d-%d %d:%d:%d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
   //return &CODE_CURRENT_TIME;
 }
 
@@ -61,7 +61,7 @@ void KODE_GetLocalTime(KODE_CurrentTime* ATime) {
 
 // usleep is deprecated
 
-//void KSleep(KODE_ui32 ms) {
+//void KODE_Sleep(KODE_ui32 ms) {
 //  usleep(ms*1000); // ms*1000;
 //}
 

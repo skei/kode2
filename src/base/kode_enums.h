@@ -128,6 +128,15 @@ enum KODE_EWidgetAlignment {
   KODE_WIDGET_STACK_VERT          = 21
 };
 
+enum KODE_EWidgetAnchors {
+  KODE_WIDGET_ANCHOR_NONE   = 0,
+  KODE_WIDGET_ANCHOR_LEFT   = 1,
+  KODE_WIDGET_ANCHOR_TOP    = 2,
+  KODE_WIDGET_ANCHOR_RIGHT  = 4,
+  KODE_WIDGET_ANCHOR_BOTTOM = 8
+};
+
+
 enum KODE_EWidgetTypes {
   KODE_WIDGET_TYPE_NONE           = 0,
   KODE_WIDGET_TYPE_WIDGET         = 1,

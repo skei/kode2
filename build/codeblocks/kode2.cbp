@@ -109,6 +109,11 @@
 			<Add library="SDL2_image" />
 			<Add library="SDL2_mixer" />
 		</Linker>
+		<Unit filename="../../doc/doxygen.cfg" />
+		<Unit filename="../../doc/license.txt" />
+		<Unit filename="../../doc/makedocs.sh" />
+		<Unit filename="../../doc/readme.txt" />
+		<Unit filename="../../doc/todo.txt" />
 		<Unit filename="../../src/audio/io/kode_portaudio.h" />
 		<Unit filename="../../src/audio/kode_audio_utils.h" />
 		<Unit filename="../../src/audio/kode_modmatrix.h" />
@@ -357,6 +362,9 @@
 		<Unit filename="../../src/midi/kode_midi_events.h" />
 		<Unit filename="../../src/plugin/base/kode_base_instance.h" />
 		<Unit filename="../../src/plugin/dssi/kode_dssi.h" />
+		<Unit filename="../../src/plugin/dssi/kode_dssi_instance.h" />
+		<Unit filename="../../src/plugin/dssi/kode_dssi_plugin.h" />
+		<Unit filename="../../src/plugin/dssi/kode_dssi_utils.h" />
 		<Unit filename="../../src/plugin/exe/kode_exe.h" />
 		<Unit filename="../../src/plugin/exe/kode_exe_instance.h" />
 		<Unit filename="../../src/plugin/exe/kode_exe_plugin.h" />
@@ -370,8 +378,17 @@
 		<Unit filename="../../src/plugin/kode_plugin_event.h" />
 		<Unit filename="../../src/plugin/kode_process_context.h" />
 		<Unit filename="../../src/plugin/ladspa/kode_ladspa.h" />
+		<Unit filename="../../src/plugin/ladspa/kode_ladspa_instance.h" />
+		<Unit filename="../../src/plugin/ladspa/kode_ladspa_plugin.h" />
+		<Unit filename="../../src/plugin/ladspa/kode_ladspa_utils.h" />
 		<Unit filename="../../src/plugin/lv2/kode_lv2.h" />
+		<Unit filename="../../src/plugin/lv2/kode_lv2_instance.h" />
+		<Unit filename="../../src/plugin/lv2/kode_lv2_plugin.h" />
+		<Unit filename="../../src/plugin/lv2/kode_lv2_utils.h" />
 		<Unit filename="../../src/plugin/vst2/kode_vst2.h" />
+		<Unit filename="../../src/plugin/vst2/kode_vst2_instance.h" />
+		<Unit filename="../../src/plugin/vst2/kode_vst2_plugin.h" />
+		<Unit filename="../../src/plugin/vst2/kode_vst2_utils.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_api.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_instance.h" />

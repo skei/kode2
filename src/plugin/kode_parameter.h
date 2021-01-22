@@ -27,6 +27,12 @@
 
 //----------------------------------------------------------------------
 
+/*
+  parameters is const, static for a plugin..
+  but it should be safe to use the MIndex, since the descriptor, which
+  ultimately decides the parameter order, is also const/static..
+*/
+
 
 class KODE_Parameter {
 
@@ -35,18 +41,17 @@ protected:
 //------------------------------
 
   int32_t       MIndex      = -1;
-
   const char*   MName       = "";
   const char*   MShortName  = "";
   const char*   MLabel      = "dB";
   float         MDefValue   = 0.0f;
   float         MMinValue   = 0.0f;
   float         MMaxValue   = 1.0f;
-  bool          MIsStepped  = false;
   uint32_t      MNumSteps   = 0;
   float         MStepSize   = 0.0f;
+  bool          MIsStepped  = false;
+  bool          MIsIndexed  = false;
 
-  //uint32_t      MFlags      = 0;//KODE_PARAMETER_AUTOMATE;
   bool          MCanAutomate = true;
 
 
@@ -85,13 +90,16 @@ public:
   virtual uint32_t      getNumSteps()               { return MNumSteps; }
   virtual float         getStepSize()               { return MStepSize; }
   virtual bool          isStepped()                 { return MIsStepped; }
-
-  //virtual bool          hasFlag(uint32_t AFlag)     { return (MFlags & AFlag); }
-  //virtual void          setFlag(uint32_t AFlag)     { MFlags |= AFlag; }
-  //virtual void          clearFlag(uint32_t AFlag)   { MFlags &= ~AFlag; }
+  virtual bool          isIndexed()                 { return MIsIndexed; }
 
   virtual float         canAutomate()               { return MCanAutomate; }
 
+//------------------------------
+public:
+//------------------------------
+
+  virtual void setStep(uint32_t AStep) {}
+  virtual void setIndex(uint32_t AStep) {}
 
 //------------------------------
 public:

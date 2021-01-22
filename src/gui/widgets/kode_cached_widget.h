@@ -38,13 +38,13 @@ public:
 public: // widget
 //------------------------------
 
-  //void on_widget_setPos(float AXpos, float AYpos) final {
-  //  //KODE_Print("x %.1f y %.1f\n",AXpos,AYpos);
-  //}
+  void on_widget_setPos(float AXpos, float AYpos) final {
+    //KODE_Print("x %.1f y %.1f\n",AXpos,AYpos);
+  }
 
-  //void on_widget_setSize(float AWidth, float AHeight) final {
-  //  //KODE_Print("w %.1f h %.1f\n",AWidth,AHeight);
-  //}
+  void on_widget_setSize(float AWidth, float AHeight) final {
+    //KODE_Print("w %.1f h %.1f\n",AWidth,AHeight);
+  }
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode=0) final {
     //KODE_Print("x %.1f y %.1f w %.1f h %.1f (m %i)\n",ARect.x,ARect.y,ARect.w,ARect.h,AMode);
@@ -104,10 +104,6 @@ public: // widget
     do_widget_redraw(this,MRect,0);
     */
   }
-
-  void on_widget_connect(KODE_Parameter* AParameter) final {
-  }
-
 
 //------------------------------
 public: // "widget listener"

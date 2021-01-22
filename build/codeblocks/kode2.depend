@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1611171751 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+1611185088 source:/DISKS/sda2/code/git/kode2/build/build.cpp
 	"../test/test_plugin_gui.h"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
@@ -32,7 +32,7 @@
 
 1610840180 /DISKS/sda2/code/git/kode2/src/base/kode_const.h
 
-1610999468 /DISKS/sda2/code/git/kode2/src/base/kode_enums.h
+1611243756 /DISKS/sda2/code/git/kode2/src/base/kode_enums.h
 
 1611172408 /DISKS/sda2/code/git/kode2/src/base/kode_stdlib.h
 	<inttypes.h>
@@ -92,7 +92,7 @@
 1606532329 /DISKS/sda2/code/git/kode2/src/plugin/kode_process_context.h
 	"base/kode.h"
 
-1608739757 /DISKS/sda2/code/git/kode2/src/base/system/kode_time.h
+1611185631 /DISKS/sda2/code/git/kode2/src/base/system/kode_time.h
 	<time.h>
 	<signal.h>
 	<errno.h>
@@ -104,7 +104,7 @@
 	<stdlib.h>
 	"base/kode.h"
 
-1611094929 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
+1611268349 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
 	"base/kode.h"
 	"gui/kode_painter.h"
 	"gui/kode_surface.h"
@@ -235,7 +235,7 @@
 	"base/kode.h"
 	"gui/kode_drawable.h"
 
-1611172428 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
+1611270833 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
 	"base/kode.h"
 	"base/types/kode_array.h"
 	"base/types/kode_point.h"
@@ -262,12 +262,12 @@
 	"base/kode.h"
 	"gui/kode_drawable.h"
 
-1610884442 /DISKS/sda2/code/git/kode2/src/plugin/kode_descriptor.h
+1611184529 /DISKS/sda2/code/git/kode2/src/plugin/kode_descriptor.h
 	"base/kode.h"
 	"base/types/kode_array.h"
 	"plugin/kode_parameter.h"
 
-1611092294 /DISKS/sda2/code/git/kode2/src/plugin/kode_parameter.h
+1611197758 /DISKS/sda2/code/git/kode2/src/plugin/kode_parameter.h
 	"base/kode.h"
 	"base/types/kode_array.h"
 	"base/utils/kode_convert.h"
@@ -282,7 +282,7 @@
 	"plugin/vst2/kode_vst2_instance.h"
 	"plugin/vst3/kode_vst3_instance.h"
 
-1610900263 /DISKS/sda2/code/git/kode2/src/plugin/kode_editor.h
+1611268929 /DISKS/sda2/code/git/kode2/src/plugin/kode_editor.h
 	"base/kode.h"
 	"plugin/kode_descriptor.h"
 	"plugin/kode_editor_listener.h"
@@ -380,16 +380,16 @@
 	"plugin/kode_plugin.h"
 	"plugin/kode_process_context.h"
 
-1611157350 /DISKS/sda2/code/git/kode2/test/test_plugin_gui.h
+1611270855 /DISKS/sda2/code/git/kode2/test/test_plugin_gui.h
 	"base/kode.h"
-	"gui/kode_widgets.h"
 	"plugin/kode_descriptor.h"
-	"plugin/kode_editor.h"
 	"plugin/kode_instance.h"
 	"plugin/kode_plugin.h"
 	"plugin/kode_process_context.h"
+	"gui/kode_widgets.h"
+	"plugin/kode_editor.h"
 
-1611091957 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_panel_widget.h
+1611258765 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_panel_widget.h
 	"base/kode.h"
 	"base/types/kode_rect.h"
 	"gui/kode_painter.h"
@@ -418,10 +418,14 @@
 	"base/kode.h"
 	"gui/kode_painter.h"
 
-1611093349 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_widget.h
+1611258790 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_widget.h
 	"base/kode.h"
 	"base/types/kode_rect.h"
 	"gui/kode_painter.h"
-	"gui/kode_widget.h"
+	"gui/widgets/kode_panel_widget.h"
 	"plugin/kode_parameter.h"
+
+1611187743 /DISKS/sda2/code/git/kode2/src/plugin/vst2/kode_vst2_instance.h
+
+1611187753 /DISKS/sda2/code/git/kode2/src/plugin/vst2/kode_vst2_plugin.h
 

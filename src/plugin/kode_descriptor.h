@@ -31,8 +31,8 @@ protected:
   uint32_t        MShortId        = 0;
   const uint8_t*  MLongId         = KODE_NULL_ID;
   const uint8_t*  MLongEditorId   = KODE_NULL_ID;
-  uint32_t        MNumInputs      = 0;
-  uint32_t        MNumOutputs     = 0;
+  uint32_t        MNumInputs      = 2;
+  uint32_t        MNumOutputs     = 2;
   uint32_t        MEditorWidth    = 0;
   uint32_t        MEditorHeight   = 0;
 
