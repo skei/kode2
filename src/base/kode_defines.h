@@ -83,6 +83,45 @@
 #endif
 
 //----------------------------------------------------------------------
+// gui
+//----------------------------------------------------------------------
+
+#undef KODE_GUI_DEFINED
+
+#ifdef KODE_NO_GUI
+  #define KODE_NO_PAINTER
+  #define KODE_GUI_DEFINED
+#endif
+
+//----------
+
+//#ifdef KODE_GUI_CAIRO
+//  #define KODE_GUI_DEFINED
+//  #define KODE_CAIRO
+//  #define KODE_XCB
+//#endif
+
+//#ifdef KODE_GUI_CTX
+//  #define KODE_GUI_DEFINED
+//#endif
+
+//#ifdef KODE_GUI_SDL
+//  #define KODE_GUI_DEFINED
+//#endif
+
+#ifdef KODE_GUI_XCB
+  #define KODE_GUI_DEFINED
+  #define KODE_XCB
+#endif
+
+//----------
+
+#ifndef KODE_GUI_DEFINED
+  #warning NO GUI DEFINED
+  #define KODE_NO_GUI
+#endif
+
+//----------------------------------------------------------------------
 // painter
 //----------------------------------------------------------------------
 
@@ -118,44 +157,6 @@
 #ifndef KODE_PAINTER_DEFINED
   #warning NO PAINTER DEFINED
   //#define KODE_NO_GUI
-#endif
-
-//----------------------------------------------------------------------
-// gui
-//----------------------------------------------------------------------
-
-#undef KODE_GUI_DEFINED
-
-#ifdef KODE_NO_GUI
-  #define KODE_GUI_DEFINED
-#endif
-
-//----------
-
-//#ifdef KODE_GUI_CAIRO
-//  #define KODE_GUI_DEFINED
-//  #define KODE_CAIRO
-//  #define KODE_XCB
-//#endif
-
-//#ifdef KODE_GUI_CTX
-//  #define KODE_GUI_DEFINED
-//#endif
-
-//#ifdef KODE_GUI_SDL
-//  #define KODE_GUI_DEFINED
-//#endif
-
-#ifdef KODE_GUI_XCB
-  #define KODE_GUI_DEFINED
-  #define KODE_XCB
-#endif
-
-//----------
-
-#ifndef KODE_GUI_DEFINED
-  #warning NO GUI DEFINED
-  #define KODE_NO_GUI
 #endif
 
 //----------------------------------------------------------------------

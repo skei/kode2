@@ -12,7 +12,10 @@
 
 //----------------------------------------------------------------------
 
-//uint8_t myPluginId[16]  = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+
+// cat /proc/sys/kernel/random/uuid
+// 9ca2b934-948c-46fd-9ecf-0123e5dc544a
+uint8_t myPluginId[16]  = {0x9c,0xa2,0xb9,0x34,0x94,0x8c,0x46,0xfd,0x9e,0xcf,0x01,0x23,0xe5,0xdc,0x54,0x4a};
 
 //----------
 
@@ -22,11 +25,10 @@ class myDescriptor
 public:
 
   myDescriptor() {
-    //KODE_PRINT;
-    //MLongId           = myPluginId;
-    appendParameter( KODE_New KODE_Parameter("param1", 0.25f) );
-    appendParameter( KODE_New KODE_Parameter("param2", 0.5f) );
-    appendParameter( KODE_New KODE_Parameter("param3", 1.0f) );
+    MName = "test_plugin";
+    MAuthor = "skai.audio";
+    MLongId = (uint8_t*)"test_plugin_1234";
+
   }
 
   //virtual ~myDescriptor() {

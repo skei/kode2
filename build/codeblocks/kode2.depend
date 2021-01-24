@@ -1,6 +1,6 @@
 # depslib dependency file v1.0
-1611185088 source:/DISKS/sda2/code/git/kode2/build/build.cpp
-	"../test/test_plugin_gui.h"
+1611490924 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+	"../test/test_gui.h"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
 	"kode_config.h"
@@ -23,7 +23,7 @@
 
 1610839876 /DISKS/sda2/code/git/kode2/src/base/kode_config.h
 
-1611099216 /DISKS/sda2/code/git/kode2/src/base/kode_defines.h
+1611417851 /DISKS/sda2/code/git/kode2/src/base/kode_defines.h
 
 1610840247 /DISKS/sda2/code/git/kode2/src/base/kode_attributes.h
 
@@ -32,7 +32,7 @@
 
 1610840180 /DISKS/sda2/code/git/kode2/src/base/kode_const.h
 
-1611243756 /DISKS/sda2/code/git/kode2/src/base/kode_enums.h
+1611346928 /DISKS/sda2/code/git/kode2/src/base/kode_enums.h
 
 1611172408 /DISKS/sda2/code/git/kode2/src/base/kode_stdlib.h
 	<inttypes.h>
@@ -104,7 +104,7 @@
 	<stdlib.h>
 	"base/kode.h"
 
-1611268349 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
+1611411943 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
 	"base/kode.h"
 	"gui/kode_painter.h"
 	"gui/kode_surface.h"
@@ -235,22 +235,23 @@
 	"base/kode.h"
 	"gui/kode_drawable.h"
 
-1611270833 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
+1611414045 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
 	"base/kode.h"
 	"base/types/kode_array.h"
 	"base/types/kode_point.h"
 	"base/types/kode_rect.h"
 	"gui/kode_painter.h"
+	"plugin/kode_parameter.h"
 
 1611172389 /DISKS/sda2/code/git/kode2/src/base/types/kode_array.h
 	"base/utils/kode_integer.h"
 
-1608586495 /DISKS/sda2/code/git/kode2/src/base/types/kode_point.h
+1611356667 /DISKS/sda2/code/git/kode2/src/base/types/kode_point.h
 
-1611020476 /DISKS/sda2/code/git/kode2/src/base/types/kode_rect.h
+1611355902 /DISKS/sda2/code/git/kode2/src/base/types/kode_rect.h
 	"base/kode.h"
 
-1610915389 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_window.h
+1611411799 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_window.h
 	"base/kode.h"
 	"base/system/kode_time.h"
 	"gui/kode_drawable.h"
@@ -380,7 +381,7 @@
 	"plugin/kode_plugin.h"
 	"plugin/kode_process_context.h"
 
-1611270855 /DISKS/sda2/code/git/kode2/test/test_plugin_gui.h
+1611345173 /DISKS/sda2/code/git/kode2/test/test_plugin_gui.h
 	"base/kode.h"
 	"plugin/kode_descriptor.h"
 	"plugin/kode_instance.h"
@@ -389,13 +390,13 @@
 	"gui/kode_widgets.h"
 	"plugin/kode_editor.h"
 
-1611258765 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_panel_widget.h
+1611344837 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_panel_widget.h
 	"base/kode.h"
 	"base/types/kode_rect.h"
 	"gui/kode_painter.h"
 	"gui/kode_widget.h"
 
-1611093257 /DISKS/sda2/code/git/kode2/test/test_gui.h
+1611413047 /DISKS/sda2/code/git/kode2/test/test_gui.h
 	"base/kode.h"
 	"gui/kode_window.h"
 	"gui/kode_widgets.h"
@@ -418,7 +419,7 @@
 	"base/kode.h"
 	"gui/kode_painter.h"
 
-1611258790 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_widget.h
+1611344851 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_widget.h
 	"base/kode.h"
 	"base/types/kode_rect.h"
 	"gui/kode_painter.h"

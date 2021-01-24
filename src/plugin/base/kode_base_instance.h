@@ -5,7 +5,6 @@
 #include "base/kode.h"
 #include "plugin/kode_descriptor.h"
 #include "plugin/kode_editor.h"
-//#include "plugin/kode_plugin_event.h"
 #include "plugin/kode_process_context.h"
 
 #ifndef KODE_NO_GUI
@@ -22,8 +21,6 @@ protected:
 
   KODE_Descriptor*  MDescriptor       = KODE_NULL;
   float*            MParameterValues  = KODE_NULL;
-  //uint32_t          MEditorWidth      = 0;
-  //uint32_t          MEditorHeight     = 0;
 
 //------------------------------
 public:
@@ -31,8 +28,6 @@ public:
 
   KODE_BaseInstance(KODE_Descriptor* ADescriptor) {
     MDescriptor   = ADescriptor;
-    //MEditorWidth  = MDescriptor->getEditorWidth();
-    //MEditorHeight = MDescriptor->getEditorHeight();
     createParameterBuffers();
   }
 
@@ -82,7 +77,6 @@ public:
 //------------------------------
 
   void setDefaultParameterValues() {
-    //KODE_PRINT;
     uint32_t num = MDescriptor->getNumParameters();
     for (uint32_t i=0; i<num; i++) {
       KODE_Parameter* parameter = MDescriptor->getParameter(i);
@@ -93,9 +87,7 @@ public:
 
   //----------
 
-  //void updateAllParameters() {
   void notifyAllParameters() {
-    //KODE_PRINT;
     uint32_t num = MDescriptor->getNumParameters();
     for (uint32_t i=0; i<num; i++) {
       KODE_Parameter* parameter = MDescriptor->getParameter(i);

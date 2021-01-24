@@ -15,9 +15,18 @@ public:
 
 public:
 
-  KODE_Point() {}
-  KODE_Point(T v) {}
-  KODE_Point(T x, T y) {}
+  KODE_Point() {
+  }
+
+  KODE_Point(T v) {
+    x = v;
+    y = v;
+  }
+
+  KODE_Point(T x_, T y_) {
+    x = x_;
+    y = y_;
+  }
 
 };
 

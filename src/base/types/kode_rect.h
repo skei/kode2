@@ -31,14 +31,14 @@ public:
     h = _v;
   }
 
-  KODE_Rect(float _w, float _h) {
+  KODE_Rect(T _w, T _h) {
     x = 0;
     y = 0;
     w = _w;
     h = _h;
   }
 
-  KODE_Rect(float _x, float _y, float _w, float _h) {
+  KODE_Rect(T _x, T _y, T _w, T _h) {
     x = _x;
     y = _y;
     w = _w;

@@ -147,7 +147,7 @@ void KODE_MakeValidSymbol(char* buffer) {
   for (uint32_t i=0; i<KODE_Strlen(buffer); i++) {
     unsigned char c = buffer[i];
     if ((c<32) || (c>127)) buffer[i] = '_';
-    else buffer[i] = KODE_VALID_CSYMBOLS[c];
+    else buffer[i] = KODE_CSYMBOLS[c];
   }
 }
 

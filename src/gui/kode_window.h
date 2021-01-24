@@ -21,6 +21,24 @@
 typedef KODE_ImplementedWindow KODE_SimpleWindow;
 
 //----------------------------------------------------------------------
+//
+//----------------------------------------------------------------------
+
+//class KODE_PaintedWindow
+//: public KODE_ImplementedWindow {
+//};
+//
+//class KODE_BufferedWindow
+//: public KODE_PaintedWindow {
+//};
+//
+//class KODE_WidgetWindow
+//: public KODE_BufferedWindow {
+//};
+
+//----------------------------------------------------------------------
+//
+//----------------------------------------------------------------------
 
 class KODE_Window
 : public KODE_ImplementedWindow
@@ -30,9 +48,15 @@ class KODE_Window
 private:
 //------------------------------
 
+  // painted
+
   uint32_t      MWindowWidth            = 0;  // overrides xcbWindow
   uint32_t      MWindowHeight           = 0;
   KODE_Painter* MWindowPainter          = KODE_NULL;
+  bool          MFillWindowBackground   = false;
+  uint32_t      MBackgroundColor        = 0xff000000;
+
+  // buffered
 
   #ifndef KODE_NO_WINDOW_BUFFERING
   uint32_t      MBufferWidth            = 0;
@@ -41,13 +65,13 @@ private:
   KODE_Surface* MBufferSurface          = KODE_NULL;
   #endif
 
+  // widget
+
   KODE_Widget*  MHoverWidget            = KODE_NULL;
   KODE_Widget*  MModalWidget            = KODE_NULL;
   KODE_Widget*  MMouseClickedWidget     = KODE_NULL;
   KODE_Widget*  MKeyCaptureWidget       = KODE_NULL;
 
-  bool          MFillWindowBackground   = false;
-  uint32_t      MBackgroundColor        = 0xff000000;
 
 //------------------------------
 public:
@@ -56,10 +80,10 @@ public:
   KODE_Window(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL)
   : KODE_ImplementedWindow(AWidth,AHeight,ATitle,AParent)
   , KODE_Widget(KODE_FRect(AWidth,AHeight)) {
-    MWindowWidth = AWidth;
+    MName         = "KODE_Window";
+    MWindowWidth  = AWidth;
     MWindowHeight = AHeight;
-    //setWidgetSize(AWidth,AHeight);
-    MRect = KODE_FRect(0,0,AWidth,AHeight);
+    MRect = KODE_FRect(AWidth,AHeight);
     MWindowPainter = KODE_New KODE_Painter(this);
     #ifndef KODE_NO_WINDOW_BUFFERING
       createBuffer(AWidth,AHeight);
@@ -85,21 +109,6 @@ public:
 
   virtual uint32_t getWindowWidth() { return MWindowWidth; }
   virtual uint32_t getWindowHeight() { return MWindowHeight; }
-
-  //virtual KODE_Painter* getPainter() { return MWindowPainter; }
-
-//------------------------------
-public:
-//------------------------------
-
-  //void setSkin(KODE_Skin* ASkin) override {
-  //  //if (MSkin) KODE_Delete MSkin;
-  //  MSkin = ASkin;
-  //}
-
-  //KODE_Skin* getSkin() override {
-  //  return MSkin;
-  //}
 
 //------------------------------
 public:
@@ -149,8 +158,6 @@ private: // buffer
 
   //----------
 
-  // todo: KODE_NextPowerOfTwo
-
   void resizeBuffer(uint32_t AWidth, uint32_t AHeight) {
     uint32_t w = KODE_NextPowerOfTwo(AWidth);
     uint32_t h = KODE_NextPowerOfTwo(AHeight);
@@ -167,12 +174,9 @@ private:
 //------------------------------
 
   void paintWidget(KODE_Widget* AWidget, KODE_FRect ARect, uint32_t AMode=0) {
-    //KODE_Print("x %i y %i w %i h %i\n",AXpos,AYpos,AWidth,AHeight);
     #ifdef KODE_NO_WINDOW_BUFFERING
-      //if (MFillWindowBackground) fillBackground(MWindowPainter,ARect);
       AWidget->on_widget_paint(MWindowPainter,ARect,AMode);
     #else
-      //if (MFillWindowBackground) fillBackground(ARect);
       AWidget->on_widget_paint(MBufferPainter,ARect,AMode);
       int32_t x = ARect.x;
       int32_t y = ARect.y;
@@ -190,15 +194,10 @@ private:
     #endif
     MWindowWidth = AWidth;
     MWindowHeight = AHeight;
-    //MRect = KODE_FRect(0,0,AWidth,AHeight);
-    //setWidgetSize(AWidth,AHeight);
     MRect.w = AWidth;
     MRect.h = AHeight;
-    //alignChildWidgets(0);
-    //redrawWidgets();
-
+    alignChildWidgets();
     if (MWindowPainter) MWindowPainter->resize(AWidth,AHeight);
-
   }
 
   //----------
@@ -217,6 +216,15 @@ private:
       }
       MHoverWidget = hover;
     }
+  }
+
+//------------------------------
+public: // window
+//------------------------------
+
+  void open() override {
+    alignChildWidgets();
+    KODE_ImplementedWindow::open();
   }
 
 //------------------------------

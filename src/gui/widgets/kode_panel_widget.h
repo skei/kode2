@@ -39,6 +39,7 @@ public:
 
   KODE_PanelWidget(KODE_FRect ARect)
   : KODE_Widget(ARect) {
+    MName = "KODE_PanelWidget";
   }
 
   virtual ~KODE_PanelWidget() {

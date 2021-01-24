@@ -19,26 +19,26 @@
 //void* xcb_timer_thread_proc(void* AWindow);
 
 const char* KODE_XCB_WM_CURSORS[20] = {
-  "left_ptr",          // 0 KODE_CURSOR_DEFAULT
-  "left_ptr",          // KODE_CURSOR_ARROW
+  "left_ptr",           // 0 KODE_CURSOR_DEFAULT
+  "left_ptr",           // KODE_CURSOR_ARROW
   "sb_up_arrow",        // KODE_CURSOR_ARROWUP
-  "sb_down_arrow",     // KODE_CURSOR_ARROWDOWN
-  "sb_left_arrow",     // KODE_CURSOR_ARROWLEFT
-  "sb_right_arrow",    // KODE_CURSOR_ARROWRIGHT
-  "sb_v_double_arrow", // KODE_CURSOR_ARROWUPDOWN
-  "sb_h_double_arrow", // KODE_CURSOR_ARROWLEFTRIGHT
-  "top_left_corner",   // KODE_CURSOR_ARROWDIAGLEFT
-  "top_right_corner",  // KODE_CURSOR_ARROWDIAGRIGHT
-  "fleur",             // KODE_CURSOR_MOVE
-  "watch",             // KODE_CURSOR_WAIT
-  "clock",             // KODE_CURSOR_ARROWWAIT
-  "hand2",             // KODE_CURSOR_HAND
-  "hand1",             // KODE_CURSOR_FINGER
-  "crosshair",         // KODE_CURSOR_CROSS
-  "pencil",            // KODE_CURSOR_PENCIL
-  "plus",              // KODE_CURSOR_PLUS
-  "question_arrow",    // KODE_CURSOR_QUESTION
-  "xterm"              // KODE_CURSOR_IBEAM
+  "sb_down_arrow",      // KODE_CURSOR_ARROWDOWN
+  "sb_left_arrow",      // KODE_CURSOR_ARROWLEFT
+  "sb_right_arrow",     // KODE_CURSOR_ARROWRIGHT
+  "sb_v_double_arrow",  // KODE_CURSOR_ARROWUPDOWN
+  "sb_h_double_arrow",  // KODE_CURSOR_ARROWLEFTRIGHT
+  "top_left_corner",    // KODE_CURSOR_ARROWDIAGLEFT
+  "top_right_corner",   // KODE_CURSOR_ARROWDIAGRIGHT
+  "fleur",              // KODE_CURSOR_MOVE
+  "watch",              // KODE_CURSOR_WAIT
+  "clock",              // KODE_CURSOR_ARROWWAIT
+  "hand2",              // KODE_CURSOR_HAND
+  "hand1",              // KODE_CURSOR_FINGER
+  "crosshair",          // KODE_CURSOR_CROSS
+  "pencil",             // KODE_CURSOR_PENCIL
+  "plus",               // KODE_CURSOR_PLUS
+  "question_arrow",     // KODE_CURSOR_QUESTION
+  "xterm"               // KODE_CURSOR_IBEAM
 };
 
 //----------------------------------------------------------------------
@@ -128,16 +128,13 @@ public:
 public: // paint target
 //------------------------------
 
-  bool                isWindow()    final { return true; }
-  bool                isDrawable()  final { return true; }
-
-  uint32_t            getWidth()    final { return MWindowWidth; }
-  uint32_t            getHeight()   final { return MWindowHeight; }
-  uint32_t            getDepth()    final { return MScreenDepth; }
-
+  bool                isWindow()          final { return true; }
+  bool                isDrawable()        final { return true; }
+  uint32_t            getWidth()          final { return MWindowWidth; }
+  uint32_t            getHeight()         final { return MWindowHeight; }
+  uint32_t            getDepth()          final { return MScreenDepth; }
   xcb_window_t        getXcbWindow()      final { return MWindow; }
   xcb_drawable_t      getXcbDrawable()    final { return MWindow; }
-
   xcb_connection_t*   getXcbConnection()  final { return MConnection; }
   xcb_visualid_t      getXcbVisual()      final { return MScreenVisual; }
 
@@ -993,7 +990,7 @@ public:
 
   //----------
 
-  void open() final {
+  void open() override {
     //KODE_PRINT;
     XCB_Print("xcb: open\n");
     xcb_map_window(MConnection,MWindow);
@@ -1009,7 +1006,7 @@ public:
 
   //----------
 
-  void close() final {
+  void close() override {
     XCB_Print("xcb: close\n");
     if (MUseEventThread) stopEventThread();
     xcb_unmap_window(MConnection,MWindow);
@@ -1018,7 +1015,7 @@ public:
 
   //----------
 
-  void eventLoop() final {
+  void eventLoop() override {
     XCB_Print("xcb: eventLoop\n");
     MQuitEventLoop = false;
     xcb_flush(MConnection);
@@ -1150,12 +1147,12 @@ public:
 
   //----------
 
-  void beginPaint() final {
+  void beginPaint() override {
   }
 
   //----------
 
-  void paint(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight) final {
+  void paint(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight) override {
     //KODE_PRINT;
     //on_paint(MWindowPainter,ARect);
     on_window_paint(AXpos,AYpos,AWidth,AHeight);
@@ -1163,13 +1160,13 @@ public:
 
   //----------
 
-  void endPaint() final {
+  void endPaint() override {
     xcb_flush(MConnection);
   }
 
   //----------
 
-  void invalidate(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight) final {
+  void invalidate(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight) override {
     //XCB_Print("xcb: invalidate ARect %.0f %.0f %.0f %.0f\n",ARect.x,ARect.y,ARect.w,ARect.h);
     KODE_Memset(MExposeEventBuffer,0,sizeof(MExposeEventBuffer));
     MExposeEvent->window        = MWindow;
@@ -1215,7 +1212,7 @@ public:
 
   //----------
 
-  void flush(void) final {
+  void flush(void) override {
   //----------
 
     XCB_Print("xcb: flush\n");
@@ -1224,7 +1221,7 @@ public:
 
   //----------
 
-  void sync(void) final {
+  void sync(void) override {
     XCB_Print("xcb: sync\n");
     xcb_aux_sync(MConnection);
   }
@@ -1233,13 +1230,13 @@ public:
 //
 //------------------------------
 
-  void fill(uint32_t AColor) final {
+  void fill(uint32_t AColor) override {
     fill(0,0,MWindowWidth,MWindowHeight,AColor);
   }
 
   //----------
 
-  void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, uint32_t AColor) final {
+  void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, uint32_t AColor) override {
     // set color
     uint32_t mask = XCB_GC_FOREGROUND;
     uint32_t values[1];
@@ -1258,7 +1255,7 @@ public:
 
   //----------
 
-  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) final {
+  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) override {
     if (ASource->isImage()) {
       xcb_image_put(
         MConnection,            // xcb_connection_t *  conn,
@@ -1292,7 +1289,7 @@ public:
   }
 
 
-  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) final {
+  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) override {
     if (ASource->isImage()) {
       kode_xcb_put_image(
         MConnection,

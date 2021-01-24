@@ -49,6 +49,7 @@ public:
 
   KODE_SliderWidget(KODE_FRect ARect)
   : KODE_PanelWidget(ARect) {
+    MName = "KODE_SliderWidget";
   }
 
   //----------

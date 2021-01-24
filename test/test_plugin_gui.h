@@ -109,19 +109,17 @@ public:
     KODE_Editor* editor = KODE_New KODE_Editor(MDescriptor,this,AParent);
 
     KODE_PanelWidget* panel;
-    panel = KODE_New KODE_PanelWidget( KODE_FRect(00,0,EDITOR_WIDTH,EDITOR_HEIGHT) );
+    panel = KODE_New KODE_PanelWidget( KODE_FRect(0,0,EDITOR_WIDTH,EDITOR_HEIGHT) );
     panel->setBackgroundColor(0xff606060);
     editor->appendChildWidget(panel);
 
     KODE_Widget* widget;
 
     widget = KODE_New KODE_SliderWidget(KODE_FRect(10,10,236,25));
-    //widget->setAnchor(KODE_WIDGET_ANCHOR_LEFT);
     panel->appendChildWidget(widget);
     editor->connectParameterIndex(widget,0);
 
     widget = KODE_New KODE_SliderWidget(KODE_FRect(10,40,236,25));
-    //widget->setAnchor(KODE_WIDGET_ANCHOR_RIGHT);
     panel->appendChildWidget(widget);
     editor->connectParameterIndex(widget,1);
 
@@ -129,7 +127,7 @@ public:
     panel->appendChildWidget(widget);
     editor->connectParameterIndex(widget,2);
 
-//    editor->realignChildWidgets();
+    editor->alignChildWidgets();
     return editor;
   }
 
