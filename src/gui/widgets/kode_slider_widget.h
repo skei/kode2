@@ -120,7 +120,7 @@ protected:
       label = parameter->getLabel();
     }
     if (MDrawLabelText & (label[0] != 0)) {
-      float labelwidth = APainter->getTextWidth("_");
+      float labelwidth = APainter->getTextWidth("i");
       labelwidth += APainter->getTextWidth(label);
       APainter->drawText(r,label,MLabelTextColor,KODE_TEXT_ALIGN_RIGHT);
       r.w -= labelwidth;

@@ -80,24 +80,31 @@ public:
   KODE_Window(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL)
   : KODE_ImplementedWindow(AWidth,AHeight,ATitle,AParent)
   , KODE_Widget(KODE_FRect(AWidth,AHeight)) {
-    MName         = "KODE_Window";
-    MWindowWidth  = AWidth;
-    MWindowHeight = AHeight;
+
+    MName = "KODE_Window";
     MRect = KODE_FRect(AWidth,AHeight);
+
+    // painted
+
+    MWindowWidth = AWidth;
+    MWindowHeight = AHeight;
     MWindowPainter = KODE_New KODE_Painter(this);
-    #ifndef KODE_NO_WINDOW_BUFFERING
-      createBuffer(AWidth,AHeight);
-    #endif
     //#ifdef KODE_PLUGIN_EXE
     //  MFillWindowBackground = true;
     //#endif
+
+    // buffered
+
+    #ifndef KODE_NO_WINDOW_BUFFERING
+      createBuffer(AWidth,AHeight);
+    #endif
+
   }
 
   //----------
 
   virtual ~KODE_Window() {
     if (MWindowPainter) KODE_Delete MWindowPainter;
-    //if (MSkin) KODE_Delete MSkin;
     #ifndef KODE_NO_WINDOW_BUFFERING
       destroyBuffer();
     #endif
@@ -111,7 +118,7 @@ public:
   virtual uint32_t getWindowHeight() { return MWindowHeight; }
 
 //------------------------------
-public:
+public: // painted
 //------------------------------
 
   void setFillBackground(bool AFill=true) {
@@ -232,26 +239,9 @@ public: // base window
 //------------------------------
 
   void on_window_move(uint32_t AXpos, uint32_t AYpos) override {
-    //setWidgetPos(AXpos,AYpos);
   }
 
   //----------
-
-//  void on_resize(float AWidth, float AHeight) {
-//    //KODE_Trace("%.0f %.0f -> %.0f %.0f\n",MRect.w,MRect.h,AWidth,AHeight);
-//    KODE_ImplementedWindow::on_resize(AWidth, AHeight);
-//    MRect = KODE_Rect(AWidth,AHeight);
-//    //if (hasFlag(KODE_WIDGET_REALIGN))
-//    realignChildren();
-//    // -> KODE_CairoWindow
-//    //
-//    //#ifdef KODE_WINDOW_NOT_BUFFERED
-//    //  #ifdef KODE_CAIRO
-//    //    cairo_xcb_surface_set_size(MCairoSurface,w,h);
-//    //    MWindowPainter->flush();
-//    //  #endif
-//    //#endif
-//  }
 
   void on_window_resize(uint32_t AWidth, uint32_t AHeight) override {
     resizeWindow(AWidth,AHeight);

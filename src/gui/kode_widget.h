@@ -404,6 +404,10 @@ public: // "widget_listener"
     if (MParent) MParent->do_widget_setCursor(AWidget, ACursor);
   }
 
+  //virtual void do_widget_setCursorPos(KODE_Widget* AWidget, uint32_t AXpos, uint32_t AYpos) {
+  //  if (MParent) MParent->do_widget_setCursorPos(AWidget, AXpos,AYpos);
+  //}
+
   virtual void do_widget_setModal(KODE_Widget* AWidget) {
     if (MParent) MParent->do_widget_setModal(AWidget);
   }

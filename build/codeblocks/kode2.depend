@@ -1,6 +1,6 @@
 # depslib dependency file v1.0
-1611490924 source:/DISKS/sda2/code/git/kode2/build/build.cpp
-	"../test/test_gui.h"
+1611540211 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+	"../test/test_gui.cpp"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
 	"kode_config.h"
@@ -34,7 +34,7 @@
 
 1611346928 /DISKS/sda2/code/git/kode2/src/base/kode_enums.h
 
-1611172408 /DISKS/sda2/code/git/kode2/src/base/kode_stdlib.h
+1611578201 /DISKS/sda2/code/git/kode2/src/base/kode_stdlib.h
 	<inttypes.h>
 	<memory.h>
 	<stdio.h>
@@ -104,7 +104,7 @@
 	<stdlib.h>
 	"base/kode.h"
 
-1611532317 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
+1611579052 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
 	"base/kode.h"
 	"gui/kode_painter.h"
 	"gui/kode_surface.h"
@@ -236,7 +236,7 @@
 	"base/kode.h"
 	"gui/kode_drawable.h"
 
-1611414045 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
+1611579159 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
 	"base/kode.h"
 	"base/types/kode_array.h"
 	"base/types/kode_point.h"
@@ -427,7 +427,7 @@
 	"base/kode.h"
 	"gui/kode_painter.h"
 
-1611527804 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_widget.h
+1611579459 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_widget.h
 	"base/kode.h"
 	"base/types/kode_rect.h"
 	"gui/kode_painter.h"
@@ -452,7 +452,7 @@
 	"gui/kode_drawable.h"
 	"gui/kode_widget.h"
 
-1611534929 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_sa_header_widget.h
+1611535202 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_sa_header_widget.h
 	"gui/kode_image.h"
 	"gui/widgets/kode_background_widget.h"
 	"gui/widgets/kode_text_widget.h"
@@ -500,4 +500,11 @@
 	"gui/kode_painter.h"
 	"gui/kode_widget.h"
 	"gui/widgets/kode_border_widget.h"
+
+1611534004 /DISKS/sda2/code/git/kode2/test/test_gui.cpp
+	"base/kode.h"
+	"base/types/kode_color.h"
+	"gui/kode_window.h"
+	"gui/kode_widgets.h"
+	"plugin/kode_parameter.h"
 

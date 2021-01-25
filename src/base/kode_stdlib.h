@@ -4,24 +4,47 @@
 
 //#include "kode.h"
 
-//----------------------------------------------------------------------
-
 #include <inttypes.h>
 #include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-//----------
+//----------------------------------------------------------------------
 
-//void _kode_handle_new(const char* file, const char* func, int line) {
+//void* _kode_new(const size_t size, const char* file, int line, const char* func) {
+//  //printf("_kode_handle_new\n");
+//  void* ptr = malloc(size);
+//  return ptr;
 //}
 //
-//void _kode_handle_delete(const char* file, const char* func, int line) {
+//void _kode_delete(void* ptr, const char* file, int line, const char* func) {
+//  //printf("_kode_handle_delete\n");
+//  free(ptr);
 //}
 //
-//#define KODE_New(x) { _kode_new_prefix( __FILE__, __FUNCTION__, __LINE__ ); new x; }
+////----------
 //
-//#define KODE_Delete(x) { _kode_delete_prefix(__FILE__,__FUNCTION__,__LINE__); delete x; }
+//void* operator new (const size_t size) {
+//  printf("operator new\n");
+//  return _kode_new(size,"",0,"");
+//}
+//
+//void* operator new [] (const size_t size) {
+//  printf("operator new []\n");
+//  return _kode_new(size,"",0,"");
+//}
+//
+//void operator delete (void* ptr) {
+//  printf("operator delete\n");
+//  return _kode_delete(ptr,"",0,"");
+//}
+//
+//void operator delete [] (void* ptr) {
+//  printf("operator delete\n");
+//  return _kode_delete(ptr,"",0,"");
+//}
+
+//----------------------------------------------------------------------
 
 #define KODE_New      new
 #define KODE_Delete   delete
