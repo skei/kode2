@@ -1,62 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
-	<ActiveTarget name="debug.exe" />
-	<File name="../../src/gui/kode_widget.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4570" topLine="179" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_tilteq.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="268" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../src/plugin/kode_descriptor.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="509" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_transient_killer.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1565" topLine="30" />
-		</Cursor>
-	</File>
-	<File name="../../src/plugin/vst3/kode_vst3_api.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="401" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../src/gui/base/kode_base_painter.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1598" topLine="33" />
-		</Cursor>
-	</File>
-	<File name="../../src/plugin/ladspa/kode_ladspa.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="402" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../src/gui/_backup/kode_window.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8541" topLine="291" />
-		</Cursor>
-	</File>
-	<File name="../../src/base/kode_config.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="497" topLine="3" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_saturation.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="437" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_transient.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="410" topLine="0" />
-		</Cursor>
-	</File>
+	<ActiveTarget name="release.vst3" />
 	<File name="../../src/plugin/exe/kode_exe.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="391" topLine="0" />
@@ -67,14 +12,9 @@
 			<Cursor1 position="468" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="../../plugins/sa.ports/sa_ports_large_room_reverb.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/base/kode_types.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="161" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_limiter.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="195" topLine="0" />
+			<Cursor1 position="1649" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="../../src/plugin/lv2/kode_lv2_utils.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -82,39 +22,19 @@
 			<Cursor1 position="6944" topLine="129" />
 		</Cursor>
 	</File>
-	<File name="../../src/gui/widgets/kode_widget_template.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/gui/widgets/_template.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3271" topLine="74" />
+			<Cursor1 position="944" topLine="15" />
 		</Cursor>
 	</File>
-	<File name="../../plugins/sa.ports/sa_ports_schroeder_reverb.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/extern/uuid.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1009" topLine="23" />
+			<Cursor1 position="4968" topLine="213" />
 		</Cursor>
 	</File>
-	<File name="../../test/test_gui.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../test/test_gui.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1768" topLine="12" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_tube_harmonics_amp.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="231" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../src/base/kode_defines.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1706" topLine="75" />
-		</Cursor>
-	</File>
-	<File name="../../src/base/types/kode_dynamic_buffer.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="81" />
-		</Cursor>
-	</File>
-	<File name="../../src/base/types/kode_color.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="256" topLine="0" />
+			<Cursor1 position="1153" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="../../src/base/types/kode_point.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -127,19 +47,34 @@
 			<Cursor1 position="252" topLine="0" />
 		</Cursor>
 	</File>
+	<File name="../../src/gui/widgets/kode_image_widget.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="839" topLine="10" />
+		</Cursor>
+	</File>
 	<File name="../../src/gui/cairo/kode_cairo_painter.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="10110" topLine="334" />
+			<Cursor1 position="5088" topLine="153" />
 		</Cursor>
 	</File>
 	<File name="../../src/gui/kode_widgets.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="388" topLine="0" />
+			<Cursor1 position="646" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../src/gui/widgets/kode_cached_widget.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="615" topLine="42" />
 		</Cursor>
 	</File>
 	<File name="../../src/gui/base/kode_base_window.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2488" topLine="27" />
+			<Cursor1 position="1920" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="../../src/base/utils/kode_integer.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="102" />
 		</Cursor>
 	</File>
 	<File name="../../src/plugin/kode_process_context.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -157,29 +92,19 @@
 			<Cursor1 position="5990" topLine="149" />
 		</Cursor>
 	</File>
-	<File name="../../src/base/kode_enums.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3713" topLine="17" />
-		</Cursor>
-	</File>
-	<File name="../../src/base/utils/kode_math.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="274" topLine="0" />
-		</Cursor>
-	</File>
 	<File name="../../src/gui/kode_drawable.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="447" topLine="0" />
+			<Cursor1 position="447" topLine="36" />
 		</Cursor>
 	</File>
-	<File name="../../src/base/utils/kode_fast_math.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/base/kode_stdlib.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="360" topLine="3" />
+			<Cursor1 position="574" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="../../plugins/sa.ports/sa_ports_reverseness.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/gui/widgets/kode_sa_header_widget.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="228" topLine="0" />
+			<Cursor1 position="890" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="../../src/plugin/vst3/kode_vst3_plugin.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -202,32 +127,22 @@
 			<Cursor1 position="6167" topLine="156" />
 		</Cursor>
 	</File>
-	<File name="../../src/base/kode_const.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../doc/license.txt" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="407" topLine="0" />
+			<Cursor1 position="240" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="../../src/base/kode_stdlib.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/base/kode_config.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="574" topLine="0" />
+			<Cursor1 position="497" topLine="3" />
 		</Cursor>
 	</File>
-	<File name="../../plugins/sa.ports/sa_ports_cabinet.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../build.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="631" topLine="19" />
+			<Cursor1 position="425" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="../build.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="156" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_dynamic.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="292" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../test/test_plugin_gui.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../test/test_plugin_gui.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="3130" topLine="102" />
 		</Cursor>
@@ -239,32 +154,27 @@
 	</File>
 	<File name="../../src/gfx/kode_bitmap.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="159" topLine="0" />
+			<Cursor1 position="134" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="../../plugins/sa.ports/sa_ports_simpverb.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/gui/widgets/kode_border_widget.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="218" topLine="9" />
+			<Cursor1 position="1171" topLine="30" />
 		</Cursor>
 	</File>
-	<File name="../../src/gui/kode_window.h" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/gui/kode_window.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="6147" topLine="162" />
+			<Cursor1 position="1534" topLine="34" />
 		</Cursor>
 	</File>
 	<File name="../../src/gui/kode_painter.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="18" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_event_horizon.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="291" topLine="0" />
+			<Cursor1 position="911" topLine="9" />
 		</Cursor>
 	</File>
 	<File name="../../src/plugin/base/kode_base_instance.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2965" topLine="37" />
+			<Cursor1 position="0" topLine="68" />
 		</Cursor>
 	</File>
 	<File name="../../src/plugin/kode_parameter.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -277,34 +187,9 @@
 			<Cursor1 position="4658" topLine="173" />
 		</Cursor>
 	</File>
-	<File name="../../plugins/sa.ports/sa_ports_small_room_reverb.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="161" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_filter_ms20.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="258" topLine="0" />
-		</Cursor>
-	</File>
 	<File name="../../src/plugin/lv2/kode_lv2_plugin.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="7524" topLine="221" />
-		</Cursor>
-	</File>
-	<File name="../../src/base/kode_types.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1649" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../src/gui/xcb/kode_xcb_window.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1174" topLine="12" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_combo.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="577" topLine="14" />
 		</Cursor>
 	</File>
 	<File name="../../src/base/kode_attributes.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -312,9 +197,24 @@
 			<Cursor1 position="1516" topLine="57" />
 		</Cursor>
 	</File>
+	<File name="../../src/gui/xcb/kode_xcb_window.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1174" topLine="12" />
+		</Cursor>
+	</File>
 	<File name="../../src/gui/widgets/kode_panel_widget.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1147" topLine="38" />
+			<Cursor1 position="965" topLine="29" />
+		</Cursor>
+	</File>
+	<File name="../../src/host/kode_hosted_ladspa_plugin.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="16390" topLine="396" />
+		</Cursor>
+	</File>
+	<File name="../../src/base/utils/kode_strutils.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4083" topLine="112" />
 		</Cursor>
 	</File>
 	<File name="../../src/plugin/kode_editor.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -324,37 +224,27 @@
 	</File>
 	<File name="../../src/gui/xcb/kode_xcb_image.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="11" />
+			<Cursor1 position="8290" topLine="196" />
 		</Cursor>
 	</File>
-	<File name="../../src/base/utils/kode_random.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/base/types/kode_color.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="148" topLine="0" />
+			<Cursor1 position="862" topLine="33" />
 		</Cursor>
 	</File>
-	<File name="../../src/base/debug/kode_debug.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/base/utils/kode_bgra.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="3" />
+			<Cursor1 position="773" topLine="15" />
 		</Cursor>
 	</File>
-	<File name="../../plugins/sa.ports/sa_ports_hall_reverb.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/base/types/kode_dynamic_buffer.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="435" topLine="0" />
+			<Cursor1 position="0" topLine="81" />
 		</Cursor>
 	</File>
-	<File name="../../doc/todo.txt" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/gui/base/kode_base_surface.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="125" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_exciter2.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="101" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_exciter.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1727" topLine="24" />
+			<Cursor1 position="459" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="../../src/plugin/vst2/kode_vst2_instance.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -362,49 +252,14 @@
 			<Cursor1 position="68475" topLine="1940" />
 		</Cursor>
 	</File>
-	<File name="../../src/base/utils/kode_integer.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="102" />
-		</Cursor>
-	</File>
-	<File name="../../src/base/debug/kode_debug_print.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3578" topLine="102" />
-		</Cursor>
-	</File>
 	<File name="../../src/plugin/kode_instance.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="193" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="../../src/base/system/kode_time.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/base/kode_const.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2502" topLine="200" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_hrtf.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1366" topLine="15" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_sonic_maximizer.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="872" topLine="23" />
-		</Cursor>
-	</File>
-	<File name="../../src/base/types/kode_rect.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5419" topLine="265" />
-		</Cursor>
-	</File>
-	<File name="../../plugins/sa.ports/sa_ports_compciter.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1094" topLine="25" />
-		</Cursor>
-	</File>
-	<File name="../../src/base/utils/kode_strutils.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4083" topLine="112" />
+			<Cursor1 position="407" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="../../src/plugin/vst2/kode_vst2.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -414,12 +269,22 @@
 	</File>
 	<File name="../../src/gui/widgets/kode_slider_widget.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1459" topLine="37" />
+			<Cursor1 position="3699" topLine="88" />
 		</Cursor>
 	</File>
-	<File name="../../plugins/sa.ports/sa_ports_vocoder.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/base/debug/kode_debug.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1941" topLine="54" />
+			<Cursor1 position="0" topLine="3" />
+		</Cursor>
+	</File>
+	<File name="../../doc/todo.txt" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="148" topLine="4" />
+		</Cursor>
+	</File>
+	<File name="../../src/base/utils/kode_fast_math.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="360" topLine="3" />
 		</Cursor>
 	</File>
 	<File name="../../src/plugin/lv2/kode_lv2_instance.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -434,7 +299,12 @@
 	</File>
 	<File name="../../src/gui/kode_surface.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="473" topLine="0" />
+			<Cursor1 position="473" topLine="1" />
+		</Cursor>
+	</File>
+	<File name="../../src/base/utils/kode_random.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="148" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="../../src/plugin/parameters/kode_float_parameter.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -449,7 +319,7 @@
 	</File>
 	<File name="../../src/host/kode_hosted_dssi_plugin.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="82" topLine="0" />
+			<Cursor1 position="11436" topLine="332" />
 		</Cursor>
 	</File>
 	<File name="../../src/plugin/vst3/kode_vst3_instance.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -462,9 +332,19 @@
 			<Cursor1 position="1210" topLine="33" />
 		</Cursor>
 	</File>
+	<File name="../../src/base/kode_defines.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1706" topLine="75" />
+		</Cursor>
+	</File>
 	<File name="../../src/plugin/ladspa/kode_ladspa_plugin.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="9420" topLine="190" />
+		</Cursor>
+	</File>
+	<File name="../../src/base/utils/kode_math.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="274" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="../../src/plugin/lv2/kode_lv2.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -472,24 +352,14 @@
 			<Cursor1 position="283" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="../../src/base/utils/kode_bgra.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/base/types/kode_rect.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="773" topLine="0" />
+			<Cursor1 position="5419" topLine="265" />
 		</Cursor>
 	</File>
-	<File name="../../plugins/sa.ports/sa_ports_sonic_enhancer.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="521" topLine="5" />
-		</Cursor>
-	</File>
-	<File name="../../test/test_plugin.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../test/test_plugin.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="547" topLine="9" />
-		</Cursor>
-	</File>
-	<File name="../../src/extern/uuid.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4968" topLine="213" />
 		</Cursor>
 	</File>
 	<File name="../../src/plugin/vst2/kode_vst2_plugin.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -497,9 +367,64 @@
 			<Cursor1 position="6218" topLine="127" />
 		</Cursor>
 	</File>
-	<File name="../../src/gui/xcb/kode_xcb_painter.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="../../src/base/types/kode_static_string.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="18863" topLine="716" />
+			<Cursor1 position="3509" topLine="243" />
+		</Cursor>
+	</File>
+	<File name="../../src/gui/widgets/kode_text_widget.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2397" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../src/gui/widgets/kode_background_widget.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="575" topLine="15" />
+		</Cursor>
+	</File>
+	<File name="../../src/gui/kode_widget.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4570" topLine="27" />
+		</Cursor>
+	</File>
+	<File name="../../src/base/kode_enums.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3713" topLine="17" />
+		</Cursor>
+	</File>
+	<File name="../../src/base/debug/kode_debug_print.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3578" topLine="102" />
+		</Cursor>
+	</File>
+	<File name="../../src/plugin/kode_descriptor.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="509" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../src/plugin/vst3/kode_vst3_api.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="401" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../src/gui/base/kode_base_painter.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="804" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../src/base/system/kode_time.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2502" topLine="200" />
+		</Cursor>
+	</File>
+	<File name="../../src/plugin/ladspa/kode_ladspa.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="402" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="../../src/gui/_backup/kode_window.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8541" topLine="291" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

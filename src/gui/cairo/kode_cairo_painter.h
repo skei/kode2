@@ -159,359 +159,48 @@ private:
 public:
 //------------------------------
 
-  void clear() final {
-    setColor(0xff000000);
-    cairo_paint(MCairo);
-  }
-
-  void clear(uint32_t color) final {
-    //cairo_set_source_rgb (cr, r, g, b);
-    setColor(color);
-    cairo_paint(MCairo);
-  }
-
-  /*
-    Tells cairo that drawing has been done to surface using means other than
-    cairo, and that cairo should reread any cached areas. Note that you must
-    call cairo_surface_flush() before doing such drawing.
-  */
-
-  void dirty() final {
-    cairo_surface_mark_dirty(MCairoSurface);
-  }
-
-  void dirty(float x1, float y1, float x2, float y2) final {
-    cairo_surface_mark_dirty_rectangle(MCairoSurface,x1,y1,x2,y2);
-  }
-
-  /*
-    Do any pending drawing for the surface and also restore any temporary
-    modifications cairo has made to the surface's state. This function must be
-    called before switching from drawing on the surface with cairo to drawing
-    on it directly with native APIs, or accessing its memory outside of Cairo.
-    If the surface doesn't support direct access, then this function does
-    nothing.
-  */
-
-  void flush() final {
-    cairo_surface_flush(MCairoSurface);
-  }
-
-  /*
-    This function finishes the surface and drops all references to external
-    resources. For example, for the Xlib backend it means that cairo will no
-    longer access the drawable, which can be freed. After calling
-    cairo_surface_finish() the only valid operations on a surface are getting
-    and setting user, referencing and destroying, and flushing and finishing it.
-    Further drawing to the surface will not affect the surface but will instead
-    trigger a CAIRO_STATUS_SURFACE_FINISHED error.
-    When the last call to cairo_surface_destroy() decreases the reference count
-    to zero, cairo will call cairo_surface_finish() if it hasn't been called
-    already, before freeing the resources associated with the surface.
-  */
-
-  void finish() final {
-    cairo_surface_finish(MCairoSurface);
-  }
-
-  void save() final {
-    cairo_save(MCairo);
-  }
-
-  void restore() final {
-    cairo_restore(MCairo);
-  }
-
-  void resize(uint32_t w, uint32_t h) final {
+  void  resize(uint32_t AWidth, uint32_t AHeight) final {
     if (MIsWindow) {
-      cairo_xcb_surface_set_size(MCairoSurface,w,h);
+      cairo_xcb_surface_set_size(MCairoSurface,AWidth,AHeight);
     }
-  }
-
-//------------------------------
-//
-//------------------------------
-
-  void rotate(float a) final {
-    cairo_rotate(MCairo,a);
-  }
-
-  void scale(float x, float y) final {
-    cairo_scale(MCairo,x,y);
-  }
-
-  void translate(float x, float y) final {
-    cairo_translate(MCairo,x,y);
-  }
-
-//------------------------------
-//
-//------------------------------
-
-  void setFillRule(uint32_t rule) final {
-    cairo_set_fill_rule(MCairo,KODE_CAIRO_FILL_RULES[rule]);
-  }
-
-  void setGlobalAlpha(float alpha) final {
-  }
-
-  void setColor(uint32_t color) final {
-    uint8_t a = (color & 0xff000000) >> 24;
-    uint8_t r = (color & 0x00ff0000) >> 16;
-    uint8_t g = (color & 0x0000ff00) >> 8;
-    uint8_t b = (color & 0x000000ff);
-    float fa = (float)a * KODE_INV255F;
-    float fr = (float)r * KODE_INV255F;
-    float fg = (float)g * KODE_INV255F;
-    float fb = (float)b * KODE_INV255F;
-    cairo_set_source_rgba(MCairo,fr,fg,fb,fa);
-  }
-
-  void setLineWidth(float w) final {
-    cairo_set_line_width(MCairo,w);
-  }
-
-  void setLineDash(float* dashes, uint32_t numdashes, float offset) final {
-    double ddashes[1024];
-    for (uint32_t i=0; i<numdashes; i++) ddashes[i] = dashes[i];
-    cairo_set_dash(MCairo,ddashes,numdashes,offset);
-  }
-
-  void setLineCap(uint32_t cap) final {
-    cairo_set_line_cap(MCairo,KODE_CAIRO_LINE_CAPS[cap]);
-  }
-
-  void setLineJoin(uint32_t join) final {
-    cairo_set_line_join(MCairo,KODE_CAIRO_LINE_JOINS[join]);
-  }
-
-  /*
-    Replaces the current cairo_font_face_t object in the cairo_t with font_face.
-    The replaced font face in the cairo_t will be destroyed if there are no
-    other references to it.
-  */
-
-  //"arial"
-
-  void setFont(const char* name) final {
-    cairo_select_font_face(
-      MCairo,
-      name,
-      KODE_CAIRO_FONT_SLANTS[MFontSlant],
-      KODE_CAIRO_FONT_WEIGHTS[MFontWeight]
-    );
-  }
-
-  /*
-    If text is drawn without a call to cairo_set_font_size(), the default font
-    size is 10.0.
-  */
-
-  void setFontSize(float size) final {
-    cairo_set_font_size(MCairo,size);
-  }
-
-  void setFontSlant(uint32_t slant) final {
-    //cairo_set_font_options
-    //MFontSlant = slant;
-  }
-
-  void setFontWeight(uint32_t weight) final {
-    //cairo_set_font_options
-    //MFontWeight = weight;
-  }
-
-//------------------------------
-//
-//------------------------------
-
-  // "arial", "/fonts/ttf/arial.ttf"
-
-  void loadFont(const char* name, const char* filepath) final {
-  }
-
-  void gradientAddStop(float pos, uint32_t color) final {
-    //cairo_pattern_add_color_stop_rgba( pat, 0, AColor1.r, AColor1.g, AColor1.b, AColor1.a );
-  }
-
-  void gradientClearStops() final {
-  }
-
-  float getCurrentXPos() final {
-    double x,y;
-    cairo_get_current_point(MCairo,&x,&y);
-    return x;
-  }
-
-//------------------------------
-//
-//------------------------------
-
-  float getCurrentYPos() final {
-    double x,y;
-    cairo_get_current_point(MCairo,&x,&y);
-    return x;
-  }
-
-  float getTextWidth(const char* str) final {
-    cairo_text_extents_t e;
-    cairo_text_extents(MCairo,str,&e);
-    return e.width;
-  }
-
-  float getTextHeight(const char* str) final {
-    cairo_text_extents_t e;
-    cairo_text_extents(MCairo,str,&e);
-    return e.height;
-  }
-
-//------------------------------
-//
-//------------------------------
-
-  void newPath() final {
-    cairo_new_path(MCairo); // sub_path
-  }
-
-  void closePath() final {
-    cairo_close_path(MCairo);
-  }
-
-  void fill(bool APreserve=false) final {
-    if (APreserve) cairo_fill_preserve(MCairo);
-    else
-    cairo_fill(MCairo);
-  }
-
-  void stroke(bool APreserve=false) final {
-    if (APreserve) cairo_stroke_preserve(MCairo);
-    else
-    cairo_stroke(MCairo);
-  }
-
-  void paint() final {
-    cairo_paint(MCairo);
-  }
-
-  void clip(bool APreserve=false) final {
-    if (APreserve) cairo_clip_preserve(MCairo);
-    else
-    cairo_clip(MCairo);
-  }
-
-  void resetClip() final {
-    cairo_reset_clip(MCairo);
-  }
-
-//------------------------------
-//
-//------------------------------
-
-  void linearGradient(float x0, float y0, float x1, float y1) final {
-    //cairo_pattern_t *pat;
-    //pat = cairo_pattern_create_linear( AX1,AY1, AX1,AY2 );
-    //cairo_set_source(MCairo,pat);
-    //cairo_pattern_destroy(pat);
-  }
-
-  void radialGradient(float x0, float y0, float r0, float x1, float y1, float r1) final {
-    //cairo_pattern_create_radial
-  }
-
-//------------------------------
-//
-//------------------------------
-
-  void moveTo(float x, float y) final {
-    cairo_move_to(MCairo,x,y);
-  }
-
-  void lineTo(float x, float y) final {
-    cairo_line_to(MCairo,x,y);
-  }
-
-  void curveTo(float cx0, float cy0, float cx1, float cy1, float x, float y) final {
-    cairo_curve_to(MCairo,cx0,cy0,cx1,cy1,x,y);
-  }
-
-  void quadTo(float cx, float cy, float x, float y) final {
-  }
-
-//------------------------------
-//
-//------------------------------
-
-  void relMoveTo(float x, float y) final {
-    cairo_rel_move_to(MCairo,x,y);
-  }
-
-  void relLineTo(float x, float y) {
-    cairo_rel_line_to(MCairo,x,y);
-  }
-
-  void relCurveTo(float cx0, float cy0, float cx1, float cy1, float x, float y) {
-    cairo_rel_curve_to(MCairo,cx0,cy0,cx1,cy1,x,y);
-  }
-
-  void relQuadTo(float cx, float cy, float x, float y) {
-  }
-
-  void relArcTo(float x1, float y1, float x2, float y2, float radius) final {
-  }
-
-  void arcTo(float x1, float y1, float x2, float y2, float radius) final {
-    //cairo_arc(xc,yc,radius,a1,a2);
-  }
-
-//------------------------------
-//
-//------------------------------
-
-  void setPixel(uint32_t x, uint32_t y, uint32_t color) final {
-  }
-
-  void rectangle(float x, float y, float w, float h) final {
-    cairo_rectangle(MCairo,x,y,w,h);
-  }
-
-  void arc(float x, float y, float w, float h, float angle1, float angle2, int direction) final {
-    float w2 = w * 0.5f;
-    float h2 = h * 0.5f;
-    float a1 = (angle1+0.75) * (KODE_PI2);
-    float a2 = (angle1+angle2+0.75) * (KODE_PI2);
-//    cairo_move_to(MCairo,x+w2,y+h2);
-    cairo_save(MCairo);
-    cairo_translate(MCairo,x+w2,y+h2);
-    cairo_scale(MCairo,w2,h2);
-    //cairo_new_sub_path(MCairo);
-    cairo_arc(MCairo,0,0,1,a1,a2);
-    cairo_restore(MCairo);
-    //cairo_arc(MCairo,x,y,radius,angle1,angle2);
-  }
-
-//------------------------------
-//
-//------------------------------
-
-  void fillText(const char* txt) final {
-    cairo_show_text(MCairo,txt);
-  }
-
-  void strokeText(const char* txt) final {
   }
 
   //----------
 
-  void alignText(float x1, float y1, float x2, float y2, const char* text, uint32_t alignment, float* outx, float* outy) final {
-    //KODE_Assert(AText);
+  void  drawRect(KODE_FRect ARect, KODE_Color AColor) final {
+    cairo_set_source_rgba(MCairo,AColor.r,AColor.g,AColor.b,AColor.a);
+    cairo_rectangle(MCairo,ARect.x,ARect.y,ARect.w,ARect.h);
+    cairo_stroke(MCairo);
+  }
+
+  //----------
+
+  void  fillRect(KODE_FRect ARect, KODE_Color AColor) final {
+    cairo_set_source_rgba(MCairo,AColor.r,AColor.g,AColor.b,AColor.a);
+    cairo_rectangle(MCairo,ARect.x,ARect.y,ARect.w,ARect.h);
+    cairo_fill(MCairo);
+  }
+
+  //----------
+
+  float getTextWidth(const char* AText) final {
+    cairo_text_extents_t e;
+    cairo_text_extents(MCairo,AText,&e);
+    return e.width;
+  }
+
+  //----------
+
+  void  drawText(KODE_FRect ARect,const char* AText, KODE_Color AColor, uint32_t AAlignment) final {
+    KODE_Assert(AText);
     cairo_text_extents_t e;
     float xx,yy;
-    int32_t x = x1;
-    int32_t y = y1;
-    int32_t w = x2 - x1;// + 1;
-    int32_t h = y2 - y1;// + 1;
-    cairo_text_extents(MCairo,text,&e);
-    switch (alignment) {
+    int32_t x = ARect.x;
+    int32_t y = ARect.y;
+    int32_t w = ARect.w;
+    int32_t h = ARect.h;
+    cairo_text_extents(MCairo,AText,&e);
+    switch (AAlignment) {
       case KODE_TEXT_ALIGN_LEFT:
         xx = x;
         yy = (y+h/2) - (e.height/2 + e.y_bearing);
@@ -533,60 +222,453 @@ public:
         yy = (y+h/2) - (e.height/2 + e.y_bearing);
         break;
       default:
-        xx = x1;
-        yy = y1;
+        xx = ARect.x;
+        yy = ARect.y;
     }
-    *outx = xx;
-    *outy = yy;
+    cairo_set_source_rgba(MCairo,AColor.r,AColor.g,AColor.b,AColor.a);
+    cairo_move_to(MCairo,xx,yy);
+    cairo_show_text(MCairo,AText);
   }
-
-//------------------------------
-//
-//------------------------------
-
-  //void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) final {
-  //  KODE_PRINT;
-  //  if (ASource->isCairo()) {
-  //    cairo_set_source_surface(MCairo,ASource->getCairoSurface(),/*0,0*/ADstX-ASrcX,ADstY-ASrcY);
-  //    cairo_rectangle(MCairo,ADstX,ADstY,ASrcW,ASrcH);
-  //    cairo_fill(MCairo);
-  //  }
-  //}
-
-  //void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) final {
-  //  KODE_PRINT;
-  //  if (ASource->isCairo()) {
-  //    float xscale = (float)ADstW / (float)ASrcW;
-  //    float yscale = (float)ADstH / (float)ASrcH;
-  //    cairo_rectangle(MCairo,ADstX,ADstY,ADstW,ADstH);
-  //    cairo_save(MCairo);
-  //    cairo_translate(MCairo,ADstX,ADstY);
-  //    cairo_scale(MCairo,xscale,yscale);
-  //    cairo_set_source_surface(MCairo,ASource->getCairoSurface(),0,0/*ASrcX,ASrcY*/);
-  //    cairo_fill(MCairo);
-  //    cairo_restore(MCairo);
-  //  }
-  //}
-
-  //void stretch(float ADstX, float ADstY, float ADstW, float ADstH, KODE_Drawable* ASource, float ASrcX, float ASrcY, float ASrcW, float ASrcH) final {
-  //  KODE_PRINT;
-    //if (ASource->isCairo()) {
-    //  float xscale = (float)ADstW / (float)ASrcW;
-    //  float yscale = (float)ADstH / (float)ASrcH;
-    //  cairo_rectangle(MCairo,ADstX,ADstY,ADstW,ADstH);
-    //  cairo_save(MCairo);
-    //  cairo_translate(MCairo,ADstX,ADstY);
-    //  cairo_scale(MCairo,xscale,yscale);
-    //  cairo_set_source_surface(MCairo,ASource->getCairoSurface(),0,0/*ASrcX,ASrcY*/);
-    //  cairo_fill(MCairo);
-    //  cairo_restore(MCairo);
-    //}
-  //}
 
 };
 
 //----------------------------------------------------------------------
 #endif
+
+
+
+
+
+
+
+
+//  void clear() final {
+//    setColor( KODE_Color(0) );
+//    cairo_paint(MCairo);
+//  }
+//
+//  void clear(KODE_Color color) final {
+//    //cairo_set_source_rgb (cr, r, g, b);
+//    setColor(color);
+//    cairo_paint(MCairo);
+//  }
+//
+//  /*
+//    Tells cairo that drawing has been done to surface using means other than
+//    cairo, and that cairo should reread any cached areas. Note that you must
+//    call cairo_surface_flush() before doing such drawing.
+//  */
+//
+//  void dirty() final {
+//    cairo_surface_mark_dirty(MCairoSurface);
+//  }
+//
+//  void dirty(float x1, float y1, float x2, float y2) final {
+//    cairo_surface_mark_dirty_rectangle(MCairoSurface,x1,y1,x2,y2);
+//  }
+//
+//  /*
+//    Do any pending drawing for the surface and also restore any temporary
+//    modifications cairo has made to the surface's state. This function must be
+//    called before switching from drawing on the surface with cairo to drawing
+//    on it directly with native APIs, or accessing its memory outside of Cairo.
+//    If the surface doesn't support direct access, then this function does
+//    nothing.
+//  */
+//
+//  void flush() final {
+//    cairo_surface_flush(MCairoSurface);
+//  }
+//
+//  /*
+//    This function finishes the surface and drops all references to external
+//    resources. For example, for the Xlib backend it means that cairo will no
+//    longer access the drawable, which can be freed. After calling
+//    cairo_surface_finish() the only valid operations on a surface are getting
+//    and setting user, referencing and destroying, and flushing and finishing it.
+//    Further drawing to the surface will not affect the surface but will instead
+//    trigger a CAIRO_STATUS_SURFACE_FINISHED error.
+//    When the last call to cairo_surface_destroy() decreases the reference count
+//    to zero, cairo will call cairo_surface_finish() if it hasn't been called
+//    already, before freeing the resources associated with the surface.
+//  */
+//
+//  void finish() final {
+//    cairo_surface_finish(MCairoSurface);
+//  }
+//
+//  void save() final {
+//    cairo_save(MCairo);
+//  }
+//
+//  void restore() final {
+//    cairo_restore(MCairo);
+//  }
+//
+//  void resize(uint32_t w, uint32_t h) final {
+//    if (MIsWindow) {
+//      cairo_xcb_surface_set_size(MCairoSurface,w,h);
+//    }
+//  }
+//
+////------------------------------
+////
+////------------------------------
+//
+//  void rotate(float a) final {
+//    cairo_rotate(MCairo,a);
+//  }
+//
+//  void scale(float x, float y) final {
+//    cairo_scale(MCairo,x,y);
+//  }
+//
+//  void translate(float x, float y) final {
+//    cairo_translate(MCairo,x,y);
+//  }
+//
+////------------------------------
+////
+////------------------------------
+//
+//  void setFillRule(uint32_t rule) final {
+//    cairo_set_fill_rule(MCairo,KODE_CAIRO_FILL_RULES[rule]);
+//  }
+//
+//  void setGlobalAlpha(float alpha) final {
+//  }
+//
+//  void setColor(KODE_Color color) final {
+//    //uint8_t a = (color & 0xff000000) >> 24;
+//    //uint8_t r = (color & 0x00ff0000) >> 16;
+//    //uint8_t g = (color & 0x0000ff00) >> 8;
+//    //uint8_t b = (color & 0x000000ff);
+//    //float fa = (float)a * KODE_INV255F;
+//    //float fr = (float)r * KODE_INV255F;
+//    //float fg = (float)g * KODE_INV255F;
+//    //float fb = (float)b * KODE_INV255F;
+//    //KODE_Print("r %.3f g %.3f b %.3f a %.3f\n",color.r,color.g,color.b,color.a);
+//    cairo_set_source_rgba(MCairo,color.r,color.g,color.b,color.a);
+//  }
+//
+//  void setLineWidth(float w) final {
+//    cairo_set_line_width(MCairo,w);
+//  }
+//
+//  void setLineDash(float* dashes, uint32_t numdashes, float offset) final {
+//    double ddashes[1024];
+//    for (uint32_t i=0; i<numdashes; i++) ddashes[i] = dashes[i];
+//    cairo_set_dash(MCairo,ddashes,numdashes,offset);
+//  }
+//
+//  void setLineCap(uint32_t cap) final {
+//    cairo_set_line_cap(MCairo,KODE_CAIRO_LINE_CAPS[cap]);
+//  }
+//
+//  void setLineJoin(uint32_t join) final {
+//    cairo_set_line_join(MCairo,KODE_CAIRO_LINE_JOINS[join]);
+//  }
+//
+//  /*
+//    Replaces the current cairo_font_face_t object in the cairo_t with font_face.
+//    The replaced font face in the cairo_t will be destroyed if there are no
+//    other references to it.
+//  */
+//
+//  //"arial"
+//
+//  void setFont(const char* name) final {
+//    cairo_select_font_face(
+//      MCairo,
+//      name,
+//      KODE_CAIRO_FONT_SLANTS[MFontSlant],
+//      KODE_CAIRO_FONT_WEIGHTS[MFontWeight]
+//    );
+//  }
+//
+//  /*
+//    If text is drawn without a call to cairo_set_font_size(), the default font
+//    size is 10.0.
+//  */
+//
+//  void setFontSize(float size) final {
+//    cairo_set_font_size(MCairo,size);
+//  }
+//
+//  void setFontSlant(uint32_t slant) final {
+//    //cairo_set_font_options
+//    //MFontSlant = slant;
+//  }
+//
+//  void setFontWeight(uint32_t weight) final {
+//    //cairo_set_font_options
+//    //MFontWeight = weight;
+//  }
+//
+////------------------------------
+////
+////------------------------------
+//
+//  // "arial", "/fonts/ttf/arial.ttf"
+//
+//  void loadFont(const char* name, const char* filepath) final {
+//  }
+//
+//  void gradientAddStop(float pos, KODE_Color color) final {
+//    //cairo_pattern_add_color_stop_rgba( pat, 0, AColor1.r, AColor1.g, AColor1.b, AColor1.a );
+//  }
+//
+//  void gradientClearStops() final {
+//  }
+//
+//  float getCurrentXPos() final {
+//    double x,y;
+//    cairo_get_current_point(MCairo,&x,&y);
+//    return x;
+//  }
+//
+////------------------------------
+////
+////------------------------------
+//
+//  float getCurrentYPos() final {
+//    double x,y;
+//    cairo_get_current_point(MCairo,&x,&y);
+//    return x;
+//  }
+//
+//  float getTextWidth(const char* str) final {
+//    cairo_text_extents_t e;
+//    cairo_text_extents(MCairo,str,&e);
+//    return e.width;
+//  }
+//
+//  float getTextHeight(const char* str) final {
+//    cairo_text_extents_t e;
+//    cairo_text_extents(MCairo,str,&e);
+//    return e.height;
+//  }
+//
+////------------------------------
+////
+////------------------------------
+//
+//  void newPath() final {
+//    cairo_new_path(MCairo); // sub_path
+//  }
+//
+//  void closePath() final {
+//    cairo_close_path(MCairo);
+//  }
+//
+//  void fill(bool APreserve=false) final {
+//    if (APreserve) cairo_fill_preserve(MCairo);
+//    else
+//    cairo_fill(MCairo);
+//  }
+//
+//  void stroke(bool APreserve=false) final {
+//    if (APreserve) cairo_stroke_preserve(MCairo);
+//    else
+//    cairo_stroke(MCairo);
+//  }
+//
+//  void paint() final {
+//    cairo_paint(MCairo);
+//  }
+//
+//  void clip(bool APreserve=false) final {
+//    if (APreserve) cairo_clip_preserve(MCairo);
+//    else
+//    cairo_clip(MCairo);
+//  }
+//
+//  void resetClip() final {
+//    cairo_reset_clip(MCairo);
+//  }
+//
+////------------------------------
+////
+////------------------------------
+//
+//  void linearGradient(float x0, float y0, float x1, float y1) final {
+//    //cairo_pattern_t *pat;
+//    //pat = cairo_pattern_create_linear( AX1,AY1, AX1,AY2 );
+//    //cairo_set_source(MCairo,pat);
+//    //cairo_pattern_destroy(pat);
+//  }
+//
+//  void radialGradient(float x0, float y0, float r0, float x1, float y1, float r1) final {
+//    //cairo_pattern_create_radial
+//  }
+//
+////------------------------------
+////
+////------------------------------
+//
+//  void moveTo(float x, float y) final {
+//    cairo_move_to(MCairo,x,y);
+//  }
+//
+//  void lineTo(float x, float y) final {
+//    cairo_line_to(MCairo,x,y);
+//  }
+//
+//  void curveTo(float cx0, float cy0, float cx1, float cy1, float x, float y) final {
+//    cairo_curve_to(MCairo,cx0,cy0,cx1,cy1,x,y);
+//  }
+//
+//  void quadTo(float cx, float cy, float x, float y) final {
+//  }
+//
+////------------------------------
+////
+////------------------------------
+//
+//  void relMoveTo(float x, float y) final {
+//    cairo_rel_move_to(MCairo,x,y);
+//  }
+//
+//  void relLineTo(float x, float y) {
+//    cairo_rel_line_to(MCairo,x,y);
+//  }
+//
+//  void relCurveTo(float cx0, float cy0, float cx1, float cy1, float x, float y) {
+//    cairo_rel_curve_to(MCairo,cx0,cy0,cx1,cy1,x,y);
+//  }
+//
+//  void relQuadTo(float cx, float cy, float x, float y) {
+//  }
+//
+//  void relArcTo(float x1, float y1, float x2, float y2, float radius) final {
+//  }
+//
+//  void arcTo(float x1, float y1, float x2, float y2, float radius) final {
+//    //cairo_arc(xc,yc,radius,a1,a2);
+//  }
+//
+////------------------------------
+////
+////------------------------------
+//
+//  void setPixel(uint32_t x, uint32_t y, KODE_Color color) final {
+//  }
+//
+//  void rectangle(float x, float y, float w, float h) final {
+//    cairo_rectangle(MCairo,x,y,w,h);
+//  }
+//
+//  void arc(float x, float y, float w, float h, float angle1, float angle2, int direction) final {
+//    float w2 = w * 0.5f;
+//    float h2 = h * 0.5f;
+//    float a1 = (angle1+0.75) * (KODE_PI2);
+//    float a2 = (angle1+angle2+0.75) * (KODE_PI2);
+////    cairo_move_to(MCairo,x+w2,y+h2);
+//    cairo_save(MCairo);
+//    cairo_translate(MCairo,x+w2,y+h2);
+//    cairo_scale(MCairo,w2,h2);
+//    //cairo_new_sub_path(MCairo);
+//    cairo_arc(MCairo,0,0,1,a1,a2);
+//    cairo_restore(MCairo);
+//    //cairo_arc(MCairo,x,y,radius,angle1,angle2);
+//  }
+//
+////------------------------------
+////
+////------------------------------
+//
+//  void fillText(const char* txt) final {
+//    cairo_show_text(MCairo,txt);
+//  }
+//
+//  void strokeText(const char* txt) final {
+//  }
+//
+//  //----------
+//
+//  void alignText(float x1, float y1, float x2, float y2, const char* text, uint32_t alignment, float* outx, float* outy) final {
+//    //KODE_Assert(AText);
+//    cairo_text_extents_t e;
+//    float xx,yy;
+//    int32_t x = x1;
+//    int32_t y = y1;
+//    int32_t w = x2 - x1;// + 1;
+//    int32_t h = y2 - y1;// + 1;
+//    cairo_text_extents(MCairo,text,&e);
+//    switch (alignment) {
+//      case KODE_TEXT_ALIGN_LEFT:
+//        xx = x;
+//        yy = (y+h/2) - (e.height/2 + e.y_bearing);
+//        break;
+//      case KODE_TEXT_ALIGN_RIGHT:
+//        xx = (x+w-1) - (e.width + e.x_bearing);
+//        yy = (y+h/2) - (e.height/2 + e.y_bearing);
+//        break;
+//      case KODE_TEXT_ALIGN_TOP:
+//        xx = (x + w/2) - (e.width/2  + e.x_bearing);
+//        yy = y + e.height;
+//        break;
+//      case KODE_TEXT_ALIGN_BOTTOM:
+//        xx = (x + w/2) - (e.width/2  + e.x_bearing);
+//        yy = (y+h-1) - (e.height + e.y_bearing);
+//        break;
+//      case KODE_TEXT_ALIGN_CENTER:
+//        xx = (x + w/2) - (e.width/2  + e.x_bearing);
+//        yy = (y+h/2) - (e.height/2 + e.y_bearing);
+//        break;
+//      default:
+//        xx = x1;
+//        yy = y1;
+//    }
+//    *outx = xx;
+//    *outy = yy;
+//  }
+//
+////------------------------------
+////
+////------------------------------
+//
+//  //void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) final {
+//  //  KODE_PRINT;
+//  //  if (ASource->isCairo()) {
+//  //    cairo_set_source_surface(MCairo,ASource->getCairoSurface(),/*0,0*/ADstX-ASrcX,ADstY-ASrcY);
+//  //    cairo_rectangle(MCairo,ADstX,ADstY,ASrcW,ASrcH);
+//  //    cairo_fill(MCairo);
+//  //  }
+//  //}
+//
+//  //void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) final {
+//  //  KODE_PRINT;
+//  //  if (ASource->isCairo()) {
+//  //    float xscale = (float)ADstW / (float)ASrcW;
+//  //    float yscale = (float)ADstH / (float)ASrcH;
+//  //    cairo_rectangle(MCairo,ADstX,ADstY,ADstW,ADstH);
+//  //    cairo_save(MCairo);
+//  //    cairo_translate(MCairo,ADstX,ADstY);
+//  //    cairo_scale(MCairo,xscale,yscale);
+//  //    cairo_set_source_surface(MCairo,ASource->getCairoSurface(),0,0/*ASrcX,ASrcY*/);
+//  //    cairo_fill(MCairo);
+//  //    cairo_restore(MCairo);
+//  //  }
+//  //}
+//
+//  //void stretch(float ADstX, float ADstY, float ADstW, float ADstH, KODE_Drawable* ASource, float ASrcX, float ASrcY, float ASrcW, float ASrcH) final {
+//  //  KODE_PRINT;
+//    //if (ASource->isCairo()) {
+//    //  float xscale = (float)ADstW / (float)ASrcW;
+//    //  float yscale = (float)ADstH / (float)ASrcH;
+//    //  cairo_rectangle(MCairo,ADstX,ADstY,ADstW,ADstH);
+//    //  cairo_save(MCairo);
+//    //  cairo_translate(MCairo,ADstX,ADstY);
+//    //  cairo_scale(MCairo,xscale,yscale);
+//    //  cairo_set_source_surface(MCairo,ASource->getCairoSurface(),0,0/*ASrcX,ASrcY*/);
+//    //  cairo_fill(MCairo);
+//    //  cairo_restore(MCairo);
+//    //}
+//  //}
+//
+//};
+
 
 
 
@@ -1021,7 +1103,3 @@ public:
 //  KODE_Rect getClipRect() override {
 //    return MClipRect;
 //  }
-//
-//};
-//
-//#endif // 0

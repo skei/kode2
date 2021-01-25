@@ -201,28 +201,28 @@ public: // paint source,target
 //
 //------------------------------
 
-  void fill(uint32_t AColor) final {
-    MBitmap->fill(AColor);
+  void fill(KODE_Color AColor) /*final*/ {
+//    MBitmap->fill(AColor);
   }
 
-  void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, uint32_t AColor) final {
-    MBitmap->fillArea(AXpos,AYpos,AXpos+AWidth-1,AYpos+AHeight-1,AColor);
+  void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, KODE_Color AColor) /*final*/ {
+//    MBitmap->fillArea(AXpos,AYpos,AXpos+AWidth-1,AYpos+AHeight-1,AColor);
   }
 
-  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) final {
-    if (ASource->isImage()) {
-      KODE_Bitmap* bitmap = ASource->getBitmap();
-      MBitmap->copyBitmap(ADstX,ADstY,bitmap);
-    }
+  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) /*final*/ {
+//    if (ASource->isImage()) {
+//      KODE_Bitmap* bitmap = ASource->getBitmap();
+//      MBitmap->copyBitmap(ADstX,ADstY,bitmap);
+//    }
   }
 
-  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) final {
-    if (ASource->isImage()) {
-      KODE_Bitmap* bitmap = ASource->getBitmap();
-      KODE_Bitmap* sub = bitmap->createSubBitmap(ASrcX,ASrcY,ASrcX,ASrcH);
-      MBitmap->copyBitmap(ADstX,ADstY,sub);
-      KODE_Delete sub;
-    }
+  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) /*final*/ {
+//    if (ASource->isImage()) {
+//      KODE_Bitmap* bitmap = ASource->getBitmap();
+//      KODE_Bitmap* sub = bitmap->createSubBitmap(ASrcX,ASrcY,ASrcX,ASrcH);
+//      MBitmap->copyBitmap(ADstX,ADstY,sub);
+//      KODE_Delete sub;
+//    }
   }
 
 //------------------------------

@@ -114,31 +114,106 @@
 		<Unit filename="../../doc/makedocs.sh" />
 		<Unit filename="../../doc/readme.txt" />
 		<Unit filename="../../doc/todo.txt" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_autotalent.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_cabinet.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_combo.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_compciter.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_dynamic.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_event_horizon.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_exciter.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_exciter2.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_filter_ms20.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_hall_reverb.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_hrtf.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_large_room_reverb.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_limiter.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_reverseness.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_saturation.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_schroeder_reverb.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_simpverb.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_small_room_reverb.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_sonic_enhancer.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_sonic_maximizer.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_tilteq.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_transient.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_transient_killer.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_tube_harmonics_amp.h" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_vocoder.h" />
+		<Unit filename="../../plugins/sa.ports/sa_ports_autotalent.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_cabinet.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_combo.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_compciter.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_dynamic.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_event_horizon.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_exciter.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_exciter2.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_filter_ms20.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_hall_reverb.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_hrtf.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_large_room_reverb.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_limiter.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_reverseness.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_saturation.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_schroeder_reverb.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_simpverb.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_small_room_reverb.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_sonic_enhancer.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_sonic_maximizer.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_tilteq.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_transient.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_transient_killer.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_tube_harmonics_amp.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa.ports/sa_ports_vocoder.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="../../src/audio/io/kode_portaudio.h" />
 		<Unit filename="../../src/audio/kode_audio_utils.h" />
 		<Unit filename="../../src/audio/kode_modmatrix.h" />
@@ -369,10 +444,15 @@
 		<Unit filename="../../src/gui/kode_widgets.h" />
 		<Unit filename="../../src/gui/kode_window.h" />
 		<Unit filename="../../src/gui/wayland/kode_wayland.h" />
+		<Unit filename="../../src/gui/widgets/_template.h" />
+		<Unit filename="../../src/gui/widgets/kode_background_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_border_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_cached_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_image_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_panel_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_sa_header_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_slider_widget.h" />
-		<Unit filename="../../src/gui/widgets/kode_test_widget.h" />
-		<Unit filename="../../src/gui/widgets/kode_widget_template.h" />
+		<Unit filename="../../src/gui/widgets/kode_text_widget.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_image.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_painter.h" />
@@ -425,9 +505,18 @@
 		<Unit filename="../../src/plugin/vst3/kode_vst3_instance.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_plugin.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_utils.h" />
-		<Unit filename="../../test/test_gui.h" />
-		<Unit filename="../../test/test_plugin.h" />
-		<Unit filename="../../test/test_plugin_gui.h" />
+		<Unit filename="../../test/test_gui.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../test/test_plugin.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../test/test_plugin_gui.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="../build.cpp" />
 		<Extensions />
 	</Project>

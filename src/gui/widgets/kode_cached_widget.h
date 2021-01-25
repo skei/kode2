@@ -16,10 +16,10 @@ class KODE_WidgetTemplate
 protected:
 //------------------------------
 
-  //uint32_t  MColor        = 0xff000000;
-  //uint32_t  MHoverColor   = 0xff880000;
-  //uint32_t  MClickColor   = 0xffff0000;
-  //uint32_t  MOnColor      = 0xff008800;
+  //KODE_Color  MColor        = 0xff000000;
+  //KODE_Color  MHoverColor   = 0xff880000;
+  //KODE_Color  MClickColor   = 0xffff0000;
+  //KODE_Color  MOnColor      = 0xff008800;
 
 //------------------------------
 public:

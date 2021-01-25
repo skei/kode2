@@ -2,7 +2,7 @@
 #define kode_bitmap_included
 //----------------------------------------------------------------------
 
-#define KODE_NO_BITMAP_PNG
+//#define KODE_NO_BITMAP_PNG
 #define KODE_NO_BITMAP_PNG_FILE
 #define KODE_NO_BITMAP_FONT
 #define KODE_NO_BITMAP_DRAW

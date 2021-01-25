@@ -26,18 +26,18 @@ protected:
   KODE_FRect  MTextOffset           = KODE_FRect(5,0,5,0);
 
   bool        MDrawNameText         = true;
-  uint32_t    MNameTextColor        = 0xffa0a0a0;
+  KODE_Color  MNameTextColor        = KODE_Color(0.2f);
 
   bool        MDrawValueText        = true;
-  uint32_t    MValueTextColor       = 0xffffffff;
+  KODE_Color  MValueTextColor       = KODE_Color(0.0f);
 
   bool        MDrawLabelText        = true;
-  uint32_t    MLabelTextColor       = 0xffa0a0a0;
+  KODE_Color  MLabelTextColor       = KODE_Color(0.4f);
 
   bool        MDrawValueBar         = true;
-  uint32_t    MValueBarColor        = 0xff404040;
-  uint32_t    MHoverValueBarColor   = 0xff383838;
-  uint32_t    MInterValueBarColor   = 0xff382828;
+  KODE_Color  MValueBarColor        = KODE_Color(0.7f);
+  KODE_Color  MHoverValueBarColor   = KODE_Color(0.8f);
+  KODE_Color  MInterValueBarColor   = KODE_Color(0.9f);
 
   float       MDragSensitivity      = 0.005f;
   float       MPrevMouseX           = 0.0f;
@@ -61,22 +61,22 @@ public:
 public:
 //------------------------------
 
-  KODE_FRect getTextOffset()                  { return MTextOffset; };
-  void setTextOffset(KODE_FRect AOffset)      { MTextOffset = AOffset; };
+  KODE_FRect getTextOffset()                    { return MTextOffset; };
+  void setTextOffset(KODE_FRect AOffset)        { MTextOffset = AOffset; };
 
-  void setDrawNameText(bool ADraw=true)       { MDrawNameText = ADraw; }
-  void setNameTextColor(uint32_t AColor)      { MNameTextColor = AColor; }
+  void setDrawNameText(bool ADraw=true)         { MDrawNameText = ADraw; }
+  void setNameTextColor(KODE_Color AColor)      { MNameTextColor = AColor; }
 
-  void setDrawValueText(bool ADraw=true)      { MDrawValueText = ADraw; }
-  void setValueTextColor(uint32_t AColor)     { MValueTextColor = AColor; }
+  void setDrawValueText(bool ADraw=true)        { MDrawValueText = ADraw; }
+  void setValueTextColor(KODE_Color AColor)     { MValueTextColor = AColor; }
 
-  void setDrawLabelText(bool ADraw=true)      { MDrawLabelText = ADraw; }
-  void setLabelTextColor(uint32_t AColor)     { MLabelTextColor = AColor; }
+  void setDrawLabelText(bool ADraw=true)        { MDrawLabelText = ADraw; }
+  void setLabelTextColor(KODE_Color AColor)     { MLabelTextColor = AColor; }
 
-  void setDrawValueBar(bool ADraw=true)       { MDrawValueBar = ADraw; }
-  void setValueBarColor(uint32_t AColor)      { MValueBarColor = AColor; }
-  void setHoverValueBarColor(uint32_t AColor) { MHoverValueBarColor = AColor; }
-  void setInterValueBarColor(uint32_t AColor) { MInterValueBarColor = AColor; }
+  void setDrawValueBar(bool ADraw=true)         { MDrawValueBar = ADraw; }
+  void setValueBarColor(KODE_Color AColor)      { MValueBarColor = AColor; }
+  void setHoverValueBarColor(KODE_Color AColor) { MHoverValueBarColor = AColor; }
+  void setInterValueBarColor(KODE_Color AColor) { MInterValueBarColor = AColor; }
 
 
 //------------------------------
@@ -85,7 +85,7 @@ protected:
 
   virtual void drawValueBar(KODE_Painter* APainter) {
     if (MDrawValueBar) {
-      uint32_t color = MValueBarColor;
+      KODE_Color color = MValueBarColor;
       if (MIsClicked) color = MInterValueBarColor;
       else if (MIsHovering)  color = MHoverValueBarColor;
       KODE_FRect r = MRect;

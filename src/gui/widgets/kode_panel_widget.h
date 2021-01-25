@@ -24,14 +24,14 @@ protected:
   KODE_FRect  MBorderOffset         = KODE_FRect(5,0,5,0);
 
   bool        MFillBackground       = true;
-  uint32_t    MBackgroundColor      = 0xff505050;
-  uint32_t    MHoverBackgroundColor = 0xff484848;
-  uint32_t    MInterBackgroundColor = 0xff483838;
+  KODE_Color  MBackgroundColor      = KODE_Color(0.5f);
+  KODE_Color  MHoverBackgroundColor = KODE_Color(0.6f);
+  KODE_Color  MInterBackgroundColor = KODE_Color(0.7f);
 
   bool        MDrawBorder           = true;
-  uint32_t    MBorderColor          = 0xff909090;
-  uint32_t    MHoverBorderColor     = 0xffb0b0b0;
-  uint32_t    MInterBorderColor     = 0xffb0a0a0;
+  KODE_Color  MBorderColor          = KODE_Color(0.7f);
+  KODE_Color  MHoverBorderColor     = KODE_Color(0.8f);
+  KODE_Color  MInterBorderColor     = KODE_Color(0.9f);
 
 //------------------------------
 public:
@@ -53,7 +53,7 @@ protected:
     if (MFillBackground) {
       //KODE_FRect rect = MRect;
       //rect.shrink(MBorderOffset);
-      uint32_t color = MBackgroundColor;
+      KODE_Color color = MBackgroundColor;
       if (MIsClicked) color = MInterBackgroundColor;
       else if (MIsHovering)  color = MHoverBackgroundColor;
       APainter->fillRect(MRect,color);
@@ -72,18 +72,18 @@ protected:
 public:
 //------------------------------
 
-  KODE_FRect getBorderOffset()                  { return MBorderOffset; };
-  void setBorderOffset(KODE_FRect AOffset)      { MBorderOffset = AOffset; };
+  KODE_FRect getBorderOffset()                    { return MBorderOffset; };
+  void setBorderOffset(KODE_FRect AOffset)        { MBorderOffset = AOffset; };
 
-  void setDrawBorder(bool ADraw=true)           { MDrawBorder = ADraw; }
-  void setBorderColor(uint32_t AColor)          { MBorderColor = AColor; }
-  void setHoverBorderColor(uint32_t AColor)     { MHoverBorderColor = AColor; }
-  void setInterBorderColor(uint32_t AColor)     { MInterBorderColor = AColor; }
+  void setDrawBorder(bool ADraw=true)             { MDrawBorder = ADraw; }
+  void setBorderColor(KODE_Color AColor)          { MBorderColor = AColor; }
+  void setHoverBorderColor(KODE_Color AColor)     { MHoverBorderColor = AColor; }
+  void setInterBorderColor(KODE_Color AColor)     { MInterBorderColor = AColor; }
 
-  void setFillBackground(bool AFill=true)       { MFillBackground = AFill; }
-  void setBackgroundColor(uint32_t AColor)      { MBackgroundColor = AColor; }
-  void setHoverBackgroundColor(uint32_t AColor) { MHoverBackgroundColor = AColor; }
-  void setInterBackgroundColor(uint32_t AColor) { MInterBackgroundColor = AColor; }
+  void setFillBackground(bool AFill=true)         { MFillBackground = AFill; }
+  void setBackgroundColor(KODE_Color AColor)      { MBackgroundColor = AColor; }
+  void setHoverBackgroundColor(KODE_Color AColor) { MHoverBackgroundColor = AColor; }
+  void setInterBackgroundColor(KODE_Color AColor) { MInterBackgroundColor = AColor; }
 
 //------------------------------
 public: // widget

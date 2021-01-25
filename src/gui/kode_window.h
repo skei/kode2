@@ -54,7 +54,7 @@ private:
   uint32_t      MWindowHeight           = 0;
   KODE_Painter* MWindowPainter          = KODE_NULL;
   bool          MFillWindowBackground   = false;
-  uint32_t      MBackgroundColor        = 0xff000000;
+  KODE_Color    MBackgroundColor        = KODE_Color(0.4f);
 
   // buffered
 
@@ -120,7 +120,7 @@ public:
 
   //----------
 
-  void setBackgroundColor(uint32_t AColor) {
+  void setBackgroundColor(KODE_Color AColor) {
     MBackgroundColor = AColor;
   }
 
