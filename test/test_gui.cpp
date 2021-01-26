@@ -31,9 +31,9 @@ int main() {
   window->setFillBackground();
   //window->setBackgroundColor( KODE_Color(0) );
 
-    KODE_Surface* sa_surface = KODE_New KODE_Surface(window,40,40);
-    KODE_SAHeaderWidget* sa_header = KODE_New KODE_SAHeaderWidget(sa_surface,"test_plugin","v0.0.1","VST3");
-    window->appendChildWidget(sa_header);
+    //KODE_Surface* sa_surface = KODE_New KODE_Surface(window,40,40);
+    //KODE_SAHeaderWidget* sa_header = KODE_New KODE_SAHeaderWidget(sa_surface,"test_plugin","v0.0.1","VST3");
+    //window->appendChildWidget(sa_header);
 
     KODE_PanelWidget* panel1 = addPanel(window,170,100,KODE_WIDGET_ALIGN_FILL_RIGHT);
     KODE_PanelWidget* panel2 = addPanel(window,100,100,KODE_WIDGET_ALIGN_FILL_BOTTOM);
@@ -72,7 +72,7 @@ int main() {
   KODE_Delete window;
   KODE_Delete parameter;
 
-  KODE_Delete sa_surface;
+  //KODE_Delete sa_surface;
 
   return 0;
 }

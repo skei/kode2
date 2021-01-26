@@ -48,12 +48,28 @@ protected:
 
   KODE_Parameters MParameters;
 
-  //uint8_t   MLongIdBuffer[16]       = {0};
-  //uint8_t   MLongEditorIdBuffer[16] = {0};
+  uint32_t   MIdBuffer[4]   = {0};
+  uint32_t   MIdBuffer2[4]  = {0};
 
 //------------------------------
 private:
 //------------------------------
+
+  // 5f = _
+  // ABCDEFGHIJKLMNOPQRSTUVWXYZ
+  // 44444444444444455555555555
+   //123456789abcdef0a123456789
+
+  void create_uuid() {
+    MIdBuffer[0] = 0x4b5f504c; // 'K_PL'
+    MIdBuffer[1] = MVersion;
+    MIdBuffer[2] = KODE_HashString((char*)MName);
+    MIdBuffer[3] = KODE_HashString((char*)MAuthor);
+    MIdBuffer2[0] = 0x4b5f4544; // 'K_ED'
+    MIdBuffer2[1] = MVersion;
+    MIdBuffer2[2] = KODE_HashString((char*)MName);
+    MIdBuffer2[3] = KODE_HashString((char*)MAuthor);
+  }
 
 
 //------------------------------

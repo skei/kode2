@@ -6,12 +6,11 @@
 
 #include "base/kode.h"
 #include "plugin/kode_descriptor.h"
+#include "plugin/kode_editor.h"
 #include "plugin/kode_instance.h"
 #include "plugin/kode_plugin.h"
 #include "plugin/kode_process_context.h"
-
 #include "gui/kode_widgets.h"
-#include "plugin/kode_editor.h"
 
 //----------------------------------------------------------------------
 
@@ -109,8 +108,10 @@ public:
     KODE_Editor* editor = KODE_New KODE_Editor(MDescriptor,this,AParent);
 
     KODE_PanelWidget* panel;
+
     panel = KODE_New KODE_PanelWidget( KODE_FRect(0,0,EDITOR_WIDTH,EDITOR_HEIGHT) );
-    panel->setBackgroundColor(0xff606060);
+    panel->setAlignment(KODE_WIDGET_ALIGN_FILL_CLIENT);
+    panel->setBackgroundColor(KODE_Color(0.4f));
     editor->appendChildWidget(panel);
 
     KODE_Widget* widget;

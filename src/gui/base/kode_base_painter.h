@@ -27,6 +27,9 @@ public:
   virtual void  drawText(float x, float y, const char* txt, KODE_Color color) {}
   virtual void  drawText(KODE_FRect ARect,const char* AText, KODE_Color AColor, uint32_t AAlignment) {}
 
+  virtual void  drawBitmap(float ADstX, float ADstY, float ADstW, float ADstH, KODE_Bitmap* ASource, float ASrcX, float ASrcY, float ASrcW, float ASrcH) {}
+
+
 //------------------------------
 public:
 //------------------------------

@@ -32,7 +32,7 @@ protected:
   KODE_Color  MValueTextColor       = KODE_Color(0.0f);
 
   bool        MDrawLabelText        = true;
-  KODE_Color  MLabelTextColor       = KODE_Color(0.4f);
+  KODE_Color  MLabelTextColor       = KODE_Color(0.3f);
 
   bool        MDrawValueBar         = true;
   KODE_Color  MValueBarColor        = KODE_Color(0.7f);

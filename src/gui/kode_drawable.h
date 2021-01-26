@@ -31,7 +31,7 @@ class KODE_Drawable {
 public:
 //------------------------------
 
-  //virtual bool          isBitmap()    { return false; }
+  virtual bool          isBitmap()    { return false; }
   virtual bool          isImage()     { return false; }
   virtual bool          isSurface()   { return false; }
   virtual bool          isWindow()    { return false; }

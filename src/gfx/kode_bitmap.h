@@ -13,6 +13,7 @@
 #include "base/utils/kode_bgra.h"
 #include "base/utils/kode_integer.h"
 #include "base/utils/kode_math.h"
+//#include "gui/kode_drawable.h"
 
 #ifndef KODE_NO_BITMAP_PNG
   //#ifndef KODE_NO_BITMAP_PNG_FILE
@@ -95,8 +96,10 @@ public:
 
   #ifndef KODE_NO_BITMAP_PNG
   KODE_Bitmap(const uint8_t* buffer, uint32_t length) {
+
     int x,y,n;
     unsigned char* data = stbi_load_from_memory(buffer,length,&x,&y,&n,4 /*0*/ );
+
     MWidth  = x;
     MHeight = y;
     MStride     = MWidth  * 4; //n;
@@ -116,8 +119,10 @@ public:
 
   #ifndef KODE_NO_BITMAP_PNG_FILE
   KODE_Bitmap(const char* AFilename) {
+
     int x,y,n;
     unsigned char *data = stbi_load(AFilename, &x, &y, &n, 4 /*0*/); // 4 0 we want 32-bit
+
     MWidth  = x;
     MHeight = y;
     // returned n is bytes per pixel in image
@@ -158,6 +163,18 @@ public:
   uint32_t  getStride()     { return MStride; }
   uint32_t* getBuffer()     { return MBuffer; }
   uint32_t  getBufferSize() { return MBufferSize; }
+
+//------------------------------
+public: // drawable
+//------------------------------
+
+//  bool          isBitmap()    final { return false; }
+//  uint32_t      getWidth()    final { return MWidth; }
+//  uint32_t      getHeight()   final { return MHeight; }
+//  uint32_t      getDepth()    final { return 32; }
+//  KODE_Bitmap*  getBitmap()   final { return this; }
+//  uint32_t*     getBuffer()   final { return MBuffer; }
+//  uint32_t      getStride()   final { return MStride; }
 
 //------------------------------
 public:

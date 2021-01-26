@@ -230,6 +230,30 @@ public:
     cairo_show_text(MCairo,AText);
   }
 
+  //----------
+
+  void drawBitmap(float ADstX, float ADstY, float ADstW, float ADstH, KODE_Bitmap* ASource, float ASrcX, float ASrcY, float ASrcW, float ASrcH) override {
+    //cairo_surface_t* surface = _create_surface(ASource);
+    cairo_surface_t* surface = cairo_image_surface_create_for_data(
+      (uint8_t*)ASource->getBuffer(),        // unsigned char *data,
+      CAIRO_FORMAT_ARGB32,                  // cairo_format_t format,
+      ASource->getWidth(),                   // int width,
+      ASource->getHeight(),                  // int height,
+      ASource->getStride()                   // int stride);
+    );
+    float xscale = (float)ADstW / (float)ASrcW;
+    float yscale = (float)ADstH / (float)ASrcH;
+    cairo_rectangle(MCairo,ADstX,ADstY,ADstW,ADstH);
+    cairo_save(MCairo);
+    cairo_translate(MCairo,ADstX,ADstY);
+    cairo_scale(MCairo,xscale,yscale);
+    cairo_set_source_surface(MCairo,surface,0,0/*ASrcX,ASrcY*/);
+    cairo_fill(MCairo);
+    cairo_restore(MCairo);
+    cairo_surface_destroy(surface);
+  }
+
+
 };
 
 //----------------------------------------------------------------------

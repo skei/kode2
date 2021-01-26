@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1611540211 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+1611611631 source:/DISKS/sda2/code/git/kode2/build/build.cpp
 	"../test/test_gui.cpp"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
@@ -104,7 +104,7 @@
 	<stdlib.h>
 	"base/kode.h"
 
-1611579052 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
+1611597828 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
 	"base/kode.h"
 	"gui/kode_painter.h"
 	"gui/kode_surface.h"
@@ -118,12 +118,12 @@
 	"gui/cairo/kode_cairo_painter.h"
 	"gui/xcb/kode_xcb_painter.h"
 
-1610918083 /DISKS/sda2/code/git/kode2/src/gui/kode_drawable.h
+1611612116 /DISKS/sda2/code/git/kode2/src/gui/kode_drawable.h
 	"base/kode.h"
 	"gfx/kode_bitmap.h"
 	"gui/xcb/kode_xcb.h"
 
-1611534834 /DISKS/sda2/code/git/kode2/src/gfx/kode_bitmap.h
+1611612347 /DISKS/sda2/code/git/kode2/src/gfx/kode_bitmap.h
 	"base/kode.h"
 	"base/utils/kode_bgra.h"
 	"base/utils/kode_integer.h"
@@ -187,7 +187,7 @@
 	"gui/base/kode_base_painter.h"
 	"gui/ctx/kode_ctx.h"
 
-1611533082 /DISKS/sda2/code/git/kode2/src/gui/base/kode_base_painter.h
+1611612439 /DISKS/sda2/code/git/kode2/src/gui/base/kode_base_painter.h
 	"base/kode.h"
 	"base/types/kode_color.h"
 	"gui/kode_drawable.h"
@@ -260,13 +260,14 @@
 	"gui/xcb/kode_xcb.h"
 	"gui/xcb/kode_xcb_utils.h"
 
-1610915355 /DISKS/sda2/code/git/kode2/src/gui/base/kode_base_window.h
+1611597828 /DISKS/sda2/code/git/kode2/src/gui/base/kode_base_window.h
 	"base/kode.h"
 	"gui/kode_drawable.h"
 
-1611184529 /DISKS/sda2/code/git/kode2/src/plugin/kode_descriptor.h
+1611430707 /DISKS/sda2/code/git/kode2/src/plugin/kode_descriptor.h
 	"base/kode.h"
 	"base/types/kode_array.h"
+	"base/utils/kode_strutils.h"
 	"plugin/kode_parameter.h"
 
 1611197758 /DISKS/sda2/code/git/kode2/src/plugin/kode_parameter.h
@@ -296,7 +297,7 @@
 1606532326 /DISKS/sda2/code/git/kode2/src/plugin/kode_plugin_event.h
 	"base/kode.h"
 
-1610901168 /DISKS/sda2/code/git/kode2/src/plugin/base/kode_base_instance.h
+1611513157 /DISKS/sda2/code/git/kode2/src/plugin/base/kode_base_instance.h
 	"base/kode.h"
 	"plugin/kode_descriptor.h"
 	"plugin/kode_editor.h"
@@ -410,7 +411,7 @@
 	"gui/kode_widgets.h"
 	"plugin/kode_parameter.h"
 
-1611533379 /DISKS/sda2/code/git/kode2/src/gui/cairo/kode_cairo_painter.h
+1611612528 /DISKS/sda2/code/git/kode2/src/gui/cairo/kode_cairo_painter.h
 	"base/kode.h"
 	"gfx/kode_bitmap.h"
 	"gui/kode_drawable.h"
@@ -427,7 +428,7 @@
 	"base/kode.h"
 	"gui/kode_painter.h"
 
-1611579459 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_widget.h
+1611609054 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_widget.h
 	"base/kode.h"
 	"base/types/kode_rect.h"
 	"gui/kode_painter.h"
@@ -452,7 +453,7 @@
 	"gui/kode_drawable.h"
 	"gui/kode_widget.h"
 
-1611535202 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_sa_header_widget.h
+1611611970 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_sa_header_widget.h
 	"gui/kode_image.h"
 	"gui/widgets/kode_background_widget.h"
 	"gui/widgets/kode_text_widget.h"
@@ -462,7 +463,7 @@
 	"base/kode.h"
 	"gui/xcb/kode_xcb_image.h"
 
-1611528306 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_image.h
+1611611903 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_image.h
 	"base/kode.h"
 	"gfx/kode_bitmap.h"
 	"gui/kode_drawable.h"
@@ -501,10 +502,30 @@
 	"gui/kode_widget.h"
 	"gui/widgets/kode_border_widget.h"
 
-1611534004 /DISKS/sda2/code/git/kode2/test/test_gui.cpp
+1611612615 /DISKS/sda2/code/git/kode2/test/test_gui.cpp
 	"base/kode.h"
 	"base/types/kode_color.h"
 	"gui/kode_window.h"
 	"gui/kode_widgets.h"
 	"plugin/kode_parameter.h"
+
+1611609260 /DISKS/sda2/code/git/kode2/test/test_plugin_gui.cpp
+	"base/kode.h"
+	"plugin/kode_descriptor.h"
+	"plugin/kode_instance.h"
+	"plugin/kode_plugin.h"
+	"plugin/kode_process_context.h"
+	"gui/kode_widgets.h"
+	"plugin/kode_editor.h"
+
+1611430240 /DISKS/sda2/code/git/kode2/src/base/utils/kode_strutils.h
+	"base/kode.h"
+	"base/utils/kode_random.h"
+
+1611419214 /DISKS/sda2/code/git/kode2/src/base/utils/kode_random.h
+	"base/kode.h"
+	<stdlib.h>
+	<stdint.h>
+	<stdint.h>
+	<stdint.h>
 
