@@ -7,7 +7,7 @@
 
 //----------------------------------------------------------------------
 
-#include "base/kode.h"
+#include "kode.h"
 
 #include <xcb/xcb.h>
 #include <xcb/xcb_cursor.h>
@@ -18,19 +18,17 @@
 
 //----------------------------------------------------------------------
 
-#ifdef KODE_DEBUG_XCB
-  #define XCB_Print   KODE_Print
-  #define XCB_DPrint  KODE_DPrint
-  #define XCB_PRINT   KODE_PRINT
-#else
-  #define XCB_Print   KODE_NoPrint
-  #define XCB_DPrint  KODE_NoPrint
-  #define XCB_PRINT   {}
-#endif
+//#ifdef KODE_DEBUG_XCB
+//  #define XCB_Print   KODE_Print
+//  #define XCB_DPrint  KODE_DPrint
+//  #define XCB_PRINT   KODE_PRINT
+//#else
+//  #define XCB_Print   KODE_NoPrint
+//  #define XCB_DPrint  KODE_NoPrint
+//  #define XCB_PRINT   {}
+//#endif
 
 //----------------------------------------------------------------------
-
-
 
 //----------------------------------------------------------------------
 #endif

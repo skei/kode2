@@ -2,21 +2,18 @@
 #define kode_xcb_window_included
 //----------------------------------------------------------------------
 
-#define KODE_THREAD_KILL 666
-
-//----------------------------------------------------------------------
-
-#include "base/kode.h"
-#include "base/system/kode_time.h"
+#include "kode.h"
+//#include "gfx/kode_bitmap.h"
 #include "gui/kode_drawable.h"
-#include "gui/base/kode_base_window.h"
+#include "gui/kode_gui_base.h"
 #include "gui/xcb/kode_xcb.h"
 #include "gui/xcb/kode_xcb_utils.h"
 
-//----------------------------------------------------------------------
+#ifdef KODE_CAIRO
+  #include "gui/cairo/kode_cairo.h"
+#endif
 
-//void* xcb_event_thread_proc(void* AWindow);
-//void* xcb_timer_thread_proc(void* AWindow);
+//----------------------------------------------------------------------
 
 const char* KODE_XCB_WM_CURSORS[20] = {
   "left_ptr",           // 0 KODE_CURSOR_DEFAULT
@@ -42,12 +39,13 @@ const char* KODE_XCB_WM_CURSORS[20] = {
 };
 
 //----------------------------------------------------------------------
-//
+
+
 //----------------------------------------------------------------------
 
 class KODE_XcbWindow
 : public KODE_BaseWindow
-, public KODE_Drawable  {
+, public KODE_Drawable {
 
 //------------------------------
 private:
@@ -97,11 +95,15 @@ private:
   bool                        MQuitEventLoop                = false;
   bool                        MUseEventThread               = false;
 
+  #ifdef KODE_CAIRO
+  cairo_surface_t*  MCairoSurface = KODE_NULL;
+  #endif
+
 //------------------------------
 public:
 //------------------------------
 
-  KODE_XcbWindow(uint32_t AWidth, uint32_t AHeight, const char* ATitle, void* AParent=KODE_NULL)
+  KODE_XcbWindow(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL)
   : KODE_BaseWindow(AWidth,AHeight,ATitle,AParent) {
     MUseEventThread = AParent ? true : false;
     connect();
@@ -111,6 +113,9 @@ public:
     initKeyboard();
     initThreads();
     xcb_flush(MConnection);
+    #ifdef KODE_CAIRO
+    createCairoSurface();
+    #endif
   }
 
   //----------
@@ -122,10 +127,13 @@ public:
     destroyWindow();
     cleanupGC();
     disconnect();
+    #ifdef KODE_CAIRO
+    if (MCairoSurface) cairo_surface_destroy(MCairoSurface);
+    #endif
   }
 
 //------------------------------
-public: // paint target
+public: // drawable
 //------------------------------
 
   bool                isWindow()          final { return true; }
@@ -137,6 +145,26 @@ public: // paint target
   xcb_drawable_t      getXcbDrawable()    final { return MWindow; }
   xcb_connection_t*   getXcbConnection()  final { return MConnection; }
   xcb_visualid_t      getXcbVisual()      final { return MScreenVisual; }
+  #ifdef KODE_CAIRO
+  bool                isCairo()           final { return true; }
+  cairo_surface_t*    getCairoSurface()   final { return MCairoSurface; }
+  #endif
+
+//------------------------------
+public:
+//------------------------------
+
+  #ifdef KODE_CAIRO
+  void createCairoSurface() {
+    MCairoSurface = cairo_xcb_surface_create(
+      MConnection,
+      MWindow,
+      kode_xcb_find_visual(MConnection,MScreenVisual),
+      MWindowWidth,
+      MWindowHeight
+    );
+  }
+  #endif
 
 //------------------------------
 private:
@@ -251,6 +279,8 @@ private:
 
   //----------
 
+  //----------
+
   void initMouseCursor() {
     MEmptyPixmap = xcb_generate_id(MConnection);
     MHiddenCursor = xcb_generate_id(MConnection);
@@ -314,10 +344,6 @@ private:
     //#endif
   }
 
-//------------------------------
-private:
-//------------------------------
-
   static const unsigned long MWM_HINTS_FUNCTIONS   = 1 << 0;
   static const unsigned long MWM_HINTS_DECORATIONS = 1 << 1;
   //static const unsigned long MWM_DECOR_ALL         = 1 << 0;
@@ -345,7 +371,6 @@ private:
   //----------
 
   void removeDecorations() {
-    XCB_Print("xcb: removeDecorations\n");
     xcb_atom_t prop = kode_xcb_get_intern_atom(MConnection,"_MOTIF_WM_HINTS");
     if (prop) {
       WMHints hints;
@@ -368,7 +393,6 @@ private:
   //----------
 
   void wantDeleteWindowEvent() {
-    XCB_Print("xcb: wantDeleteWindowEvent\n");
     xcb_intern_atom_cookie_t  protocol_cookie = xcb_intern_atom_unchecked(MConnection, 1, 12, "WM_PROTOCOLS");
     xcb_intern_atom_cookie_t  close_cookie    = xcb_intern_atom_unchecked(MConnection, 0, 16, "WM_DELETE_WINDOW");
     xcb_intern_atom_reply_t*  protocol_reply  = xcb_intern_atom_reply(MConnection, protocol_cookie, 0);
@@ -392,7 +416,6 @@ private:
   */
 
   void waitForMapNotify() {
-    XCB_Print("xcb: waitForMapNotify\n");
     xcb_flush(MConnection);
     while (1) {
       xcb_generic_event_t* event;
@@ -406,29 +429,22 @@ private:
   //----------
 
   void startEventThread() {
-    XCB_Print("xcb: startEventThread\n");
-    //#ifndef KODE_XCB_NO_EVENT_THREAD
     MEventThreadActive = true;
     pthread_create(&MEventThread,nullptr,xcb_event_thread_proc,this);
-    //#endif
   }
 
   //----------
 
   void stopEventThread() {
-    XCB_Print("xcb: stopEventThread\n");
-    //#ifndef KODE_XCB_NO_EVENT_THREAD
     void* ret;
     MEventThreadActive = false;
-    sendEvent(KODE_THREAD_KILL,0);
+    sendEvent(KODE_THREAD_ID_KILL,0);
     pthread_join(MEventThread,&ret);
-    //#endif
   }
 
   //----------
 
   void quitEventLoop() {
-    //XCB_Print("xcb: quitEventLoop\n");
     MQuitEventLoop = true;
   }
 
@@ -477,7 +493,6 @@ private:
   //----------
 
   void freeXcbCursor(void) {
-    XCB_Print("xcb: freeXcbCursor\n");
     if (MWindowCursor != XCB_NONE) {
       xcb_free_cursor(MConnection,MWindowCursor);
       MWindowCursor = XCB_NONE;
@@ -488,7 +503,6 @@ private:
   //----------
 
   void setXcbCursor(xcb_cursor_t ACursor) {
-    XCB_Print("xcb: setXcbCursor ACursor %i\n",ACursor);
     uint32_t mask;
     uint32_t values;
     mask   = XCB_CW_CURSOR;
@@ -501,7 +515,6 @@ private:
   //----------
 
   void setWMCursor(uint32_t ACursor) {
-    XCB_Print("xcb: setWMCursor ACursor %i\n",ACursor);
     xcb_cursor_context_t *ctx;
     if (xcb_cursor_context_new(MConnection, MScreen, &ctx) >= 0) {
       const char* name = KODE_XCB_WM_CURSORS[ACursor];
@@ -525,7 +538,6 @@ private:
       //----------
 
       case XCB_MAP_NOTIFY: {
-        XCB_Print("xcb: XCB_MAP_NOTIFY\n");
         //xcb_map_notify_event_t* map_notify = (xcb_map_notify_event_t*)AEvent;
         MWindowMapped = true;
         //on_window_open();
@@ -535,7 +547,6 @@ private:
       //----------
 
       case XCB_UNMAP_NOTIFY: {
-        XCB_Print("xcb: XCB_UNMAP_NOTIFY\n");
         //xcb_unmap_notify_event_t* unmap_notify = (xcb_unmap_notify_event_t*)AEvent;
         MWindowMapped = false;
         //on_window_close();
@@ -550,7 +561,6 @@ private:
         int32_t y = configure_notify->y;
         int32_t w = configure_notify->width;
         int32_t h = configure_notify->height;
-        XCB_Print("xcb: XCB_CONFIGURE_NOTIFY x %i y %i w %i h %i\n",x,y,w,h);
         if ((x != MWindowXpos) || (y != MWindowYpos)) {
           MWindowXpos = x;
           MWindowYpos = y;
@@ -587,9 +597,7 @@ private:
         //  RECT.combine( KODE_Rect( ex2->x, ex2->y, ex2->width, ex2->height ) );
         //}
 
-        XCB_Print("xcb: XCB_EXPOSE x %i y %i w %i h %i\n",x,y,w,h);
-
-        if ((w < 1) || (h < 1)) {
+      if ((w < 1) || (h < 1)) {
         }
         else {
           beginPaint();
@@ -620,11 +628,10 @@ private:
         xcb_key_press_event_t* key_press = (xcb_key_press_event_t*)AEvent;
         uint32_t  k = remapKey(   key_press->detail, key_press->state );
         uint32_t  s = remapState( key_press->state );
-        uint32_t ts = key_press->time;
+        //uint32_t ts = key_press->time;
         //int32_t   x = key_press->event_x;
         //int32_t   y = key_press->event_y;
-        XCB_Print("xcb: XCB_KEY_PRESS k %i s %i (ts %i)\n",k,s,ts);
-        on_window_keyPress(0,k,s);
+      on_window_keyPress(0,k,s);
         break;
       }
 
@@ -634,10 +641,9 @@ private:
         xcb_key_release_event_t* key_release = (xcb_key_release_event_t*)AEvent;
         uint32_t  k = remapKey( key_release->detail, key_release->state );
         uint32_t  s = remapState( key_release->state );
-        uint32_t ts = key_release->time;
+        //uint32_t ts = key_release->time;
         //int32_t   x = key_release->event_x;
         //int32_t   y = key_release->event_y;
-        XCB_Print("xcb: XCB_KEY_RELEASE k %i s %i (ts %i)\n",k,s,ts);
         on_window_keyRelease(0,k,s);
         break;
       }
@@ -664,8 +670,7 @@ private:
         int32_t   x = button_release->event_x;
         int32_t   y = button_release->event_y;
         uint32_t ts = button_release->time;
-        XCB_Print("xcb: XCB_BUTTON_RELEASE x %i y %i b %i s %i (ts %i)\n",x,y,b,s,ts);
-        on_window_mouseRelease(x,y,b,s,ts);
+      on_window_mouseRelease(x,y,b,s,ts);
         break;
       }
 
@@ -678,8 +683,7 @@ private:
         int32_t   x = motion_notify->event_x;
         int32_t   y = motion_notify->event_y;
         uint32_t ts = motion_notify->time;
-        XCB_Print("xcb: XCB_MOTION_NOTIFY x %i y %i s %i (ts %i)\n",x,y,s,ts);
-        on_window_mouseMove(x,y,s,ts);
+      on_window_mouseMove(x,y,s,ts);
         break;
       }
 
@@ -689,13 +693,12 @@ private:
         //#ifdef KODE_DEBUG_XCB
         xcb_enter_notify_event_t* enter_notify = (xcb_enter_notify_event_t*)AEvent;
         //uint32_t  t = enter_notify->time;
-        uint32_t  m = enter_notify->mode;
-        uint32_t  s = enter_notify->state;
+        //uint32_t  m = enter_notify->mode;
+        //uint32_t  s = enter_notify->state;
         int32_t   x = enter_notify->event_x;
         int32_t   y = enter_notify->event_y;
         uint32_t ts = enter_notify->time;
-        XCB_Print("xcb: XCB_ENTER_NOTIFY x %i y %i m %i s %i (ts %i)\n",x,y,m,s,ts);
-        //#endif
+      //#endif
         on_window_enter(x,y,ts);
         break;
       }
@@ -704,12 +707,11 @@ private:
         //#ifdef KODE_DEBUG_XCB
         xcb_leave_notify_event_t* leave_notify = (xcb_leave_notify_event_t*)AEvent;
         //uint32_t  t = leave_notify->time;
-        uint32_t  m = leave_notify->mode;
-        uint32_t  s = leave_notify->state;
+        //uint32_t  m = leave_notify->mode;
+        //uint32_t  s = leave_notify->state;
         int32_t   x = leave_notify->event_x;
         int32_t   y = leave_notify->event_y;
         uint32_t ts = leave_notify->time;
-        XCB_Print("xcb: XCB_LEAVE_NOTIFY x %i y %i m %i s %i (ts %i)\n",x,y,m,s,ts);
         //#endif
         on_window_leave(x,y,ts);
         break;
@@ -719,9 +721,8 @@ private:
 
       case XCB_CLIENT_MESSAGE: {
         xcb_client_message_event_t* client_message = (xcb_client_message_event_t*)AEvent;
-        xcb_atom_t type = client_message->type;
+        //xcb_atom_t type = client_message->type;
         uint32_t data = client_message->data.data32[0];
-        XCB_Print("xcb: XCB_CLIENT_MESSAGE type %i data %i\n",type,data);
         switch(data) {
           case KODE_THREAD_ID_TIMER:
             on_window_timer();
@@ -900,8 +901,7 @@ private:
 
   static
   void* xcb_event_thread_proc(void* AWindow) {
-    XCB_Print("xcb: kode_xcb_event_thread_proc AWindow %p\n",AWindow);
-    KODE_XcbWindow* window = (KODE_XcbWindow*)AWindow;
+  KODE_XcbWindow* window = (KODE_XcbWindow*)AWindow;
     if (window) {
       xcb_connection_t* connection = window->MConnection;
       xcb_flush(connection);
@@ -923,9 +923,10 @@ private:
     return nullptr;
   }
 
+  //----------
+
   static
   void* xcb_timer_thread_proc(void* AWindow) {
-    XCB_Print("xcb: kode_xcb_timer_thread_proc AWindow %p\n",AWindow);
     KODE_XcbWindow* window = (KODE_XcbWindow*)AWindow;
     if (window) {
       xcb_connection_t* connection = window->MConnection;
@@ -943,8 +944,7 @@ private:
 public:
 //------------------------------
 
-  void setPos(int32_t AXpos, int32_t AYpos) override {
-    XCB_Print("xcb: setPos AXpos %i AYpos %i\n",AXpos,AYpos);
+  void setPos(uint32_t AXpos, uint32_t AYpos) override {
     MWindowXpos = AXpos;
     MWindowYpos = AYpos;
     static uint32_t values[] = {
@@ -957,9 +957,7 @@ public:
 
   //----------
 
-  void setSize(int32_t AWidth, int32_t AHeight) override {
-    KODE_Print("%i %i\n",AWidth,AHeight);
-    XCB_Print("xcb: setSize AWidth %i AHeight %i\n",AWidth,AHeight);
+  void setSize(uint32_t AWidth, uint32_t AHeight) override {
     MWindowWidth = AWidth;
     MWindowHeight = AHeight;
     static uint32_t values[] = {
@@ -974,7 +972,6 @@ public:
   //----------
 
   void setTitle(const char* ATitle) override {
-    XCB_Print("xcb: setTitle ATitle %s\n",ATitle);
     xcb_change_property(
       MConnection,
       XCB_PROP_MODE_REPLACE,
@@ -990,9 +987,10 @@ public:
 
   //----------
 
+  //----------
+
   void open() override {
     //KODE_PRINT;
-    XCB_Print("xcb: open\n");
     xcb_map_window(MConnection,MWindow);
     #ifdef KODE_XCB_WAIT_FOR_MAPNOTIFY
     waitForMapNotify();
@@ -1007,7 +1005,6 @@ public:
   //----------
 
   void close() override {
-    XCB_Print("xcb: close\n");
     if (MUseEventThread) stopEventThread();
     xcb_unmap_window(MConnection,MWindow);
     xcb_flush(MConnection);
@@ -1016,7 +1013,6 @@ public:
   //----------
 
   void eventLoop() override {
-    XCB_Print("xcb: eventLoop\n");
     MQuitEventLoop = false;
     xcb_flush(MConnection);
     xcb_generic_event_t* event;// = xcb_wait_for_event(MConnection);
@@ -1045,7 +1041,6 @@ public:
   //----------
 
   void reparent(void* AParent) override {
-    XCB_Print("xcb: reparent AParent %p\n",AParent);
     MWindowParent = (intptr_t)AParent;
     xcb_reparent_window(MConnection,MWindow,MWindowParent,0,0);
     xcb_flush(MConnection);
@@ -1054,7 +1049,6 @@ public:
   //----------
 
   void startTimer(uint32_t ms) override {
-    XCB_Print("xcb: startTimer %i\n",ms);
     MTimerSleep = ms;
     MTimerThreadActive = true;
     pthread_create(&MTimerThread,nullptr,xcb_timer_thread_proc,this);
@@ -1063,7 +1057,6 @@ public:
   //----------
 
   void stopTimer(void) override {
-    XCB_Print("xcb: stopTimer\n");
     void* ret;
     MTimerThreadActive = false;
     pthread_join(MTimerThread,&ret);
@@ -1075,7 +1068,6 @@ public:
   //XDefineCursor(MDisplay,MWindow,MWindowCursor);
 
   void setMouseCursor(uint32_t ACursor) override {
-    XCB_Print("xcb: setCursor ACursor %i\n",ACursor);
     //if (!MCursorHidden) {
     //  freeXcbCursor();
     //  MWindowCursor = kode_xcb_create_font_cursor(MConnection, xcb_cursors[ACursor] );
@@ -1087,7 +1079,6 @@ public:
   //----------
 
   void setMouseCursorPos(int32_t AXpos, int32_t AYpos) override {
-    XCB_Print("xcb: setCursorPos AXpos %i AYpos %i\n",AXpos,AYpos);
     xcb_warp_pointer(MConnection,XCB_NONE,MWindow,0,0,0,0,AXpos,AYpos);
     xcb_flush(MConnection);
   }
@@ -1095,7 +1086,6 @@ public:
   //----------
 
   void hideMouseCursor(void) override {
-    XCB_Print("xcb: hideCursor\n");
     if (!MCursorHidden) {
       setXcbCursor(MHiddenCursor);
       MCursorHidden = true;
@@ -1105,7 +1095,6 @@ public:
   //----------
 
   void showMouseCursor(void) override {
-    XCB_Print("xcb: showCursor\n");
     if (MCursorHidden) {
       setXcbCursor(MWindowCursor);
       MCursorHidden = false;
@@ -1115,7 +1104,6 @@ public:
   //----------
 
   void grabMouseCursor(void) override {
-    XCB_Print("xcb: grabCursor\n");
     int32_t event_mask =
       XCB_EVENT_MASK_BUTTON_PRESS   |
       XCB_EVENT_MASK_BUTTON_RELEASE |
@@ -1140,7 +1128,6 @@ public:
   //----------
 
   void releaseMouseCursor(void) override {
-    XCB_Print("xcb: releaseCursor\n");
     xcb_ungrab_pointer(MConnection,XCB_CURRENT_TIME);
     xcb_flush(MConnection);
   }
@@ -1193,7 +1180,6 @@ public:
   */
 
   void sendEvent(uint32_t AData, uint32_t AType) override {
-    XCB_Print("xcb: sendEvent AData %i AType %i\n",AData,AType);
     KODE_Memset(MClientMessageEventBuffer,0,sizeof(MClientMessageEventBuffer));
     MClientMessageEvent->window         = MWindow;
     MClientMessageEvent->response_type  = XCB_CLIENT_MESSAGE;
@@ -1213,35 +1199,47 @@ public:
   //----------
 
   void flush(void) override {
-  //----------
-
-    XCB_Print("xcb: flush\n");
     xcb_flush(MConnection);
   }
 
   //----------
 
   void sync(void) override {
-    XCB_Print("xcb: sync\n");
     xcb_aux_sync(MConnection);
   }
 
 //------------------------------
-//
+public:
 //------------------------------
 
-  void fill(uint32_t AColor) override {
+  uint32_t xcb_color(KODE_Color AColor) {
+    uint8_t r = AColor.r * 255.0f;
+    uint8_t g = AColor.g * 255.0f;
+    uint8_t b = AColor.b * 255.0f;
+    uint8_t a = AColor.a * 255.0f;
+    uint32_t color = (a << 24) + (r << 16) + (g << 8) + b;
+    return color;
+
+  }
+
+//------------------------------
+public:
+//------------------------------
+
+  void fill(KODE_Color AColor) override {
     fill(0,0,MWindowWidth,MWindowHeight,AColor);
   }
 
   //----------
 
-  void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, uint32_t AColor) override {
+  void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, KODE_Color AColor) override {
+
     // set color
     uint32_t mask = XCB_GC_FOREGROUND;
     uint32_t values[1];
-    values[0] = AColor;
+    values[0] = xcb_color(AColor);
     xcb_change_gc(MConnection,MScreenGC,mask,values);
+
     // fill rectangle
     xcb_rectangle_t rectangles[] = {{
       (int16_t)AXpos,     //0,

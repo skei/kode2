@@ -8,7 +8,8 @@ nc -U -l -k /tmp/kode.socket
 */
 
 #include <stdarg.h>   // va_
-#include "base/kode.h"
+//#include "kode.h"
+#include "base/kode_stdlib.h"
 
 void KODE_NoPrint(const char*,...) {}
 

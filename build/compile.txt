@@ -1,0 +1,15 @@
+compile.sh
+
+-i ../plugins/again.cpp
+-o ./
+-f vst3 (ladspa, dssi, lv2, vst2, vst3, exe)
+-g xcb (xcb, sdl)
+-p cairo (xcb, cairo, ctx)
+-a portaudio (jack, rtaudio, portaudio)
+
+-D debug
+-G gpl
+
+vst3: directory structure
+lv2: directory structure, .ttl
+

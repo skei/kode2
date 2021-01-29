@@ -14,8 +14,6 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-fno-pie" />
-					<Add option="-Wl,--as-needed" />
-					<Add option="-faligned-new" />
 					<Add option="-Wl,-Bsymbolic" />
 					<Add option="-rdynamic" />
 					<Add option="-DKODE_PLUGIN_EXE" />
@@ -34,8 +32,6 @@
 					<Add option="-O3" />
 					<Add option="-O2" />
 					<Add option="-fno-pie" />
-					<Add option="-Wl,--as-needed" />
-					<Add option="-faligned-new" />
 					<Add option="-msse4" />
 					<Add option="-mfpmath=sse" />
 					<Add option="-DKODE_PLUGIN_EXE" />
@@ -53,8 +49,6 @@
 				<Compiler>
 					<Add option="-fPIC" />
 					<Add option="-g" />
-					<Add option="-Wl,--as-needed" />
-					<Add option="-faligned-new" />
 					<Add option="-Wl,-Bsymbolic" />
 					<Add option="-rdynamic" />
 					<Add option="-DKODE_PLUGIN_VST3" />
@@ -73,8 +67,6 @@
 					<Add option="-O3" />
 					<Add option="-O2" />
 					<Add option="-fPIC" />
-					<Add option="-Wl,--as-needed" />
-					<Add option="-faligned-new" />
 					<Add option="-msse4" />
 					<Add option="-mfpmath=sse" />
 					<Add option="-DKODE_PLUGIN_VST3" />
@@ -90,8 +82,9 @@
 			<Add option="-std=c++11" />
 			<Add option="-std=c11" />
 			<Add option="-m64" />
-			<Add option="-fexceptions" />
 			<Add option="-Wl,--as-needed" />
+			<Add option="-faligned-new" />
+			<Add option="-fexceptions" />
 			<Add directory="../../src" />
 		</Compiler>
 		<Linker>
@@ -109,129 +102,19 @@
 			<Add library="SDL2_image" />
 			<Add library="SDL2_mixer" />
 		</Linker>
-		<Unit filename="../../doc/doxygen.cfg" />
-		<Unit filename="../../doc/license.txt" />
-		<Unit filename="../../doc/makedocs.sh" />
-		<Unit filename="../../doc/readme.txt" />
-		<Unit filename="../../doc/todo.txt" />
-		<Unit filename="../../plugins/sa.ports/sa_ports_autotalent.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_cabinet.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_combo.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_compciter.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_dynamic.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_event_horizon.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_exciter.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_exciter2.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_filter_ms20.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_hall_reverb.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_hrtf.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_large_room_reverb.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_limiter.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_reverseness.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_saturation.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_schroeder_reverb.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_simpverb.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_small_room_reverb.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_sonic_enhancer.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_sonic_maximizer.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_tilteq.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_transient.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_transient_killer.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_tube_harmonics_amp.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/sa.ports/sa_ports_vocoder.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../src/audio/io/kode_portaudio.h" />
-		<Unit filename="../../src/audio/kode_audio_utils.h" />
-		<Unit filename="../../src/audio/kode_modmatrix.h" />
-		<Unit filename="../../src/audio/kode_voice_manager.h" />
 		<Unit filename="../../src/base/debug/kode_debug.h" />
 		<Unit filename="../../src/base/debug/kode_debug_assert.h" />
 		<Unit filename="../../src/base/debug/kode_debug_callstack.h" />
 		<Unit filename="../../src/base/debug/kode_debug_crash_handler.h" />
 		<Unit filename="../../src/base/debug/kode_debug_memory.h" />
 		<Unit filename="../../src/base/debug/kode_debug_print.h" />
-		<Unit filename="../../src/base/kode.h" />
 		<Unit filename="../../src/base/kode_attributes.h" />
+		<Unit filename="../../src/base/kode_base.h" />
 		<Unit filename="../../src/base/kode_config.h" />
 		<Unit filename="../../src/base/kode_const.h" />
 		<Unit filename="../../src/base/kode_defines.h" />
 		<Unit filename="../../src/base/kode_enums.h" />
 		<Unit filename="../../src/base/kode_stdlib.h" />
-		<Unit filename="../../src/base/kode_types.h" />
 		<Unit filename="../../src/base/system/kode_atomic.h" />
 		<Unit filename="../../src/base/system/kode_cpu.h" />
 		<Unit filename="../../src/base/system/kode_file.h" />
@@ -239,13 +122,13 @@
 		<Unit filename="../../src/base/system/kode_lock.h" />
 		<Unit filename="../../src/base/system/kode_memory.h" />
 		<Unit filename="../../src/base/system/kode_simd.h" />
+		<Unit filename="../../src/base/system/kode_system.h" />
 		<Unit filename="../../src/base/system/kode_thread.h" />
 		<Unit filename="../../src/base/system/kode_time.h" />
 		<Unit filename="../../src/base/types/kode_array.h" />
+		<Unit filename="../../src/base/types/kode_buffer.h" />
 		<Unit filename="../../src/base/types/kode_color.h" />
 		<Unit filename="../../src/base/types/kode_complex.h" />
-		<Unit filename="../../src/base/types/kode_dynamic_buffer.h" />
-		<Unit filename="../../src/base/types/kode_dynamic_string.h" />
 		<Unit filename="../../src/base/types/kode_list.h" />
 		<Unit filename="../../src/base/types/kode_matrix.h" />
 		<Unit filename="../../src/base/types/kode_point.h" />
@@ -253,9 +136,9 @@
 		<Unit filename="../../src/base/types/kode_queue.h" />
 		<Unit filename="../../src/base/types/kode_rect.h" />
 		<Unit filename="../../src/base/types/kode_stack.h" />
-		<Unit filename="../../src/base/types/kode_static_buffer.h" />
-		<Unit filename="../../src/base/types/kode_static_string.h" />
+		<Unit filename="../../src/base/types/kode_string.h" />
 		<Unit filename="../../src/base/types/kode_tree.h" />
+		<Unit filename="../../src/base/types/kode_types.h" />
 		<Unit filename="../../src/base/types/kode_vector.h" />
 		<Unit filename="../../src/base/utils/kode_bgra.h" />
 		<Unit filename="../../src/base/utils/kode_convert.h" />
@@ -272,41 +155,12 @@
 		<Unit filename="../../src/base/utils/kode_sort.h" />
 		<Unit filename="../../src/base/utils/kode_strutils.h" />
 		<Unit filename="../../src/base/utils/kode_tcc.h" />
+		<Unit filename="../../src/base/utils/kode_utils.h" />
 		<Unit filename="../../src/base/utils/kode_vm.h" />
 		<Unit filename="../../src/base/utils/kode_windowing.h" />
 		<Unit filename="../../src/extern/ctx/ctx-font-regular.h" />
 		<Unit filename="../../src/extern/ctx/ctx-test.c.h" />
 		<Unit filename="../../src/extern/ctx/ctx.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/clients/itk.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/convert/svg.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/ctx-nofont.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/ctx.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/deps/stb_image.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/deps/stb_image_write.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/deps/stb_truetype.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/fonts/ctx-font-ascii.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/fonts/ctx-font-mono.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/fonts/ctx-font-regular.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/src/a85.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/src/config.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/src/constants.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/src/ctx-extra.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/src/ctx-internal.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/src/ctx-list.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/src/ctx-split.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/src/ctx-string.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/src/ctx.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/src/drawlist.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/src/util.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/terminal/a85.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/terminal/base64.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/terminal/terminal.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/terminal/vt-audio.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/terminal/vt-encodings.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/terminal/vt-line.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/terminal/vt-utf8.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/terminal/vt.h" />
-		<Unit filename="../../src/extern/ctx/git/ctx.graphics/tests/test-size/tiny-config.h" />
 		<Unit filename="../../src/extern/mayer_fft/mayer_fft.c.h" />
 		<Unit filename="../../src/extern/mayer_fft/mayer_fft.h" />
 		<Unit filename="../../src/extern/pffft/fftpack.c.h" />
@@ -351,13 +205,25 @@
 		<Unit filename="../../src/extern/vst2/fst.h" />
 		<Unit filename="../../src/extern/vst2/vestige.h" />
 		<Unit filename="../../src/extern/vst2/vstfxstore.h" />
+		<Unit filename="../../src/extern/vst3/pluginterfaces/base/conststringtable.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/conststringtable.h" />
+		<Unit filename="../../src/extern/vst3/pluginterfaces/base/coreiids.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/doc.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/falignpop.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/falignpush.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/fplatform.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/fstrdefs.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/ftypes.h" />
+		<Unit filename="../../src/extern/vst3/pluginterfaces/base/funknown.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/funknown.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/futils.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/fvariant.h" />
@@ -373,6 +239,10 @@
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/pluginbasefwd.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/smartpointer.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/ucolorspec.h" />
+		<Unit filename="../../src/extern/vst3/pluginterfaces/base/ustring.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/ustring.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/gui/iplugview.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/gui/iplugviewcontentscalesupport.h" />
@@ -400,120 +270,44 @@
 		<Unit filename="../../src/extern/vst3/pluginterfaces/vst/vstpshpack4.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/vst/vstspeaker.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/vst/vsttypes.h" />
-		<Unit filename="../../src/gfx/_backup/kode_bitmap.h" />
-		<Unit filename="../../src/gfx/_backup/kode_bitmap_draw.h" />
-		<Unit filename="../../src/gfx/_backup/kode_bitmap_font.h" />
-		<Unit filename="../../src/gfx/_backup/kode_bitmap_utils.h" />
-		<Unit filename="../../src/gfx/_backup/kode_ctx.h" />
 		<Unit filename="../../src/gfx/kode_bitmap.h" />
-		<Unit filename="../../src/gui/_backup/base/kode_base_image.h" />
-		<Unit filename="../../src/gui/_backup/base/kode_base_painter.h" />
-		<Unit filename="../../src/gui/_backup/base/kode_base_surface.h" />
-		<Unit filename="../../src/gui/_backup/base/kode_base_window.h" />
-		<Unit filename="../../src/gui/_backup/cairo/kode_cairo.h" />
-		<Unit filename="../../src/gui/_backup/kode_drawable.h" />
-		<Unit filename="../../src/gui/_backup/kode_font.h" />
-		<Unit filename="../../src/gui/_backup/kode_gui_base.h" />
-		<Unit filename="../../src/gui/_backup/kode_image.h" />
-		<Unit filename="../../src/gui/_backup/kode_mouse_cursor.h" />
-		<Unit filename="../../src/gui/_backup/kode_painter.h" />
-		<Unit filename="../../src/gui/_backup/kode_surface.h" />
-		<Unit filename="../../src/gui/_backup/kode_widget.h" />
-		<Unit filename="../../src/gui/_backup/kode_window.h" />
-		<Unit filename="../../src/gui/_backup/xcb/kode_xcb.h" />
-		<Unit filename="../../src/gui/_backup/xcb/kode_xcb_image.h" />
-		<Unit filename="../../src/gui/_backup/xcb/kode_xcb_painter.h" />
-		<Unit filename="../../src/gui/_backup/xcb/kode_xcb_surface.h" />
-		<Unit filename="../../src/gui/_backup/xcb/kode_xcb_utils.h" />
-		<Unit filename="../../src/gui/_backup/xcb/kode_xcb_window.h" />
-		<Unit filename="../../src/gui/base/kode_base_image.h" />
-		<Unit filename="../../src/gui/base/kode_base_painter.h" />
-		<Unit filename="../../src/gui/base/kode_base_surface.h" />
-		<Unit filename="../../src/gui/base/kode_base_window.h" />
 		<Unit filename="../../src/gui/cairo/kode_cairo.h" />
 		<Unit filename="../../src/gui/cairo/kode_cairo_painter.h" />
 		<Unit filename="../../src/gui/cairo/kode_cairo_utils.h" />
-		<Unit filename="../../src/gui/ctx/kode_ctx.h" />
-		<Unit filename="../../src/gui/ctx/kode_ctx_painter.h" />
-		<Unit filename="../../src/gui/gdi/kode_gdi.h" />
 		<Unit filename="../../src/gui/kode_drawable.h" />
+		<Unit filename="../../src/gui/kode_gui_base.h" />
+		<Unit filename="../../src/gui/kode_gui_implementation.h" />
 		<Unit filename="../../src/gui/kode_image.h" />
 		<Unit filename="../../src/gui/kode_painter.h" />
 		<Unit filename="../../src/gui/kode_surface.h" />
 		<Unit filename="../../src/gui/kode_widget.h" />
-		<Unit filename="../../src/gui/kode_widgets.h" />
 		<Unit filename="../../src/gui/kode_window.h" />
-		<Unit filename="../../src/gui/wayland/kode_wayland.h" />
-		<Unit filename="../../src/gui/widgets/_template.h" />
-		<Unit filename="../../src/gui/widgets/kode_background_widget.h" />
-		<Unit filename="../../src/gui/widgets/kode_border_widget.h" />
-		<Unit filename="../../src/gui/widgets/kode_cached_widget.h" />
-		<Unit filename="../../src/gui/widgets/kode_image_widget.h" />
-		<Unit filename="../../src/gui/widgets/kode_panel_widget.h" />
-		<Unit filename="../../src/gui/widgets/kode_sa_header_widget.h" />
-		<Unit filename="../../src/gui/widgets/kode_slider_widget.h" />
-		<Unit filename="../../src/gui/widgets/kode_text_widget.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_image.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_painter.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_surface.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_utils.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_window.h" />
-		<Unit filename="../../src/host/kode_hosted_dssi_plugin.h" />
-		<Unit filename="../../src/host/kode_hosted_ladspa_plugin.h" />
-		<Unit filename="../../src/host/kode_hosted_plugin.h" />
-		<Unit filename="../../src/host/kode_hosted_tcc_plugin.h" />
-		<Unit filename="../../src/midi/kode_midi_buffer.h" />
-		<Unit filename="../../src/midi/kode_midi_events.h" />
-		<Unit filename="../../src/plugin/base/kode_base_instance.h" />
-		<Unit filename="../../src/plugin/dssi/kode_dssi.h" />
-		<Unit filename="../../src/plugin/dssi/kode_dssi_instance.h" />
-		<Unit filename="../../src/plugin/dssi/kode_dssi_plugin.h" />
-		<Unit filename="../../src/plugin/dssi/kode_dssi_utils.h" />
+		<Unit filename="../../src/kode.h" />
+		<Unit filename="../../src/kode_gui.h" />
+		<Unit filename="../../src/kode_plugin.h" />
 		<Unit filename="../../src/plugin/exe/kode_exe.h" />
 		<Unit filename="../../src/plugin/exe/kode_exe_instance.h" />
 		<Unit filename="../../src/plugin/exe/kode_exe_plugin.h" />
 		<Unit filename="../../src/plugin/exe/kode_exe_utils.h" />
 		<Unit filename="../../src/plugin/kode_descriptor.h" />
 		<Unit filename="../../src/plugin/kode_editor.h" />
-		<Unit filename="../../src/plugin/kode_editor_listener.h" />
 		<Unit filename="../../src/plugin/kode_instance.h" />
 		<Unit filename="../../src/plugin/kode_parameter.h" />
-		<Unit filename="../../src/plugin/kode_parameters.h" />
-		<Unit filename="../../src/plugin/kode_plugin.h" />
-		<Unit filename="../../src/plugin/kode_plugin_event.h" />
+		<Unit filename="../../src/plugin/kode_plugin_base.h" />
+		<Unit filename="../../src/plugin/kode_plugin_implementation.h" />
 		<Unit filename="../../src/plugin/kode_process_context.h" />
-		<Unit filename="../../src/plugin/ladspa/kode_ladspa.h" />
-		<Unit filename="../../src/plugin/ladspa/kode_ladspa_instance.h" />
-		<Unit filename="../../src/plugin/ladspa/kode_ladspa_plugin.h" />
-		<Unit filename="../../src/plugin/ladspa/kode_ladspa_utils.h" />
-		<Unit filename="../../src/plugin/lv2/kode_lv2.h" />
-		<Unit filename="../../src/plugin/lv2/kode_lv2_instance.h" />
-		<Unit filename="../../src/plugin/lv2/kode_lv2_plugin.h" />
-		<Unit filename="../../src/plugin/lv2/kode_lv2_utils.h" />
-		<Unit filename="../../src/plugin/parameters/kode_float_parameter.h" />
-		<Unit filename="../../src/plugin/parameters/kode_int_parameter.h" />
-		<Unit filename="../../src/plugin/parameters/kode_pow2_parameter.h" />
-		<Unit filename="../../src/plugin/parameters/kode_pow_parameter.h" />
-		<Unit filename="../../src/plugin/parameters/kode_text_parameter.h" />
-		<Unit filename="../../src/plugin/vst2/kode_vst2.h" />
-		<Unit filename="../../src/plugin/vst2/kode_vst2_instance.h" />
-		<Unit filename="../../src/plugin/vst2/kode_vst2_plugin.h" />
-		<Unit filename="../../src/plugin/vst2/kode_vst2_utils.h" />
+		<Unit filename="../../src/plugin/kode_program.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3.h" />
-		<Unit filename="../../src/plugin/vst3/kode_vst3_api.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_instance.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_plugin.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_utils.h" />
-		<Unit filename="../../test/test_gui.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../test/test_plugin.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../test/test_plugin_gui.cpp">
+		<Unit filename="../../test/test1.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>

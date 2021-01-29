@@ -2,23 +2,12 @@
 #define kode_xcb_image_included
 //----------------------------------------------------------------------
 
-/*
-
-  https://lists.freedesktop.org/archives/xcb/2006-October/002182.html
-
-  As it stands, xcb_image_put only works for sending full ZPixmap
-  images (x_offset==y_offset==0, width==image->width) to a server
-  having the same xcb_setup parameters as the client.
-
-*/
-
-//----------------------------------------------------------------------
-
-#include "base/kode.h"
+#include "kode.h"
 #include "gfx/kode_bitmap.h"
 #include "gui/kode_drawable.h"
-#include "gui/base/kode_base_image.h"
-#include "gui/xcb/kode_xcb.h"
+#include "gui/kode_gui_base.h"
+
+//----------------------------------------------------------------------
 
 class KODE_XcbImage
 : public KODE_BaseImage
@@ -29,54 +18,89 @@ private:
 //------------------------------
 
   xcb_image_t*      MImage            = KODE_NULL;
-  bool              MCreatedXcbImage  = false;
-  bool              MAllocated        = false;
-
-  uint32_t          MWidth            = 0;
-  uint32_t          MHeight           = 0;
-  uint32_t          MDepth            = 0;
-  uint32_t*         MBuffer           = KODE_NULL;
-  uint32_t          MBufferSize       = 0;
-  KODE_Bitmap*      MBitmap           = KODE_NULL;
-
   KODE_Drawable*    MTarget           = KODE_NULL;
   xcb_connection_t* MTargetConnection = KODE_NULL;
   xcb_visualid_t    MTargetVisual     = XCB_NONE;
-  xcb_drawable_t    MTargetDrawable   = XCB_NONE;
-
+  //xcb_drawable_t    MTargetDrawable   = XCB_NONE;
+  uint32_t          MWidth            = 0;
+  uint32_t          MHeight           = 0;
+  uint32_t          MDepth            = 0;
+  KODE_Bitmap*      MBitmap           = KODE_NULL;
+  bool              MAllocated        = false;
 
 //------------------------------
 public:
 //------------------------------
-
-  //todo: lazy creation, in case we only want to use the bitmap..
 
   KODE_XcbImage(KODE_Drawable* ATarget, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=32)
   : KODE_BaseImage(ATarget,AWidth,AHeight,ADepth) {
     MTarget           = ATarget;
     MTargetConnection = MTarget->getXcbConnection();
     MTargetVisual     = MTarget->getXcbVisual();
-    MTargetDrawable   = MTarget->getXcbDrawable();
-
+    //MTargetDrawable   = MTarget->getXcbDrawable();
     MWidth            = AWidth;
     MHeight           = AHeight;
     MDepth            = ADepth;
     MBitmap           = KODE_New KODE_Bitmap(AWidth,AHeight);
-    MBuffer           = MBitmap->getBuffer();
-    MBufferSize       = MBitmap->getBufferSize();
-
     MAllocated        = true;
+    create_xcb_image(ATarget);
+    #ifdef KODE_CAIRO
+    createCairoSurface();
+    #endif
+  }
 
-    //_create_xcb_image(ATarget);
+  //----------
 
+  KODE_XcbImage(KODE_Drawable* ATarget, KODE_Bitmap* ABitmap)
+  : KODE_BaseImage(ATarget,ABitmap) {
+    MTarget           = ATarget;
+    MTargetConnection = MTarget->getXcbConnection();
+    MTargetVisual     = MTarget->getXcbVisual();
+    //MTargetDrawable   = MTarget->getXcbDrawable();
+    MWidth      = MBitmap->getWidth();
+    MHeight     = MBitmap->getHeight();
+    MDepth      = MBitmap->getDepth();
+    MBitmap     = ABitmap;
+    MAllocated  = false;
+    create_xcb_image(ATarget);
+    #ifdef KODE_CAIRO
+    createCairoSurface();
+    #endif
   }
 
   //----------
 
   virtual ~KODE_XcbImage() {
-    if (MCreatedXcbImage) destroyXcbImage();
-    if (MAllocated && MBitmap) KODE_Delete MBitmap;
+    destroy_xcb_image();
+    if (MBitmap && MAllocated) KODE_Delete MBitmap;
+    #ifdef KODE_CAIRO
+    if (MCairoSurface) cairo_surface_destroy(MCairoSurface);
+    #endif
   }
+
+
+//------------------------------
+public: // drawable
+//------------------------------
+
+  bool              isImage()           final { return true; }
+  uint32_t          getWidth()          final { return MWidth; }
+  uint32_t          getHeight()         final { return MHeight; }
+  uint32_t          getDepth()          final { return MDepth; }
+  uint32_t          getStride()         final { return MBitmap->getStride(); }
+  uint32_t*         getBuffer()         final { return MBitmap->getBuffer(); }
+  KODE_Bitmap*      getBitmap()         final { return MBitmap; }
+
+  #ifdef KODE_XCB
+  xcb_image_t*      getXcbImage()       final { return MImage; }
+  xcb_connection_t* getXcbConnection()  final { return MTargetConnection; }
+  xcb_visualid_t    getXcbVisual()      final { return MTargetVisual; }
+  #endif
+
+  #ifdef KODE_CAIRO
+  bool              isCairo()           final { return false; }
+  cairo_surface_t*  getCairoSurface()   final { return MCairoSurface; }
+  #endif
 
 //------------------------------
 private:
@@ -99,19 +123,14 @@ private:
 
   */
 
-  void createXcbImage(KODE_Drawable* ATarget) {
-
-    //MTarget           = ATarget;
-    //MTargetConnection = ATarget->getConnection();
-    //MTargetVisual     = ATarget->getVisual();
-    //MTargetDrawable   = ATarget->getDrawable();
-
+  void create_xcb_image(KODE_Drawable* ATarget/*, KODE_Bitmap* ABitmap*/) {
+    uint32_t  width = MBitmap->getWidth(); // MWidth;
+    uint32_t  height = MBitmap->getHeight(); // MHeight;
     uint32_t* buffer = MBitmap->getBuffer();
     uint32_t  bufferSize = MBitmap->getBufferSize();
-
     MImage = xcb_image_create(
-      MWidth,//MBitmap->getWidth(),            // width      width in pixels.
-      MHeight,//MBitmap->getHeight(),           // height     height in pixels.
+      width,                          // width      width in pixels.
+      height,                         // height     height in pixels.
       XCB_IMAGE_FORMAT_Z_PIXMAP,      // format
       32,                             // xpad       scanline pad (8,16,32)
       24,                             // depth      (1,4,8,16,24 zpixmap),    (1 xybitmap), (anything xypixmap)
@@ -128,7 +147,6 @@ private:
     );
 
     xcb_flush(MTargetConnection);
-    MCreatedXcbImage = true;
 
   }
 
@@ -147,88 +165,27 @@ private:
     XDestroyImage().
   */
 
-  void destroyXcbImage() {
+  void destroy_xcb_image() {
     //MImage->data = nullptr; // crash
     MImage->base = nullptr;
     xcb_image_destroy(MImage);
-  }
-
-  //----------
-
-  //void checkImage() {
-  //  if (MCreatedXcbImage == false) {
-  //    createXcbImage(MTarget);
-  //  }
-  //}
-
-  xcb_image_t* _get_image() {
-    if (MCreatedXcbImage == false) {
-      createXcbImage(MTarget);
-    }
-    return MImage;
   }
 
 //------------------------------
 public:
 //------------------------------
 
-  //KODE_Bitmap*  getBitmap() { return MBitmap; }
-  //uint32_t*     getBuffer() { return MBitmap ? MBitmap->getBuffer() : KODE_NULL; }
-  //uint32_t      getStride() { return MBitmap ? MBitmap->getStride() : 0; }
-
-//------------------------------
-public: // paint source,target
-//------------------------------
-
-  bool              isImage()       final { return true; }
-
-  uint32_t          getWidth()      final { return MWidth; }
-  uint32_t          getHeight()     final { return MHeight; }
-  uint32_t          getDepth()      final { return MDepth; }
-
-  uint32_t          getStride()     final { return MBitmap->getStride(); }
-  KODE_Bitmap*      getBitmap()     final { return MBitmap; }
-  uint32_t*         getBuffer()     final { return MBitmap->getBuffer(); }
-
-  //xcb_image_t*      getXcbImage()   final { checkImage(); return MImage; }
-  xcb_image_t*      getXcbImage()   final { return _get_image(); }
-
-  //xcb_drawable_t    getXcbDrawable()    final { checkImage(); return MTargetDrawable; }
-  //xcb_connection_t* getXcbConnection()  final { checkImage(); return MTargetConnection; }
-  //xcb_visualid_t    getXcbVisual()      final { checkImage(); return MTargetVisual; }
-
-//------------------------------
-//
-//------------------------------
-
-//  void fill(KODE_Color AColor) /*final*/ {
-//    MBitmap->fill(AColor);
-//  }
-
-//  void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, KODE_Color AColor) /*final*/ {
-//    MBitmap->fillArea(AXpos,AYpos,AXpos+AWidth-1,AYpos+AHeight-1,AColor);
-//  }
-
-//  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) /*final*/ {
-//    if (ASource->isImage()) {
-//      KODE_Bitmap* bitmap = ASource->getBitmap();
-//      MBitmap->copyBitmap(ADstX,ADstY,bitmap);
-//    }
-//  }
-
-//  void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) /*final*/ {
-//    if (ASource->isImage()) {
-//      KODE_Bitmap* bitmap = ASource->getBitmap();
-//      KODE_Bitmap* sub = bitmap->createSubBitmap(ASrcX,ASrcY,ASrcX,ASrcH);
-//      MBitmap->copyBitmap(ADstX,ADstY,sub);
-//      KODE_Delete sub;
-//    }
-//  }
-
-//------------------------------
-//
-//------------------------------
-
+  #ifdef KODE_CAIRO
+  void createCairoSurface() {
+    MCairoSurface = cairo_image_surface_create_for_data(
+      (uint8_t*)MBitmap->getBuffer(),   // unsigned char *data,
+      CAIRO_FORMAT_ARGB32,              // cairo_format_t format,
+      MBitmap->getWidth(),              // int width,
+      MBitmap->getHeight(),             // int height,
+      MBitmap->getStride()              // int stride);
+    );
+  }
+  #endif
 };
 
 //----------------------------------------------------------------------

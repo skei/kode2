@@ -5,7 +5,7 @@
 #include <pthread.h>
 //#include <unistd.h> // sleep
 
-#include "base/kode_time.h"
+#include "base/system/kode_time.h"
 
 class KODE_Thread {
 
@@ -45,7 +45,7 @@ private:
 
   static
   void* threadProc(void* data) {
-    KODE_Trace("threadProc\n");
+    KODE_Print("threadProc\n");
     KODE_Thread* thr = (KODE_Thread*)data;
     if (thr) {
       if (thr->MThreadSleep >= 0) {
@@ -67,7 +67,7 @@ public:
 //------------------------------
 
   void start(void* usr, int32_t ms=-1) { // -1 = no timer
-    KODE_Trace("start\n");
+    KODE_Print("start\n");
     MUsr = usr;
     MThreadSleep = ms;
     MThreadRunning = true;
@@ -77,7 +77,7 @@ public:
   //----------
 
   void stop(void) {
-    KODE_Trace("stop\n");
+    KODE_Print("stop\n");
     MThreadRunning = false;
     void* ret;
     pthread_join(MThreadHandle,&ret);

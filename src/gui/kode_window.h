@@ -2,42 +2,12 @@
 #define kode_window_included
 //----------------------------------------------------------------------
 
-#include "base/kode.h"
+#include "kode.h"
+//#include "gui/kode_gui_implementation.h"
 #include "gui/kode_painter.h"
 #include "gui/kode_surface.h"
 #include "gui/kode_widget.h"
 
-//----------------------------------------------------------------------
-
-#if defined KODE_XCB
-  #include "gui/xcb/kode_xcb_window.h"
-  #ifdef KODE_GUI_XCB
-    typedef KODE_XcbWindow KODE_ImplementedWindow;
-  #endif
-#endif
-
-//----------------------------------------------------------------------
-
-typedef KODE_ImplementedWindow KODE_SimpleWindow;
-
-//----------------------------------------------------------------------
-//
-//----------------------------------------------------------------------
-
-//class KODE_PaintedWindow
-//: public KODE_ImplementedWindow {
-//};
-//
-//class KODE_BufferedWindow
-//: public KODE_PaintedWindow {
-//};
-//
-//class KODE_WidgetWindow
-//: public KODE_BufferedWindow {
-//};
-
-//----------------------------------------------------------------------
-//
 //----------------------------------------------------------------------
 
 class KODE_Window
@@ -45,7 +15,7 @@ class KODE_Window
 , public KODE_Widget {
 
 //------------------------------
-private:
+protected:
 //------------------------------
 
   // painted
@@ -53,8 +23,6 @@ private:
   uint32_t      MWindowWidth            = 0;  // overrides xcbWindow
   uint32_t      MWindowHeight           = 0;
   KODE_Painter* MWindowPainter          = KODE_NULL;
-  bool          MFillWindowBackground   = false;
-  KODE_Color    MBackgroundColor        = KODE_Color(0.4f);
 
   // buffered
 
@@ -65,13 +33,14 @@ private:
   KODE_Surface* MBufferSurface          = KODE_NULL;
   #endif
 
-  // widget
-
   KODE_Widget*  MHoverWidget            = KODE_NULL;
   KODE_Widget*  MModalWidget            = KODE_NULL;
   KODE_Widget*  MMouseClickedWidget     = KODE_NULL;
   KODE_Widget*  MKeyCaptureWidget       = KODE_NULL;
 
+//------------------------------
+protected:
+//------------------------------
 
 //------------------------------
 public:
@@ -80,30 +49,23 @@ public:
   KODE_Window(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL)
   : KODE_ImplementedWindow(AWidth,AHeight,ATitle,AParent)
   , KODE_Widget(KODE_FRect(AWidth,AHeight)) {
-
     MName = "KODE_Window";
     MRect = KODE_FRect(AWidth,AHeight);
     MWindowWidth = AWidth;
     MWindowHeight = AHeight;
     MWindowPainter = KODE_New KODE_Painter(this);
-    //#ifdef KODE_PLUGIN_EXE
-    //  MFillWindowBackground = true;
-    //#endif
     #ifndef KODE_NO_WINDOW_BUFFERING
       createBuffer(AWidth,AHeight);
     #endif
-
   }
 
   //----------
 
   virtual ~KODE_Window() {
-
     if (MWindowPainter) KODE_Delete MWindowPainter;
     #ifndef KODE_NO_WINDOW_BUFFERING
       destroyBuffer();
     #endif
-
   }
 
 //------------------------------
@@ -117,24 +79,33 @@ public:
 public: // painted
 //------------------------------
 
-  void setFillBackground(bool AFill=true) {
-    MFillWindowBackground = AFill;
-  }
+//  void setFillBackground(bool AFill=true) {
+//    MFillWindowBackground = AFill;
+//  }
+//
+//  //----------
+//
+//  void setBackgroundColor(KODE_Color AColor) {
+//    MBackgroundColor = AColor;
+//  }
+//
+//  //----------
+//
+//  void fillBackground(KODE_FRect ARect) {
+//    #ifdef KODE_NO_WINDOW_BUFFERING
+//      MWindowPainter->fillRect(ARect,MBackgroundColor);
+//    #else
+//      MBufferPainter->fillRect(ARect,MBackgroundColor);
+//    #endif
+//  }
 
-  //----------
+//------------------------------
+public: // window
+//------------------------------
 
-  void setBackgroundColor(KODE_Color AColor) {
-    MBackgroundColor = AColor;
-  }
-
-  //----------
-
-  void fillBackground(KODE_FRect ARect) {
-    #ifdef KODE_NO_WINDOW_BUFFERING
-      MWindowPainter->fillRect(ARect,MBackgroundColor);
-    #else
-      MBufferPainter->fillRect(ARect,MBackgroundColor);
-    #endif
+  void open() override {
+    alignChildren();
+    KODE_ImplementedWindow::open();
   }
 
 //------------------------------
@@ -173,7 +144,7 @@ private: // buffer
   #endif // KODE_NO_WINDOW_BUFFERING
 
 //------------------------------
-private:
+public:
 //------------------------------
 
   void paintWidget(KODE_Widget* AWidget, KODE_FRect ARect, uint32_t AMode=0) {
@@ -186,6 +157,7 @@ private:
       int32_t w = ARect.w;
       int32_t h = ARect.h;
       blit(x,y,MBufferSurface,x,y,w,h);
+      //MWindowPainter->drawBitmap(ARect.x,ARect.y,MBufferSurface,ARect);
     #endif
   }
 
@@ -199,7 +171,7 @@ private:
     MWindowHeight = AHeight;
     MRect.w = AWidth;
     MRect.h = AHeight;
-    alignChildWidgets();
+    alignChildren();
     if (MWindowPainter) MWindowPainter->resize(AWidth,AHeight);
   }
 
@@ -207,27 +179,18 @@ private:
 
   void updateHoverWidget(uint32_t AXpos, uint32_t AYpos, bool ALeave=false) {
     KODE_Widget* hover = KODE_NULL;
-    if (!ALeave) hover = findChildWidget(AXpos,AYpos);
+    if (!ALeave) hover = findChild(AXpos,AYpos);
     if (hover != MHoverWidget) {
       if (MHoverWidget) {
-        MHoverWidget->MIsHovering = false;
+        MHoverWidget->MStates.hovering = false;
         MHoverWidget->on_widget_leave(AXpos,AYpos,hover);
       }
       if (hover) {
-        hover->MIsHovering = true;
+        hover->MStates.hovering = true;
         hover->on_widget_enter(AXpos,AYpos,MHoverWidget);
       }
       MHoverWidget = hover;
     }
-  }
-
-//------------------------------
-public: // window
-//------------------------------
-
-  void open() override {
-    alignChildWidgets();
-    KODE_ImplementedWindow::open();
   }
 
 //------------------------------
@@ -247,9 +210,9 @@ public: // base window
   //----------
 
   void on_window_paint(uint32_t AXpos, uint32_t AYpos, uint32_t AWidth, uint32_t AHeight) override {
-    //KODE_Print("x %i y %i w %i h %i\n",AXpos,AYpos,AWidth,AHeight);
+   //KODE_Print("x %i y %i w %i h %i\n",AXpos,AYpos,AWidth,AHeight);
     KODE_FRect rect = KODE_FRect(AXpos,AYpos,AWidth,AHeight);
-    if (MFillWindowBackground) fillBackground(rect);
+    //if (MFillWindowBackground) fillBackground(rect);
     paintWidget(this,rect,0);
     //on_widget_paint(MWindowPainter,rect,0);
   }
@@ -271,7 +234,7 @@ public: // base window
   void on_window_mouseClick(int32_t AXpos, int32_t AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp) override {
     if (MHoverWidget) {
       MMouseClickedWidget = MHoverWidget;
-      MHoverWidget->MIsClicked = true;
+      MHoverWidget->MStates.clicked = true;
       MHoverWidget->on_widget_mouseClick(AXpos,AYpos,AButton,AState);
       //grabMouseCursor();
     }
@@ -281,7 +244,7 @@ public: // base window
 
   void on_window_mouseRelease(int32_t AXpos, int32_t AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp) override {
     if (MMouseClickedWidget) {
-      MMouseClickedWidget->MIsClicked = false;
+      MMouseClickedWidget->MStates.clicked = false;
       MMouseClickedWidget->on_widget_mouseRelease(AXpos,AYpos,AButton,AState);
       MMouseClickedWidget = KODE_NULL;
       //releaseMouseCursor();
@@ -335,8 +298,8 @@ public: // base window
 public: // "widget listener"
 //------------------------------
 
-  void do_widget_moved(KODE_Widget* AWidget, uint32_t AXdelta, uint32_t AYdelta) override {
-  }
+//  void do_widget_moved(KODE_Widget* AWidget, uint32_t AXdelta, uint32_t AYdelta) override {
+//  }
 
   //----------
 
@@ -353,8 +316,8 @@ public: // "widget listener"
 //    }
 //  }
 
-  void do_widget_resized(KODE_Widget* AWidget, uint32_t AXdelta, uint32_t AYdelta) override {
-  }
+//  void do_widget_resized(KODE_Widget* AWidget, uint32_t AXdelta, uint32_t AYdelta) override {
+//  }
 
   //----------
 
@@ -387,7 +350,7 @@ public: // "widget listener"
 //    }
 //  }
 
-  void do_widget_setCursor(KODE_Widget* AWidget, uint32_t ACursor) override {
+  void do_widget_setMouseCursor(KODE_Widget* AWidget, uint32_t ACursor) override {
     setMouseCursor(ACursor);
   }
 
@@ -397,22 +360,13 @@ public: // "widget listener"
 
   //----------
 
-//  void do_setModal(KODE_Widget* ASender) override {
-//    MModalWidget = ASender;
-//    if (ASender) {
-//    }
-//    else {
-//      updateHoverWidget(MMouseX,MMouseY);
-//    }
-//  }
-
-  void do_widget_setModal(KODE_Widget* AWidget) override {
+  void do_widget_grabModal(KODE_Widget* AWidget) override {
     MModalWidget = AWidget;
   }
 
   //----------
 
-  void do_widget_keyCapture(KODE_Widget* AWidget) override {
+  void do_widget_grabKeyboard(KODE_Widget* AWidget) override {
     MKeyCaptureWidget = AWidget;
   }
 
@@ -433,6 +387,7 @@ public: // "widget listener"
   //}
 
 //------------------------------
+
 
 };
 

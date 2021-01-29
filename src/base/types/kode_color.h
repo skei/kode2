@@ -2,7 +2,7 @@
 #define kode_color_included
 //----------------------------------------------------------------------
 
-#include "base/kode.h"
+#include "kode.h"
 
 class KODE_Color {
 

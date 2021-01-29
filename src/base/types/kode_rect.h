@@ -2,7 +2,7 @@
 #define kode_rect_included
 //----------------------------------------------------------------------
 
-#include "base/kode.h"
+#include "kode.h"
 //#include "base/types/kode_point.h"
 
 template <typename T>

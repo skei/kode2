@@ -7,7 +7,7 @@
 
 //----------------------------------------------------------------------
 
-const uint8_t KODE_NULL_ID[16]          = {0};
+//const uint8_t KODE_NULL_ID[16]          = {0};
 const char    KODE_HEX_TABLE[]          = "0123456789ABCDEF";
 const char    KODE_CSYMBOLS[]     = "________________________________________________0123456789_______ABCDEFGHIJKLMNOPQRSTUVWXYZ______abcdefghijklmnopqrstuvwxyz_____";
 

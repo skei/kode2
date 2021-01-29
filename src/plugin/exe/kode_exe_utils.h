@@ -2,9 +2,7 @@
 #define kode_exe_utils_included
 //----------------------------------------------------------------------
 
-#include "kode.h"
-#include "plugin/exe/kode_exe.h"
-
+//#include "plugin/kode_plugin_base.h"
 
 //----------------------------------------------------------------------
 #endif

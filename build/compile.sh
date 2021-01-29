@@ -1,60 +1,36 @@
 #!/bin/bash
 
-#g++
-#-Wall
-#-std=c++11
-#-m64
-#-fexceptions
-#-Wl,--as-needed
-#-O3
-#-O2
-#-fPIC
-#-Wl,--as-needed
-#-faligned-new
-#-msse4
-#-mfpmath=sse
-#-DKODE_PLUGIN_VST3
-#-I../../src
-#-c compile.cpp
-#-o compile.o
+ALL_C_FLAGS="-std=c++11 -Wall -Wl,--as-needed, -faligned-new, -fexceptions "
+DEBUG_C_FLAGS="-g, -Wl,-Bsymbolic, -rdynamic -DKODE_DEBUG "
+RELEASE_C_FLAGS="-O3, -s, -msse4, -mfpmath=sse "
+EXE_C_FLAGS="-fno-pie "
+VST_C_FLAGS="-fPIE "
 
-#g++
-#-shared
-#compile.o
-#-o plugin.so
-#-m64
-#-s
-#-fPIE
-#-lrt
-#-lpthread
-#-lxcb
-#-lxcb-util
-#-lxcb-image
-#-lxcb-cursor
-#-lxcb-keysyms
-#-lcairo
-#-lportaudio
-#-lSDL2
-#-lSDL2_image
-#-lSDL2_mixer
+ALL_L_FLAGS="-lrt, -lpthread, -lxcb, -lxcb-util, -lxcb-image, -lxcb-cursor, -lxcb-keysyms, -lcairo, -lportaudio, -lSDL2, -lSDL2_image, -lSDL2_mixer "
+EXE_L_FLAGS="-no-pie "
+VST_L_FLAGS="-fPIE, -fPIC "
 
-#TODO
+#----------
 
 # --------------------------------------------------
 # default values
 # --------------------------------------------------
 
-#ARCH=64
+ARCH=64
 DEBUG="off"
-#GPL="off"
+GPL="off"
 FORMAT="vst3"
 GUI="nogui"
 PAINTER="nopainter"
+FLAGS=""
+LIBS=""
+
 #FLAGS="-Wall "
-DEF=""
-INC="-I../src "
-LIB=""
-POST="-s -lstdc++ -lm "
+#DEF=""
+#INC="-I../src "
+#LIB=""
+#POST="-s -lstdc++ -lm "
+
 
 # --------------------------------------------------
 # help
@@ -88,7 +64,7 @@ if [ "$#" -eq 0 ]; then
 fi
 
 #while getopts i:o:t:g:a:v:dhF:GD:I:L: opt
-while getopts i:o:f:g:p:d opt
+while getopts i:o:f:g:p:a:dhG opt
 do
   case "$opt" in
     i) INPUT="$OPTARG";;
@@ -96,12 +72,12 @@ do
     f) FORMAT="$OPTARG";;
     g) GUI="$OPTARG";;
     g) PAINTER="$OPTARG";;
+    a) ARCH="$OPTARG";;
     d) DEBUG="on";;
-#    a) ARCH="$OPTARG";;
+    h) print_help;;
+    G) GPL="on";;
 #    v) VERSION="$OPTARG";;
-#    h) print_help;;
 #    F) FLAGS+="$OPTARG ";;
-#    G) GPL="on";;
 #    D) DEF+="-D$OPTARG ";;
 #    I) INC+="-I$OPTARG ";;
 #    L) LIB+="-l$OPTARG ";;
@@ -124,10 +100,10 @@ echo "INPUT_BASE: $INPUT_BASE"
 echo "INPUT_EXT : $INPUT_EXT"
 echo "INPUT_DIR : $INPUT_DIR"
 
-# input = ../plugins/fx_pitch.h"
-# input_file = fx_pitch.h
+# input = ../plugins/fx_pitch.cpp"
+# input_file = fx_pitch.cpp
 # input_base = fx_pitch
-# input_ext = h
+# input_ext = cpp
 # input_dir = ../plugins/
 
 OUTPUT_FILE=${OUTPUT##*/}
@@ -141,6 +117,7 @@ echo "OUTPUT_FILE: $OUTPUT_FILE"
 echo "OUTPUT_BASE: $OUTPUT_BASE"
 echo "OUTPUT_EXT : $OUTPUT_EXT"
 echo "OUTPUT_DIR : $OUTPUT_DIR"
+
 # --------------------------------------------------
 #
 # --------------------------------------------------
@@ -152,9 +129,9 @@ echo "OUTPUT_DIR : $OUTPUT_DIR"
 # ----------
 
 if [ "$DEBUG" = "on" ]; then
-  DEF+="-DKODE_DEBUG "
+  C_FLAGS+=""
 else
-  FLAGS="-O2 "
+  FLAGS=""
 fi
 
 # ----------
@@ -166,43 +143,38 @@ fi
 # ----------
 
 if [ "$TYPE" = "exe" ]; then
-  DEF+="-DKODE_PLUGIN_EXE "
+  FLAGS+="-DKODE_PLUGIN_EXE "
 fi
 
 if [ "$TYPE" = "ladspa" ]; then
-  FLAGS+="-fPIC -shared "
-  DEF+="-DKODE_PLUGIN_LADSPA "
+  FLAGS+="-DKODE_PLUGIN_LADSPA "
 fi
 
 if [ "$TYPE" = "dssi" ]; then
-  FLAGS+="-fPIC -shared "
-  DEF+="-DKODE_PLUGIN_DSSI "
+  FLAGS+="-DKODE_PLUGIN_DSSI "
 fi
 
 if [ "$TYPE" = "lv2" ]; then
-  FLAGS+="-fPIC -shared "
-  DEF+="-DKODE_PLUGIN_LV2 "
+  FLAGS+="-DKODE_PLUGIN_LV2 "
 fi
 
 if [ "$TYPE" = "vst2" ]; then
-  FLAGS+="-fPIC -shared "
-  DEF+="-DKODE_PLUGIN_VST2 "
+  FLAGS+="-DKODE_PLUGIN_VST2 "
 fi
 
 if [ "$TYPE" = "vst3" ]; then
-  FLAGS+="-fPIC -shared "
-  DEF+="-DKODE_PLUGIN_VST3 "
+  FLAGS+="-DKODE_PLUGIN_VST3 "
 fi
 
 # ----------
 
-#if [ "$ARCH" = "32" ]; then
-#  FLAGS+="-m32 "
-#fi
+if [ "$ARCH" = "32" ]; then
+  FLAGS+="-m32 "
+fi
 
-#if [ "$ARCH" = "64" ]; then
-#  FLAGS+="-m64 "
-#fi
+if [ "$ARCH" = "64" ]; then
+  FLAGS+="-m64 "
+fi
 
 # ----------
 
@@ -211,30 +183,27 @@ if [ "$GUI" = "nogui" ]; then
 fi
 
 if [ "$GUI" = "xcb" ]; then
-  DEF+="-DKODE_GUI_XCB "
-  LIB+="-lx11 -lxrender -lxft "
+  FLAGS+="-DKODE_GUI_XCB "
 fi
 
 # ----------
 
 if [ "$PAINTER" = "nopainter" ]; then
-  DEF+="-DKODE_NO_PAINTER "
+  FLAGS+="-DKODE_NO_PAINTER "
 fi
 
 if [ "$PAINTER" = "cairo" ]; then
-  DEF+="-DKODE_PAINTER_CAIRO "
-#  LIB+="-lx11 -lxrender -lxft "
+  FLAGS+="-DKODE_PAINTER_CAIRO "
 fi
 
 if [ "$PAINTER" = "xcb" ]; then
-  DEF+="-DKODE_PAINTER_XCB "
-  LIB+="-lx11 -lxrender -lxft "
+  FLAGS+="-DKODE_PAINTER_XCB "
 fi
 
 # ----------
 
-INC+="-I"
-INC+=$INPUT_DIR
+#INC+="-I"
+#INC+=$INPUT_DIR
 
 # --------------------------------------------------
 # printout
@@ -256,8 +225,8 @@ INC+=$INPUT_DIR
 # --------------------------------------------------
 
 # echo 'compile.cpp:'
-echo '#include "base/kode.h"' >> compile.cpp
-echo '#include "'$INPUT_FILE'"' >> compile.cpp
+#echo '#include "base/kode.h"' >> compile.cpp
+#echo '#include "'$INPUT_FILE'"' >> compile.cpp
 
 # --------------------------------------------------
 # finalize command line

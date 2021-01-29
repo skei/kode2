@@ -7,7 +7,7 @@
 #ifdef KODE_LINUX
 
 // -lpthread
-//#include <pthread.h>
+#include <pthread.h>
 
 class KODE_Lock {
 

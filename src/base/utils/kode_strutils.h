@@ -2,7 +2,7 @@
 #define kode_strutils_included
 //----------------------------------------------------------------------
 
-#include "base/kode.h"
+#include "kode.h"
 #include "base/utils/kode_random.h"
 
 //----------------------------------------------------------------------

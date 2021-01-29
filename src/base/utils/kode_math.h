@@ -5,7 +5,7 @@
 #include <math.h>
 #include <stdlib.h> // abs
 
-#include "base/kode.h"
+#include "kode.h"
 
 //----------------------------------------------------------------------
 

@@ -9,7 +9,7 @@
 
 //----------------------------------------------------------------------
 
-#include "base/kode.h"
+#include "kode.h"
 #include "base/utils/kode_bgra.h"
 #include "base/utils/kode_integer.h"
 #include "base/utils/kode_math.h"
@@ -27,9 +27,9 @@
   #include "extern/stb/stb_truetype.h"
 #endif
 
-//#ifdef KODE_CAIRO
-//  #include "gui/cairo/kode_cairo.h"
-//#endif
+#ifdef KODE_CAIRO
+  #include "gui/cairo/kode_cairo.h"
+#endif
 
 //----------------------------------------------------------------------
 
@@ -45,6 +45,10 @@ private:
   uint32_t* MBuffer     = 0;
   uint32_t  MBufferSize = 0;
   bool      MAllocated  = false;
+
+  #ifdef KODE_CAIRO
+  cairo_surface_t*  MCairoSurface = KODE_NULL;
+  #endif
 
 //------------------------------
 public:
@@ -100,14 +104,14 @@ public:
     int x,y,n;
     unsigned char* data = stbi_load_from_memory(buffer,length,&x,&y,&n,4 /*0*/ );
 
-    MWidth  = x;
-    MHeight = y;
+    MWidth      = x;
+    MHeight     = y;
     MStride     = MWidth  * 4; //n;
     MBufferSize = MStride * MHeight;
     MBuffer     = (uint32_t*)KODE_Malloc(MBufferSize);
     MAllocated  = true;
     KODE_Memcpy(MBuffer,data,MBufferSize);
-//    convertRgbaBgra();
+    //convertRgbaBgra();
     swapLayer(0,2);
     stbi_image_free(data);
   }
@@ -175,6 +179,15 @@ public: // drawable
 //  KODE_Bitmap*  getBitmap()   final { return this; }
 //  uint32_t*     getBuffer()   final { return MBuffer; }
 //  uint32_t      getStride()   final { return MStride; }
+
+//------------------------------
+public:
+//------------------------------
+
+  #ifdef KODE_CAIRO
+  void createCairoSurface() {
+  }
+  #endif
 
 //------------------------------
 public:
@@ -470,13 +483,22 @@ public:
   //TODO: stride / sub-bitmaps
 
   void fillLayer(uint32_t ALayer, uint8_t AValue) {
-    uint32_t size = MWidth * MHeight;
-    uint8_t* ptr = (uint8_t*)MBuffer;
-    ptr += ALayer;
-    for (uint32_t i=0; i<size; i++) {
-      *ptr = AValue;
-      ptr += 4;
+    //uint32_t size = MWidth * MHeight;
+    //uint8_t* ptr = (uint8_t*)MBuffer;
+    //ptr += ALayer;
+    //for (uint32_t i=0; i<size; i++) {
+    //  *ptr = AValue;
+    //  ptr += 4;
+    //}
+    for (uint32_t y=0; y<MHeight; y++) {
+      uint8_t* ptr = (uint8_t*)getLinePtr(y);
+      ptr += ALayer;
+      for (uint32_t x=0; x<MWidth; x++) {
+        *ptr = AValue;
+        ptr += 4;
+      }
     }
+
   }
 
   //----------

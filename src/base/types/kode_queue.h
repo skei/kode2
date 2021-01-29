@@ -16,7 +16,7 @@
     reordering of instructions?
 */
 
-#include "base/kode.h"
+#include "kode.h"
 
 //----------------------------------------------------------------------
 
