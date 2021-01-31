@@ -2,10 +2,13 @@
 #define kode_bitmap_included
 //----------------------------------------------------------------------
 
-//#define KODE_NO_BITMAP_PNG
+#define KODE_NO_BITMAP_PNG
 #define KODE_NO_BITMAP_PNG_FILE
-#define KODE_NO_BITMAP_FONT
+
 #define KODE_NO_BITMAP_DRAW
+#define KODE_NO_BITMAP_FONT
+#define KODE_NO_BITMAP_PROC
+#define KODE_NO_BITMAP_GEN
 
 //----------------------------------------------------------------------
 
@@ -45,10 +48,6 @@ private:
   uint32_t* MBuffer     = 0;
   uint32_t  MBufferSize = 0;
   bool      MAllocated  = false;
-
-  #ifdef KODE_CAIRO
-  cairo_surface_t*  MCairoSurface = KODE_NULL;
-  #endif
 
 //------------------------------
 public:
@@ -169,49 +168,21 @@ public:
   uint32_t  getBufferSize() { return MBufferSize; }
 
 //------------------------------
-public: // drawable
-//------------------------------
-
-//  bool          isBitmap()    final { return false; }
-//  uint32_t      getWidth()    final { return MWidth; }
-//  uint32_t      getHeight()   final { return MHeight; }
-//  uint32_t      getDepth()    final { return 32; }
-//  KODE_Bitmap*  getBitmap()   final { return this; }
-//  uint32_t*     getBuffer()   final { return MBuffer; }
-//  uint32_t      getStride()   final { return MStride; }
-
-//------------------------------
 public:
 //------------------------------
 
   #ifdef KODE_CAIRO
-  void createCairoSurface() {
-  }
-  #endif
-
-//------------------------------
-public:
-//------------------------------
-
-  /*
-
-  #ifdef KODE_CAIRO
-
-  cairo_surface_t* createCairoSurface(void) {
+  cairo_surface_t* createCairoSurface() {
     cairo_surface_t* surface = cairo_image_surface_create_for_data(
-      (unsigned char*)MBuffer,  // unsigned char *data,
-      CAIRO_FORMAT_ARGB32,      // cairo_format_t format,
-      MWidth,                   // int width,
-      MHeight,                  // int height,
-      MStride                   // int stride);
+      (uint8_t*)MBuffer,    // unsigned char *data,
+      CAIRO_FORMAT_ARGB32,  // cairo_format_t format,
+      MWidth,               // int width,
+      MHeight,              // int height,
+      MStride               // int stride);
     );
-    //KODE_Trace("%s\n",cairo_status_to_string(cairo_surface_status(surface)));
     return surface;
   }
-
   #endif
-
-  */
 
 //------------------------------
 public:
@@ -955,6 +926,15 @@ public:
     #include "gfx/kode_bitmap_font.h"
   #endif
 
+  #ifndef KODE_NO_BITMAP_PROC
+    #include "gfx/kode_bitmap_proc.h"
+  #endif
+
+  #ifndef KODE_NO_BITMAP_GEN
+    #include "gfx/kode_bitmap_gen.h"
+  #endif
+
+//------------------------------
 
 };
 

@@ -2,7 +2,7 @@
 #define kode_array_included
 //----------------------------------------------------------------------
 
-#include "base/utils/kode_integer.h" // KODE_NextPowerOfTwo
+#include "base/utils/kode_integer_math.h" // KODE_NextPowerOfTwo
 #include "base/kode_stdlib.h"
 
 //----------------------------------------------------------------------

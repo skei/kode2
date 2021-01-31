@@ -5,29 +5,28 @@
 #include "kode.h"
 #include "gui/kode_gui_base.h"
 #include "gui/kode_painter.h"
+#include "plugin/kode_parameter.h"
 
 //----------------------------------------------------------------------
 
 struct KODE_WidgetOptions {
   bool autoMouseCapture = true;
-  bool autoClip = true;
-  bool autoHint = true;
+  bool autoClip         = true;
+  bool autoHint         = true;
 };
 
 struct KODE_WidgetStates {
-  bool active = true;
-  bool visible = true;
-  bool interactive = true;
-  bool hovering = true;
-  bool clicked = true;
+  bool active       = true;
+  bool visible      = true;
+  bool interactive  = true;
+  bool hovering     = true;
+  bool clicked      = true;
 };
 
 struct KODE_WidgetLayout {
   uint32_t    alignment     = KODE_WIDGET_ALIGN_PARENT;
   KODE_FRect  innerBorder   = KODE_FRect(0);
   KODE_FPoint widgetSpacing = KODE_FPoint(0);
-  KODE_FRect  initialRect   = KODE_FRect(0);
-  KODE_FRect  contentRect   = KODE_FRect(0);
 };
 
 class KODE_Widget;
@@ -45,24 +44,26 @@ class KODE_Widget {
 protected:
 //------------------------------
 
-  const char*         MName = "KODE_Widget";
-  KODE_FRect          MRect = KODE_FRect(0);
+  const char*         MName         = "KODE_Widget";
+  KODE_FRect          MRect         = KODE_FRect(0);
+  float               MValue        = 0.0f;
+  KODE_Widget*        MParent       = KODE_NULL;
+  KODE_Widgets        MChildren;
   KODE_WidgetLayout   MLayout;
   KODE_WidgetOptions  MOptions;
-
-  KODE_Widget*        MParent = KODE_NULL;
   KODE_WidgetStates   MStates;
-  KODE_Widgets        MChildren;
-  float               MValue = 0.0f;
+  KODE_FRect          MInitialRect  = KODE_FRect(0);
+  KODE_FRect          MContentRect  = KODE_FRect(0);
+  KODE_Parameter*     MParameter    = 0;
 
 //------------------------------
 public:
 //------------------------------
 
   KODE_Widget(KODE_FRect ARect) {
-    MRect               = ARect;
-    MLayout.initialRect = ARect;
-    MLayout.contentRect = KODE_FRect(0);
+    MRect        = ARect;
+    MInitialRect = ARect;
+    MContentRect = KODE_FRect(0);
   }
 
   virtual ~KODE_Widget() {
@@ -79,6 +80,9 @@ public:
   //void setWidgetParent(KODE_BaseWidget* AWidget) override {}
   //void setWidgetValue(float AValue) override {}
   //float getWidgetValue() override { return 0.0f; }
+
+  void setParameter(KODE_Parameter* p) { MParameter = p; }
+  KODE_Parameter* getParameter() { return MParameter; }
 
 //------------------------------
 public:
@@ -138,7 +142,7 @@ public:
         rect, we could just subtract it..)
       */
 
-      KODE_FRect rect = widget->MLayout.initialRect;
+      KODE_FRect rect = widget->MInitialRect;
 
       switch (widget->MLayout.alignment) {
 

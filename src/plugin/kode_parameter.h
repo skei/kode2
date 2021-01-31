@@ -9,18 +9,50 @@ struct KODE_ParameterOptions {
 //----------------------------------------------------------------------
 
 class KODE_Parameter {
+
+//------------------------------
+protected:
+//------------------------------
+
+  KODE_ParameterOptions MOptions;
+  const char*           MName       = "";
+  const char*           MLabel      = "";
+  float                 MDefValue   = 0.0f;
+  float                 MMinValue   = 0.0f;
+  float                 MMaxValue   = 1.0f;
+  uint32_t              MNumSteps   = 0;
+
+//------------------------------
 public:
-  KODE_ParameterOptions options;
-  const char* name = "";
-  const char* label = "";
-  float def_value = 0.0f;
-  float min_value = 0.0f;
-  float max_value = 1.0f;
-  uint32_t num_steps = 0;
-public: // implemented in KODE_*Parameter
-  virtual float from01(float AValue) { return AValue; }
-  virtual float to01(float AValue) { return AValue; }
-  virtual void getDisplayString(float AValue, char* ABuffer) {}
+//------------------------------
+
+  KODE_Parameter() {
+  }
+
+  //----------
+
+  virtual ~KODE_Parameter() {
+  }
+
+//------------------------------
+public:
+//------------------------------
+
+  virtual float from01(float AValue) {
+    return AValue;
+  }
+
+  //----------
+
+  virtual float to01(float AValue) {
+    return AValue;
+  }
+
+  //----------
+
+  virtual void  getDisplayString(float AValue, char* ABuffer) {
+  }
+
 };
 
 //----------------------------------------------------------------------

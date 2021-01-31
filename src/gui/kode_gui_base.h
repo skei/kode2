@@ -39,20 +39,20 @@ public:
   KODE_BasePainter(KODE_Drawable* ATarget) {}
   virtual ~KODE_BasePainter() {}
 public:
+  virtual void resize(uint32_t AWidth, uint32_t AHeight) {}
+  virtual void setClip(KODE_FRect ARect) {}
+  virtual void resetClip() {}
   virtual void drawLine(float AXpos1, float AYpos1, float AXpos2, float AYpos2, KODE_Color AColor) {}
-  virtual void drawLines(float* ACoords, uint32_t ACount, KODE_Color AColor) {}
   virtual void drawRect(KODE_FRect ARect, KODE_Color AColor) {}
   virtual void fillRect(KODE_FRect ARect, KODE_Color AColor) {}
   virtual void drawPie(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor) {}
   virtual void fillPie(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor) {}
   virtual void drawText(float AXpos, float AYpos, const char* AText, KODE_Color AColor) {}
   virtual void drawText(KODE_FRect ARect, const char* AText, uint32_t AAlignment, KODE_Color AColor) {}
+  virtual void uploadBitmap(float AXpos, float AYpos, KODE_Bitmap* ABitmap) {}
   virtual void drawBitmap(float AXpos, float AYpos, KODE_Drawable* ASource) {}
   virtual void drawBitmap(float AXpos, float AYpos, KODE_Drawable* ASource, KODE_FRect ASrc) {}
   virtual void drawBitmap(KODE_FRect ADst, KODE_Drawable* ASource, KODE_FRect ASrc) {}
-  virtual void setClip(KODE_FRect ARect) {}
-  virtual void resetClip() {}
-  virtual void resize(uint32_t AWidth, uint32_t AHeight) {}
 };
 
 //----------------------------------------------------------------------
@@ -98,11 +98,11 @@ public:
   virtual void sendEvent(uint32_t AData, uint32_t AType) {}
   virtual void flush(void) {}
   virtual void sync(void) {}
-public:
-  virtual void fill(KODE_Color AColor) {}
-  virtual void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, KODE_Color AColor) {}
-  virtual void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) {}
-  virtual void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) {}
+//public:
+//  virtual void fill(KODE_Color AColor) {}
+//  virtual void fill(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight, KODE_Color AColor) {}
+//  virtual void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource) {}
+//  virtual void blit(int32_t ADstX, int32_t ADstY, KODE_Drawable* ASource, int32_t ASrcX, int32_t ASrcY, int32_t ASrcW, int32_t ASrcH) {}
 };
 
 //----------------------------------------------------------------------

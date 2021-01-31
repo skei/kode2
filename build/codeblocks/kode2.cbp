@@ -205,25 +205,13 @@
 		<Unit filename="../../src/extern/vst2/fst.h" />
 		<Unit filename="../../src/extern/vst2/vestige.h" />
 		<Unit filename="../../src/extern/vst2/vstfxstore.h" />
-		<Unit filename="../../src/extern/vst3/pluginterfaces/base/conststringtable.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/conststringtable.h" />
-		<Unit filename="../../src/extern/vst3/pluginterfaces/base/coreiids.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/doc.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/falignpop.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/falignpush.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/fplatform.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/fstrdefs.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/ftypes.h" />
-		<Unit filename="../../src/extern/vst3/pluginterfaces/base/funknown.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/funknown.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/futils.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/fvariant.h" />
@@ -239,10 +227,6 @@
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/pluginbasefwd.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/smartpointer.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/ucolorspec.h" />
-		<Unit filename="../../src/extern/vst3/pluginterfaces/base/ustring.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
 		<Unit filename="../../src/extern/vst3/pluginterfaces/base/ustring.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/gui/iplugview.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/gui/iplugviewcontentscalesupport.h" />

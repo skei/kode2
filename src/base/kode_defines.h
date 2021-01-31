@@ -98,16 +98,16 @@
     #define KODE_XCB
   #endif
 
-  #ifdef KODE_GUI_CAIRO
-    #define KODE_GUI_DEFINED
-    #define KODE_XCB
-    #define KODE_CAIRO
-  #endif
+  //#ifdef KODE_GUI_CAIRO
+  //  #define KODE_GUI_DEFINED
+  //  #define KODE_XCB
+  //  #define KODE_CAIRO
+  //#endif
 
 #ifndef KODE_GUI_DEFINED
   #warning no gui type defined!
   #undef KODE_XCB
-  #undef KODE_CAIRO
+  //#undef KODE_CAIRO
   #define KODE_NO_GUI
   //#define KODE_XCB
   //#define KODE_GUI_XCB

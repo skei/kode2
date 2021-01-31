@@ -7,6 +7,10 @@
 #include "gui/kode_drawable.h"
 #include "gui/kode_gui_base.h"
 
+#ifdef KODE_CAIRO
+#include "gui/cairo/kode_cairo.h"
+#endif
+
 //----------------------------------------------------------------------
 
 class KODE_XcbImage
@@ -21,7 +25,7 @@ private:
   KODE_Drawable*    MTarget           = KODE_NULL;
   xcb_connection_t* MTargetConnection = KODE_NULL;
   xcb_visualid_t    MTargetVisual     = XCB_NONE;
-  //xcb_drawable_t    MTargetDrawable   = XCB_NONE;
+  xcb_drawable_t    MTargetDrawable   = XCB_NONE;
   uint32_t          MWidth            = 0;
   uint32_t          MHeight           = 0;
   uint32_t          MDepth            = 0;
@@ -37,16 +41,13 @@ public:
     MTarget           = ATarget;
     MTargetConnection = MTarget->getXcbConnection();
     MTargetVisual     = MTarget->getXcbVisual();
-    //MTargetDrawable   = MTarget->getXcbDrawable();
+    MTargetDrawable   = MTarget->getXcbDrawable();
     MWidth            = AWidth;
     MHeight           = AHeight;
     MDepth            = ADepth;
     MBitmap           = KODE_New KODE_Bitmap(AWidth,AHeight);
     MAllocated        = true;
     create_xcb_image(ATarget);
-    #ifdef KODE_CAIRO
-    createCairoSurface();
-    #endif
   }
 
   //----------
@@ -56,16 +57,13 @@ public:
     MTarget           = ATarget;
     MTargetConnection = MTarget->getXcbConnection();
     MTargetVisual     = MTarget->getXcbVisual();
-    //MTargetDrawable   = MTarget->getXcbDrawable();
-    MWidth      = MBitmap->getWidth();
-    MHeight     = MBitmap->getHeight();
-    MDepth      = MBitmap->getDepth();
-    MBitmap     = ABitmap;
-    MAllocated  = false;
+    MTargetDrawable   = MTarget->getXcbDrawable();
+    MWidth            = MBitmap->getWidth();
+    MHeight           = MBitmap->getHeight();
+    MDepth            = MBitmap->getDepth();
+    MBitmap           = ABitmap;
+    MAllocated        = false;
     create_xcb_image(ATarget);
-    #ifdef KODE_CAIRO
-    createCairoSurface();
-    #endif
   }
 
   //----------
@@ -73,9 +71,6 @@ public:
   virtual ~KODE_XcbImage() {
     destroy_xcb_image();
     if (MBitmap && MAllocated) KODE_Delete MBitmap;
-    #ifdef KODE_CAIRO
-    if (MCairoSurface) cairo_surface_destroy(MCairoSurface);
-    #endif
   }
 
 
@@ -84,22 +79,17 @@ public: // drawable
 //------------------------------
 
   bool              isImage()           final { return true; }
+
   uint32_t          getWidth()          final { return MWidth; }
   uint32_t          getHeight()         final { return MHeight; }
   uint32_t          getDepth()          final { return MDepth; }
-  uint32_t          getStride()         final { return MBitmap->getStride(); }
-  uint32_t*         getBuffer()         final { return MBitmap->getBuffer(); }
+
   KODE_Bitmap*      getBitmap()         final { return MBitmap; }
 
   #ifdef KODE_XCB
-  xcb_image_t*      getXcbImage()       final { return MImage; }
   xcb_connection_t* getXcbConnection()  final { return MTargetConnection; }
   xcb_visualid_t    getXcbVisual()      final { return MTargetVisual; }
-  #endif
-
-  #ifdef KODE_CAIRO
-  bool              isCairo()           final { return false; }
-  cairo_surface_t*  getCairoSurface()   final { return MCairoSurface; }
+  xcb_image_t*      getXcbImage()       final { return MImage; }
   #endif
 
 //------------------------------
@@ -176,16 +166,18 @@ public:
 //------------------------------
 
   #ifdef KODE_CAIRO
-  void createCairoSurface() {
-    MCairoSurface = cairo_image_surface_create_for_data(
+  cairo_surface_t* createCairoSurface() {
+    cairo_surface_t* surface = cairo_image_surface_create_for_data(
       (uint8_t*)MBitmap->getBuffer(),   // unsigned char *data,
       CAIRO_FORMAT_ARGB32,              // cairo_format_t format,
       MBitmap->getWidth(),              // int width,
       MBitmap->getHeight(),             // int height,
       MBitmap->getStride()              // int stride);
     );
+    return surface;
   }
   #endif
+
 };
 
 //----------------------------------------------------------------------

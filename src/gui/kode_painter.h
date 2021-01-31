@@ -3,7 +3,16 @@
 //----------------------------------------------------------------------
 
 #include "kode.h"
-#include "gui/kode_gui_implementation.h"
+//#include "gui/kode_gui_implementation.h"
+
+#ifdef KODE_XCB
+  #include "gui/xcb/kode_xcb_painter.h"
+#endif
+
+#ifdef KODE_GUI_XCB
+  typedef KODE_XcbPainter KODE_ImplementedPainter;
+#endif
+
 
 //----------------------------------------------------------------------
 

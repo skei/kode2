@@ -2,6 +2,13 @@
 #define kode_xcb_painter_included
 //----------------------------------------------------------------------
 
+#include "gui/kode_gui_base.h"
+#include "gui/xcb/kode_xcb_utils.h"
+
+#ifdef KODE_CAIRO
+  #include "gui/cairo/kode_cairo.h"
+#endif
+
 class KODE_XcbPainter
 : public KODE_BasePainter {
 
@@ -9,9 +16,11 @@ class KODE_XcbPainter
 private:
 //------------------------------
 
-  KODE_Drawable*    MTarget         = KODE_NULL;
-  xcb_connection_t* MConnection     = KODE_NULL;
-  xcb_drawable_t    MDrawable = XCB_NONE;
+  KODE_Drawable*    MTarget       = KODE_NULL;
+  xcb_connection_t* MConnection   = KODE_NULL;
+  xcb_drawable_t    MDrawable     = XCB_NONE;
+  uint32_t          MWidth        = 0;
+  uint32_t          MHeight       = 0;
 
   xcb_gcontext_t    MGC           = XCB_NONE;
   int32_t           MFontAscent   = 0;
@@ -34,6 +43,8 @@ public:
       MTarget     = ATarget;
       MConnection = ATarget->getXcbConnection();
       MDrawable   = ATarget->getXcbDrawable();
+      MWidth      = ATarget->getWidth();
+      MHeight     = ATarget->getHeight();
       MGC         = xcb_generate_id(MConnection);
       uint32_t mask =
         //XCB_GC_FUNCTION
@@ -64,7 +75,6 @@ public:
       };
       xcb_create_gc(MConnection,MGC,MDrawable,mask,values);
       xcb_flush(MConnection);
-//      MClipRect = KODE_Rect( 0,0,ATarget->getWidth(),ATarget->getHeight() );
     }
   }
 
@@ -74,6 +84,24 @@ public:
     //xcb_flush(MConnection);
     xcb_free_gc(MConnection,MGC);
   }
+
+//------------------------------
+public:
+//------------------------------
+
+  #ifdef KODE_CAIRO
+  cairo_surface_t* void createCairoSurface() {
+    cairo_surface_t* surface = MCairoSurface = cairo_xcb_surface_create(
+      MConnection,
+      MDrawable,
+      kode_xcb_find_visual(MConnection,MVisual),
+      MWidth,
+      MHeight
+    );
+    return surface;
+  }
+  #endif
+
 
 //------------------------------
 private:
@@ -118,6 +146,49 @@ private:
 public:
 //------------------------------
 
+  void resize(uint32_t AWidth, uint32_t AHeight) final {
+    MWidth = AWidth;
+    MHeight = AHeight;
+    // cairo: cairo_xcb_surface_set_size:
+
+  }
+
+  //----------
+
+  void setClip(KODE_FRect ARect) final {
+    //resetClip();
+    xcb_rectangle_t rectangles[] = {{
+      (int16_t)ARect.x,
+      (int16_t)ARect.y,
+      (uint16_t)ARect.w, // +1
+      (uint16_t)ARect.h  // +1
+    }};
+    xcb_set_clip_rectangles(
+      MConnection,
+      XCB_CLIP_ORDERING_UNSORTED, // ordering,
+      MGC,
+      0, // clip_x_origin
+      0, // clip_y_origin
+      1, // rectangles_len
+      rectangles
+    );
+    xcb_flush(MConnection);
+  }
+
+  //----------
+
+  void resetClip() final {
+    uint32_t mask = XCB_GC_CLIP_MASK;
+    uint32_t values[1];
+    values[0] = XCB_NONE;
+    xcb_change_gc(MConnection, MGC, mask, values);
+    xcb_flush(MConnection);
+  }
+
+//------------------------------
+public:
+//------------------------------
+
   void drawLine(float AXpos1, float AYpos1, float AXpos2, float AYpos2, KODE_Color AColor) final {
     set_color(AColor);
     xcb_point_t polyline[] =  {
@@ -125,11 +196,6 @@ public:
       (int16_t)AXpos2, (int16_t)AYpos2,
     };
     xcb_poly_line(MConnection,XCB_COORD_MODE_ORIGIN,MDrawable,MGC,2,polyline);
-  }
-
-  //----------
-
-  void drawLines(float* ACoords, uint32_t ACount, KODE_Color AColor) final {
   }
 
   //----------
@@ -235,6 +301,46 @@ public:
 
   //----------
 
+  void uploadBitmap(float AXpos, float AYpos, KODE_Bitmap* ABitmap) final {
+    uint32_t width      = ABitmap->getWidth();
+    uint32_t height     = ABitmap->getHeight();
+    uint32_t buffersize = ABitmap->getBufferSize();
+    uint32_t* buffer    = ABitmap->getBuffer();
+    xcb_image_t* image = xcb_image_create(
+      width,                          // width      width in pixels.
+      height,                         // height     height in pixels.
+      XCB_IMAGE_FORMAT_Z_PIXMAP,      // format
+      32,                             // xpad       scanline pad (8,16,32)
+      24,                             // depth      (1,4,8,16,24 zpixmap),    (1 xybitmap), (anything xypixmap)
+      32,                             // bpp        (1,4,8,16,24,32 zpixmap,  (1 xybitmap), (anything xypixmap)
+      32,                             // unit       unit of image representation, in bits (8,16,32)
+      XCB_IMAGE_ORDER_LSB_FIRST,      // byte_order
+      XCB_IMAGE_ORDER_LSB_FIRST,      // bit_order
+      buffer,                         // base       The base address of malloced image data
+      buffersize,                     // bytes      The size in bytes of the storage pointed to by base.
+                                      //            If base == 0 and bytes == ~0 and data == 0, no storage will be auto-allocated.
+      (uint8_t*)buffer                // data       The image data. If data is null and bytes != ~0, then an attempt will be made
+                                      //            to fill in data; from base if it is non-null (and bytes is large enough), else
+                                      //            by mallocing sufficient storage and filling in base.
+    );
+    //xcb_flush(MTargetConnection);
+    xcb_image_put(
+      MConnection,            // xcb_connection_t*  conn,
+      MDrawable,              // xcb_drawable_t     draw,
+      MGC,                    // xcb_gcontext_t     gc,
+      image,                  // xcb_image_t*       image,
+      AXpos,                  // int16_t            x,
+      AYpos,                  // int16_t            y,
+      0                       // uint8_t            left_pad
+    );
+    //xcb_flush(MConnection);
+    image->base = KODE_NULL;
+    xcb_image_destroy(image);
+    xcb_flush(MConnection);
+  }
+
+  //----------
+
   void drawBitmap(float AXpos, float AYpos, KODE_Drawable* ASource) final {
     if (ASource->isImage()) {
       xcb_image_put(
@@ -278,7 +384,7 @@ public:
 
   void drawBitmap(float AXpos, float AYpos, KODE_Drawable* ASource, KODE_FRect ASrc) final {
     if (ASource->isImage()) {
-
+      KODE_Bitmap* bitmap = ASource->getBitmap();
       kode_xcb_put_image(
         MConnection,
         MDrawable,
@@ -288,10 +394,9 @@ public:
         AXpos,
         AYpos,
         MTarget->getDepth(),  //ASource->getDepth(),
-        ASource->getStride(),
-        ASource->getBitmap()->getPixelPtr(ASrc.x,ASrc.y)//getBuffer()
+        bitmap->getStride(),
+        bitmap->getPixelPtr(ASrc.x,ASrc.y)  //getBuffer()
       );
-
       xcb_flush(MConnection);
       //#ifdef KODE_CAIRO
       //cairo_surface_mark_dirty_rectangle(MCairoSurface,src_x,src_y,src_w,src_h);
@@ -329,41 +434,6 @@ public:
   }
 
   //----------
-
-  void setClip(KODE_FRect ARect) final {
-    //resetClip();
-    xcb_rectangle_t rectangles[] = {{
-      (int16_t)ARect.x,
-      (int16_t)ARect.y,
-      (uint16_t)ARect.w, // +1
-      (uint16_t)ARect.h  // +1
-    }};
-    xcb_set_clip_rectangles(
-      MConnection,
-      XCB_CLIP_ORDERING_UNSORTED, // ordering,
-      MGC,
-      0, // clip_x_origin
-      0, // clip_y_origin
-      1, // rectangles_len
-      rectangles
-    );
-    xcb_flush(MConnection);
-  }
-
-  //----------
-
-  void resetClip() final {
-    uint32_t mask = XCB_GC_CLIP_MASK;
-    uint32_t values[1];
-    values[0] = XCB_NONE;
-    xcb_change_gc(MConnection, MGC, mask, values);
-    xcb_flush(MConnection);
-  }
-
-  //----------
-
-  void resize(uint32_t AWidth, uint32_t AHeight) final {
-  }
 
 };
 

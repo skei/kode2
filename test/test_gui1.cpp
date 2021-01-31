@@ -1,9 +1,11 @@
 
 #define KODE_GUI_XCB
 
-//#define KODE_NO_WINDOW_BUFFERING
-
 #include "kode.h"
+#include "gui/kode_window.h"
+#include "gui/kode_surface.h"
+#include "gui/kode_image.h"
+#include "gui/kode_painter.h"
 
 //----------------------------------------------------------------------
 
@@ -18,6 +20,7 @@ public:
 
   myWindow(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL)
   : KODE_Window(AWidth,AHeight,ATitle,AParent) {
+    setFillBackground();
     MImage = KODE_New KODE_Image(this,100,100);
     MSurface = KODE_New KODE_Surface(this,100,100);
     KODE_Bitmap* bitmap = MImage->getBitmap();
@@ -34,16 +37,9 @@ public:
     KODE_Delete MSurface;
   }
 
-  void on_window_paint(uint32_t AXpos, uint32_t AYpos, uint32_t AWidth, uint32_t AHeight) final {
-    fill(AXpos,AYpos,AWidth,AHeight,KODE_Color(0.3,0,0));
-    blit( 10,10,MImage);
-    blit(120,10,MSurface);
-    //KODE_Painter* painter = MBufferPainter;// MWindowPainter;
-    KODE_Painter* painter = KODE_New KODE_Painter(this);
-    //painter->fillRect(KODE_FRect(AXpos,AYpos,AWidth,AHeight),KODE_Color(0.3f));
-    painter->drawBitmap(10,120,MImage,KODE_FRect(0,0,100,100)); // only full image (width)
-    painter->drawBitmap(120,120,MSurface,KODE_FRect(0,0,100,100));
-    KODE_Delete painter;
+  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
+    APainter->drawBitmap(10,120,MImage,KODE_FRect(0,0,100,100)); // only full image (width)
+    APainter->drawBitmap(120,120,MSurface,KODE_FRect(0,0,100,100));
   }
 
 };

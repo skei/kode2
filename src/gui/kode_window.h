@@ -8,6 +8,14 @@
 #include "gui/kode_surface.h"
 #include "gui/kode_widget.h"
 
+#ifdef KODE_XCB
+  #include "gui/xcb/kode_xcb_window.h"
+#endif
+
+#ifdef KODE_GUI_XCB
+  typedef KODE_XcbWindow KODE_ImplementedWindow;
+#endif
+
 //----------------------------------------------------------------------
 
 class KODE_Window
@@ -37,6 +45,9 @@ protected:
   KODE_Widget*  MModalWidget            = KODE_NULL;
   KODE_Widget*  MMouseClickedWidget     = KODE_NULL;
   KODE_Widget*  MKeyCaptureWidget       = KODE_NULL;
+
+  bool          MFillBackground         = false;
+  KODE_Color    MBackgroundColor        = KODE_Color(0.3f);
 
 //------------------------------
 protected:
@@ -79,25 +90,32 @@ public:
 public: // painted
 //------------------------------
 
-//  void setFillBackground(bool AFill=true) {
-//    MFillWindowBackground = AFill;
-//  }
-//
-//  //----------
-//
-//  void setBackgroundColor(KODE_Color AColor) {
-//    MBackgroundColor = AColor;
-//  }
-//
-//  //----------
-//
-//  void fillBackground(KODE_FRect ARect) {
-//    #ifdef KODE_NO_WINDOW_BUFFERING
-//      MWindowPainter->fillRect(ARect,MBackgroundColor);
-//    #else
-//      MBufferPainter->fillRect(ARect,MBackgroundColor);
-//    #endif
-//  }
+  void setFillBackground(bool AFill=true, KODE_Color AColor=KODE_Color(0.3f)) {
+    MFillBackground = AFill;
+    MBackgroundColor = AColor;
+  }
+
+  //----------
+
+  //void setFillBackground(bool AFill=true) {
+  //  MFillBackground = AFill;
+  //}
+
+  //----------
+
+  //void setBackgroundColor(KODE_Color AColor) {
+  //  MBackgroundColor = AColor;
+  //}
+
+  //----------
+
+  void fillBackground(KODE_FRect ARect) {
+    #ifdef KODE_NO_WINDOW_BUFFERING
+      MWindowPainter->fillRect(ARect,MBackgroundColor);
+    #else
+      MBufferPainter->fillRect(ARect,MBackgroundColor);
+    #endif
+  }
 
 //------------------------------
 public: // window
@@ -152,12 +170,7 @@ public:
       AWidget->on_widget_paint(MWindowPainter,ARect,AMode);
     #else
       AWidget->on_widget_paint(MBufferPainter,ARect,AMode);
-      int32_t x = ARect.x;
-      int32_t y = ARect.y;
-      int32_t w = ARect.w;
-      int32_t h = ARect.h;
-      blit(x,y,MBufferSurface,x,y,w,h);
-      //MWindowPainter->drawBitmap(ARect.x,ARect.y,MBufferSurface,ARect);
+      MWindowPainter->drawBitmap(ARect.x,ARect.y,MBufferSurface,ARect);
     #endif
   }
 
@@ -204,17 +217,14 @@ public: // base window
 
   void on_window_resize(uint32_t AWidth, uint32_t AHeight) override {
     resizeWindow(AWidth,AHeight);
-    //MWindowPainter->resize(AWidth,AHeight);
   }
 
   //----------
 
   void on_window_paint(uint32_t AXpos, uint32_t AYpos, uint32_t AWidth, uint32_t AHeight) override {
-   //KODE_Print("x %i y %i w %i h %i\n",AXpos,AYpos,AWidth,AHeight);
     KODE_FRect rect = KODE_FRect(AXpos,AYpos,AWidth,AHeight);
-    //if (MFillWindowBackground) fillBackground(rect);
+    if (MFillBackground) fillBackground(rect);
     paintWidget(this,rect,0);
-    //on_widget_paint(MWindowPainter,rect,0);
   }
 
   //----------

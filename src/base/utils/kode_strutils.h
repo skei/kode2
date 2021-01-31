@@ -120,8 +120,8 @@ char* KODE_FindString(char* buffer, char* str) {
 
 // https://stackoverflow.com/questions/7666509/hash-function-for-string
 
-uint32_t KODE_HashString(char* buffer) {
-  char* ptr = buffer;
+uint32_t KODE_HashString(const char* buffer) {
+  char* ptr = (char*)buffer;
   unsigned long h = 5381;
   int c;
   while ((c = *ptr++)) {

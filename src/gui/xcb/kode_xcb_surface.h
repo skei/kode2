@@ -7,6 +7,10 @@
 #include "gui/kode_drawable.h"
 #include "gui/kode_gui_base.h"
 
+#ifdef KODE_CAIRO
+#include "gui/cairo/kode_cairo.h"
+#endif
+
 //----------------------------------------------------------------------
 
 class KODE_XcbSurface
@@ -28,10 +32,6 @@ private:
   bool              MIsWindow         = false;
   xcb_window_t      MWindow           = XCB_NONE;
 
-  #ifdef KODE_CAIRO
-  cairo_surface_t*  MCairoSurface     = KODE_NULL;
-  #endif
-
 //------------------------------
 public:
 //------------------------------
@@ -50,9 +50,6 @@ public:
     MWindow     = ATarget->getXcbWindow();
     MIsWindow   = true;
     xcb_flush(MConnection);
-    #ifdef KODE_CAIRO
-    createCairoSurface();
-    #endif
   }
 
   //----------
@@ -82,9 +79,6 @@ public:
       );
     //}
     xcb_flush(MConnection);
-    #ifdef KODE_CAIRO
-    createCairoSurface();
-    #endif
   }
 
   //----------
@@ -93,9 +87,6 @@ public:
     if (!MIsWindow) {
       xcb_free_pixmap(MConnection,MPixmap);
     }
-    #ifdef KODE_CAIRO
-    if (MCairoSurface) cairo_surface_destroy(MCairoSurface);
-    #endif
   }
 
 //------------------------------
@@ -104,31 +95,30 @@ public: // drawable
 
   bool                isSurface()         final { return true; }
   bool                isDrawable()        final { return true; }
+
   uint32_t            getWidth()          final { return MWidth; }
   uint32_t            getHeight()         final { return MHeight; }
   uint32_t            getDepth()          final { return MDepth; }
+
   xcb_pixmap_t        getXcbPixmap()      final { return MPixmap; }
   xcb_connection_t*   getXcbConnection()  final { return MConnection; }
   xcb_visualid_t      getXcbVisual()      final { return MTargetVisual; }
   xcb_drawable_t      getXcbDrawable()    final { return MPixmap; } //MTargetDrawable; }
-  #ifdef KODE_CAIRO
-  bool                isCairo()           final { return true; }
-  cairo_surface_t*    getCairoSurface()   final { return MCairoSurface; }
-  #endif
 
 //------------------------------
 public:
 //------------------------------
 
   #ifdef KODE_CAIRO
-  void createCairoSurface() {
-    MCairoSurface = cairo_xcb_surface_create(
+  cairo_surface_t* void createCairoSurface() {
+    cairo_surface_t* surface = MCairoSurface = cairo_xcb_surface_create(
       MConnection,
       MPixmap,
       kode_xcb_find_visual(MConnection,MVisual),
       MWidth,
       MHeight
     );
+    return surface;
   }
   #endif
 

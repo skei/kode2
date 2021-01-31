@@ -11,8 +11,15 @@
 const char    KODE_HEX_TABLE[]          = "0123456789ABCDEF";
 const char    KODE_CSYMBOLS[]     = "________________________________________________0123456789_______ABCDEFGHIJKLMNOPQRSTUVWXYZ______abcdefghijklmnopqrstuvwxyz_____";
 
+// 4         4    5         5
+// 123456789abcdef0123456789a
+// abcdefghijklmnopqrstuvwxyz
+// 5f = _
+
 #define KODE_MAGIC        0x4b5f0000    // 'K_' + 0x0000
 #define KODE_MAGIC_USER   0x6b5f0000    // 'k_' + 0x0000
+#define KODE_MAGIC_K_PL   0x4b5f504c
+#define KODE_MAGIC_K_ED   0x4b5f4544
 
 #ifdef KODE_CPP11
   #define KODE_NULL nullptr
