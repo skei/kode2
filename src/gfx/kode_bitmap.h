@@ -14,7 +14,7 @@
 
 #include "kode.h"
 #include "base/utils/kode_bgra.h"
-#include "base/utils/kode_integer.h"
+#include "base/utils/kode_integer_math.h"
 #include "base/utils/kode_math.h"
 //#include "gui/kode_drawable.h"
 

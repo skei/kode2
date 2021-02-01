@@ -102,6 +102,8 @@
 			<Add library="SDL2_image" />
 			<Add library="SDL2_mixer" />
 		</Linker>
+		<Unit filename="../../src/audio/io/kode_jack.h" />
+		<Unit filename="../../src/audio/io/kode_portaudio.h" />
 		<Unit filename="../../src/base/debug/kode_debug.h" />
 		<Unit filename="../../src/base/debug/kode_debug_assert.h" />
 		<Unit filename="../../src/base/debug/kode_debug_callstack.h" />
@@ -146,7 +148,7 @@
 		<Unit filename="../../src/base/utils/kode_easing.h" />
 		<Unit filename="../../src/base/utils/kode_fast_math.h" />
 		<Unit filename="../../src/base/utils/kode_inifile.h" />
-		<Unit filename="../../src/base/utils/kode_integer.h" />
+		<Unit filename="../../src/base/utils/kode_integer_math.h" />
 		<Unit filename="../../src/base/utils/kode_interpolation.h" />
 		<Unit filename="../../src/base/utils/kode_isaac.h" />
 		<Unit filename="../../src/base/utils/kode_math.h" />
@@ -260,7 +262,6 @@
 		<Unit filename="../../src/gui/cairo/kode_cairo_utils.h" />
 		<Unit filename="../../src/gui/kode_drawable.h" />
 		<Unit filename="../../src/gui/kode_gui_base.h" />
-		<Unit filename="../../src/gui/kode_gui_implementation.h" />
 		<Unit filename="../../src/gui/kode_image.h" />
 		<Unit filename="../../src/gui/kode_painter.h" />
 		<Unit filename="../../src/gui/kode_surface.h" />
@@ -273,8 +274,6 @@
 		<Unit filename="../../src/gui/xcb/kode_xcb_utils.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_window.h" />
 		<Unit filename="../../src/kode.h" />
-		<Unit filename="../../src/kode_gui.h" />
-		<Unit filename="../../src/kode_plugin.h" />
 		<Unit filename="../../src/plugin/exe/kode_exe.h" />
 		<Unit filename="../../src/plugin/exe/kode_exe_instance.h" />
 		<Unit filename="../../src/plugin/exe/kode_exe_plugin.h" />
@@ -283,15 +282,19 @@
 		<Unit filename="../../src/plugin/kode_editor.h" />
 		<Unit filename="../../src/plugin/kode_instance.h" />
 		<Unit filename="../../src/plugin/kode_parameter.h" />
+		<Unit filename="../../src/plugin/kode_plugin.h" />
 		<Unit filename="../../src/plugin/kode_plugin_base.h" />
-		<Unit filename="../../src/plugin/kode_plugin_implementation.h" />
 		<Unit filename="../../src/plugin/kode_process_context.h" />
 		<Unit filename="../../src/plugin/kode_program.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_instance.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_plugin.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_utils.h" />
-		<Unit filename="../../test/test1.cpp">
+		<Unit filename="../../test/test2.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../test/test_gui1.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>

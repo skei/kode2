@@ -2,28 +2,53 @@
 #define kode_enums_included
 //----------------------------------------------------------------------
 
-enum KODE_EFontSlants {
-  KODE_FONT_SLANT_NORMAL  = 0,
-  KODE_FONT_SLANT_ITALIC  = 1,
-  KODE_FONT_SLANT_OBLIQUE = 2
+//----------------------------------------------------------------------
+// base
+//----------------------------------------------------------------------
+
+enum KODE_EThreadIds {
+  KODE_THREAD_ID_NONE   = 0,
+  KODE_THREAD_ID_KILL   = 666,
+  KODE_THREAD_ID_TIMER  = 667,
+  KODE_THREAD_ID_IDLE   = 668
 };
 
-enum KODE_EFfontWeights {
-  KODE_FONT_WEIGHT_NORMAL = 0,
-  KODE_FONT_WEIGHT_BOLD   = 1
+//----------------------------------------------------------------------
+// plugin
+//----------------------------------------------------------------------
+
+enum KODE_EParameterUpdateModes {
+  KODE_PARAMETER_UPDATE_NORMAL    = 0,
+  KODE_PARAMETER_UPDATE_ALL       = 1//,
+  //KODE_PARAMETER_UPDATE_PROCESS   = 2
 };
 
-enum KODE_ELineCaps {
-  KODE_LINE_CAP_BUTT      = 0,
-  KODE_LINE_CAP_ROUND     = 1,
-  KODE_LINE_CAP_SQUARE    = 2
+enum KODE_EPluginEventTypes {
+  KODE_PLUGIN_EVENT_NONE          = 0,
+  KODE_PLUGIN_EVENT_PARAMETER     = 1,
+  KODE_PLUGIN_EVENT_MIDI          = 2
 };
 
-enum KODE_ELineJoins {
-  KODE_LINE_JOIN_MITER    = 0,
-  KODE_LINE_JOIN_ROUND    = 1,
-  KODE_LINE_JOIN_BEVEL    = 2
+enum KODE_EPluginPlayStates {
+  KODE_PLUGIN_PLAYSTATE_NONE      = 0,
+  KODE_PLUGIN_PLAYSTATE_PLAYING   = 1,
+  KODE_PLUGIN_PLAYSTATE_RECORDING = 2,
+  KODE_PLUGIN_PLAYSTATE_LOOPING   = 3
 };
+
+enum KODE_EPluginStates {
+  KODE_PLUGIN_STATE_NONE          = 0,
+  KODE_PLUGIN_STATE_OPEN          = 1,
+  KODE_PLUGIN_STATE_INITIALIZE    = 2,
+  KODE_PLUGIN_STATE_ACTIVATE      = 3,
+  KODE_PLUGIN_STATE_DEACTIVATE    = 4,
+  KODE_PLUGIN_STATE_TERMINATE     = 5,
+  KODE_PLUGIN_STATE_CLOSE         = 6
+};
+
+//----------------------------------------------------------------------
+// gui
+//----------------------------------------------------------------------
 
 enum KODE_EMouseCursors {
   KODE_CURSOR_HIDE                = -1,
@@ -56,51 +81,6 @@ enum KODE_EKeyState {
   KODE_KEY_CTRL,
   KODE_KEY_ALT,
   KODE_KEY_ALTGR
-};
-
-enum KODE_EParameterUpdateModes {
-  KODE_PARAMETER_UPDATE_NORMAL    = 0,
-  KODE_PARAMETER_UPDATE_ALL       = 1//,
-  //KODE_PARAMETER_UPDATE_PROCESS   = 2
-};
-
-enum KODE_EPluginEventTypes {
-  KODE_PLUGIN_EVENT_NONE          = 0,
-  KODE_PLUGIN_EVENT_PARAMETER     = 1,
-  KODE_PLUGIN_EVENT_MIDI          = 2
-};
-
-enum KODE_EPluginPlayStates {
-  KODE_PLUGIN_PLAYSTATE_NONE      = 0,
-  KODE_PLUGIN_PLAYSTATE_PLAYING   = 1,
-  KODE_PLUGIN_PLAYSTATE_RECORDING = 2,
-  KODE_PLUGIN_PLAYSTATE_LOOPING   = 3
-};
-
-enum KODE_EPluginStates {
-  KODE_PLUGIN_STATE_NONE          = 0,
-  KODE_PLUGIN_STATE_OPEN          = 1,
-  KODE_PLUGIN_STATE_INITIALIZE    = 2,
-  KODE_PLUGIN_STATE_ACTIVATE      = 3,
-  KODE_PLUGIN_STATE_DEACTIVATE    = 4,
-  KODE_PLUGIN_STATE_TERMINATE     = 5,
-  KODE_PLUGIN_STATE_CLOSE         = 6
-};
-
-enum KODE_ETextAlignment {
-  KODE_TEXT_ALIGN_NONE    = 0,
-  KODE_TEXT_ALIGN_TOP     = 1,
-  KODE_TEXT_ALIGN_BOTTOM  = 2,
-  KODE_TEXT_ALIGN_LEFT    = 3,
-  KODE_TEXT_ALIGN_RIGHT   = 4,
-  KODE_TEXT_ALIGN_CENTER  = 5
-};
-
-enum KODE_EThreadIds {
-  KODE_THREAD_ID_NONE   = 0,
-  KODE_THREAD_ID_KILL   = 666,
-  KODE_THREAD_ID_TIMER  = 667,
-  KODE_THREAD_ID_IDLE   = 668
 };
 
 enum KODE_EWidgetAlignment {
@@ -142,6 +122,44 @@ enum KODE_EWidgetTypes {
   KODE_WIDGET_TYPE_WIDGET         = 1,
   KODE_WIDGET_TYPE_WINDOW         = 2
 };
+
+//----------------------------------------------------------------------
+// painting
+//----------------------------------------------------------------------
+
+enum KODE_EFontSlants {
+  KODE_FONT_SLANT_NORMAL  = 0,
+  KODE_FONT_SLANT_ITALIC  = 1,
+  KODE_FONT_SLANT_OBLIQUE = 2
+};
+
+enum KODE_EFfontWeights {
+  KODE_FONT_WEIGHT_NORMAL = 0,
+  KODE_FONT_WEIGHT_BOLD   = 1
+};
+
+enum KODE_ELineCaps {
+  KODE_LINE_CAP_BUTT      = 0,
+  KODE_LINE_CAP_ROUND     = 1,
+  KODE_LINE_CAP_SQUARE    = 2
+};
+
+enum KODE_ELineJoins {
+  KODE_LINE_JOIN_MITER    = 0,
+  KODE_LINE_JOIN_ROUND    = 1,
+  KODE_LINE_JOIN_BEVEL    = 2
+};
+
+enum KODE_ETextAlignment {
+  KODE_TEXT_ALIGN_NONE    = 0,
+  KODE_TEXT_ALIGN_TOP     = 1,
+  KODE_TEXT_ALIGN_BOTTOM  = 2,
+  KODE_TEXT_ALIGN_LEFT    = 3,
+  KODE_TEXT_ALIGN_RIGHT   = 4,
+  KODE_TEXT_ALIGN_CENTER  = 5
+};
+
+//----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
 #endif

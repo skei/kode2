@@ -38,6 +38,18 @@ public:
 public:
 //------------------------------
 
+  bool        canAutomate() { return MOptions.canAutomate; }
+  const char* getName()     { return MName; }
+  const char* getLabel()    { return MLabel; }
+  float       getDefValue() { return MDefValue; }
+  float       getMinValue() { return MMinValue; }
+  float       getMaxValue() { return MMaxValue; }
+  uint32_t    getNumSteps() { return MNumSteps; }
+
+//------------------------------
+public:
+//------------------------------
+
   virtual float from01(float AValue) {
     return AValue;
   }
@@ -50,7 +62,9 @@ public:
 
   //----------
 
-  virtual void  getDisplayString(float AValue, char* ABuffer) {
+  virtual void getDisplayString(float AValue, char* ABuffer) {
+    float value = from01(AValue);
+    KODE_FloatToString(ABuffer,value);
   }
 
 };

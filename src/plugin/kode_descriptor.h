@@ -35,7 +35,7 @@ private:
   char                MVersionText[32]  = {0};
 
 //------------------------------
-private:
+protected:
 //------------------------------
 
   const char*         MName     = "plugin";
@@ -52,6 +52,7 @@ public:
 //------------------------------
 
   KODE_Descriptor() {
+    //MDefValue = to01(real-world-value)
   }
 
   //----------
