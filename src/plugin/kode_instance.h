@@ -46,7 +46,7 @@ public:
 
 
   KODE_Instance(KODE_Descriptor* ADescriptor)
-  : KODE_ImplementedInstance(/*ADescriptor*/) {
+  : KODE_ImplementedInstance() {
     setDescriptor(ADescriptor);
     MDescriptor       = ADescriptor;
     MNumParameters    = MDescriptor->getNumParameters();

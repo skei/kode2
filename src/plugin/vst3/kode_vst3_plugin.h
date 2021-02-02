@@ -121,7 +121,7 @@ public:
     KODE_PRINT;
     if (KODE_iidEqual(MDescriptor.getLongId(),cid)) {
       INST* instance = new INST(&MDescriptor);
-      instance->on_open();
+      instance->on_plugin_open();
       instance->setDefaultParameterValues();
       instance->updateAllParameters();
       *obj = (KODE_Vst3IComponent*)instance;

@@ -1,5 +1,6 @@
 
 #define KODE_GUI_XCB
+//#define KODE_NO_WINDOW_BUFFERING
 
 //----------------------------------------------------------------------
 
@@ -10,11 +11,25 @@
 //----------------------------------------------------------------------
 
 class myEditor : public KODE_Editor {
+
 public:
-  myEditor(KODE_BaseInstance* AInstance, /*uint32_t AWidth, uint32_t AHeight,*/ void* AParent=KODE_NULL)
-  : KODE_Editor(AInstance,/*AWidth,AHeight,*/AParent) {
+
+  myEditor(KODE_BaseInstance* AInstance, void* AParent=KODE_NULL)
+  : KODE_Editor(AInstance,AParent) {
     setFillBackground();
+    KODE_PRINT;
   }
+
+  void on_window_paint(uint32_t AXpos, uint32_t AYpos, uint32_t AWidth, uint32_t AHeight) final {
+    KODE_PRINT
+    KODE_Editor::on_window_paint(AXpos,AYpos,AWidth,AHeight);
+  }
+
+  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
+    KODE_PRINT;
+    KODE_Widget::on_widget_paint(APainter,ARect,AMode);
+  }
+
 };
 
 //----------------------------------------------------------------------
@@ -42,11 +57,13 @@ public:
 public:
 
   void* on_plugin_openEditor(void* AParent) override {
-    myEditor* editor = (myEditor*)KODE_New myEditor(this,/*320,240,*/AParent);
+    KODE_PRINT;
+    myEditor* editor = (myEditor*)KODE_New myEditor(this,AParent);
     return editor;
   }
 
   void  on_plugin_closeEditor(void* AEditor) override {
+    KODE_PRINT;
     KODE_Delete (myEditor*)AEditor;
   }
 

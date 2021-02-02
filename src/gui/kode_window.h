@@ -122,8 +122,13 @@ public: // window
 //------------------------------
 
   void open() override {
+    KODE_PRINT;
     alignChildren();
     KODE_ImplementedWindow::open();
+    //#ifndef KODE_PLUGIN_EXE
+    //  //on_window_paint(0,0,MWindowWidth,MWindowHeight);
+    //  paintWidget(this,MRect,0);
+    //#endif
   }
 
 //------------------------------

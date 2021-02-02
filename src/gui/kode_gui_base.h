@@ -62,9 +62,9 @@ public:
   KODE_BaseWindow(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL) {}
   virtual ~KODE_BaseWindow() {}
 public:
-  virtual void on_window_move(uint32_t AXpos, uint32_t AYpos) {}
-  virtual void on_window_resize(uint32_t AWidth, uint32_t AHeight) {}
-  virtual void on_window_paint(uint32_t AXpos, uint32_t AYpos, uint32_t AWidth, uint32_t AHeight) {}
+  virtual void on_window_move(uint32_t AXpos, uint32_t AYpos) { KODE_PRINT; }
+  virtual void on_window_resize(uint32_t AWidth, uint32_t AHeight) { KODE_PRINT; }
+  virtual void on_window_paint(uint32_t AXpos, uint32_t AYpos, uint32_t AWidth, uint32_t AHeight) { KODE_PRINT; }
   virtual void on_window_keyPress(uint32_t AKey, uint32_t AState, uint32_t ATimeStamp) {}
   virtual void on_window_keyRelease(uint32_t AKey, uint32_t AState, uint32_t ATimeStamp) {}
   virtual void on_window_mouseClick(int32_t AXpos, int32_t AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp) {}
@@ -79,9 +79,9 @@ public:
   virtual void setPos(uint32_t AXpos, uint32_t AYpos) {}
   virtual void setSize(uint32_t AWidth, uint32_t AHeight) {}
   virtual void setTitle(const char* ATitle) {}
-  virtual void open() {}
-  virtual void close() {}
-  virtual void eventLoop() {}
+  virtual void open() { KODE_PRINT; }
+  virtual void close() { KODE_PRINT; }
+  virtual void eventLoop() { KODE_PRINT; }
   virtual void reparent(void* AParent) {}
   virtual void startTimer(uint32_t ms) {}
   virtual void stopTimer(void) {}
@@ -91,9 +91,9 @@ public:
   virtual void showMouseCursor(void) {}
   virtual void grabMouseCursor(void) {}
   virtual void releaseMouseCursor(void) {}
-  virtual void beginPaint() {}
-  virtual void paint(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight) {}
-  virtual void endPaint() {}
+  virtual void beginPaint() { KODE_PRINT; }
+  virtual void paint(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight) { KODE_PRINT; }
+  virtual void endPaint() { KODE_PRINT; }
   virtual void invalidate(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight) {}
   virtual void sendEvent(uint32_t AData, uint32_t AType) {}
   virtual void flush(void) {}

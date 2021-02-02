@@ -18,8 +18,7 @@ class KODE_Editor
 public:
 //------------------------------
 
-  KODE_Editor(KODE_BaseInstance* AInstance, /*uint32_t AWidth, uint32_t AHeight,*/ void* AParent=KODE_NULL)
-  //: KODE_Window(AWidth,AHeight,"",AParent) {
+  KODE_Editor(KODE_BaseInstance* AInstance, void* AParent=KODE_NULL)
   : KODE_Window(
       AInstance->getDescriptor()->getEditorWidth(),
       AInstance->getDescriptor()->getEditorHeight(),
@@ -37,8 +36,8 @@ public:
 public:
 //------------------------------
 
-  void setInstance(KODE_BaseInstance* AInstance) override {
-  }
+  //void setInstance(KODE_BaseInstance* AInstance) override {
+  //}
 
   void updateParameterFromHost(uint32_t AIndex, float AValue) override {
   }

@@ -3,9 +3,14 @@
 //----------------------------------------------------------------------
 
 /*
-  does not handle:
+  works:
+  - midi in (mpe-ready)
+  does not work:
   - midi out?
+  does not handle:
   - changing parameters or types
+  todo:
+  -
 */
 
 #include <memory.h>
@@ -15,6 +20,7 @@
 #include <vector>
 using namespace std;
 
+#include "plugin/kode_editor.h"
 #include "plugin/kode_plugin_base.h"
 #include "plugin/vst3/kode_vst3.h"
 #include "plugin/vst3/kode_vst3_utils.h"
@@ -72,7 +78,7 @@ private:
   bool                          MIsProcessing         = false;
   char                          MHostName[129]        = {0};
   KODE_Descriptor*              MDescriptor           = nullptr;
-  KODE_BaseEditor*              MEditor               = nullptr;
+  KODE_Editor*                  MEditor               = nullptr;
   float*                        MParameterValues      = nullptr;
   float*                        MHostParameterValues  = nullptr;
   KODE_Vst3UpdateQueue          MHostParameterQueue;
@@ -1073,7 +1079,8 @@ public: // IPlugView
           r.bottom  = h;
           MPlugFrame->resizeView(this,&r);
         }
-        MEditor = (KODE_BaseEditor*)on_plugin_openEditor(parent);
+        MEditor = (KODE_Editor*)on_plugin_openEditor(parent);
+        MEditor->open();
         //if (MRunLoop)
         MRunLoop->registerTimer(this,KODE_VST3_TIMER_MS);
         return kode_vst3_ResultOk;
@@ -1089,6 +1096,7 @@ public: // IPlugView
       if (MDescriptor->hasEditor()) {
         //if (MRunLoop)
         MRunLoop->unregisterTimer(this);
+        MEditor->close();
         on_plugin_closeEditor(MEditor);
         MEditor = nullptr;
         return kode_vst3_ResultOk;
