@@ -9,17 +9,36 @@
 class KODE_ExeInstance
 : public KODE_BaseInstance {
 
+
+
+//------------------------------
+private:
+//------------------------------
+
+  KODE_Descriptor* MDescriptor = KODE_NULL;
+
 //------------------------------
 public:
 //------------------------------
 
-  KODE_ExeInstance(KODE_Descriptor* ADescriptor)
-  : KODE_BaseInstance(ADescriptor) {
+  KODE_ExeInstance(/*KODE_Descriptor* ADescriptor*/) {
   }
 
   //----------
 
   virtual ~KODE_ExeInstance() {
+  }
+
+//------------------------------
+public:
+//------------------------------
+
+  void  setDescriptor(KODE_Descriptor* ADescriptor) override {
+    MDescriptor = ADescriptor;
+  }
+
+  KODE_Descriptor* getDescriptor() override {
+    return MDescriptor;
   }
 
 //------------------------------

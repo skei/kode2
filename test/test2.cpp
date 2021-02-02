@@ -4,19 +4,18 @@
 //----------------------------------------------------------------------
 
 #include "kode.h"
-//#include "plugin/kode_plugin_base.h"
 #include "plugin/kode_plugin.h"
+#include "plugin/vst3/kode_vst3_instance.h"
 
 //----------------------------------------------------------------------
 
 class myEditor : public KODE_Editor {
 public:
-  myEditor(KODE_BaseInstance* AInstance, uint32_t AWidth, uint32_t AHeight, void* AParent=KODE_NULL)
-  : KODE_Editor(AInstance,AWidth,AHeight,AParent) {
+  myEditor(KODE_BaseInstance* AInstance, /*uint32_t AWidth, uint32_t AHeight,*/ void* AParent=KODE_NULL)
+  : KODE_Editor(AInstance,/*AWidth,AHeight,*/AParent) {
     setFillBackground();
   }
 };
-
 
 //----------------------------------------------------------------------
 
@@ -26,6 +25,8 @@ public:
     MName = "myPlugin";
     MAuthor = "skei";
     MOptions.hasEditor = true;
+    MEditorWidth = 640;
+    MEditorHeight = 480;
   }
 };
 
@@ -41,7 +42,7 @@ public:
 public:
 
   void* on_plugin_openEditor(void* AParent) override {
-    myEditor* editor = (myEditor*)KODE_New myEditor(this,320,240,AParent);
+    myEditor* editor = (myEditor*)KODE_New myEditor(this,/*320,240,*/AParent);
     return editor;
   }
 

@@ -3,23 +3,18 @@
 //----------------------------------------------------------------------
 // based on (extracted from) steinberg vst3 sdk (gpl3)
 
-//----------
-
-#ifdef __gnu_linux__
-  //#define VST3_LINUX
-  #define COM_COMPATIBLE 0
-  #define PLUGIN_API
-#endif
-
-#ifdef _WIN32
-  //#define VST3_WIN32
-  #define COM_COMPATIBLE 1
-  #define PLUGIN_API __stdcal
-#endif
 
 //----------
 
-#define strncpy8 strncpy
+#ifdef KODE_LINUX
+  #define KODE_VST3_COM_COMPATIBLE 0
+  #define KODE_VST3_PLUGIN_API
+#endif
+
+#ifdef KODE_WIN32
+  #define KODE_VST3_COM_COMPATIBLE 1
+  #define KODE_VST3_PLUGIN_API __stdcall
+#endif
 
 //----------------------------------------------------------------------
 //
@@ -27,8 +22,8 @@
 //
 //----------------------------------------------------------------------
 
-#if COM_COMPATIBLE
-  #define INLINE_UID(l1,l2,l3,l4) {                                  \
+#if KODE_VST3_COM_COMPATIBLE
+  #define KODE_VST3_INLINE_UID(l1,l2,l3,l4) {                                  \
     (int8_t)((l1 & 0x000000FF)      ), (int8_t)((l1 & 0x0000FF00) >>  8), \
     (int8_t)((l1 & 0x00FF0000) >> 16), (int8_t)((l1 & 0xFF000000) >> 24), \
     (int8_t)((l2 & 0x00FF0000) >> 16), (int8_t)((l2 & 0xFF000000) >> 24), \
@@ -39,7 +34,7 @@
     (int8_t)((l4 & 0x0000FF00) >>  8), (int8_t)((l4 & 0x000000FF)      )  \
   }
 #else
-  #define INLINE_UID(l1, l2, l3, l4) {                               \
+  #define KODE_VST3_INLINE_UID(l1,l2,l3,l4) {                               \
     (int8_t)((l1 & 0xFF000000) >> 24), (int8_t)((l1 & 0x00FF0000) >> 16), \
     (int8_t)((l1 & 0x0000FF00) >>  8), (int8_t)((l1 & 0x000000FF)      ), \
     (int8_t)((l2 & 0xFF000000) >> 24), (int8_t)((l2 & 0x00FF0000) >> 16), \
@@ -51,317 +46,294 @@
   }
 #endif
 
-//#ifdef INIT_CLASS_IID
-//  #define DECLARE_CLASS_IID(classname, l1, l2, l3, l4)
-//	static const vst3_uuid classname##_iid = INLINE_UID (l1,l2,l3,l4);
-//  const vst3_uuid classname::iid (classname##_iid);
+//#ifdef KODE_VST3_INIT_CLASS_IID
+//  #define KODE_VST3_DECLARE_CLASS_IID(classname,l1,l2,l3,l4)
+//	static const vst3_uuid classname##_iid = KODE_VST3_INLINE_UID(l1,l2,l3,l4);
+//  const vst3_uuid classname::iid(classname##_iid);
 //#else
 
-#define DECLARE_CLASS_IID(classname,l1,l2,l3,l4) \
-  static const TUID classname##_iid = INLINE_UID(l1,l2,l3,l4);
+#define KODE_VST3_DECLARE_CLASS_IID(classname,l1,l2,l3,l4) \
+  static const KODE_Vst3Id classname##_iid = KODE_VST3_INLINE_UID(l1,l2,l3,l4);
 
 //----------
 
+//#ifndef kode_vst3_VstVersionString
+#define kode_vst3_VstVersionString	"VST 3.6.10"	///< SDK version for PClassInfo2
+//#endif
+
+//#ifndef kode_vst3_VstAudioEffectClass
+#define kode_vst3_VstAudioEffectClass "Audio Module Class"
+//#endif
+
 //----------------------------------------------------------------------
 //
-//
+// typedefs
 //
 //----------------------------------------------------------------------
 
-//typedef int8                TUID[16];
-typedef char                TUID[16];
-typedef TUID                FUID;
-
-//----------
-
-typedef char                int8;
-typedef short               int16;
-typedef int                 int32;
-typedef long long           int64;
-
-typedef unsigned char       uint8;
-typedef unsigned short      uint16;
-typedef unsigned int        uint32;
-typedef unsigned long long  uint64;
-
-//typedef long                int32;
-//typedef __int64             int64;
-//typedef unsigned long       uint32;
-//typedef unsigned __int64    uint64;
-
-typedef unsigned char       uchar;
-typedef char                char8;
-typedef char8               tchar;
-
+//typedef char                char8;
 //typedef int16               char16;
+//typedef char16_t            char16;
 //typedef __wchar_t           char16;
+//typedef char                int8;
+//typedef short               int16;
+//typedef int                 int32;
+//typedef int32_t             int32_t;
+//typedef long long           int64;
+//typedef char8               tchar;
 //typedef char16              tchar;
+//typedef int32_t             tresult;
+//typedef unsigned char       uchar;
+//typedef unsigned char       uint8;
+//typedef unsigned short      uint16;
+//typedef unsigned int        uint32;
+//typedef unsigned long long  uint64;
 
-//----------
+//typedef int32_t             BusDirection;
+//typedef int32_t             BusType;
+//typedef int16_t             CtrlNumber;
+//typedef const char*         CString;
+//typedef const char*         FIDString;
+//typedef int                 FileDescriptor;
+//typedef TUID                FUID;
+//typedef int32_t             IoMode;
+//typedef uint32_t            KeyswitchTypeID;
+//typedef int32_t             KnobMode;
+//typedef int32_t             MediaType;
+//typedef uint32_t            NoteExpressionTypeID;
+//typedef double              NoteExpressionValue;
+//typedef uint32_t            ParamID;
+//typedef double              ParamValue;
+//typedef int32_t             ProgramListID;
+//typedef float               Sample32;
+//typedef double              Sample64;
+//typedef double              SampleRate;
+//typedef uint64_t            Speaker;
+//typedef uint64_t            SpeakerArrangement;
+//typedef TChar               String128[128];
+//typedef uint8_t             TBool;
+//typedef char16              TChar;
+//typedef uint64_t            TimerInterval;
+//typedef double              TQuarterNotes;
+//typedef int64_t             TSamples;
+//typedef int8                TUID[16];
+//typedef int32_t             UnitID;
 
-typedef char16_t            char16;
-typedef char16              TChar;
-typedef TChar               String128[128];
 
-typedef int32_t             tresult;
-
-typedef uint8_t             TBool;
-typedef double              TQuarterNotes;
-typedef int64_t             TSamples;
-
-typedef int32_t             BusDirection;
-typedef int32_t             BusType;
-typedef const char8*        CString;
-typedef int16_t             CtrlNumber;
-typedef const char*         FIDString;
-typedef int                 FileDescriptor;
-typedef int32_t             IoMode;
-typedef uint32              KeyswitchTypeID;
-typedef int32_t             KnobMode;
-typedef int32_t             MediaType;
-typedef double              NoteExpressionValue;
-typedef uint32              NoteExpressionTypeID;
-typedef uint32_t            ParamID;
-typedef double              ParamValue;
-typedef int32_t             ProgramListID;
-typedef float               Sample32;
-typedef double              Sample64;
-typedef double              SampleRate;
-typedef uint64              Speaker;
-typedef uint64              SpeakerArrangement;
-typedef uint64_t            TimerInterval;
-typedef int32_t             UnitID;
+typedef char      KODE_Vst3Id[16];      // was TUID
+typedef char16_t  KODE_Vst3String[128]; // was String128
 
 //----------------------------------------------------------------------
 //
-//
+// enums
 //
 //----------------------------------------------------------------------
 
-#ifndef kVstVersionString
-#define kVstVersionString	"VST 3.6.10"	///< SDK version for PClassInfo2
-#endif
+#if KODE_VST3_COM_COMPATIBLE
 
-#ifndef kVstAudioEffectClass
-  #define kVstAudioEffectClass "Audio Module Class"
-#endif
+  #ifdef KODE_WIN32
+  enum {
+    kode_vst3_NoInterface		  = static_cast<int32_t>(0x80004002L),	// E_NOINTERFACE
+    kode_vst3_ResultOk         = static_cast<int32_t>(0x00000000L),	// S_OK
+    kode_vst3_ResultTrue       = kode_vst3_ResultOk,
+    kode_vst3_ResultFalse		  = static_cast<int32_t>(0x00000001L),	// S_FALSE
+    kode_vst3_InvalidArgument	= static_cast<int32_t>(0x80070057L),	// E_INVALIDARG
+    kode_vst3_NotImplemented		= static_cast<int32_t>(0x80004001L),	// E_NOTIMPL
+    kode_vst3_InternalError		= static_cast<int32_t>(0x80004005L),	// E_FAIL
+    kode_vst3_NotInitialized		= static_cast<int32_t>(0x8000FFFFL),	// E_UNEXPECTED
+    kode_vst3_OutOfMemory		  = static_cast<int32_t>(0x8007000EL)		// E_OUTOFMEMORY
+  };
+  #else
+  enum {
+    kode_vst3_NoInterface      = static_cast<int32_t>(0x80000004L),	// E_NOINTERFACE
+    kode_vst3_ResultOk         = static_cast<int32_t>(0x00000000L),	// S_OK
+    kode_vst3_ResultTrue       = kode_vst3_ResultOk,
+    kode_vst3_ResultFalse      = static_cast<int32_t>(0x00000001L),	// S_FALSE
+    kode_vst3_InvalidArgument  = static_cast<int32_t>(0x80000003L),	// E_INVALIDARG
+    kode_vst3_NotImplemented   = static_cast<int32_t>(0x80000001L),	// E_NOTIMPL
+    kode_vst3_InternalError    = static_cast<int32_t>(0x80000008L),	// E_FAIL
+    kode_vst3_NotInitialized   = static_cast<int32_t>(0x8000FFFFL),	// E_UNEXPECTED
+    kode_vst3_OutOfMemory      = static_cast<int32_t>(0x80000002L)		// E_OUTOFMEMORY
+  };
+  #endif // KODE_WIN32
 
-//----------
-
-#if COM_COMPATIBLE
-
-  #ifdef _WIN32
-
-    enum {
-      kNoInterface		  = static_cast<tresult>(0x80004002L),	// E_NOINTERFACE
-      kResultOk         = static_cast<tresult>(0x00000000L),	// S_OK
-      kResultTrue       = kResultOk,
-      kResultFalse		  = static_cast<tresult>(0x00000001L),	// S_FALSE
-      kInvalidArgument	= static_cast<tresult>(0x80070057L),	// E_INVALIDARG
-      kNotImplemented		= static_cast<tresult>(0x80004001L),	// E_NOTIMPL
-      kInternalError		= static_cast<tresult>(0x80004005L),	// E_FAIL
-      kNotInitialized		= static_cast<tresult>(0x8000FFFFL),	// E_UNEXPECTED
-      kOutOfMemory		  = static_cast<tresult>(0x8007000EL)		// E_OUTOFMEMORY
-    };
-
-  #else // _WIN32
-
-    enum {
-      kNoInterface      = static_cast<tresult>(0x80000004L),	// E_NOINTERFACE
-      kResultOk         = static_cast<tresult>(0x00000000L),	// S_OK
-      kResultTrue       = kResultOk,
-      kResultFalse      = static_cast<tresult>(0x00000001L),	// S_FALSE
-      kInvalidArgument  = static_cast<tresult>(0x80000003L),	// E_INVALIDARG
-      kNotImplemented   = static_cast<tresult>(0x80000001L),	// E_NOTIMPL
-      kInternalError    = static_cast<tresult>(0x80000008L),	// E_FAIL
-      kNotInitialized   = static_cast<tresult>(0x8000FFFFL),	// E_UNEXPECTED
-      kOutOfMemory      = static_cast<tresult>(0x80000002L)		// E_OUTOFMEMORY
-    };
-
-  #endif // _WIN32
-
-#else // COM_COMPATIBLE
+#else // KODE_VST3_COM_COMPATIBLE
 
   enum {
-    kNoInterface = -1,
-    kResultOk,
-    kResultTrue = kResultOk,
-    kResultFalse,
-    kInvalidArgument,
-    kNotImplemented,
-    kInternalError,
-    kNotInitialized,
-    kOutOfMemory
+    kode_vst3_NoInterface = -1,
+    kode_vst3_ResultOk,
+    kode_vst3_ResultTrue = kode_vst3_ResultOk,
+    kode_vst3_ResultFalse,
+    kode_vst3_InvalidArgument,
+    kode_vst3_NotImplemented,
+    kode_vst3_InternalError,
+    kode_vst3_NotInitialized,
+    kode_vst3_OutOfMemory
   };
 
-#endif // COM_COMPATIBLE
+#endif // KODE_VST3_COM_COMPATIBLE
 
-//----------------------------------------------------------------------
-
-const char*         kEditor                       = "editor";
-const CString       kFx					                  = "Fx";
-const CString       kInstrument			              = "Instrument";
-
-const FIDString     kPlatformTypeHWND             = "HWND";
-const FIDString     kPlatformTypeHIView           = "HIView";
-const FIDString     kPlatformTypeNSView           = "NSView";
-const FIDString     kPlatformTypeUIView           = "UIView";
-const FIDString     kPlatformTypeX11EmbedWindowID = "X11EmbedWindowID";
-
-const Speaker       kSpeakerL                     = 1 << 0;
-const Speaker       kSpeakerR                     = 1 << 1;
-
-const UnitID        kNoParentUnitId               = -1;
-const ProgramListID kNoProgramListId              = -1;
-const uint32        kNoTail                       = 0;
-const UnitID        kRootUnitId                   = 0;
-
-//static  const UnitID        kNoParentUnitId   = -1;
-//static  const ProgramListID kNoProgramListId  = -1;
-//static  const uint32        kNoTail           = 0;
-//static  const UnitID        kRootUnitId       = 0;
-
-//----------------------------------------------------------------------
-
-//namespace PlugType {
-//  const CString kFxAnalyzer			        = "Fx|Analyzer";
-//  const CString kFxDelay				        = "Fx|Delay";
-//  const CString kFxDistortion		        = "Fx|Distortion";
-//  const CString kFxDynamics			        = "Fx|Dynamics";
-//  const CString kFxEQ					          = "Fx|EQ";
-//  const CString kFxFilter				        = "Fx|Filter";
-//  const CString kFx					            = "Fx";
-//  const CString kFxInstrument			      = "Fx|Instrument";
-//  const CString kFxInstrumentExternal	  = "Fx|Instrument|External";
-//  const CString kFxSpatial			        = "Fx|Spatial";
-//  const CString kFxGenerator			      = "Fx|Generator";
-//  const CString kFxMastering			      = "Fx|Mastering";
-//  const CString kFxModulation			      = "Fx|Modulation";
-//  const CString kFxPitchShift			      = "Fx|Pitch Shift";
-//  const CString kFxRestoration		      = "Fx|Restoration";
-//  const CString kFxReverb				        = "Fx|Reverb";
-//  const CString kFxSurround			        = "Fx|Surround";
-//  const CString kFxTools				        = "Fx|Tools";
-//  const CString kFxNetwork			        = "Fx|Network";
-//  const CString kInstrument			        = "Instrument";
-//  const CString kInstrumentDrum		      = "Instrument|Drum";
-//  const CString kInstrumentSampler	    = "Instrument|Sampler";
-//  const CString kInstrumentSynth		    = "Instrument|Synth";
-//  const CString kInstrumentSynthSampler = "Instrument|Synth|Sampler";
-//  const CString kInstrumentExternal	    = "Instrument|External";
-//  const CString kSpatial				        = "Spatial";
-//  const CString kSpatialFx			= "Spatial|Fx";
-//  const CString kOnlyRealTime			= "OnlyRT";
-//  const CString kOnlyOfflineProcess	= "OnlyOfflineProcess";
-//  const CString kNoOfflineProcess		= "NoOfflineProcess";
-//  const CString kUpDownMix			= "Up-Downmix";
-//  const CString kAnalyzer			    = "Analyzer";
-//  const CString kAmbisonic			= "Ambisonic";
-//  const CString kMono					= "Mono";
-//  const CString kStereo				= "Stereo";
-//  const CString kSurround				= "Surround";
-//};
-
-//----------------------------------------------------------------------
+//----------
 
 //enum NoteExpressionTypeIDs {
-//  kVolumeTypeID = 0,
-//  kPanTypeID,
-//  kTuningTypeID,
-//  kVibratoTypeID,
-//  kExpressionTypeID,
-//  kBrightnessTypeID,
-//  kTextTypeID,
-//  kPhonemeTypeID,
-//  kCustomStart = 100000
+//  kode_vst3_VolumeTypeID = 0,
+//  kode_vst3_PanTypeID,
+//  kode_vst3_TuningTypeID,
+//  kode_vst3_VibratoTypeID,
+//  kode_vst3_ExpressionTypeID,
+//  kode_vst3_BrightnessTypeID,
+//  kode_vst3_TextTypeID,
+//  kode_vst3_PhonemeTypeID,
+//  kode_vst3_CustomStart = 100000
 //};
 
-//----------
-
-enum BusDirections {
-  kInput = 0,
-  kOutput
+enum KODE_Vst3BusDirections {
+  kode_vst3_Input = 0,
+  kode_vst3_Output
 };
 
-enum BusTypes {
-  kMain = 0,
-  kAux
+enum KODE_Vst3BusTypes {
+  kode_vst3_Main = 0,
+  kode_vst3_Aux
 };
 
-enum ControllerNumbers {
-  kCtrlBankSelectMSB    = 0,
-  kCtrlModWheel         = 1,
-  kCtrlBreath           = 2,
-  kCtrlFoot             = 4,
-  kCtrlPortaTime        = 5,
-  kCtrlDataEntryMSB     = 6,
-  kCtrlVolume           = 7,
-  kCtrlBalance          = 8,
-  kCtrlPan              = 10,
-  kCtrlExpression       = 11,
-  kCtrlEffect1          = 12,
-  kCtrlEffect2		=	13,
-  kCtrlGPC1			=	16,
-  kCtrlGPC2			=	17,
-  kCtrlGPC3			=	18,
-  kCtrlGPC4			=	19,
-  kCtrlBankSelectLSB	=	32,
-  kCtrlDataEntryLSB	=	38,
-  kCtrlSustainOnOff	=	64,
-  kCtrlPortaOnOff		=	65,
-  kCtrlSustenutoOnOff	=	66,
-  kCtrlSoftPedalOnOff	=	67,
-  kCtrlLegatoFootSwOnOff  =	68,
-  kCtrlHold2OnOff         =	69,
-  kCtrlSoundVariation     =	70,
-  kCtrlFilterCutoff       =	71,
-  kCtrlReleaseTime        = 72,
-  kCtrlAttackTime         =	73,
-  kCtrlFilterResonance    =	74,
-  kCtrlDecayTime		=	75,
-  kCtrlVibratoRate	=	76,
-  kCtrlVibratoDepth	=	77,
-  kCtrlVibratoDelay	=	78,
-  kCtrlSoundCtrler10	=	79,
-  kCtrlGPC5			=	80,
-  kCtrlGPC6			=	81,
-  kCtrlGPC7			=	82,
-  kCtrlGPC8			=	83,
-  kCtrlPortaControl	=	84,
-  kCtrlEff1Depth		=	91,
-  kCtrlEff2Depth		=	92,
-  kCtrlEff3Depth		=	93,
-  kCtrlEff4Depth		=	94,
-  kCtrlEff5Depth		=	95,
-  kCtrlDataIncrement	=	96,
-  kCtrlDataDecrement	=	97,
-  kCtrlNRPNSelectLSB 	=	98,
-  kCtrlNRPNSelectMSB	=	99,
-  kCtrlRPNSelectLSB	=	100,
-  kCtrlRPNSelectMSB       =	101,
-  kCtrlAllSoundsOff       =	120,
-  kCtrlResetAllCtrlers    =	121,
-  kCtrlLocalCtrlOnOff     =	122,
-  kCtrlAllNotesOff        =	123,
-  kCtrlOmniModeOff        =	124,
-  kCtrlOmniModeOn         =	125,
-  kCtrlPolyModeOnOff      =	126,
-  kCtrlPolyModeOn         =	127,
-  kAfterTouch             = 128,
-  kPitchBend,
-  kCountCtrlNumber
+enum KODE_Vst3ControllerNumbers {
+  kode_vst3_CtrlBankSelectMSB      = 0,
+  kode_vst3_CtrlModWheel           = 1,
+  kode_vst3_CtrlBreath             = 2,
+  kode_vst3_CtrlFoot               = 4,
+  kode_vst3_CtrlPortaTime          = 5,
+  kode_vst3_CtrlDataEntryMSB       = 6,
+  kode_vst3_CtrlVolume             = 7,
+  kode_vst3_CtrlBalance            = 8,
+  kode_vst3_CtrlPan                = 10,
+  kode_vst3_CtrlExpression         = 11,
+  kode_vst3_CtrlEffect1            = 12,
+  kode_vst3_CtrlEffect2            = 13,
+  kode_vst3_CtrlGPC1               = 16,
+  kode_vst3_CtrlGPC2               = 17,
+  kode_vst3_CtrlGPC3               = 18,
+  kode_vst3_CtrlGPC4               = 19,
+  kode_vst3_CtrlBankSelectLSB      = 32,
+  kode_vst3_CtrlDataEntryLSB       = 38,
+  kode_vst3_CtrlSustainOnOff       = 64,
+  kode_vst3_CtrlPortaOnOff         = 65,
+  kode_vst3_CtrlSustenutoOnOff     = 66,
+  kode_vst3_CtrlSoftPedalOnOff     = 67,
+  kode_vst3_CtrlLegatoFootSwOnOff  = 68,
+  kode_vst3_CtrlHold2OnOff         = 69,
+  kode_vst3_CtrlSoundVariation     = 70,
+  kode_vst3_CtrlFilterCutoff       = 71,
+  kode_vst3_CtrlReleaseTime        = 72,
+  kode_vst3_CtrlAttackTime         = 73,
+  kode_vst3_CtrlFilterResonance    = 74,
+  kode_vst3_CtrlDecayTime          = 75,
+  kode_vst3_CtrlVibratoRate        = 76,
+  kode_vst3_CtrlVibratoDepth       = 77,
+  kode_vst3_CtrlVibratoDelay       = 78,
+  kode_vst3_CtrlSoundCtrler10      = 79,
+  kode_vst3_CtrlGPC5               = 80,
+  kode_vst3_CtrlGPC6               = 81,
+  kode_vst3_CtrlGPC7               = 82,
+  kode_vst3_CtrlGPC8               = 83,
+  kode_vst3_CtrlPortaControl       = 84,
+  kode_vst3_CtrlEff1Depth          = 91,
+  kode_vst3_CtrlEff2Depth          = 92,
+  kode_vst3_CtrlEff3Depth          = 93,
+  kode_vst3_CtrlEff4Depth          = 94,
+  kode_vst3_CtrlEff5Depth          = 95,
+  kode_vst3_CtrlDataIncrement      = 96,
+  kode_vst3_CtrlDataDecrement      = 97,
+  kode_vst3_CtrlNRPNSelectLSB      = 98,
+  kode_vst3_CtrlNRPNSelectMSB      = 99,
+  kode_vst3_CtrlRPNSelectLSB       = 100,
+  kode_vst3_CtrlRPNSelectMSB       = 101,
+  kode_vst3_CtrlAllSoundsOff       = 120,
+  kode_vst3_CtrlResetAllCtrlers    = 121,
+  kode_vst3_CtrlLocalCtrlOnOff     = 122,
+  kode_vst3_CtrlAllNotesOff        = 123,
+  kode_vst3_CtrlOmniModeOff        = 124,
+  kode_vst3_CtrlOmniModeOn         = 125,
+  kode_vst3_CtrlPolyModeOnOff      = 126,
+  kode_vst3_CtrlPolyModeOn         = 127,
+  kode_vst3_AfterTouch             = 128,
+  kode_vst3_PitchBend,           //= 129,
+  kode_vst3_CountCtrlNumber
 };
 
-enum MediaTypes {
-  kAudio = 0,
-  kEvent,
-  kNumMediaTypes
+enum KODE_Vst3MediaTypes {
+  kode_vst3_Audio = 0,
+  kode_vst3_Event,
+  kode_vst3_NumMediaTypes
 };
 
-enum SymbolicSampleSizes {
-  kSample32,
-  kSample64
+enum KODE_Vst3SymbolicSampleSizes {
+  kode_vst3_Sample32,
+  kode_vst3_Sample64
 };
+
+//----------------------------------------------------------------------
+//
+// const
+//
+//----------------------------------------------------------------------
+
+const char*     kode_vst3_Editor                       = "editor";
+const char*     kode_vst3_Fx					                  = "Fx";
+const char*     kode_vst3_Instrument			              = "Instrument";
+
+const char*     kode_vst3_PlatformTypeHWND             = "HWND";
+const char*     kode_vst3_PlatformTypeHIView           = "HIView";
+const char*     kode_vst3_PlatformTypeNSView           = "NSView";
+const char*     kode_vst3_PlatformTypeUIView           = "UIView";
+const char*     kode_vst3_PlatformTypeX11EmbedWindowID = "X11EmbedWindowID";
+
+const uint64_t  kode_vst3_SpeakerL                     = 1 << 0;
+const uint64_t  kode_vst3_SpeakerR                     = 1 << 1;
+
+/*static*/ const int32_t   kode_vst3_NoParentUnitId    = -1;
+/*static*/ const int32_t   kode_vst3_NoProgramListId   = -1;
+/*static*/ const uint32_t  kode_vst3_NoTail            = 0;
+/*static*/ const int32_t   kode_vst3_RootUnitId        = 0;
+
+//namespace KODE_Vst3PlugType {
+//  const CString kode_vst3_FxAnalyzer			        = "Fx|Analyzer";
+//  const CString kode_vst3_FxDelay				        = "Fx|Delay";
+//  const CString kode_vst3_FxDistortion		        = "Fx|Distortion";
+//  const CString kode_vst3_FxDynamics			        = "Fx|Dynamics";
+//  const CString kode_vst3_FxEQ					          = "Fx|EQ";
+//  const CString kode_vst3_FxFilter				        = "Fx|Filter";
+//  const CString kode_vst3_Fx					            = "Fx";
+//  const CString kode_vst3_FxInstrument			      = "Fx|Instrument";
+//  const CString kode_vst3_FxInstrumentExternal	  = "Fx|Instrument|External";
+//  const CString kode_vst3_FxSpatial			        = "Fx|Spatial";
+//  const CString kode_vst3_FxGenerator			      = "Fx|Generator";
+//  const CString kode_vst3_FxMastering			      = "Fx|Mastering";
+//  const CString kode_vst3_FxModulation			      = "Fx|Modulation";
+//  const CString kode_vst3_FxPitchShift			      = "Fx|Pitch Shift";
+//  const CString kode_vst3_FxRestoration		      = "Fx|Restoration";
+//  const CString kode_vst3_FxReverb				        = "Fx|Reverb";
+//  const CString kode_vst3_FxSurround			        = "Fx|Surround";
+//  const CString kode_vst3_FxTools				        = "Fx|Tools";
+//  const CString kode_vst3_FxNetwork			        = "Fx|Network";
+//  const CString kode_vst3_Instrument			        = "Instrument";
+//  const CString kode_vst3_InstrumentDrum		      = "Instrument|Drum";
+//  const CString kode_vst3_InstrumentSampler	    = "Instrument|Sampler";
+//  const CString kode_vst3_InstrumentSynth		    = "Instrument|Synth";
+//  const CString kode_vst3_InstrumentSynthSampler = "Instrument|Synth|Sampler";
+//  const CString kode_vst3_InstrumentExternal	    = "Instrument|External";
+//  const CString kode_vst3_Spatial				        = "Spatial";
+//  const CString kode_vst3_SpatialFx			= "Spatial|Fx";
+//  const CString kode_vst3_OnlyRealTime			= "OnlyRT";
+//  const CString kode_vst3_OnlyOfflineProcess	= "OnlyOfflineProcess";
+//  const CString kode_vst3_NoOfflineProcess		= "NoOfflineProcess";
+//  const CString kode_vst3_UpDownMix			= "Up-Downmix";
+//  const CString kode_vst3_Analyzer			    = "Analyzer";
+//  const CString kode_vst3_Ambisonic			= "Ambisonic";
+//  const CString kode_vst3_Mono					= "Mono";
+//  const CString kode_vst3_Stereo				= "Stereo";
+//  const CString kode_vst3_Surround				= "Surround";
+//};
 
 //----------------------------------------------------------------------
 //
@@ -369,663 +341,650 @@ enum SymbolicSampleSizes {
 //
 //----------------------------------------------------------------------
 
-class IParameterChanges;
-class IEventList;
+//#define strncpy8 strncpy
 
-//----------
+char* strncpy8(char* destination, const char* source, size_t num) {
+  memset(destination,0,num);
+  strncpy(destination,source,num-1);
+  return destination;
+}
 
-struct AudioBusBuffers {
-  AudioBusBuffers ()
-    : numChannels (0)
-    , silenceFlags (0)
-    , channelBuffers64 (0) {}
-  int32 numChannels;
-  uint64 silenceFlags;
+
+//----------------------------------------------------------------------
+//
+// structs
+//
+//----------------------------------------------------------------------
+
+struct KODE_Vst3AudioBusBuffers {
+  KODE_Vst3AudioBusBuffers ()
+    : numChannels(0)
+    , silenceFlags(0)
+    , channelBuffers64(0) {}
+  int32_t   numChannels;
+  uint64_t  silenceFlags;
   union {
-    Sample32** channelBuffers32;
-    Sample64** channelBuffers64;
+    float**   channelBuffers32;
+    double**  channelBuffers64;
   };
 };
 
-struct BusInfo {
-  MediaType     mediaType;
-  BusDirection  direction;
-  int32         channelCount;
-  String128     name;
-  BusType       busType;
-  uint32        flags;
+struct KODE_Vst3BusInfo {
+  int32_t         mediaType;
+  int32_t         direction;
+  int32_t         channelCount;
+  KODE_Vst3String name;
+  int32_t         busType;
+  uint32_t        flags;
   enum BusFlags {
-    kDefaultActive = 1 << 0
+    kode_vst3_DefaultActive = 1 << 0
   };
 };
 
-struct Chord {
-  uint8 keyNote;
-  uint8 rootNote;
-  int16 chordMask;
+struct KODE_Vst3Chord {
+  uint8_t keyNote;
+  uint8_t rootNote;
+  int16_t chordMask;
   enum Masks {
-    kChordMask    = 0x0FFF,
-    kReservedMask = 0xF000
+    kode_vst3_ChordMask    = 0x0FFF,
+    kode_vst3_ReservedMask = 0xF000
   };
 };
 
-struct FrameRate {
+struct KODE_Vst3FrameRate {
   enum FrameRateFlags {
-    kPullDownRate = 1 << 0,
-    kDropRate     = 1 << 1
+    kode_vst3_PullDownRate = 1 << 0,
+    kode_vst3_DropRate     = 1 << 1
   };
-  uint32  framesPerSecond;
-  uint32  flags;
+  uint32_t  framesPerSecond;
+  uint32_t  flags;
 };
 
-struct KeyswitchInfo {
-  KeyswitchTypeID typeId;
-  String128       title;
-  String128       shortTitle;
-  int32           keyswitchMin;
-  int32           keyswitchMax;
-  int32           keyRemapped;
-  int32           unitId;
-  int32           flags;
+struct KODE_Vst3KeyswitchInfo {
+  uint32_t        typeId;
+  KODE_Vst3String title;
+  KODE_Vst3String shortTitle;
+  int32_t         keyswitchMin;
+  int32_t         keyswitchMax;
+  int32_t         keyRemapped;
+  int32_t         unitId;
+  int32_t         flags;
 };
 
-struct ParameterInfo {
-  ParamID     id;
-  String128   title;
-  String128   shortTitle;
-  String128   units;
-  int32       stepCount;
-  ParamValue  defaultNormalizedValue;
-  UnitID      unitId;
-  int32       flags;
+struct KODE_Vst3ParameterInfo {
+  uint32_t        id;
+  KODE_Vst3String title;
+  KODE_Vst3String shortTitle;
+  KODE_Vst3String units;
+  int32_t         stepCount;
+  double          defaultNormalizedValue;
+  int32_t         unitId;
+  int32_t         flags;
   enum ParameterFlags {
-    kCanAutomate      = 1 << 0,
-    kIsReadOnly       = 1 << 1,
-    kIsWrapAround     = 1 << 2,
-    kIsList           = 1 << 3,
-    kIsProgramChange  = 1 << 15,
-    kIsBypass         = 1 << 16
+    kode_vst3_CanAutomate      = 1 << 0,
+    kode_vst3_IsReadOnly       = 1 << 1,
+    kode_vst3_IsWrapAround     = 1 << 2,
+    kode_vst3_IsList           = 1 << 3,
+    kode_vst3_IsProgramChange  = 1 << 15,
+    kode_vst3_IsBypass         = 1 << 16
   };
 };
 
-struct PClassInfo {
+struct KODE_Vst3PClassInfo {
   enum ClassCardinality {
-    kManyInstances = 0x7FFFFFFF
+    kode_vst3_ManyInstances = 0x7FFFFFFF
   };
   enum {
-    kCategorySize = 32,
-    kNameSize = 64
+    kode_vst3_CategorySize  = 32,
+    kode_vst3_NameSize      = 64
   };
-  TUID cid;
-  int32 cardinality;
-  char8 category[kCategorySize];
-  char8 name[kNameSize];
-  PClassInfo(const TUID _cid, int32 _cardinality, const char8* _category, const char8* _name) {
-    memset (this, 0, sizeof (PClassInfo));
-    memcpy (cid, _cid, sizeof (TUID));
-    if (_category) strncpy8 (category, _category, kCategorySize);
-    if (_name) strncpy8 (name, _name, kNameSize);
+  KODE_Vst3Id cid;
+  int32_t     cardinality;
+  char        category[kode_vst3_CategorySize];
+  char        name[kode_vst3_NameSize];
+  KODE_Vst3PClassInfo(const KODE_Vst3Id _cid, int32_t _cardinality, const char* _category, const char* _name) {
+    memset(this,0,sizeof(KODE_Vst3PClassInfo));
+    memcpy(cid,_cid,sizeof(KODE_Vst3Id));
+    if (_category) strncpy8(category,_category,kode_vst3_CategorySize);
+    if (_name) strncpy8(name,_name,kode_vst3_NameSize);
     cardinality = _cardinality;
   }
   //#if SMTG_CPP11
-  constexpr PClassInfo() : cid(), cardinality(), category(), name() {}
+  constexpr KODE_Vst3PClassInfo() : cid(), cardinality(), category(), name() {}
   //#else
   //PClassInfo () { memset (this, 0, sizeof (PClassInfo)); }
   //#endif
 };
 
-struct PClassInfo2 {
-	TUID cid;
-	int32 cardinality;
-	char8 category[PClassInfo::kCategorySize];
-	char8 name[PClassInfo::kNameSize];
+struct KODE_Vst3PClassInfo2 {
+	KODE_Vst3Id cid;
+	int32_t     cardinality;
+	char        category[KODE_Vst3PClassInfo::kode_vst3_CategorySize];
+	char        name[KODE_Vst3PClassInfo::kode_vst3_NameSize];
 	enum {
-		kVendorSize = 64,
-		kVersionSize = 64,
-		kSubCategoriesSize = 128
+		kode_vst3_VendorSize = 64,
+		kode_vst3_VersionSize = 64,
+		kode_vst3_SubCategoriesSize = 128
 	};
-	uint32 classFlags;
-	char8 subCategories[kSubCategoriesSize];
-	char8 vendor[kVendorSize];
-	char8 version[kVersionSize];
-	char8 sdkVersion[kVersionSize];
-	PClassInfo2 (const TUID _cid, int32 _cardinality, const char8* _category, const char8* _name,
-		int32 _classFlags, const char8* _subCategories, const char8* _vendor, const char8* _version,
-		const char8* _sdkVersion) {
-		memset (this, 0, sizeof (PClassInfo2));
-		memcpy (cid, _cid, sizeof (TUID));
-		cardinality = _cardinality;
-		if (_category) strncpy8 (category, _category, PClassInfo::kCategorySize);
-		if (_name) strncpy8 (name, _name, PClassInfo::kNameSize);
-		classFlags = static_cast<uint32> (_classFlags);
-		if (_subCategories) strncpy8 (subCategories, _subCategories, kSubCategoriesSize);
-		if (_vendor) strncpy8 (vendor, _vendor, kVendorSize);
-		if (_version) strncpy8 (version, _version, kVersionSize);
-		if (_sdkVersion) strncpy8 (sdkVersion, _sdkVersion, kVersionSize);
-	}
-//#if SMTG_CPP11
-	constexpr PClassInfo2 ()
-	: cid(), cardinality(), category(), name(), classFlags(), subCategories(), vendor(), version(), sdkVersion() {}
-//#else
-//	PClassInfo2 () { memset (this, 0, sizeof (PClassInfo2)); }
-//#endif
-};
-
-/*
-struct PClassInfoW {
-	TUID cid;
-	int32 cardinality;
-	char8 category[PClassInfo::kCategorySize];
-	char16 name[PClassInfo::kNameSize];
-	enum { kVendorSize = 64,
-		kVersionSize = 64,
-		kSubCategoriesSize = 128
-	};
-	uint32 classFlags;
-	char8 subCategories[kSubCategoriesSize];
-	char16 vendor[kVendorSize];
-	char16 version[kVersionSize];
-	char16 sdkVersion[kVersionSize];
-	PClassInfoW (const TUID _cid, int32 _cardinality, const char8* _category, const char16* _name,
-		int32 _classFlags, const char8* _subCategories, const char16* _vendor, const char16* _version,
-		const char16* _sdkVersion) {
-		memset (this, 0, sizeof (PClassInfoW));
-		memcpy (cid, _cid, sizeof (TUID));
-		cardinality = _cardinality;
-		if (_category) strncpy8 (category, _category, PClassInfo::kCategorySize);
-		if (_name) strncpy16 (name, _name, PClassInfo::kNameSize);
-		classFlags = static_cast<uint32> (_classFlags);
-		if (_subCategories) strncpy8 (subCategories, _subCategories, kSubCategoriesSize);
-		if (_vendor) strncpy16 (vendor, _vendor, kVendorSize);
-		if (_version) strncpy16 (version, _version, kVersionSize);
-		if (_sdkVersion) strncpy16 (sdkVersion, _sdkVersion, kVersionSize);
-	}
-//#if SMTG_CPP11
-	constexpr PClassInfoW ()
-	: cid ()
-	, cardinality ()
-	, category ()
-	, name ()
-	, classFlags ()
-	, subCategories ()
-	, vendor ()
-	, version ()
-	, sdkVersion ()
-	{
-	}
-//#else
-//	PClassInfoW () { memset (this, 0, sizeof (PClassInfoW)); }
-//#endif
-	void fromAscii (const PClassInfo2& ci2) {
-		//memcpy (cid, ci2.cid, sizeof (TUID));
-		//cardinality = ci2.cardinality;
-		//strncpy8 (category, ci2.category, PClassInfo::kCategorySize);
-		//str8ToStr16 (name, ci2.name, PClassInfo::kNameSize);
-		//classFlags = ci2.classFlags;
-		//strncpy8 (subCategories, ci2.subCategories, kSubCategoriesSize);
-		//str8ToStr16(vendor, ci2.vendor, kVendorSize);
-		//str8ToStr16(version, ci2.version, kVersionSize);
-		//str8ToStr16(sdkVersion, ci2.sdkVersion, kVersionSize);
-	}
-};
-*/
-
-struct PClassInfoW {
-};
-
-struct PFactoryInfo {
-  enum FactoryFlags {
-    kNoFlags					        = 0,
-    kClassesDiscardable			  = 1 << 0,
-    kLicenseCheck				      = 1 << 1,
-    kComponentNonDiscardable	= 1 << 3,
-    kUnicode                  = 1 << 4
-  };
-  enum {
-    kURLSize    = 256,
-    kEmailSize  = 128,
-    kNameSize   = 64
-  };
-  char8 vendor[kNameSize];
-  char8 url[kURLSize];
-  char8 email[kEmailSize];
-  int32 flags;
-  PFactoryInfo (const char8* _vendor, const char8* _url, const char8* _email, int32 _flags) {
-    strncpy8(vendor, _vendor, kNameSize);
-    strncpy8(url, _url, kURLSize);
-    strncpy8(email, _email, kEmailSize);
-    flags = _flags;
-//    #ifdef UNICODE
-//    flags |= kUnicode;
-//    #endif
-  }
+	uint32_t  classFlags;
+	char      subCategories[kode_vst3_SubCategoriesSize];
+	char      vendor[kode_vst3_VendorSize];
+	char      version[kode_vst3_VersionSize];
+	char      sdkVersion[kode_vst3_VersionSize];
+	KODE_Vst3PClassInfo2 (const KODE_Vst3Id _cid, int32_t _cardinality, const char* _category, const char* _name,
+		int32_t _classFlags, const char* _subCategories, const char* _vendor, const char* _version, const char* _sdkVersion) {
+      memset (this, 0, sizeof (KODE_Vst3PClassInfo2));
+      memcpy (cid, _cid, sizeof (KODE_Vst3Id));
+      cardinality = _cardinality;
+      if (_category) strncpy8 (category, _category, KODE_Vst3PClassInfo::kode_vst3_CategorySize);
+      if (_name) strncpy8 (name, _name, KODE_Vst3PClassInfo::kode_vst3_NameSize);
+      classFlags = static_cast<uint32_t> (_classFlags);
+      if (_subCategories) strncpy8 (subCategories, _subCategories, kode_vst3_SubCategoriesSize);
+      if (_vendor) strncpy8 (vendor, _vendor, kode_vst3_VendorSize);
+      if (_version) strncpy8 (version, _version, kode_vst3_VersionSize);
+      if (_sdkVersion) strncpy8 (sdkVersion, _sdkVersion, kode_vst3_VersionSize);
+    }
   //#if SMTG_CPP11
-  constexpr PFactoryInfo() : vendor(), url(), email(), flags() {}
+	constexpr KODE_Vst3PClassInfo2()
+    : cid(), cardinality(), category(), name(), classFlags(), subCategories(), vendor(), version(), sdkVersion() {}
   //#else
-  //  PFactoryInfo () { memset(this,0,sizeof(PFactoryInfo)); }
+  //	KODE_Vst3PClassInfo2() { memset(this,0,sizeof(KODE_Vst3PClassInfo2)); }
   //#endif
 };
 
-struct ProgramListInfo {
-  ProgramListID id;
-  String128 name;
-  int32 programCount;
-};
-
-struct ProcessContext {
-	enum StatesAndFlags {
-		kPlaying                = 1 << 1,
-		kCycleActive            = 1 << 2,
-		kRecording              = 1 << 3,
-		kSystemTimeValid        = 1 << 8,
-		kContTimeValid          = 1 << 17,
-		kProjectTimeMusicValid  = 1 << 9,
-		kBarPositionValid       = 1 << 11,
-		kCycleValid             = 1 << 12,
-		kTempoValid             = 1 << 10,
-		kTimeSigValid           = 1 << 13,
-		kChordValid             = 1 << 18,
-		kSmpteValid             = 1 << 14,
-		kClockValid             = 1 << 15
+/*
+struct KODE_Vst3PClassInfoW {
+	KODE_Vst3Id cid;
+	int32 cardinality;
+	char8 category[PClassInfo::kode_vst3_CategorySize];
+	char16 name[PClassInfo::kode_vst3_NameSize];
+	enum { kode_vst3_VendorSize = 64,
+		kode_vst3_VersionSize = 64,
+		kode_vst3_SubCategoriesSize = 128
 	};
-	uint32        state;
-	double        sampleRate;
-	TSamples      projectTimeSamples;
-	int64         systemTime;
-	TSamples      continousTimeSamples;
-	TQuarterNotes projectTimeMusic;
-	TQuarterNotes barPositionMusic;
-	TQuarterNotes cycleStartMusic;
-	TQuarterNotes cycleEndMusic;
-	double        tempo;
-	int32         timeSigNumerator;
-	int32         timeSigDenominator;
-	Chord         chord;
-	int32         smpteOffsetSubframes;
-	FrameRate     frameRate;
-	int32         samplesToNextClock;
+	uint32  classFlags;
+	char8   subCategories[kode_vst3_SubCategoriesSize];
+	char16  vendor[kode_vst3_VendorSize];
+	char16  version[kode_vst3_VersionSize];
+	char16  sdkVersion[kode_vst3_VersionSize];
+	KODE_Vst3PClassInfoW(const KODE_Vst3Id _cid, int32 _cardinality, const char8* _category, const char16* _name, int32 _classFlags, const char8* _subCategories, const char16* _vendor, const char16* _version, const char16* _sdkVersion) {
+    memset (this, 0, sizeof (PClassInfoW));
+    memcpy (cid, _cid, sizeof (KODE_Vst3Id));
+    cardinality = _cardinality;
+    if (_category) strncpy8 (category, _category, PClassInfo::kode_vst3_CategorySize);
+    if (_name) strncpy16 (name, _name, PClassInfo::kode_vst3_NameSize);
+    classFlags = static_cast<uint32> (_classFlags);
+    if (_subCategories) strncpy8 (subCategories, _subCategories, kode_vst3_SubCategoriesSize);
+    if (_vendor) strncpy16 (vendor, _vendor, kode_vst3_VendorSize);
+    if (_version) strncpy16 (version, _version, kode_vst3_VersionSize);
+    if (_sdkVersion) strncpy16 (sdkVersion, _sdkVersion, kode_vst3_VersionSize);
+	}
+  //#if SMTG_CPP11
+  constexpr KODE_Vst3PClassInfoW ()
+    : cid ()
+    , cardinality ()
+    , category ()
+    , name ()
+    , classFlags ()
+    , subCategories ()
+    , vendor ()
+    , version ()
+    , sdkVersion ()
+  {
+  }
+  //#else
+  //	KODE_Vst3PClassInfoW () { memset (this, 0, sizeof (PClassInfoW)); }
+  //#endif
+  void fromAscii (const PClassInfo2& ci2) {
+    //memcpy (cid, ci2.cid, sizeof (KODE_Vst3Id));
+    //cardinality = ci2.cardinality;
+    //strncpy8 (category, ci2.category, PClassInfo::kode_vst3_CategorySize);
+    //str8ToStr16 (name, ci2.name, PClassInfo::kode_vst3_NameSize);
+    //classFlags = ci2.classFlags;
+    //strncpy8 (subCategories, ci2.subCategories, kode_vst3_SubCategoriesSize);
+    //str8ToStr16(vendor, ci2.vendor, kode_vst3_VendorSize);
+    //str8ToStr16(version, ci2.version, kode_vst3_VersionSize);
+    //str8ToStr16(sdkVersion, ci2.sdkVersion, kode_vst3_VersionSize);
+  }
+};
+*/
+
+struct KODE_Vst3PClassInfoW {
 };
 
-struct ProcessData {
-  ProcessData ()
-    : processMode (0), symbolicSampleSize (kSample32), numSamples (0), numInputs (0)
-    , numOutputs (0), inputs (0), outputs (0), inputParameterChanges (0), outputParameterChanges (0)
-    , inputEvents (0), outputEvents (0), processContext (0) {}
-  int32 processMode;
-  int32 symbolicSampleSize;
-  int32 numSamples;
-  int32 numInputs;
-  int32 numOutputs;
-  AudioBusBuffers* inputs;
-  AudioBusBuffers* outputs;
-  IParameterChanges* inputParameterChanges;
-  IParameterChanges* outputParameterChanges;
-  IEventList* inputEvents;
-  IEventList* outputEvents;
-  ProcessContext* processContext;
+struct KODE_Vst3PFactoryInfo {
+  enum FactoryFlags {
+    kode_vst3_NoFlags					        = 0,
+    kode_vst3_ClassesDiscardable			= 1 << 0,
+    kode_vst3_LicenseCheck				    = 1 << 1,
+    kode_vst3_ComponentNonDiscardable = 1 << 3,
+    kode_vst3_Unicode                 = 1 << 4
+  };
+  enum {
+    kode_vst3_URLSize    = 256,
+    kode_vst3_EmailSize  = 128,
+    kode_vst3_NameSize   = 64
+  };
+  char    vendor[kode_vst3_NameSize];
+  char    url[kode_vst3_URLSize];
+  char    email[kode_vst3_EmailSize];
+  int32_t flags;
+  KODE_Vst3PFactoryInfo(const char* _vendor, const char* _url, const char* _email, int32_t _flags) {
+    strncpy8(vendor,_vendor,kode_vst3_NameSize);
+    strncpy8(url,_url,kode_vst3_URLSize);
+    strncpy8(email,_email,kode_vst3_EmailSize);
+    flags = _flags;
+    //#ifdef UNICODE
+    //  flags |= kode_vst3_Unicode;
+    //#endif
+  }
+  //#if SMTG_CPP11
+  constexpr KODE_Vst3PFactoryInfo() : vendor(), url(), email(), flags() {}
+  //#else
+  //  KODE_Vst3PFactoryInfo() { memset(this,0,sizeof(PFactoryInfo)); }
+  //#endif
 };
 
-struct ProcessSetup {
-  int32 processMode;
-  int32 symbolicSampleSize;
-  int32 maxSamplesPerBlock;
-  SampleRate sampleRate;
+struct KODE_Vst3ProgramListInfo {
+  int32_t         id;
+  KODE_Vst3String name;
+  int32_t         programCount;
 };
 
-struct RoutingInfo {
-	MediaType mediaType;
-	int32 busIndex;
-	int32 channel;
+class KODE_Vst3IParameterChanges;
+class KODE_Vst3IEventList;
+
+struct KODE_Vst3ProcessContext {
+	enum StatesAndFlags {
+		kode_vst3_Playing                = 1 << 1,
+		kode_vst3_CycleActive            = 1 << 2,
+		kode_vst3_Recording              = 1 << 3,
+		kode_vst3_SystemTimeValid        = 1 << 8,
+		kode_vst3_ContTimeValid          = 1 << 17,
+		kode_vst3_ProjectTimeMusicValid  = 1 << 9,
+		kode_vst3_BarPositionValid       = 1 << 11,
+		kode_vst3_CycleValid             = 1 << 12,
+		kode_vst3_TempoValid             = 1 << 10,
+		kode_vst3_TimeSigValid           = 1 << 13,
+		kode_vst3_ChordValid             = 1 << 18,
+		kode_vst3_SmpteValid             = 1 << 14,
+		kode_vst3_ClockValid             = 1 << 15
+	};
+	uint32_t            state;
+	double              sampleRate;
+	int64_t             projectTimeSamples;
+	int64_t             systemTime;
+	int64_t             continousTimeSamples;
+	double              projectTimeMusic;
+	double              barPositionMusic;
+	double              cycleStartMusic;
+	double              cycleEndMusic;
+	double              tempo;
+	int32_t             timeSigNumerator;
+	int32_t             timeSigDenominator;
+	KODE_Vst3Chord      chord;
+	int32_t             smpteOffsetSubframes;
+	KODE_Vst3FrameRate  frameRate;
+	int32_t             samplesToNextClock;
 };
 
-struct UnitInfo {
-	UnitID id;
-	UnitID parentUnitId;
-	String128 name;
-	ProgramListID programListId;
+struct KODE_Vst3ProcessData {
+  KODE_Vst3ProcessData()
+    : processMode(0),symbolicSampleSize(kode_vst3_Sample32),numSamples(0),numInputs(0)
+    , numOutputs(0),inputs (0),outputs(0),inputParameterChanges(0),outputParameterChanges(0)
+    , inputEvents(0),outputEvents(0),processContext(0) {}
+  int32_t                     processMode;
+  int32_t                     symbolicSampleSize;
+  int32_t                     numSamples;
+  int32_t                     numInputs;
+  int32_t                     numOutputs;
+  KODE_Vst3AudioBusBuffers*   inputs;
+  KODE_Vst3AudioBusBuffers*   outputs;
+  KODE_Vst3IParameterChanges* inputParameterChanges;
+  KODE_Vst3IParameterChanges* outputParameterChanges;
+  KODE_Vst3IEventList*        inputEvents;
+  KODE_Vst3IEventList*        outputEvents;
+  KODE_Vst3ProcessContext*    processContext;
 };
 
-struct ViewRect {
+struct KODE_Vst3ProcessSetup {
+  int32_t processMode;
+  int32_t symbolicSampleSize;
+  int32_t maxSamplesPerBlock;
+  double  sampleRate;
+};
+
+struct KODE_Vst3RoutingInfo {
+	int32_t mediaType;
+	int32_t busIndex;
+	int32_t channel;
+};
+
+struct KODE_Vst3UnitInfo {
+	int32_t         id;
+	int32_t         parentUnitId;
+	KODE_Vst3String name;
+	int32_t         programListId;
+};
+
+struct KODE_Vst3ViewRect {
   //ViewRect(int32 l=0, int32 t=0, int32 r=0, int32 b=0)
   //: left(l), top(t), right(r), bottom(b) {}
-  int32 left;
-  int32 top;
-  int32 right;
-  int32 bottom;
+  int32_t left;
+  int32_t top;
+  int32_t right;
+  int32_t bottom;
   //int32 getWidth() const { return right - left; }
   //int32 getHeight() const { return bottom - top; }
 };
 
 //----------------------------------------------------------------------
 
-struct NoteOnEvent {
-  int16 channel;
-  int16 pitch;
-  float tuning;
-  float velocity;
-  int32 length;
-  int32 noteId;
+struct KODE_Vst3NoteOnEvent {
+  int16_t channel;
+  int16_t pitch;
+  float   tuning;
+  float   velocity;
+  int32_t length;
+  int32_t noteId;
 };
 
-struct NoteOffEvent {
-  int16 channel;
-  int16 pitch;
-  float velocity;
-  int32 noteId;
-  float tuning;
+struct KODE_Vst3NoteOffEvent {
+  int16_t channel;
+  int16_t pitch;
+  float   velocity;
+  int32_t noteId;
+  float   tuning;
 };
 
-struct DataEvent {
-  uint32 size;
-  uint32 type;
-  const uint8* bytes;
+struct KODE_Vst3DataEvent {
+  uint32_t        size;
+  uint32_t        type;
+  const uint8_t*  bytes;
   enum DataTypes {
-    kMidiSysEx = 0
+    kode_vst3_MidiSysEx = 0
   };
 };
 
-struct PolyPressureEvent {
-  int16 channel;
-  int16 pitch;
-  float pressure;
-  int32 noteId;
+struct KODE_Vst3PolyPressureEvent {
+  int16_t channel;
+  int16_t pitch;
+  float   pressure;
+  int32_t noteId;
 };
 
-struct ChordEvent {
-  int16 root;
-  int16 bassNote;
-  int16 mask;
-  uint16 textLen;
-  const TChar* text;
+struct KODE_Vst3ChordEvent {
+  int16_t         root;
+  int16_t         bassNote;
+  int16_t         mask;
+  uint16_t        textLen;
+  const char16_t* text;
 };
 
-struct ScaleEvent {
-  int16 root;
-  int16 mask;
-  uint16 textLen;
-  const TChar* text;
+struct KODE_Vst3ScaleEvent {
+  int16_t         root;
+  int16_t         mask;
+  uint16_t        textLen;
+  const char16_t* text;
 };
 
-struct NoteExpressionValueEvent {
-  NoteExpressionTypeID typeId;
-  int32 noteId;
-  NoteExpressionValue value;
+struct KODE_Vst3NoteExpressionValueEvent {
+  uint32_t  typeId;
+  int32_t   noteId;
+  double    value;
 };
 
-struct NoteExpressionTextEvent {
-  NoteExpressionTypeID typeId;
-  int32 noteId;
-  uint32 textLen;
-  const TChar* text;
+struct KODE_Vst3NoteExpressionTextEvent {
+  uint32_t        typeId;
+  int32_t         noteId;
+  uint32_t        textLen;
+  const char16_t* text;
 };
 
-struct Event {
-  int32 busIndex;
-  int32 sampleOffset;
-  TQuarterNotes ppqPosition;
-  uint16 flags;
+struct KODE_Vst3Event {
+  int32_t   busIndex;
+  int32_t   sampleOffset;
+  double    ppqPosition;
+  uint16_t  flags;
   enum EventFlags {
-    kIsLive = 1 << 0,
-    kUserReserved1 = 1 << 14,
-    kUserReserved2 = 1 << 15
+    kode_vst3_IsLive        = 1 << 0,
+    kode_vst3_UserReserved1 = 1 << 14,
+    kode_vst3_UserReserved2 = 1 << 15
   };
   enum EventTypes
   {
-    kNoteOnEvent = 0,
-    kNoteOffEvent,
-    kDataEvent,
-    kPolyPressureEvent,
-    kNoteExpressionValueEvent,
-    kNoteExpressionTextEvent,
-    kChordEvent,
-    kScaleEvent
+    kode_vst3_NoteOnEvent = 0,
+    kode_vst3_NoteOffEvent,
+    kode_vst3_DataEvent,
+    kode_vst3_PolyPressureEvent,
+    kode_vst3_NoteExpressionValueEvent,
+    kode_vst3_NoteExpressionTextEvent,
+    kode_vst3_ChordEvent,
+    kode_vst3_ScaleEvent
   };
-  uint16 type;
+  uint16_t type;
   union {
-    NoteOnEvent noteOn;
-    NoteOffEvent noteOff;
-    DataEvent data;
-    PolyPressureEvent polyPressure;
-    NoteExpressionValueEvent noteExpressionValue;
-    NoteExpressionTextEvent noteExpressionText;
-    ChordEvent chord;
-    ScaleEvent scale;
+    KODE_Vst3NoteOnEvent noteOn;
+    KODE_Vst3NoteOffEvent noteOff;
+    KODE_Vst3DataEvent data;
+    KODE_Vst3PolyPressureEvent polyPressure;
+    KODE_Vst3NoteExpressionValueEvent noteExpressionValue;
+    KODE_Vst3NoteExpressionTextEvent noteExpressionText;
+    KODE_Vst3ChordEvent chord;
+    KODE_Vst3ScaleEvent scale;
   };
 };
 
 //----------------------------------------------------------------------
 //
-// utils
-//
-//----------------------------------------------------------------------
-
-//#define char_to_utf16(C,U) UString128(C).copyTo(U,128)
-//#define utf16_to_char(U,C) UString128(U).toAscii(C,128)
-
-void  char_to_utf16(const void* C, void* U) {
-}
-
-//----------
-
-void utf16_to_char(const void* U, void* C) {
-}
-
-//
-
-bool iidEqual(const void* iid1, const void* iid2) {
-  return false;
-}
-
-//----------------------------------------------------------------------
-//
 //
 //
 //----------------------------------------------------------------------
 
-class FUnknown {
+class KODE_Vst3FUnknown {
 public:
-	virtual tresult   PLUGIN_API queryInterface (const TUID _iid, void** obj) = 0;
-	virtual uint32_t  PLUGIN_API addRef () = 0;
-	virtual uint32_t  PLUGIN_API release () = 0;
-	static const TUID iid;
+	virtual int32_t   KODE_VST3_PLUGIN_API queryInterface (const KODE_Vst3Id _iid, void** obj) = 0;
+	virtual uint32_t  KODE_VST3_PLUGIN_API addRef () = 0;
+	virtual uint32_t  KODE_VST3_PLUGIN_API release () = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID(FUnknown, 0x00000000, 0x00000000, 0xC0000000, 0x00000046)
+KODE_VST3_DECLARE_CLASS_IID(KODE_Vst3FUnknown, 0x00000000, 0x00000000, 0xC0000000, 0x00000046)
 
 //----------
 
-class IBStream
-: public FUnknown {
+class KODE_Vst3IBStream
+: public KODE_Vst3FUnknown {
 public:
   enum IStreamSeekMode {
-    kIBSeekSet = 0,
-    kIBSeekCur,
-    kIBSeekEnd
+    kode_vst3_IBSeekSet = 0,
+    kode_vst3_IBSeekCur,
+    kode_vst3_IBSeekEnd
   };
-  virtual tresult PLUGIN_API read(void* buffer, int32_t numBytes, int32_t* numBytesRead = 0) = 0;
-  virtual tresult PLUGIN_API write(void* buffer, int32_t numBytes, int32_t* numBytesWritten = 0) = 0;
-  virtual tresult PLUGIN_API seek(int64_t pos, int32_t mode, int64_t* result = 0) = 0;
-  virtual tresult PLUGIN_API tell(int64_t* pos) = 0;
-  static const TUID iid;
+  virtual int32_t KODE_VST3_PLUGIN_API read(void* buffer, int32_t numBytes, int32_t* numBytesRead = 0) = 0;
+  virtual int32_t KODE_VST3_PLUGIN_API write(void* buffer, int32_t numBytes, int32_t* numBytesWritten = 0) = 0;
+  virtual int32_t KODE_VST3_PLUGIN_API seek(int64_t pos, int32_t mode, int64_t* result = 0) = 0;
+  virtual int32_t KODE_VST3_PLUGIN_API tell(int64_t* pos) = 0;
+  static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID(IBStream,0xC3BF6EA2,0x30994752,0x9B6BF990,0x1EE33E9B)
+KODE_VST3_DECLARE_CLASS_IID(KODE_Vst3IBStream,0xC3BF6EA2,0x30994752,0x9B6BF990,0x1EE33E9B)
 
 //----------
 
-class IPluginFactory
-: public FUnknown {
+class KODE_Vst3IPluginFactory
+: public KODE_Vst3FUnknown {
 public:
-  virtual tresult  PLUGIN_API getFactoryInfo(PFactoryInfo* info) = 0;
-  virtual int32_t  PLUGIN_API countClasses() = 0;
-  virtual tresult  PLUGIN_API getClassInfo (int32_t index, PClassInfo* info) = 0;
-  virtual tresult  PLUGIN_API createInstance(FIDString cid, FIDString _iid, void** obj) = 0;
-  static const TUID iid;
+  virtual int32_t  KODE_VST3_PLUGIN_API getFactoryInfo(KODE_Vst3PFactoryInfo* info) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API countClasses() = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API getClassInfo (int32_t index, KODE_Vst3PClassInfo* info) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API createInstance(const char* cid, const char* _iid, void** obj) = 0;
+  static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID(IPluginFactory, 0x7A4D811C, 0x52114A1F, 0xAED9D2EE, 0x0B43BF9F)
+KODE_VST3_DECLARE_CLASS_IID(KODE_Vst3IPluginFactory, 0x7A4D811C, 0x52114A1F, 0xAED9D2EE, 0x0B43BF9F)
 
 //----------
 
-class IPluginFactory2
-: public IPluginFactory {
+class KODE_Vst3IPluginFactory2
+: public KODE_Vst3IPluginFactory {
 public:
-	virtual tresult PLUGIN_API getClassInfo2 (int32 index, PClassInfo2* info) = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API getClassInfo2 (int32_t index, KODE_Vst3PClassInfo2* info) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IPluginFactory2, 0x0007B650, 0xF24B4C0B, 0xA464EDB9, 0xF00B2ABB)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IPluginFactory2, 0x0007B650, 0xF24B4C0B, 0xA464EDB9, 0xF00B2ABB)
 
 //----------
 
-class IPluginFactory3
-: public IPluginFactory2 {
+class KODE_Vst3IPluginFactory3
+: public KODE_Vst3IPluginFactory2 {
 public:
-	virtual tresult PLUGIN_API getClassInfoUnicode (int32 index, PClassInfoW* info) = 0;
-	virtual tresult PLUGIN_API setHostContext (FUnknown* context) = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API getClassInfoUnicode(int32_t index, KODE_Vst3PClassInfoW* info) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API setHostContext(KODE_Vst3FUnknown* context) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IPluginFactory3, 0x4555A2AB, 0xC1234E57, 0x9B122910, 0x36878931)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IPluginFactory3, 0x4555A2AB, 0xC1234E57, 0x9B122910, 0x36878931)
 
 //----------
 
-class IPluginBase
-: public FUnknown {
+class KODE_Vst3IPluginBase
+: public KODE_Vst3FUnknown {
 public:
-  virtual tresult  PLUGIN_API initialize(FUnknown* context) = 0;
-  virtual tresult  PLUGIN_API terminate() = 0;
-  static const TUID iid;
+  virtual int32_t  KODE_VST3_PLUGIN_API initialize(KODE_Vst3FUnknown* context) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API terminate() = 0;
+  static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID(IPluginBase,0x22888DDB,0x156E45AE,0x8358B348,0x08190625)
+KODE_VST3_DECLARE_CLASS_IID(KODE_Vst3IPluginBase,0x22888DDB,0x156E45AE,0x8358B348,0x08190625)
 
 //----------
 
-class IComponent
-: public IPluginBase {
+class KODE_Vst3IComponent
+: public KODE_Vst3IPluginBase {
 public:
-  virtual tresult  PLUGIN_API getControllerClassId(TUID classId) = 0;
-  virtual tresult  PLUGIN_API setIoMode(IoMode mode) = 0;
-  virtual int32_t  PLUGIN_API getBusCount(MediaType type, BusDirection dir) = 0;
-  virtual tresult  PLUGIN_API getBusInfo(MediaType type, BusDirection dir, int32_t index, BusInfo& bus) = 0;
-  virtual tresult  PLUGIN_API getRoutingInfo(RoutingInfo& inInfo, RoutingInfo& outInfo) = 0;
-  virtual tresult  PLUGIN_API activateBus(MediaType type, BusDirection dir, int32_t index, TBool state) = 0;
-  virtual tresult  PLUGIN_API setActive(TBool state) = 0;
-  virtual tresult  PLUGIN_API setState(IBStream* state) = 0;
-  virtual tresult  PLUGIN_API getState(IBStream* state) = 0;
-  static const TUID iid;
+  virtual int32_t  KODE_VST3_PLUGIN_API getControllerClassId(KODE_Vst3Id classId) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API setIoMode(int32_t mode) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API getBusCount(int32_t type, int32_t dir) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API getBusInfo(int32_t type, int32_t dir, int32_t index, KODE_Vst3BusInfo& bus) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API getRoutingInfo(KODE_Vst3RoutingInfo& inInfo, KODE_Vst3RoutingInfo& outInfo) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API activateBus(int32_t type, int32_t dir, int32_t index, uint8_t state) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API setActive(uint8_t state) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API setState(KODE_Vst3IBStream* state) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API getState(KODE_Vst3IBStream* state) = 0;
+  static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID(IComponent,0xE831FF31,0xF2D54301,0x928EBBEE,0x25697802)
+KODE_VST3_DECLARE_CLASS_IID(KODE_Vst3IComponent,0xE831FF31,0xF2D54301,0x928EBBEE,0x25697802)
 
 //----------
 
-class IAudioProcessor
-: public FUnknown {
+class KODE_Vst3IAudioProcessor
+: public KODE_Vst3FUnknown {
 public:
-  virtual tresult  PLUGIN_API setBusArrangements(SpeakerArrangement* inputs, int32_t numIns, SpeakerArrangement* outputs, int32_t numOuts) = 0;
-  virtual tresult  PLUGIN_API getBusArrangement(BusDirection dir, int32_t index, SpeakerArrangement& arr) = 0;
-  virtual tresult  PLUGIN_API canProcessSampleSize(int32_t symbolicSampleSize) = 0;
-  virtual uint32_t PLUGIN_API getLatencySamples() = 0;
-  virtual tresult  PLUGIN_API setupProcessing(ProcessSetup& setup) = 0;
-  virtual tresult  PLUGIN_API setProcessing(TBool state) = 0;
-  virtual tresult  PLUGIN_API process(ProcessData& data) = 0;
-  virtual uint32_t PLUGIN_API getTailSamples() = 0;
-  static const TUID iid;
+  virtual int32_t  KODE_VST3_PLUGIN_API setBusArrangements(uint64_t* inputs, int32_t numIns, uint64_t* outputs, int32_t numOuts) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API getBusArrangement(int32_t dir, int32_t index, uint64_t& arr) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API canProcessSampleSize(int32_t symbolicSampleSize) = 0;
+  virtual uint32_t KODE_VST3_PLUGIN_API getLatencySamples() = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API setupProcessing(KODE_Vst3ProcessSetup& setup) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API setProcessing(uint8_t state) = 0;
+  virtual int32_t  KODE_VST3_PLUGIN_API process(KODE_Vst3ProcessData& data) = 0;
+  virtual uint32_t KODE_VST3_PLUGIN_API getTailSamples() = 0;
+  static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID(IAudioProcessor,0x42043F99,0xB7DA453C,0xA569E79D,0x9AAEC33D)
+KODE_VST3_DECLARE_CLASS_IID(KODE_Vst3IAudioProcessor,0x42043F99,0xB7DA453C,0xA569E79D,0x9AAEC33D)
 
 //----------
 
-class IUnitInfo
-: public FUnknown {
+class KODE_Vst3IUnitInfo
+: public KODE_Vst3FUnknown {
 public:
-	virtual int32   PLUGIN_API getUnitCount() = 0;
-	virtual tresult PLUGIN_API getUnitInfo(int32 unitIndex, UnitInfo& info /*out*/) = 0;
-	virtual int32   PLUGIN_API getProgramListCount() = 0;
-	virtual tresult PLUGIN_API getProgramListInfo(int32 listIndex, ProgramListInfo& info /*out*/) = 0;
-	virtual tresult PLUGIN_API getProgramName(ProgramListID listId, int32 programIndex, String128 name /*out*/) = 0;
-	virtual tresult PLUGIN_API getProgramInfo(ProgramListID listId, int32 programIndex, CString attributeId /*in*/, String128 attributeValue /*out*/) = 0;
-	virtual tresult PLUGIN_API hasProgramPitchNames(ProgramListID listId, int32 programIndex) = 0;
-	virtual tresult PLUGIN_API getProgramPitchName(ProgramListID listId, int32 programIndex, int16 midiPitch, String128 name /*out*/) = 0;
-	virtual UnitID  PLUGIN_API getSelectedUnit() = 0;
-	virtual tresult PLUGIN_API selectUnit(UnitID unitId) = 0;
-	virtual tresult PLUGIN_API getUnitByBus(MediaType type, BusDirection dir, int32 busIndex, int32 channel, UnitID& unitId /*out*/) = 0;
-	virtual tresult PLUGIN_API setUnitProgramData(int32 listOrUnitId, int32 programIndex, IBStream* data) = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API getUnitCount() = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getUnitInfo(int32_t unitIndex, KODE_Vst3UnitInfo& info /*out*/) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getProgramListCount() = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getProgramListInfo(int32_t listIndex, KODE_Vst3ProgramListInfo& info /*out*/) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getProgramName(int32_t listId, int32_t programIndex, KODE_Vst3String name /*out*/) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getProgramInfo(int32_t listId, int32_t programIndex, const char* attributeId /*in*/, KODE_Vst3String attributeValue /*out*/) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API hasProgramPitchNames(int32_t listId, int32_t programIndex) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getProgramPitchName(int32_t listId, int32_t programIndex, int16_t midiPitch, KODE_Vst3String name /*out*/) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getSelectedUnit() = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API selectUnit(int32_t unitId) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getUnitByBus(int32_t type, int32_t dir, int32_t busIndex, int32_t channel, int32_t& unitId /*out*/) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API setUnitProgramData(int32_t listOrUnitId, int32_t programIndex, KODE_Vst3IBStream* data) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IUnitInfo, 0x3D4BD6B5, 0x913A4FD2, 0xA886E768, 0xA5EB92C1)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IUnitInfo, 0x3D4BD6B5, 0x913A4FD2, 0xA886E768, 0xA5EB92C1)
 
 //----------
 
-class IAttributeList
-: public FUnknown {
+class KODE_Vst3IAttributeList
+: public KODE_Vst3FUnknown {
 public:
-	typedef const char* AttrID;
-	virtual tresult PLUGIN_API setInt(AttrID id, int64 value) = 0;
-	virtual tresult PLUGIN_API getInt(AttrID id, int64& value) = 0;
-	virtual tresult PLUGIN_API setFloat(AttrID id, double value) = 0;
-	virtual tresult PLUGIN_API getFloat(AttrID id, double& value) = 0;
-	virtual tresult PLUGIN_API setString(AttrID id, const TChar* string) = 0;
-	virtual tresult PLUGIN_API getString(AttrID id, TChar* string, uint32 size) = 0;
-	virtual tresult PLUGIN_API setBinary(AttrID id, const void* data, uint32 size) = 0;
-	virtual tresult PLUGIN_API getBinary(AttrID id, const void*& data, uint32& size) = 0;
-	static const FUID iid;
+	//typedef const char* AttrID;
+	virtual int32_t KODE_VST3_PLUGIN_API setInt(/*AttrID*/const char* id, int64_t value) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getInt(/*AttrID*/const char* id, int64_t& value) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API setFloat(/*AttrID*/const char* id, double value) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getFloat(/*AttrID*/const char* id, double& value) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API setString(/*AttrID*/const char* id, const char16_t* string) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getString(/*AttrID*/const char* id, char16_t* string, uint32_t size) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API setBinary(/*AttrID*/const char* id, const void* data, uint32_t size) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getBinary(/*AttrID*/const char* id, const void*& data, uint32_t& size) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IAttributeList, 0x1E5F0AEB, 0xCC7F4533, 0xA2544011, 0x38AD5EE4)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IAttributeList, 0x1E5F0AEB, 0xCC7F4533, 0xA2544011, 0x38AD5EE4)
 
 //----------
 
-class IMessage
-: public FUnknown {
+class KODE_Vst3IMessage
+: public KODE_Vst3FUnknown {
 public:
-	virtual FIDString       PLUGIN_API getMessageID () = 0;
-	virtual void            PLUGIN_API setMessageID (FIDString id /*in*/) = 0;
-	virtual IAttributeList* PLUGIN_API getAttributes () = 0;
-	static const FUID iid;
+	virtual const char*               KODE_VST3_PLUGIN_API getMessageID () = 0;
+	virtual void                      KODE_VST3_PLUGIN_API setMessageID (const char* id /*in*/) = 0;
+	virtual KODE_Vst3IAttributeList*  KODE_VST3_PLUGIN_API getAttributes () = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IMessage, 0x936F033B, 0xC6C047DB, 0xBB0882F8, 0x13C1E613)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IMessage, 0x936F033B, 0xC6C047DB, 0xBB0882F8, 0x13C1E613)
 
 //----------
 
-class IConnectionPoint
-: public FUnknown {
+class KODE_Vst3IConnectionPoint
+: public KODE_Vst3FUnknown {
 public:
-	virtual tresult PLUGIN_API connect (IConnectionPoint* other) = 0;
-	virtual tresult PLUGIN_API disconnect (IConnectionPoint* other) = 0;
-	virtual tresult PLUGIN_API notify (IMessage* message) = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API connect(KODE_Vst3IConnectionPoint* other) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API disconnect(KODE_Vst3IConnectionPoint* other) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API notify(KODE_Vst3IMessage* message) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IConnectionPoint, 0x70A4156F, 0x6E6E4026, 0x989148BF, 0xAA60D8D1)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IConnectionPoint, 0x70A4156F, 0x6E6E4026, 0x989148BF, 0xAA60D8D1)
 
 //----------
 
-class IMidiMapping
-: public FUnknown {
+class KODE_Vst3IMidiMapping
+: public KODE_Vst3FUnknown {
 public:
-	virtual tresult PLUGIN_API getMidiControllerAssignment (int32 busIndex, int16 channel, CtrlNumber midiControllerNumber, ParamID& id/*out*/) = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API getMidiControllerAssignment (int32_t busIndex, int16_t channel, int16_t midiControllerNumber, uint32_t& id/*out*/) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IMidiMapping, 0xDF0FF9F7, 0x49B74669, 0xB63AB732, 0x7ADBF5E5)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IMidiMapping, 0xDF0FF9F7, 0x49B74669, 0xB63AB732, 0x7ADBF5E5)
 
 //----------
 
-class IKeyswitchController
-: public FUnknown {
+class KODE_Vst3IKeyswitchController
+: public KODE_Vst3FUnknown {
 public:
-	virtual int32   PLUGIN_API getKeyswitchCount (int32 busIndex, int16 channel) = 0;
-	virtual tresult PLUGIN_API getKeyswitchInfo (int32 busIndex, int16 channel, int32 keySwitchIndex, KeyswitchInfo& info /*out*/) = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API getKeyswitchCount (int32_t busIndex, int16_t channel) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getKeyswitchInfo (int32_t busIndex, int16_t channel, int32_t keySwitchIndex, KODE_Vst3KeyswitchInfo& info /*out*/) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IKeyswitchController, 0x1F2F76D3, 0xBFFB4B96, 0xB99527A5, 0x5EBCCEF4)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IKeyswitchController, 0x1F2F76D3, 0xBFFB4B96, 0xB99527A5, 0x5EBCCEF4)
 
 //----------
 
@@ -1033,198 +992,198 @@ DECLARE_CLASS_IID (IKeyswitchController, 0x1F2F76D3, 0xBFFB4B96, 0xB99527A5, 0x5
 
 //----------
 
-class IComponentHandler
-: public FUnknown {
+class KODE_Vst3IComponentHandler
+: public KODE_Vst3FUnknown {
 public:
-	virtual tresult PLUGIN_API beginEdit (ParamID id) = 0;
-	virtual tresult PLUGIN_API performEdit (ParamID id, ParamValue valueNormalized) = 0;
-	virtual tresult PLUGIN_API endEdit (ParamID id) = 0;
-	virtual tresult PLUGIN_API restartComponent (int32 flags) = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API beginEdit (uint32_t id) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API performEdit (uint32_t id, double valueNormalized) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API endEdit (uint32_t id) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API restartComponent (int32_t flags) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IComponentHandler, 0x93A0BEA3, 0x0BD045DB, 0x8E890B0C, 0xC1E46AC6)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IComponentHandler, 0x93A0BEA3, 0x0BD045DB, 0x8E890B0C, 0xC1E46AC6)
 
 //----------
 
-class IComponentHandler2
-: public FUnknown {
+class KODE_Vst3IComponentHandler2
+: public KODE_Vst3FUnknown {
 public:
-	virtual tresult PLUGIN_API setDirty (TBool state) = 0;
-	virtual tresult PLUGIN_API requestOpenEditor (FIDString name = /*ViewType::*/kEditor) = 0;
-	virtual tresult PLUGIN_API startGroupEdit () = 0;
-	virtual tresult PLUGIN_API finishGroupEdit () = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API setDirty (uint8_t state) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API requestOpenEditor (const char* name = /*ViewType::*/kode_vst3_Editor) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API startGroupEdit () = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API finishGroupEdit () = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IComponentHandler2, 0xF040B4B3, 0xA36045EC, 0xABCDC045, 0xB4D5A2CC)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IComponentHandler2, 0xF040B4B3, 0xA36045EC, 0xABCDC045, 0xB4D5A2CC)
 
 //----------
 
-class IPlugFrame;
+class KODE_Vst3IPlugFrame;
 
-class IPlugView
-: public FUnknown {
+class KODE_Vst3IPlugView
+: public KODE_Vst3FUnknown {
 public:
-	virtual tresult PLUGIN_API isPlatformTypeSupported (FIDString type) = 0;
-	virtual tresult PLUGIN_API attached (void* parent, FIDString type) = 0;
-	virtual tresult PLUGIN_API removed () = 0;
-	virtual tresult PLUGIN_API onWheel (float distance) = 0;
-	virtual tresult PLUGIN_API onKeyDown (char16 key, int16 keyCode, int16 modifiers) = 0;
-	virtual tresult PLUGIN_API onKeyUp (char16 key, int16 keyCode, int16 modifiers) = 0;
-	virtual tresult PLUGIN_API getSize (ViewRect* size) = 0;
-	virtual tresult PLUGIN_API onSize (ViewRect* newSize) = 0;
-	virtual tresult PLUGIN_API onFocus (TBool state) = 0;
-	virtual tresult PLUGIN_API setFrame (IPlugFrame* frame) = 0;
-	virtual tresult PLUGIN_API canResize () = 0;
-	virtual tresult PLUGIN_API checkSizeConstraint (ViewRect* rect) = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API isPlatformTypeSupported (const char* type) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API attached (void* parent, const char* type) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API removed () = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API onWheel (float distance) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API onKeyDown (char16_t key, int16_t keyCode, int16_t modifiers) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API onKeyUp (char16_t key, int16_t keyCode, int16_t modifiers) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getSize (KODE_Vst3ViewRect* size) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API onSize (KODE_Vst3ViewRect* newSize) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API onFocus (uint8_t state) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API setFrame (KODE_Vst3IPlugFrame* frame) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API canResize () = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API checkSizeConstraint (KODE_Vst3ViewRect* rect) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IPlugView, 0x5BC32507, 0xD06049EA, 0xA6151B52, 0x2B755B29)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IPlugView, 0x5BC32507, 0xD06049EA, 0xA6151B52, 0x2B755B29)
 
 //----------
 
-class IPlugFrame
-: public FUnknown {
+class KODE_Vst3IPlugFrame
+: public KODE_Vst3FUnknown {
 public:
-	virtual tresult PLUGIN_API resizeView(IPlugView* view, ViewRect* newSize) = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API resizeView(KODE_Vst3IPlugView* view, KODE_Vst3ViewRect* newSize) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IPlugFrame, 0x367FAF01, 0xAFA94693, 0x8D4DA2A0, 0xED0882A3)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IPlugFrame, 0x367FAF01, 0xAFA94693, 0x8D4DA2A0, 0xED0882A3)
 
 //----------
 
 #define setState setEditorState
 #define getState getEditorState
 
-class IEditController
-: public IPluginBase {
+class KODE_Vst3IEditController
+: public KODE_Vst3IPluginBase {
 public:
-	virtual tresult     PLUGIN_API setComponentState (IBStream* state) = 0;
-	virtual tresult     PLUGIN_API setState (IBStream* state) = 0;
-	virtual tresult     PLUGIN_API getState (IBStream* state) = 0;
-	virtual int32       PLUGIN_API getParameterCount () = 0;
-	virtual tresult     PLUGIN_API getParameterInfo (int32 paramIndex, ParameterInfo& info /*out*/) = 0;
-	virtual tresult     PLUGIN_API getParamStringByValue (ParamID id, ParamValue valueNormalized /*in*/, String128 string /*out*/) = 0;
-	virtual tresult     PLUGIN_API getParamValueByString (ParamID id, TChar* string /*in*/, ParamValue& valueNormalized /*out*/) = 0;
-	virtual ParamValue  PLUGIN_API normalizedParamToPlain (ParamID id, ParamValue valueNormalized) = 0;
-	virtual ParamValue  PLUGIN_API plainParamToNormalized (ParamID id, ParamValue plainValue) = 0;
-	virtual ParamValue  PLUGIN_API getParamNormalized (ParamID id) = 0;
-	virtual tresult     PLUGIN_API setParamNormalized (ParamID id, ParamValue value) = 0;
-	virtual tresult     PLUGIN_API setComponentHandler (IComponentHandler* handler) = 0;
-	virtual IPlugView*  PLUGIN_API createView (FIDString name) = 0;
-	static const FUID iid;
+	virtual int32_t     KODE_VST3_PLUGIN_API setComponentState (KODE_Vst3IBStream* state) = 0;
+	virtual int32_t     KODE_VST3_PLUGIN_API setState (KODE_Vst3IBStream* state) = 0;
+	virtual int32_t     KODE_VST3_PLUGIN_API getState (KODE_Vst3IBStream* state) = 0;
+	virtual int32_t     KODE_VST3_PLUGIN_API getParameterCount () = 0;
+	virtual int32_t     KODE_VST3_PLUGIN_API getParameterInfo (int32_t paramIndex, KODE_Vst3ParameterInfo& info /*out*/) = 0;
+	virtual int32_t     KODE_VST3_PLUGIN_API getParamStringByValue (uint32_t id, double valueNormalized /*in*/, KODE_Vst3String string /*out*/) = 0;
+	virtual int32_t     KODE_VST3_PLUGIN_API getParamValueByString (uint32_t id, char16_t* string /*in*/, double& valueNormalized /*out*/) = 0;
+	virtual double      KODE_VST3_PLUGIN_API normalizedParamToPlain (uint32_t id, double valueNormalized) = 0;
+	virtual double      KODE_VST3_PLUGIN_API plainParamToNormalized (uint32_t id, double plainValue) = 0;
+	virtual double      KODE_VST3_PLUGIN_API getParamNormalized (uint32_t id) = 0;
+	virtual int32_t     KODE_VST3_PLUGIN_API setParamNormalized (uint32_t id, double value) = 0;
+	virtual int32_t     KODE_VST3_PLUGIN_API setComponentHandler (KODE_Vst3IComponentHandler* handler) = 0;
+	virtual KODE_Vst3IPlugView*  KODE_VST3_PLUGIN_API createView (const char* name) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IEditController, 0xDCD7BBE3, 0x7742448D, 0xA874AACC, 0x979C759E)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IEditController, 0xDCD7BBE3, 0x7742448D, 0xA874AACC, 0x979C759E)
 
 #undef setState
 #undef getState
 
 //----------
 
-class IEditController2
-: public FUnknown {
+class KODE_Vst3IEditController2
+: public KODE_Vst3FUnknown {
 public:
-	virtual tresult PLUGIN_API setKnobMode (KnobMode mode) = 0;
-	virtual tresult PLUGIN_API openHelp (TBool onlyCheck) = 0;
-	virtual tresult PLUGIN_API openAboutBox (TBool onlyCheck) = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API setKnobMode (int32_t mode) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API openHelp (uint8_t onlyCheck) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API openAboutBox (uint8_t onlyCheck) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IEditController2, 0x7F4EFE59, 0xF3204967, 0xAC27A3AE, 0xAFB63038)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IEditController2, 0x7F4EFE59, 0xF3204967, 0xAC27A3AE, 0xAFB63038)
 
 //----------
 
-class ITimerHandler
-: public FUnknown {
+class KODE_Vst3ITimerHandler
+: public KODE_Vst3FUnknown {
 public:
-	virtual void PLUGIN_API onTimer () = 0;
-	static const FUID iid;
+	virtual void KODE_VST3_PLUGIN_API onTimer () = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (ITimerHandler, 0x10BDD94F, 0x41424774, 0x821FAD8F, 0xECA72CA9)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3ITimerHandler, 0x10BDD94F, 0x41424774, 0x821FAD8F, 0xECA72CA9)
 
 //----------------------------------------------------------------------
 //
 //----------------------------------------------------------------------
 
-class IHostApplication
-: public FUnknown {
+class KODE_Vst3IHostApplication
+: public KODE_Vst3FUnknown {
 public:
-	virtual tresult PLUGIN_API getName (String128 name) = 0;
-	virtual tresult PLUGIN_API createInstance (TUID cid, TUID _iid, void** obj) = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API getName (KODE_Vst3String name) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API createInstance (KODE_Vst3Id cid, KODE_Vst3Id _iid, void** obj) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IHostApplication, 0x58E595CC, 0xDB2D4969, 0x8B6AAF8C, 0x36A664E5)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IHostApplication, 0x58E595CC, 0xDB2D4969, 0x8B6AAF8C, 0x36A664E5)
 
 //----------
 
-class IEventHandler
-: public FUnknown {
+class KODE_Vst3IEventHandler
+: public KODE_Vst3FUnknown {
 public:
-	virtual void PLUGIN_API onFDIsSet (FileDescriptor fd) = 0;
-	static const FUID iid;
+	virtual void KODE_VST3_PLUGIN_API onFDIsSet (int fd) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IEventHandler, 0x561E65C9, 0x13A0496F, 0x813A2C35, 0x654D7983)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IEventHandler, 0x561E65C9, 0x13A0496F, 0x813A2C35, 0x654D7983)
 
 //----------
 
-class IRunLoop
-: public FUnknown {
+class KODE_Vst3IRunLoop
+: public KODE_Vst3FUnknown {
 public:
-	virtual tresult PLUGIN_API registerEventHandler (IEventHandler* handler, FileDescriptor fd) = 0;
-	virtual tresult PLUGIN_API unregisterEventHandler (IEventHandler* handler) = 0;
-	virtual tresult PLUGIN_API registerTimer (ITimerHandler* handler, TimerInterval milliseconds) = 0;
-	virtual tresult PLUGIN_API unregisterTimer (ITimerHandler* handler) = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API registerEventHandler (KODE_Vst3IEventHandler* handler, int fd) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API unregisterEventHandler (KODE_Vst3IEventHandler* handler) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API registerTimer (KODE_Vst3ITimerHandler* handler, uint64_t milliseconds) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API unregisterTimer (KODE_Vst3ITimerHandler* handler) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IRunLoop, 0x18C35366, 0x97764F1A, 0x9C5B8385, 0x7A871389)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IRunLoop, 0x18C35366, 0x97764F1A, 0x9C5B8385, 0x7A871389)
 
 //----------
 
-class IParamValueQueue
-: public FUnknown {
+class KODE_Vst3IParamValueQueue
+: public KODE_Vst3FUnknown {
 public:
-	virtual ParamID PLUGIN_API getParameterId () = 0;
-	virtual int32   PLUGIN_API getPointCount () = 0;
-	virtual tresult PLUGIN_API getPoint (int32 index, int32& sampleOffset /*out*/, ParamValue& value /*out*/) = 0;
-	virtual tresult PLUGIN_API addPoint (int32 sampleOffset, ParamValue value, int32& index /*out*/) = 0;
-	static const FUID iid;
+	virtual uint32_t  KODE_VST3_PLUGIN_API getParameterId () = 0;
+	virtual int32_t   KODE_VST3_PLUGIN_API getPointCount () = 0;
+	virtual int32_t   KODE_VST3_PLUGIN_API getPoint (int32_t index, int32_t& sampleOffset /*out*/, double& value /*out*/) = 0;
+	virtual int32_t   KODE_VST3_PLUGIN_API addPoint (int32_t sampleOffset, double value, int32_t& index /*out*/) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IParamValueQueue, 0x01263A18, 0xED074F6F, 0x98C9D356, 0x4686F9BA)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IParamValueQueue, 0x01263A18, 0xED074F6F, 0x98C9D356, 0x4686F9BA)
 
 //----------
 
-class IParameterChanges
-: public FUnknown {
+class KODE_Vst3IParameterChanges
+: public KODE_Vst3FUnknown {
 public:
-	virtual int32             PLUGIN_API getParameterCount () = 0;
-	virtual IParamValueQueue* PLUGIN_API getParameterData (int32 index) = 0;
-	virtual IParamValueQueue* PLUGIN_API addParameterData (const ParamID& id, int32& index /*out*/) = 0;
-	static const FUID iid;
+	virtual int32_t                     KODE_VST3_PLUGIN_API getParameterCount () = 0;
+	virtual KODE_Vst3IParamValueQueue*  KODE_VST3_PLUGIN_API getParameterData (int32_t index) = 0;
+	virtual KODE_Vst3IParamValueQueue*  KODE_VST3_PLUGIN_API addParameterData (const uint32_t& id, int32_t& index /*out*/) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IParameterChanges, 0xA4779663, 0x0BB64A56, 0xB44384A8, 0x466FEB9D)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IParameterChanges, 0xA4779663, 0x0BB64A56, 0xB44384A8, 0x466FEB9D)
 
 //----------
 
-class IEventList
-: public FUnknown {
+class KODE_Vst3IEventList
+: public KODE_Vst3FUnknown {
 public:
-	virtual int32   PLUGIN_API getEventCount () = 0;
-	virtual tresult PLUGIN_API getEvent (int32 index, Event& e /*out*/) = 0;
-	virtual tresult PLUGIN_API addEvent (Event& e /*in*/) = 0;
-	static const FUID iid;
+	virtual int32_t KODE_VST3_PLUGIN_API getEventCount () = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getEvent (int32_t index, KODE_Vst3Event& e /*out*/) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API addEvent (KODE_Vst3Event& e /*in*/) = 0;
+	static const KODE_Vst3Id iid;
 };
 
-DECLARE_CLASS_IID (IEventList, 0x3A2C4214, 0x346349FE, 0xB2C4F397, 0xB9695A44)
+KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IEventList, 0x3A2C4214, 0x346349FE, 0xB2C4F397, 0xB9695A44)
 
 //----------------------------------------------------------------------
 #endif

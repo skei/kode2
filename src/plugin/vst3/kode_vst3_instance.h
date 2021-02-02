@@ -2,6 +2,11 @@
 #define vst3_instance_included
 //----------------------------------------------------------------------
 
+/*
+  does not handle:
+  - midi out?
+  - changing parameters or types
+*/
 
 #include <memory.h>
 #include <stdint.h>
@@ -10,15 +15,17 @@
 #include <vector>
 using namespace std;
 
+#include "plugin/kode_plugin_base.h"
 #include "plugin/vst3/kode_vst3.h"
+#include "plugin/vst3/kode_vst3_utils.h"
 
 //----------------------------------------------------------------------
 
 #define KODE_VST3_MAX_INPUTS             8
 #define KODE_VST3_MAX_OUTPUTS            8
-#define KODE_VST3_PARAM_AFTERTOUCH       0x10000 // kAfterTouch (128)
-#define KODE_VST3_PARAM_PITCHBEND        0x20000 // kPitchBend (129)
-#define KODE_VST3_PARAM_BRIGHTNESS       0x30000 // kCtrlFilterResonance (74)
+#define KODE_VST3_PARAM_AFTERTOUCH       0x10000 // kode_vst3_AfterTouch (128)
+#define KODE_VST3_PARAM_PITCHBEND        0x20000 // kode_vst3_PitchBend (129)
+#define KODE_VST3_PARAM_BRIGHTNESS       0x30000 // kode_vst3_CtrlFilterResonance (74)
 #define KODE_VST3_QUEUE_SIZE             1024
 #define KODE_VST3_TIMER_MS               30
 
@@ -26,136 +33,113 @@ typedef KODE_Queue<uint32_t,KODE_VST3_QUEUE_SIZE> KODE_Vst3UpdateQueue;
 
 //----------------------------------------------------------------------
 //
-// instance
+//
 //
 //----------------------------------------------------------------------
 
 class KODE_Vst3Instance
 
-: public IComponent
-, public IAudioProcessor
-, public IUnitInfo
-, public IConnectionPoint
-, public IMidiMapping
-, public IKeyswitchController
-//, public INoteExpressionController
-, public IEditController
-, public IEditController2
-, public IPlugView
-, public ITimerHandler
+: public KODE_Vst3IComponent
+, public KODE_Vst3IAudioProcessor
+, public KODE_Vst3IUnitInfo
+, public KODE_Vst3IConnectionPoint
+, public KODE_Vst3IMidiMapping
+, public KODE_Vst3IKeyswitchController
+//, public KODE_Vst3INoteExpressionController
+, public KODE_Vst3IEditController
+, public KODE_Vst3IEditController2
+, public KODE_Vst3IPlugView
+, public KODE_Vst3ITimerHandler
 
 , public KODE_BaseInstance {
 
-
+//------------------------------
 private:
+//------------------------------
 
-  uint32_t             MRefCount           = 1;
-  IComponentHandler*   MComponentHandler   = nullptr;
-  IComponentHandler2*  MComponentHandler2  = nullptr;
-  IPlugFrame*          MPlugFrame          = nullptr;
-  IHostApplication*    MHostApp            = nullptr;
-  ParameterInfo*            MParamInfos         = nullptr;
-  IRunLoop*            MRunLoop            = nullptr;
-  uint32_t                  MIoMode             = 0;
-  uint32_t                  MProcessMode        = 0;
-  uint32_t                  MSampleSize         = 0;
-  uint32_t                  MBlockSize          = 0;
-  float                     MSampleRate         = 0.0f;
-  bool                      MIsProcessing       = false;
-  char                      MHostName[129]      = {0};
-  KODE_Descriptor*          MDescriptor           = nullptr;
-  KODE_Editor*              MEditor               = nullptr;
-  float*                    MParameterValues      = nullptr;
-  float*                    MHostParameterValues  = nullptr;
-  KODE_Vst3UpdateQueue      MHostParameterQueue;
+  uint32_t                      MRefCount             = 1;
+  KODE_Vst3IComponentHandler*   MComponentHandler     = nullptr;
+  KODE_Vst3IComponentHandler2*  MComponentHandler2    = nullptr;
+  KODE_Vst3IPlugFrame*          MPlugFrame            = nullptr;
+  KODE_Vst3IHostApplication*    MHostApp              = nullptr;
+  KODE_Vst3ParameterInfo*       MParamInfos           = nullptr;
+  KODE_Vst3IRunLoop*            MRunLoop              = nullptr;
+  uint32_t                      MIoMode               = 0;
+  uint32_t                      MProcessMode          = 0;
+  uint32_t                      MSampleSize           = 0;
+  uint32_t                      MBlockSize            = 0;
+  float                         MSampleRate           = 0.0f;
+  bool                          MIsProcessing         = false;
+  char                          MHostName[129]        = {0};
+  KODE_Descriptor*              MDescriptor           = nullptr;
+  KODE_BaseEditor*              MEditor               = nullptr;
+  float*                        MParameterValues      = nullptr;
+  float*                        MHostParameterValues  = nullptr;
+  KODE_Vst3UpdateQueue          MHostParameterQueue;
 
+//------------------------------
 public:
+//------------------------------
 
-  KODE_Vst3Instance()
-  : KODE_BaseInstance(KODE_NULL) {
-
-    printf("VST3_Instance\n");
-    MRefCount   = 1;
+  KODE_Vst3Instance() {
+    MRefCount = 1;
   }
 
   //----------
 
   virtual ~KODE_Vst3Instance() {
-    printf("~VST3_Instance\n");
-    _deleteParameterInfo();
-    _destroyParameterBuffers();
+    deleteParameterInfo();
+    destroyParameterBuffers();
   }
 
-/*
+//------------------------------
 public:
+//------------------------------
 
-  virtual void          on_create() {}
-  virtual void          on_destroy() {}
-  virtual void          on_initialize() {}
-  virtual void          on_terminate() {}
-  virtual void          on_activate() {}
-  virtual void          on_deactivate() {}
-  virtual void          on_prepare(float ASampleRate) {}
-  virtual void          on_parameter(uint32_t AIndex, float AValue, uint32_t AMode) {}
-  virtual void          on_midi(uint32_t AOffset, uint8_t AMsg1, uint8_t AMsg2, uint8_t AMsg3) {}
-  virtual void          on_process(KODE_ProcessContext* AContext) {}
-  virtual void*         on_openEditor(void* AParent) { return nullptr; }
-  virtual void          on_closeEditor(void* AEditor) {}
-  virtual void          on_updateEditor(void* AEditor) {}
-  virtual uint32_t      on_saveState(void** ABuffer, uint32_t AMode) { *ABuffer = nullptr; return 0; }
-  virtual void          on_restoreState(uint32_t ASize, void* APointer, uint32_t AMode) {}
-
-public:
-*/
-
-public:
-
-  void _setDescriptor(KODE_Descriptor* ADescriptor) {
+  void setDescriptor(KODE_Descriptor* ADescriptor) override {
     MDescriptor = ADescriptor;
-    _createParameterBuffers();
-    _createParameterInfo();
+    createParameterBuffers();
+    createParameterInfo();
   }
 
-  void _setDefaultParameterValues() {
-    uint32_t num = MDescriptor->parameters.size();
-    for (uint32_t i=0; i<num; i++) {
-      VST3_Parameter* parameter = MDescriptor->parameters[i];
-      float value = parameter->def_value;
-      MParameterValues[i] = value;
-    }
+  KODE_Descriptor* getDescriptor() override {
+    return MDescriptor;
   }
 
-  void _updateAllParameters() {
-    uint32_t num = MDescriptor->parameters.size();
-    for (uint32_t i=0; i<num; i++) {
-      float v = MParameterValues[i];
-      VST3_Parameter* parameter = MDescriptor->parameters[i];
-      v = parameter->from01(v);
-      on_parameter(i,v,0);
-    }
+//  void setParameterFromEditor(uint32_t AIndex, float AValue) {
+  void  updateParameterFromEditor(uint32_t AIndex, float AValue) {
+    queueParameterToHost(AIndex,AValue);
   }
 
+//------------------------------
 private:
+//------------------------------
 
-  void _createParameterBuffers() {
-    uint32_t num = MDescriptor->parameters.size();
+  void createParameterBuffers() {
+    uint32_t num = MDescriptor->getNumParameters();
     MParameterValues = (float*)malloc(num * sizeof(float));
     MHostParameterValues = (float*)malloc(num * sizeof(float));
     memset(MParameterValues,0,num * sizeof(float));
     memset(MHostParameterValues,0,num * sizeof(float));
   }
 
-  void _destroyParameterBuffers() {
+  //----------
+
+  void destroyParameterBuffers() {
     if (MParameterValues) free(MParameterValues);
     if (MHostParameterValues) free(MHostParameterValues);
   }
 
-  void _queueParameterToHost(uint32_t AIndex, float AValue) {
+  //----------
+
+  void queueParameterToHost(uint32_t AIndex, float AValue) {
     MHostParameterValues[AIndex] = AValue;
     MHostParameterQueue.write(AIndex);
   }
 
-  void _flushParametersToHost() {
+  //----------
+
+  void flushParametersToHost() {
     uint32_t index = 0;
     while (MHostParameterQueue.read(&index)) {
       float value = MHostParameterValues[index];
@@ -170,53 +154,55 @@ private:
     }
   }
 
-  void _setParameterFromEditor(uint32_t AIndex, float AValue) {
-    _queueParameterToHost(AIndex,AValue);
-  }
+  //----------
 
-  void _createParameterInfo() {
+  void createParameterInfo() {
     if (!MParamInfos) {
-      uint32_t num = MDescriptor->parameters.size();
-      MParamInfos = (ParameterInfo*)malloc( num * sizeof(ParameterInfo) );
+      uint32_t num = MDescriptor->getNumParameters();
+      MParamInfos = (KODE_Vst3ParameterInfo*)malloc( num * sizeof(KODE_Vst3ParameterInfo) );
       for (uint32_t i=0; i<num; i++) {
-        VST3_Parameter* param = MDescriptor->parameters[i];
+        KODE_Parameter* param = MDescriptor->getParameter(i);
         MParamInfos[i].id = i;
-        /*CharToUtf16*/ char_to_utf16(param->name,&MParamInfos[i].title);
-        /*CharToUtf16*/ char_to_utf16(param->short_name,&MParamInfos[i].shortTitle);
-        /*CharToUtf16*/ char_to_utf16(param->label,&MParamInfos[i].units);
-        MParamInfos[i].stepCount = param->num_steps;
-        MParamInfos[i].defaultNormalizedValue = param->def_value;
-        MParamInfos[i].unitId = kRootUnitId; //-1;
+        KODE_CharToUtf16(param->getName(),&MParamInfos[i].title);
+        KODE_CharToUtf16(param->getShortName(),&MParamInfos[i].shortTitle);
+        KODE_CharToUtf16(param->getLabel(),&MParamInfos[i].units);
+        MParamInfos[i].stepCount = param->getNumSteps();
+        MParamInfos[i].defaultNormalizedValue = param->getDefValue();
+        MParamInfos[i].unitId = kode_vst3_RootUnitId; //-1;
         int32_t flags = 0;
-        if (param->can_automate) flags += ParameterInfo::kCanAutomate;
-        else flags += ParameterInfo::kIsReadOnly; // ??
+        if (param->canAutomate()) flags += KODE_Vst3ParameterInfo::kode_vst3_CanAutomate;
+        else flags += KODE_Vst3ParameterInfo::kode_vst3_IsReadOnly; // ??
         MParamInfos[i].flags = flags;
       }
     }
   }
 
-  void _deleteParameterInfo() {
+  //----------
+
+  void deleteParameterInfo() {
     if (MParamInfos) free(MParamInfos);
   }
 
-  void _handleParametersInProcess(ProcessData& data) {
-    IParameterChanges* paramChanges = data.inputParameterChanges;
+  //----------
+
+  void handleParametersInProcess(KODE_Vst3ProcessData& data) {
+    KODE_Vst3IParameterChanges* paramChanges = data.inputParameterChanges;
     if (paramChanges) {
       int32_t num_param_changes = paramChanges->getParameterCount();
       if (num_param_changes > 0) {
         for (int32_t i=0; i<num_param_changes; i++) {
-          IParamValueQueue* paramQueue = paramChanges->getParameterData(i);
+          KODE_Vst3IParamValueQueue* paramQueue = paramChanges->getParameterData(i);
           if (paramQueue) {
             uint32_t id = paramQueue->getParameterId();
-            if (id < MDescriptor->parameters.size()) {
+            if (id < MDescriptor->getNumParameters()) {
               //for (int32_t j=0; j<paramQueue->getPointCount(); j++) {
                 int32_t offset = 0;
                 double value = 0;
                 int32_t pointcount = paramQueue->getPointCount();
                 paramQueue->getPoint(pointcount-1,offset,value); // last point
-                VST3_Parameter* param = MDescriptor->parameters[id];
+                KODE_Parameter* param = MDescriptor->getParameter(id);
                 if (param) value = param->from01(value);
-                on_parameter(id,value,0);
+                on_plugin_parameter(id,value,0);
               //}
             } // id < param
             else {
@@ -231,7 +217,7 @@ private:
               switch(midi_ev) {
                 case KODE_VST3_PARAM_AFTERTOUCH: {
                   //if (offset != 0)
-                  on_midi(offset,KODE_MIDI_CHANNEL_AFTERTOUCH+midi_ch,value*127.0f,0);
+                  on_plugin_midi(offset,KODE_MIDI_CHANNEL_AFTERTOUCH+midi_ch,value*127.0f,0);
                   break;
                 } // at
                 case KODE_VST3_PARAM_PITCHBEND: {
@@ -241,13 +227,13 @@ private:
                     uint32_t m2 = i2 & 0x7f;
                     uint32_t m3 = i2 >> 7;
                     //if (offset != 0)
-                    on_midi(offset,KODE_MIDI_PITCHBEND+midi_ch,m2,m3);
+                    on_plugin_midi(offset,KODE_MIDI_PITCHBEND+midi_ch,m2,m3);
                   //}
                   break;
                 } // pb
                 case KODE_VST3_PARAM_BRIGHTNESS: {
                   //if (offset != 0)
-                  on_midi(offset,KODE_MIDI_CONTROL_CHANGE+midi_ch,74,value*127.0f);
+                  on_plugin_midi(offset,KODE_MIDI_CONTROL_CHANGE+midi_ch,74,value*127.0f);
                   break;
                 }
               } // switch (midi_ev)
@@ -258,13 +244,15 @@ private:
     } // paramchanges
   }
 
-  void _handleEventsInProcess(ProcessData& data) {
+  //----------
+
+  void handleEventsInProcess(KODE_Vst3ProcessData& data) {
     //if PLUGIN_RECEIVE_MIDI
-    IEventList* inputEvents = data.inputEvents;
+    KODE_Vst3IEventList* inputEvents = data.inputEvents;
     if (inputEvents) {
       int32_t num = inputEvents->getEventCount();
       for (int32_t i=0; i<num; i++) {
-        Event event;
+        KODE_Vst3Event event;
         inputEvents->getEvent(i,event);
         uint32_t offset  = 0;
         uint8_t  msg1    = 0;
@@ -274,53 +262,53 @@ private:
         //uint32_t noteid  = 0;
         //float    value   = 0.0f;
         switch (event.type) {
-          case Event::kNoteOnEvent:
+          case KODE_Vst3Event::kode_vst3_NoteOnEvent:
             offset  = event.sampleOffset;
             msg1    = KODE_MIDI_NOTE_ON + event.noteOn.channel;
             msg2    = event.noteOn.pitch;
             msg3    = event.noteOn.velocity * 127;
             //noteid  = event.noteOn.noteId;
-            on_midi(offset,msg1,msg2,msg3);
+            on_plugin_midi(offset,msg1,msg2,msg3);
             //on_noteExpression(offset,type,noteid,value);
             break;
-          case Event::kNoteOffEvent:
+          case KODE_Vst3Event::kode_vst3_NoteOffEvent:
             offset  = event.sampleOffset;
             msg1    = KODE_MIDI_NOTE_OFF + event.noteOff.channel;
             msg2    = event.noteOff.pitch;
             msg3    = event.noteOff.velocity * 127;
             //noteid  = event.noteOff.noteId;
-            on_midi(offset,msg1,msg2,msg3);
+            on_plugin_midi(offset,msg1,msg2,msg3);
             //on_noteExpression(offset,type,noteid,value);
             break;
-          case Event::kDataEvent:
+          case KODE_Vst3Event::kode_vst3_DataEvent:
             break;
-          case Event::kPolyPressureEvent:
+          case KODE_Vst3Event::kode_vst3_PolyPressureEvent:
             offset  = event.sampleOffset;
             msg1    = KODE_MIDI_POLY_AFTERTOUCH + event.polyPressure.channel;
             msg2    = event.polyPressure.pitch;
             msg3    = event.polyPressure.pressure * 127;
             //noteid  = event.polyPressure.noteId;
-            on_midi(offset,msg1,msg2,msg3);
+            on_plugin_midi(offset,msg1,msg2,msg3);
             break;
-          case Event::kNoteExpressionValueEvent:
+          case KODE_Vst3Event::kode_vst3_NoteExpressionValueEvent:
             //offset = event.sampleOffset;
             //noteid = event.noteExpressionValue.noteId;
             //value  = event.noteExpressionValue.value;
             //switch(event.noteExpressionValue.typeId) {
-            //  case kTuningTypeID:     type = kve_bend; break;
-            //  case kBrightnessTypeID: type = kve_slide; break;
-            //  //case kVolumeTypeID:     type = kve_none;  break;
-            //  //case kPanTypeID:        type = kve_none;  break;
-            //  //case kVibratoTypeID:    type = kve_none;  break;
-            //  //case kExpressionTypeID: type = kve_none;  break;
+            //  case kode_vst3_TuningTypeID:     type = kve_bend; break;
+            //  case kode_vst3_BrightnessTypeID: type = kve_slide; break;
+            //  //case kode_vst3_VolumeTypeID:     type = kve_none;  break;
+            //  //case kode_vst3_PanTypeID:        type = kve_none;  break;
+            //  //case kode_vst3_VibratoTypeID:    type = kve_none;  break;
+            //  //case kode_vst3_ExpressionTypeID: type = kve_none;  break;
             //}polyPressure
             //on_noteExpression(offset,type,noteid,value);
             break;
-          case Event::kNoteExpressionTextEvent:
+          case KODE_Vst3Event::kode_vst3_NoteExpressionTextEvent:
             break;
-          case Event::kChordEvent:
+          case KODE_Vst3Event::kode_vst3_ChordEvent:
             break;
-          case Event::kScaleEvent:
+          case KODE_Vst3Event::kode_vst3_ScaleEvent:
             break;
           default:
             break;
@@ -329,181 +317,194 @@ private:
     } // if input events
   }
 
-public:
+//------------------------------
+public: // FUnknown
+//------------------------------
 
-  //--------------------
-  // FUnknown
-  //--------------------
-
-  uint32 PLUGIN_API addRef() final {
-    printf("VST3_Instance.addRef\n");
+  uint32_t KODE_VST3_PLUGIN_API addRef() final {
     MRefCount++;
     return MRefCount;
   }
 
-  uint32 PLUGIN_API release() final {
-    printf("VST3_Instance.release\n");
-    const uint32 r = --MRefCount; // const uint32 ?
+  //----------
+
+  uint32_t KODE_VST3_PLUGIN_API release() final {
+    const uint32_t r = --MRefCount; // const uint32_t ?
     if (r == 0) {
-      on_destroy();
+      on_plugin_close();
       delete this;
     };
     return r;
   }
 
-  tresult PLUGIN_API queryInterface(const TUID _iid, void** obj) final {
-    printf("VST3_Instance.queryInterface\n");
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API queryInterface(const KODE_Vst3Id _iid, void** obj) final {
     *obj = nullptr;
-    if ( /*FUnknownPrivate::*/iidEqual(IAudioProcessor_iid,_iid) ) {
-      *obj = (IAudioProcessor*)this;
+    if (KODE_iidEqual(KODE_Vst3IAudioProcessor_iid,_iid) ) {
+      *obj = (KODE_Vst3IAudioProcessor*)this;
       addRef();
-      return kResultOk;
+      return kode_vst3_ResultOk;
     }
-    if ( /*FUnknownPrivate::*/iidEqual(IEditController_iid,_iid) ) {
-      *obj = (IEditController*)this;
+    if (KODE_iidEqual(KODE_Vst3IEditController_iid,_iid) ) {
+      *obj = (KODE_Vst3IEditController*)this;
       addRef();
-      return kResultOk;
+      return kode_vst3_ResultOk;
     }
-    if ( /*FUnknownPrivate::*/iidEqual(IMidiMapping_iid,_iid) ) {
-      *obj = (IMidiMapping*)this;
+    if (KODE_iidEqual(KODE_Vst3IMidiMapping_iid,_iid) ) {
+      *obj = (KODE_Vst3IMidiMapping*)this;
       addRef();
-      return kResultOk;
+      return kode_vst3_ResultOk;
     }
-    if ( /*FUnknownPrivate::*/iidEqual(IUnitInfo_iid,_iid) ) {
-      *obj = (IUnitInfo*)this;
+    if (KODE_iidEqual(KODE_Vst3IUnitInfo_iid,_iid) ) {
+      *obj = (KODE_Vst3IUnitInfo*)this;
       addRef();
-      return kResultOk;
+      return kode_vst3_ResultOk;
     }
-//    if ( /*FUnknownPrivate::*/iidEqual(INoteExpressionController_iid,_iid) ) {
-//      //*obj = (INoteExpressionController*)this;
-//      //addRef();
-//      //return kResultOk;
-//      return kNoInterface;
-//    }
-    if ( /*FUnknownPrivate::*/iidEqual(IKeyswitchController_iid,_iid) ) {
-      //*obj = (IKeyswitchController*)this;
-      //addRef();
-      //return kResultOk;
-      return kNoInterface;
-    }
-    if ( /*FUnknownPrivate::*/iidEqual(IConnectionPoint_iid,_iid) ) {
-      *obj = (IConnectionPoint*)this;
-      addRef();
-      return kResultOk;
-    }
-    //if ( /*FUnknownPrivate::*/iidEqual(ITimerHandler_iid,_iid) ) {
-    //  *obj = (ITimerHandler*)this;
-    //  addRef();
-    //  return kResultOk;
+    //if (KODE_iidEqual(KODE_Vst3INoteExpressionController_iid,_iid) ) {
+    //  //*obj = (KODE_Vst3INoteExpressionController*)this;
+    //  //addRef();
+    //  //return kode_vst3_ResultOk;
+    //  return kode_vst3_NoInterface;
     //}
-    return kNoInterface;
+    if (KODE_iidEqual(KODE_Vst3IKeyswitchController_iid,_iid) ) {
+      //*obj = (KODE_Vst3IKeyswitchController*)this;
+      //addRef();
+      //return kode_vst3_ResultOk;
+      return kode_vst3_NoInterface;
+    }
+    if (KODE_iidEqual(KODE_Vst3IConnectionPoint_iid,_iid) ) {
+      *obj = (KODE_Vst3IConnectionPoint*)this;
+      addRef();
+      return kode_vst3_ResultOk;
+    }
+    //if (KODE_iidEqual(KODE_Vst3ITimerHandler_iid,_iid) ) {
+    //  *obj = (KODE_Vst3ITimerHandler*)this;
+    //  addRef();
+    //  return kode_vst3_ResultOk;
+    //}
+    return kode_vst3_NoInterface;
   }
 
-  //--------------------
-  // IPluginBase
-  //--------------------
+//------------------------------
+public: // IPluginBase
+//------------------------------
 
-  tresult PLUGIN_API initialize(FUnknown* context) final {
-    printf("VST3_Instance.initialize\n");
-    MHostApp = (IHostApplication*)context;
+  int32_t KODE_VST3_PLUGIN_API initialize(KODE_Vst3FUnknown* context) final {
+    MHostApp = (KODE_Vst3IHostApplication*)context;
     //context->queryInterface(IHostApplication_iid, (void**)&MHostApp);
     if (MHostApp) {
-      String128 u;
+      KODE_Vst3String u;
       MHostApp->getName(u);
-      utf16_to_char(&u,MHostName);
+      KODE_Utf16ToChar(&u,MHostName);
     }
     else {
     }
-    on_initialize();
-    return kResultOk;
+    on_plugin_initialize();
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API terminate() final {
-    printf("VST3_Instance.terminate\n");
-    on_terminate();
-    return kResultOk;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API terminate() final {
+    on_plugin_terminate();
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API getControllerClassId(TUID classId) final {
-    printf("VST3_Instance.getControllerClassId\n");
-    if (MDescriptor->has_editor) {
-      memcpy(classId,MDescriptor->editor_id,16);
-      return kResultOk;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getControllerClassId(KODE_Vst3Id classId) final {
+    if (MDescriptor->hasEditor()) {
+      memcpy(classId,MDescriptor->getLongEditorId(),16);
+      return kode_vst3_ResultOk;
     }
     else {
-      return kResultFalse;
+      return kode_vst3_ResultFalse;
     }
   }
 
-  tresult PLUGIN_API setIoMode(IoMode mode) final {
-    printf("VST3_Instance.setIoMode\n");
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API setIoMode(int32_t mode) final {
     MIoMode = mode;
-    return kResultOk;
+    return kode_vst3_ResultOk;
   }
 
-  int32 PLUGIN_API getBusCount(MediaType type, BusDirection dir) final {
-    if (type == kAudio) {
-      if ((dir == kOutput) && (MDescriptor->num_outputs > 0)) { return 1; }
-      if ((dir == kInput)  && (MDescriptor->num_inputs  > 0)) { return 1; };
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getBusCount(int32_t type, int32_t dir) final {
+    if (type == kode_vst3_Audio) {
+      if ((dir == kode_vst3_Output) && (MDescriptor->getNumOutputs() > 0)) { return 1; }
+      if ((dir == kode_vst3_Input)  && (MDescriptor->getNumInputs()  > 0)) { return 1; };
     }
-    if (type == kEvent) {
-      //if (dir==kOutput) return 1;
+    if (type == kode_vst3_Event) {
+      //if (dir==kode_vst3_Output) return 1;
       //else
-      if (MDescriptor->can_receive_midi || MDescriptor->is_synth) {
-        if (dir == kInput) { return 1; }
+      if (MDescriptor->canReceiveMidi() || MDescriptor->isSynth()) {
+        if (dir == kode_vst3_Input) { return 1; }
       }
     }
     return 0;
   }
 
-  tresult PLUGIN_API getBusInfo(MediaType type, BusDirection dir, int32 index, BusInfo& bus) final {
-    if (type == kAudio) {
-      bus.mediaType = kAudio;
-      if (dir == kInput) {
-        bus.direction = kInput;
-        bus.channelCount = MDescriptor->num_inputs;
-        /*CharToUtf16*/ char_to_utf16("Audio In",&bus.name);
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getBusInfo(int32_t type, int32_t dir, int32_t index, KODE_Vst3BusInfo& bus) final {
+    if (type == kode_vst3_Audio) {
+      bus.mediaType = kode_vst3_Audio;
+      if (dir == kode_vst3_Input) {
+        bus.direction = kode_vst3_Input;
+        bus.channelCount = MDescriptor->getNumInputs();
+        KODE_CharToUtf16("Audio In",&bus.name);
       }
       else {
-        bus.direction = kOutput;
-        bus.channelCount = MDescriptor->num_outputs;
-        /*CharToUtf16*/ char_to_utf16("Audio Out",&bus.name);
+        bus.direction = kode_vst3_Output;
+        bus.channelCount = MDescriptor->getNumOutputs();
+        KODE_CharToUtf16("Audio Out",&bus.name);
       }
-      bus.flags = 0;//kDefaultActive;
-      return kResultOk;
+      bus.flags = 0;//kode_vst3_DefaultActive;
+      return kode_vst3_ResultOk;
     }
-    else if (type == kEvent) {
-      bus.mediaType = kEvent;
-      if (dir == kInput) {
-        bus.direction = kInput;
+    else if (type == kode_vst3_Event) {
+      bus.mediaType = kode_vst3_Event;
+      if (dir == kode_vst3_Input) {
+        bus.direction = kode_vst3_Input;
         bus.channelCount = 1;
-        /*CharToUtf16*/ char_to_utf16("Midi In",&bus.name);
+        KODE_CharToUtf16("Midi In",&bus.name);
       }
-      bus.flags = 0;//kDefaultActive;
-      return kResultOk;
+      bus.flags = 0;//kode_vst3_DefaultActive;
+      return kode_vst3_ResultOk;
     }
 
-    return kResultFalse;
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API getRoutingInfo(RoutingInfo& inInfo, RoutingInfo& outInfo) final {
-    outInfo.mediaType = inInfo.mediaType; // MediaTypes::kAudio;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getRoutingInfo(KODE_Vst3RoutingInfo& inInfo, KODE_Vst3RoutingInfo& outInfo) final {
+    outInfo.mediaType = inInfo.mediaType; // MediaTypes::kode_vst3_Audio;
     outInfo.busIndex  = inInfo.busIndex;  // 0;
     outInfo.channel   = -1;
-    return kResultOk;
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API activateBus(MediaType type, BusDirection dir, int32 index, TBool state) final {
-    return kResultOk;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API activateBus(int32_t type, int32_t dir, int32_t index, uint8_t state) final {
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API setActive(TBool state) final {
-    if (state) on_activate();
-    else on_deactivate();
-    return kResultOk;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API setActive(uint8_t state) final {
+    if (state) on_plugin_activate();
+    else on_plugin_deactivate();
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API setState(IBStream* state) final {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API setState(KODE_Vst3IBStream* state) final {
     uint32_t  version = 0;
     uint32_t  mode = 0;
     int32_t   size = 0;
@@ -518,34 +519,36 @@ public:
         // use static, pre malloc'd buffer?
         void* ptr = malloc(size);
         state->read(&ptr,size,&num_read);
-        on_restoreState(size,ptr,0);
+        on_plugin_restoreState(size,ptr,0);
         free(ptr);
         break;
       }
       case 1: {
-        num_params = MDescriptor->parameters.size();
+        num_params = MDescriptor->getNumParameters();
         for (uint32_t i=0; i<num_params; i++) {
           float v = 0.f;
           state->read(&v,sizeof(float),&num_read);
           MParameterValues[i] = v;
           //on_parameter(i,v,0);
         }
-        _updateAllParameters();
+        updateAllParameters();
         break;
       }
     }
-    return kResultOk;
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API getState(IBStream* state) final {
-    uint32_t  version = MDescriptor->version;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getState(KODE_Vst3IBStream* state) final {
+    uint32_t  version = MDescriptor->getVersion();
     uint32_t  mode    = 0;
     void*     ptr     = nullptr;
     uint32_t  size    = 0;;
-    size = on_saveState(&ptr,0);
+    size = on_plugin_saveState(&ptr,0);
     if ((size == 0) && (ptr == nullptr)) {
       ptr = MParameterValues;
-      size = MDescriptor->parameters.size() * sizeof(float);
+      size = MDescriptor->getNumParameters() * sizeof(float);
       mode = 1;
     }
     int num_written  = 0;
@@ -553,300 +556,353 @@ public:
     state->write(&mode,sizeof(uint32_t), &num_written);
     state->write(&size,sizeof(uint32_t), &num_written);
     state->write(ptr,size,&num_written);
-    return kResultOk;
+    return kode_vst3_ResultOk;
   }
 
-  //--------------------
-  // IAudioProcessor
-  //--------------------
+//------------------------------
+public: // IAudioProcessor
+//------------------------------
 
-  tresult PLUGIN_API setBusArrangements(SpeakerArrangement* inputs, int32 numIns, SpeakerArrangement* outputs, int32 numOuts) final {
-    return kResultTrue;
+  int32_t KODE_VST3_PLUGIN_API setBusArrangements(uint64_t* inputs, int32_t numIns, uint64_t* outputs, int32_t numOuts) final {
+    return kode_vst3_ResultTrue;
   }
 
-  tresult PLUGIN_API getBusArrangement(BusDirection dir, int32 index, SpeakerArrangement& arr) final {
-    if ((dir==kOutput) && (index==0)) {
-      arr = kSpeakerL | kSpeakerR;
-      return kResultOk;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getBusArrangement(int32_t dir, int32_t index, uint64_t& arr) final {
+    if ((dir==kode_vst3_Output) && (index==0)) {
+      arr = kode_vst3_SpeakerL | kode_vst3_SpeakerR;
+      return kode_vst3_ResultOk;
     }
-    return kResultFalse;
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API canProcessSampleSize(int32 symbolicSampleSize) final {
-    if (symbolicSampleSize==kSample32) {
-      return kResultTrue;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API canProcessSampleSize(int32_t symbolicSampleSize) final {
+    if (symbolicSampleSize==kode_vst3_Sample32) {
+      return kode_vst3_ResultTrue;
     }
-    return kResultFalse;
+    return kode_vst3_ResultFalse;
   }
 
-  uint32 PLUGIN_API getLatencySamples() final {
+  //----------
+
+  uint32_t KODE_VST3_PLUGIN_API getLatencySamples() final {
     return 0;
   }
 
-  tresult PLUGIN_API setupProcessing(ProcessSetup& setup) final {
-    MProcessMode  = setup.processMode;        // kRealtime, kPrefetch, kOffline
-    MSampleSize   = setup.symbolicSampleSize; // kSample32, kSample64
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API setupProcessing(KODE_Vst3ProcessSetup& setup) final {
+    MProcessMode  = setup.processMode;        // kode_vst3_Realtime, kode_vst3_Prefetch, kode_vst3_Offline
+    MSampleSize   = setup.symbolicSampleSize; // kode_vst3_Sample32, kode_vst3_Sample64
     MBlockSize    = setup.maxSamplesPerBlock;
     MSampleRate   = setup.sampleRate;
-    on_prepare(MSampleRate);
-    return kResultOk;
+//    on_plugin_prepare(MSampleRate,MBlockSize);
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API setProcessing(TBool state) final {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API setProcessing(uint8_t state) final {
     MIsProcessing = state;
-    // if (MIsProcessing) on_prepare(MSampleRate);
-    return kResultOk;
+    if (MIsProcessing) on_plugin_prepare(MSampleRate,MBlockSize);
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API process(ProcessData& data) final {
-    _handleEventsInProcess(data);
-    _handleParametersInProcess(data);
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API process(KODE_Vst3ProcessData& data) final {
+    handleEventsInProcess(data);
+    handleParametersInProcess(data);
     bool _flush = ( (data.numInputs == 0) && (data.numOutputs == 0) && (data.numSamples == 0) );
     if (!_flush) {
-      VST3_ProcessContext context;// = {0};
-      uint32_t i;
-      for (i=0; i<MDescriptor->num_inputs; i++)   { context.inputs[i]  = data.inputs[0].channelBuffers32[i]; }
-      for (i=0; i<MDescriptor->num_outputs; i++)  { context.outputs[i] = data.outputs[0].channelBuffers32[i]; }
-      context.num_inputs    = MDescriptor->num_inputs;
-      context.num_outputs   = MDescriptor->num_outputs;
-      context.num_samples   = data.numSamples;
-      //context.oversample    = 1;
-      context.sample_rate   = data.processContext->sampleRate;
-      context.sample_pos    = data.processContext->continousTimeSamples;
-      context.beat_pos      = data.processContext->projectTimeMusic;
-      context.tempo         = data.processContext->tempo;
-      context.timesig_num   = data.processContext->timeSigNumerator;
-      context.timesig_denom = data.processContext->timeSigDenominator;
-      context.play_state    = KODE_PLUGIN_PLAYSTATE_NONE;
-      if (data.processContext->state & ProcessContext::StatesAndFlags::kPlaying)      context.play_state |= KODE_PLUGIN_PLAYSTATE_PLAYING;
-      if (data.processContext->state & ProcessContext::StatesAndFlags::kRecording)    context.play_state |= KODE_PLUGIN_PLAYSTATE_RECORDING;
-      if (data.processContext->state & ProcessContext::StatesAndFlags::kCycleActive)  context.play_state |= KODE_PLUGIN_PLAYSTATE_LOOPING;
-      on_process(&context);
+      KODE_ProcessContext context;// = {0};
+//      uint32_t i;
+//      for (i=0; i<MDescriptor->getNumInputs(); i++)   { context.inputs[i]  = data.inputs[0].channelBuffers32[i]; }
+//      for (i=0; i<MDescriptor->getNumOutputs(); i++)  { context.outputs[i] = data.outputs[0].channelBuffers32[i]; }
+//      context.num_inputs    = MDescriptor->getNumInputs();
+//      context.num_outputs   = MDescriptor->getNumOutputs();
+//      context.num_samples   = data.numSamples;
+//      //context.oversample    = 1;
+//      context.sample_rate   = data.processContext->sampleRate;
+//      context.sample_pos    = data.processContext->continousTimeSamples;
+//      context.beat_pos      = data.processContext->projectTimeMusic;
+//      context.tempo         = data.processContext->tempo;
+//      context.timesig_num   = data.processContext->timeSigNumerator;
+//      context.timesig_denom = data.processContext->timeSigDenominator;
+//      context.play_state    = KODE_PLUGIN_PLAYSTATE_NONE;
+//      if (data.processContext->state & ProcessContext::StatesAndFlags::kode_vst3_Playing)      context.play_state |= KODE_PLUGIN_PLAYSTATE_PLAYING;
+//      if (data.processContext->state & ProcessContext::StatesAndFlags::kode_vst3_Recording)    context.play_state |= KODE_PLUGIN_PLAYSTATE_RECORDING;
+//      if (data.processContext->state & ProcessContext::StatesAndFlags::kode_vst3_CycleActive)  context.play_state |= KODE_PLUGIN_PLAYSTATE_LOOPING;
+      on_plugin_processBlock(&context);
     }
-    return kResultOk;
+    return kode_vst3_ResultOk;
   }
 
-  uint32 PLUGIN_API getTailSamples() final {
-    return kNoTail;
+  //----------
+
+  uint32_t KODE_VST3_PLUGIN_API getTailSamples() final {
+    return kode_vst3_NoTail;
   }
 
-  //--------------------
-  // IMidiMapping
-  //--------------------
+//------------------------------
+public: // IMidiMapping
+//------------------------------
 
-  tresult PLUGIN_API getMidiControllerAssignment(int32 busIndex, int16 channel, CtrlNumber midiControllerNumber, ParamID& id) final {
+  int32_t KODE_VST3_PLUGIN_API getMidiControllerAssignment(int32_t busIndex, int16_t channel, int16_t midiControllerNumber, uint32_t& id) final {
     //if (busIndex == 0) {
       switch (midiControllerNumber) {
-        case kAfterTouch: // 128
+        case kode_vst3_AfterTouch: // 128
           id = KODE_VST3_PARAM_AFTERTOUCH + channel;
-          return kResultOk;
-        case kPitchBend: // 129
+          return kode_vst3_ResultOk;
+        case kode_vst3_PitchBend: // 129
           id = KODE_VST3_PARAM_PITCHBEND + channel;
-          return kResultOk;
-        case kCtrlFilterResonance: // cc 74 (slide)
+          return kode_vst3_ResultOk;
+        case kode_vst3_CtrlFilterResonance: // cc 74 (slide)
           id = KODE_VST3_PARAM_BRIGHTNESS + channel;
-          return kResultOk;
+          return kode_vst3_ResultOk;
       }
     //}
-    return kResultFalse;
+    return kode_vst3_ResultFalse;
   }
 
-  //--------------------
-  // INoteExpressionController
-  //--------------------
+//------------------------------
+public: // INoteExpressionController
+//------------------------------
 
-//  tresult PLUGIN_API getNoteExpressionInfo(int32 busIndex, int16 channel, int32 noteExpressionIndex, NoteExpressionTypeInfo& info) final {
-//    VST3_Trace("vst3: instance/getNoteExpressionInfo busIndex:%i channel:%i noteExpressionIndex:%i\n",busIndex,channel,noteExpressionIndex);
-//    //if (busIndex==0) {
-//      switch(noteExpressionIndex) {
-//        case 0:
-//          info.typeId                 = 0; // ??
-//          char_to_utf16("Tuning",info.title);
-//          char_to_utf16("Tun",info.shortTitle);
-//          char_to_utf16("",info.units);
-//          info.unitId                 = 0;
-//          info.valueDesc.defaultValue = 0.0;
-//          info.valueDesc.minimum      = 0;
-//          info.valueDesc.maximum      = 1;
-//          info.associatedParameterId  = -1;
-//          info.flags                  = NoteExpressionTypeInfo::kIsBipolar;
-//          return kResultOk;
-//        case 1:
-//          info.typeId                 = 1; // ??
-//          char_to_utf16("Brightness",info.title);
-//          char_to_utf16("Bri",info.shortTitle);
-//          char_to_utf16("",info.units);
-//          info.unitId                 = 0;
-//          info.valueDesc.defaultValue = 0.0;
-//          info.valueDesc.minimum      = 0;
-//          info.valueDesc.maximum      = 1;
-//          info.associatedParameterId  = -1;
-//          info.flags                  = 0;
-//          return kResultOk;
-//      }
-//    //}
-//    return kResultFalse;
-//  }
+  //int32_t KODE_VST3_PLUGIN_API getNoteExpressionInfo(int32_t busIndex, int16 channel, int32_t noteExpressionIndex, NoteExpressionTypeInfo& info) final {
+  //  VST3_Trace("vst3: instance/getNoteExpressionInfo busIndex:%i channel:%i noteExpressionIndex:%i\n",busIndex,channel,noteExpressionIndex);
+  //  //if (busIndex==0) {
+  //    switch(noteExpressionIndex) {
+  //      case 0:
+  //        info.typeId                 = 0; // ??
+  //        char_to_utf16("Tuning",info.title);
+  //        char_to_utf16("Tun",info.shortTitle);
+  //        char_to_utf16("",info.units);
+  //        info.unitId                 = 0;
+  //        info.valueDesc.defaultValue = 0.0;
+  //        info.valueDesc.minimum      = 0;
+  //        info.valueDesc.maximum      = 1;
+  //        info.associatedParameterId  = -1;
+  //        info.flags                  = NoteExpressionTypeInfo::kode_vst3_IsBipolar;
+  //        return kode_vst3_ResultOk;
+  //      case 1:
+  //        info.typeId                 = 1; // ??
+  //        char_to_utf16("Brightness",info.title);
+  //        char_to_utf16("Bri",info.shortTitle);
+  //        char_to_utf16("",info.units);
+  //        info.unitId                 = 0;
+  //        info.valueDesc.defaultValue = 0.0;
+  //        info.valueDesc.minimum      = 0;
+  //        info.valueDesc.maximum      = 1;
+  //        info.associatedParameterId  = -1;
+  //        info.flags                  = 0;
+  //        return kode_vst3_ResultOk;
+  //    }
+  //  //}
+  //  return kode_vst3_ResultFalse;
+  //}
 
-//  tresult PLUGIN_API getNoteExpressionStringByValue(int32 busIndex, int16 channel, NoteExpressionTypeID id, NoteExpressionValue valueNormalized, String128 string) final {
-//    char temp[100];
-//    FloatToString(temp,valueNormalized);
-//    char_to_utf16(temp,string);
-//    return kResultOk;
-//  }
+  //----------
 
-//  tresult PLUGIN_API getNoteExpressionValueByString(int32 busIndex, int16 channel, NoteExpressionTypeID id, const TChar* string, NoteExpressionValue& valueNormalized) final{
-//    char temp[129];
-//    utf16_to_char(string,temp);
-//    float res = const char*ToFloat(temp);
-//    valueNormalized = res;
-//    return kResultOk;
-//  }
+  //int32_t KODE_VST3_PLUGIN_API getNoteExpressionStringByValue(int32_t busIndex, int16 channel, NoteExpressionTypeID id, NoteExpressionValue valueNormalized, KODE_Vst3String string) final {
+  //  char temp[100];
+  //  FloatToString(temp,valueNormalized);
+  //  char_to_utf16(temp,string);
+  //  return kode_vst3_ResultOk;
+  //}
 
-  //--------------------
-  // IKeyswitchController
-  //--------------------
+  //----------
 
-  int32 PLUGIN_API getKeyswitchCount(int32 busIndex, int16 channel) final {
+  //int32_t KODE_VST3_PLUGIN_API getNoteExpressionValueByString(int32_t busIndex, int16 channel, NoteExpressionTypeID id, const TChar* string, NoteExpressionValue& valueNormalized) final{
+  //  char temp[129];
+  //  utf16_to_char(string,temp);
+  //  float res = const char*ToFloat(temp);
+  //  valueNormalized = res;
+  //  return kode_vst3_ResultOk;
+  //}
+
+//------------------------------
+public: // IKeyswitchController
+//------------------------------
+
+  int32_t KODE_VST3_PLUGIN_API getKeyswitchCount(int32_t busIndex, int16_t channel) final {
     return 0;
   }
 
-  tresult PLUGIN_API getKeyswitchInfo(int32 busIndex, int16 channel, int32 keySwitchIndex, KeyswitchInfo& info) final {
-    return kResultFalse;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getKeyswitchInfo(int32_t busIndex, int16_t channel, int32_t keySwitchIndex, KODE_Vst3KeyswitchInfo& info) final {
+    return kode_vst3_ResultFalse;
   }
 
-  //--------------------
-  // IConnectionPoint
-  //--------------------
+//------------------------------
+public: // IConnectionPoint
+//------------------------------
 
-  tresult PLUGIN_API connect(IConnectionPoint* other) final {
+  int32_t KODE_VST3_PLUGIN_API connect(KODE_Vst3IConnectionPoint* other) final {
     //IMessage* msg;
     //msg->setMessageID("test");
     //other->notify(msg);
-    return kResultFalse;
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API disconnect(IConnectionPoint* other)  final {
-    return kResultFalse;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API disconnect(KODE_Vst3IConnectionPoint* other)  final {
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API notify(IMessage* message) final {
-    return kResultFalse;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API notify(KODE_Vst3IMessage* message) final {
+    return kode_vst3_ResultFalse;
   }
 
-  //--------------------
-  // IUnitInfo
-  //--------------------
+//------------------------------
+public: // IUnitInfo
+//------------------------------
 
-  int32 PLUGIN_API getUnitCount() final {
+  int32_t KODE_VST3_PLUGIN_API getUnitCount() final {
     return 1;
   }
 
-  tresult PLUGIN_API getUnitInfo(int32 unitIndex, UnitInfo& info) final {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getUnitInfo(int32_t unitIndex, KODE_Vst3UnitInfo& info) final {
     if (unitIndex==0) {
-      info.id = kRootUnitId;
-      info.parentUnitId = kNoParentUnitId;
-      /*CharToUtf16*/ char_to_utf16("root",&info.name);
-      info.programListId = kNoProgramListId;
-      return kResultOk;
+      info.id = kode_vst3_RootUnitId;
+      info.parentUnitId = kode_vst3_NoParentUnitId;
+      KODE_CharToUtf16("root",&info.name);
+      info.programListId = kode_vst3_NoProgramListId;
+      return kode_vst3_ResultOk;
     }
-    return kResultFalse;
+    return kode_vst3_ResultFalse;
   }
 
-  int32 PLUGIN_API getProgramListCount() final {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getProgramListCount() final {
     return 0; // 1
   }
 
-  tresult PLUGIN_API getProgramListInfo(int32 listIndex, ProgramListInfo& info) final {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getProgramListInfo(int32_t listIndex, KODE_Vst3ProgramListInfo& info) final {
     if (listIndex == 0) {
       info.id = 0;
-      /*CharToUtf16*/ char_to_utf16("program",&info.name);
+      KODE_CharToUtf16("program",&info.name);
       info.programCount = 1;
-      return kResultOk;
+      return kode_vst3_ResultOk;
     }
-    return kResultFalse;
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API getProgramName(ProgramListID listId, int32 programIndex, String128 name) final {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getProgramName(int32_t listId, int32_t programIndex, KODE_Vst3String name) final {
     if ((listId == 0) && (programIndex == 0)) {
-      /*CharToUtf16*/ char_to_utf16("program",&name);
-      return kResultOk;
+      KODE_CharToUtf16("program",&name);
+      return kode_vst3_ResultOk;
     }
-    return kResultFalse;
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API getProgramInfo(ProgramListID listId, int32 programIndex, CString attributeId, String128 attributeValue) final {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getProgramInfo(int32_t listId, int32_t programIndex, const char* attributeId, KODE_Vst3String attributeValue) final {
     ////attributeId = "";
     //if ((listId == 0) && (programIndex == 0) /* attributeId */) {
     //  /*CharToUtf16*/ char_to_utf16("",attributeValue);
-    //  return kResultOk;
+    //  return kode_vst3_ResultOk;
     //}
-    return kResultFalse;
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API hasProgramPitchNames(ProgramListID listId, int32 programIndex) final {
-    return kResultFalse;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API hasProgramPitchNames(int32_t listId, int32_t programIndex) final {
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API getProgramPitchName(ProgramListID listId, int32 programIndex, int16 midiPitch, String128 name) final {
-    // /*CharToUtf16*/ char_to_utf16("pitch",name);
-    return kResultFalse;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getProgramPitchName(int32_t listId, int32_t programIndex, int16_t midiPitch, KODE_Vst3String name) final {
+    // KODE_CharToUtf16("pitch",name);
+    return kode_vst3_ResultFalse;
   }
 
-  UnitID PLUGIN_API getSelectedUnit() final {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getSelectedUnit() final {
     return 0;
   }
 
-  tresult PLUGIN_API selectUnit(UnitID unitId) final {
-    return kResultOk;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API selectUnit(int32_t unitId) final {
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API getUnitByBus(MediaType type, BusDirection dir, int32 busIndex, int32 channel, UnitID& unitId) final {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getUnitByBus(int32_t type, int32_t dir, int32_t busIndex, int32_t channel, int32_t& unitId) final {
     unitId = 0;
-    return kResultOk;
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API setUnitProgramData(int32 listOrUnitId, int32 programIndex, IBStream* data) final {
-    return kResultFalse;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API setUnitProgramData(int32_t listOrUnitId, int32_t programIndex, KODE_Vst3IBStream* data) final {
+    return kode_vst3_ResultFalse;
   }
 
-  //--------------------
-  // IEditController
-  //--------------------
+//------------------------------
+public: // IEditController
+//------------------------------
 
-  tresult PLUGIN_API setComponentState(IBStream* state) final {
-    return kResultOk;
+  int32_t KODE_VST3_PLUGIN_API setComponentState(KODE_Vst3IBStream* state) final {
+    return kode_vst3_ResultOk;
   }
 
+  //----------
 
-  tresult PLUGIN_API setEditorState(IBStream* state) final {
-    return kResultOk;
+  int32_t KODE_VST3_PLUGIN_API setEditorState(KODE_Vst3IBStream* state) final {
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API getEditorState(IBStream* state) final {
-    return kResultOk;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getEditorState(KODE_Vst3IBStream* state) final {
+    return kode_vst3_ResultOk;
   }
 
-  int32 PLUGIN_API getParameterCount() final {
-    return MDescriptor->parameters.size();
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getParameterCount() final {
+    return MDescriptor->getNumParameters();
   }
 
-  tresult PLUGIN_API getParameterInfo(int32 paramIndex, ParameterInfo& info) final {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getParameterInfo(int32_t paramIndex, KODE_Vst3ParameterInfo& info) final {
     if (paramIndex >= 0) {
-      if (paramIndex < (int32)MDescriptor->parameters.size()) {
+      if (paramIndex < (int32_t)MDescriptor->getNumParameters()) {
         //VST3_Parameter* param = MDescriptor->getParameter(paramIndex);
         //if (param) {
-          memcpy(&info,&MParamInfos[paramIndex],sizeof(ParameterInfo));
-          return kResultOk;
+          memcpy(&info,&MParamInfos[paramIndex],sizeof(KODE_Vst3ParameterInfo));
+          return kode_vst3_ResultOk;
         //}
       } // index < numparams
       else {
         switch (paramIndex) {
-          case kAfterTouch: // 128
+          case kode_vst3_AfterTouch: // 128
             break;
-          case kPitchBend: // 129
+          case kode_vst3_PitchBend: // 129
             break;
-          case kCtrlFilterResonance: // cc 74 (slide)
+          case kode_vst3_CtrlFilterResonance: // cc 74 (slide)
             break;
         }
         switch (paramIndex & 0xffff0000) {
@@ -857,43 +913,49 @@ public:
           case KODE_VST3_PARAM_BRIGHTNESS:
             break;
         }
-        return kResultFalse;
+        return kode_vst3_ResultFalse;
       }
     }
-    return kResultFalse;
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API getParamStringByValue(ParamID id, ParamValue valueNormalized, String128 string) final {
-    if (id < MDescriptor->parameters.size()) {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getParamStringByValue(uint32_t id, double valueNormalized, KODE_Vst3String string) final {
+    if (id < MDescriptor->getNumParameters()) {
       char temp[129]; // ???
-      VST3_Parameter* param = MDescriptor->parameters[id];
-      param->displayText(valueNormalized,temp);
-      /*CharToUtf16*/ char_to_utf16(temp,string);
-      return kResultOk;
+      KODE_Parameter* param = MDescriptor->getParameter(id);
+      param->getDisplayString(valueNormalized,temp);
+      KODE_CharToUtf16(temp,string);
+      return kode_vst3_ResultOk;
     }
     else {
-      return kResultFalse;
+      return kode_vst3_ResultFalse;
     }
   }
 
-  tresult PLUGIN_API getParamValueByString(ParamID id, TChar* string, ParamValue& valueNormalized) final {
-    if (id < MDescriptor->parameters.size()) {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getParamValueByString(uint32_t id, char16_t* string, double& valueNormalized) final {
+    if (id < MDescriptor->getNumParameters()) {
       char temp[129];
-      utf16_to_char(string,temp);
+      KODE_Utf16ToChar(string,temp);
       float v = atoi(temp);
-      VST3_Parameter* param = MDescriptor->parameters[id];
+      KODE_Parameter* param = MDescriptor->getParameter(id);
       float v2 = param->to01(v);
       valueNormalized = v2;
-      return kResultOk;
+      return kode_vst3_ResultOk;
     }
     else {
-      return kResultFalse;
+      return kode_vst3_ResultFalse;
     }
   }
 
-  ParamValue PLUGIN_API normalizedParamToPlain(ParamID id, ParamValue valueNormalized) final {
-    if (id < MDescriptor->parameters.size()) {
-      VST3_Parameter* param = MDescriptor->parameters[id];
+  //----------
+
+  double KODE_VST3_PLUGIN_API normalizedParamToPlain(uint32_t id, double valueNormalized) final {
+    if (id < MDescriptor->getNumParameters()) {
+      KODE_Parameter* param = MDescriptor->getParameter(id);
       float v = param->from01(valueNormalized);
       return v;
     }
@@ -902,9 +964,11 @@ public:
     }
   }
 
-  ParamValue PLUGIN_API plainParamToNormalized(ParamID id, ParamValue plainValue) final {
-    if (id < MDescriptor->parameters.size()) {
-      VST3_Parameter* param = MDescriptor->parameters[id];
+  //----------
+
+  double KODE_VST3_PLUGIN_API plainParamToNormalized(uint32_t id, double plainValue) final {
+    if (id < MDescriptor->getNumParameters()) {
+      KODE_Parameter* param = MDescriptor->getParameter(id);
       float v = param->to01(plainValue);
       return v;
     }
@@ -913,8 +977,10 @@ public:
     }
   }
 
-  ParamValue PLUGIN_API getParamNormalized(ParamID id) final {
-    if (id < MDescriptor->parameters.size()) {
+  //----------
+
+  double KODE_VST3_PLUGIN_API getParamNormalized(uint32_t id) final {
+    if (id < MDescriptor->getNumParameters()) {
       float v = MParameterValues[id];
       return v;
     }
@@ -923,167 +989,204 @@ public:
     }
   }
 
-  tresult PLUGIN_API setParamNormalized(ParamID id, ParamValue value) final {
-    if (id >= MDescriptor->parameters.size()) {
-      return kResultFalse; // ???
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API setParamNormalized(uint32_t id, double value) final {
+    if (id >= MDescriptor->getNumParameters()) {
+      return kode_vst3_ResultFalse; // ???
     }
     MParameterValues[id] = value;
     if (MEditor) {
       MEditor->updateParameterFromHost(id,value);
     }
-    return kResultOk;
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API setComponentHandler(IComponentHandler* handler) final {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API setComponentHandler(KODE_Vst3IComponentHandler* handler) final {
     MComponentHandler = handler;
-    return kResultOk;
+    return kode_vst3_ResultOk;
   }
 
-  IPlugView* PLUGIN_API createView(FIDString name) final {
-    if (MDescriptor->has_editor) {
-      if (name && (strcmp(name,/*ViewType::*/kEditor) == 0)) {
+  //----------
+
+  KODE_Vst3IPlugView* KODE_VST3_PLUGIN_API createView(const char* name) final {
+    if (MDescriptor->hasEditor()) {
+      if (name && (strcmp(name,kode_vst3_Editor) == 0)) {
         addRef();
-        return (IPlugView*)this;
+        return (KODE_Vst3IPlugView*)this;
       }
     }
     return nullptr;
   }
 
-  //--------------------
-  // IEditController2
-  //--------------------
+//------------------------------
+public: // IEditController2
+//------------------------------
 
-  tresult PLUGIN_API setKnobMode(KnobMode mode) final {
-    return kResultFalse;
+  int32_t KODE_VST3_PLUGIN_API setKnobMode(int32_t mode) final {
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API openHelp(TBool onlyCheck) final {
-    return kResultFalse;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API openHelp(uint8_t onlyCheck) final {
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API openAboutBox(TBool onlyCheck) final {
-    return kResultFalse;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API openAboutBox(uint8_t onlyCheck) final {
+    return kode_vst3_ResultFalse;
   }
 
-  //--------------------
-  // IPlugView
-  //--------------------
+//------------------------------
+public: // IPlugView
+//------------------------------
 
-  tresult PLUGIN_API isPlatformTypeSupported(FIDString type) final {
-    // "X11EmbedWindowID"
-    #ifdef __gnu_linux__
-    if (type && strcmp(type,kPlatformTypeX11EmbedWindowID) == 0) {
-      return kResultOk;
-    }
-    #endif
-    return kResultFalse;
+  int32_t KODE_VST3_PLUGIN_API isPlatformTypeSupported(const char* type) final {
+    #ifndef KODE_NO_GUI
+      //#ifdef __gnu_linux__
+      #ifdef KODE_LINUX
+        //"X11EmbedWindowID"
+        if (type && strcmp(type,kode_vst3_PlatformTypeX11EmbedWindowID) == 0) {
+          return kode_vst3_ResultOk;
+        }
+      #endif // KODE_LINUX
+    #endif // KODE_NO_GUI
+    return kode_vst3_ResultFalse;
   }
-  tresult PLUGIN_API attached(void* parent, FIDString type) final {
-    #ifndef VST3_NO_GUI
-      if (MDescriptor->has_editor) {
+
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API attached(void* parent, const char* type) final {
+    #ifndef KODE_NO_GUI
+      if (MDescriptor->hasEditor()) {
         if (MPlugFrame) {
-          uint32_t w = MDescriptor->editor_width;
-          uint32_t h = MDescriptor->editor_height;
-          ViewRect r;
+          uint32_t w = MDescriptor->getEditorWidth();
+          uint32_t h = MDescriptor->getEditorHeight();
+          KODE_Vst3ViewRect r;
           r.left    = 0;
           r.top     = 0;
           r.right   = w;
           r.bottom  = h;
           MPlugFrame->resizeView(this,&r);
         }
-        MEditor = on_openEditor(parent);
+        MEditor = (KODE_BaseEditor*)on_plugin_openEditor(parent);
         //if (MRunLoop)
         MRunLoop->registerTimer(this,KODE_VST3_TIMER_MS);
-        return kResultOk;
+        return kode_vst3_ResultOk;
       }
-    #endif // VST3_NO_GUI
-    return kResultFalse;
+    #endif // KODE_NO_GUI
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API removed() final {
-      #ifndef VST3_NO_GUI
-      if (MDescriptor->has_editor) {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API removed() final {
+      #ifndef KODE_NO_GUI
+      if (MDescriptor->hasEditor()) {
         //if (MRunLoop)
         MRunLoop->unregisterTimer(this);
-        on_closeEditor(MEditor);
+        on_plugin_closeEditor(MEditor);
         MEditor = nullptr;
-        return kResultOk;
+        return kode_vst3_ResultOk;
       }
-      #endif // VST3_NO_GUI
-    return kResultFalse;
+      #endif // KODE_NO_GUI
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API onWheel(float distance) final {
-    return kResultOk;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API onWheel(float distance) final {
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API onKeyDown(char16 key, int16 keyCode, int16 modifiers) final {
-    return kResultOk;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API onKeyDown(char16_t key, int16_t keyCode, int16_t modifiers) final {
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API onKeyUp(char16 key, int16 keyCode, int16 modifiers) final {
-    return kResultOk;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API onKeyUp(char16_t key, int16_t keyCode, int16_t modifiers) final {
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API getSize(ViewRect* size) final {
-    if (MDescriptor->has_editor) {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API getSize(KODE_Vst3ViewRect* size) final {
+    if (MDescriptor->hasEditor()) {
       size->left    = 0;
       size->top     = 0;
-      size->right   = MDescriptor->editor_width;
-      size->bottom  = MDescriptor->editor_height;
-      return kResultOk;
+      size->right   = MDescriptor->getEditorWidth();
+      size->bottom  = MDescriptor->getEditorHeight();
+      return kode_vst3_ResultOk;
     }
-    return kResultFalse;
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API onSize(ViewRect* newSize) final {
-    if (MDescriptor->has_editor) {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API onSize(KODE_Vst3ViewRect* newSize) final {
+    if (MDescriptor->hasEditor()) {
       //TODO: resize/redraw editor
-      return kResultOk;
+      return kode_vst3_ResultOk;
     }
     else {
-      return kResultFalse;
+      return kode_vst3_ResultFalse;
     }
   }
 
-  tresult PLUGIN_API onFocus(TBool state) final {
-    return kResultOk;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API onFocus(uint8_t state) final {
+    return kode_vst3_ResultOk;
   }
 
-  tresult PLUGIN_API setFrame(IPlugFrame* frame) final {
-    if (MDescriptor->has_editor) {
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API setFrame(KODE_Vst3IPlugFrame* frame) final {
+    if (MDescriptor->hasEditor()) {
       MPlugFrame = frame;
-      MPlugFrame->queryInterface(IRunLoop_iid, (void**)&MRunLoop);
-      return kResultOk;
+      MPlugFrame->queryInterface(KODE_Vst3IRunLoop_iid, (void**)&MRunLoop);
+      return kode_vst3_ResultOk;
     }
     else {
-      return kResultFalse;
+      return kode_vst3_ResultFalse;
     }
   }
 
-  tresult PLUGIN_API canResize() final {
-    return kResultFalse;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API canResize() final {
+    return kode_vst3_ResultFalse;
   }
 
-  tresult PLUGIN_API checkSizeConstraint(ViewRect* rect) final {
-    return kResultOk;
+  //----------
+
+  int32_t KODE_VST3_PLUGIN_API checkSizeConstraint(KODE_Vst3ViewRect* rect) final {
+    return kode_vst3_ResultOk;
   }
 
-  //--------------------
-  // ITimerHandler
-  //--------------------
+//------------------------------
+public: // ITimerHandler
+//------------------------------
 
   void onTimer() final {
-    #ifndef VST3_NO_GUI
-    on_updateEditor(MEditor);
-    _flushParametersToHost();
+    #ifndef KODE_NO_GUI
+    on_plugin_updateEditor(MEditor);
+    flushParametersToHost();
     #endif
   }
 
+  //--------------------
+  //
+  //--------------------
+
 };
-
-
-
 
 //----------------------------------------------------------------------
 #endif

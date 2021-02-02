@@ -27,8 +27,8 @@ class KODE_Instance
 private:
 //------------------------------
 
-  uint32_t  MNumParameters  = 0;
-  float*  MParameterValues  = KODE_NULL;
+  uint32_t  MNumParameters    = 0;
+  float*    MParameterValues  = KODE_NULL;
 
 //------------------------------
 public:
@@ -40,8 +40,14 @@ public:
 public:
 //------------------------------
 
+  KODE_Instance() {
+    KODE_Assert(0==1); // use the other constructor!
+  }
+
+
   KODE_Instance(KODE_Descriptor* ADescriptor)
-  : KODE_ImplementedInstance(ADescriptor) {
+  : KODE_ImplementedInstance(/*ADescriptor*/) {
+    setDescriptor(ADescriptor);
     MDescriptor       = ADescriptor;
     MNumParameters    = MDescriptor->getNumParameters();
     MParameterValues  = (float*)KODE_Malloc(MNumParameters * sizeof(float));
@@ -81,10 +87,10 @@ public:
 
   //----------
 
-  void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
-    // set parameter value
-    // notify host
-  }
+  //void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
+  //  // set parameter value
+  //  // notify host
+  //}
 
 };
 

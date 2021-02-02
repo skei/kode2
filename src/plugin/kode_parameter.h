@@ -16,6 +16,7 @@ protected:
 
   KODE_ParameterOptions MOptions;
   const char*           MName       = "";
+  const char*           MShortName  = "";
   const char*           MLabel      = "";
   float                 MDefValue   = 0.0f;
   float                 MMinValue   = 0.0f;
@@ -38,13 +39,14 @@ public:
 public:
 //------------------------------
 
-  bool        canAutomate() { return MOptions.canAutomate; }
-  const char* getName()     { return MName; }
-  const char* getLabel()    { return MLabel; }
-  float       getDefValue() { return MDefValue; }
-  float       getMinValue() { return MMinValue; }
-  float       getMaxValue() { return MMaxValue; }
-  uint32_t    getNumSteps() { return MNumSteps; }
+  bool        canAutomate()   { return MOptions.canAutomate; }
+  const char* getName()       { return MName; }
+  const char* getShortName()  { return MShortName; }
+  const char* getLabel()      { return MLabel; }
+  float       getDefValue()   { return MDefValue; }
+  float       getMinValue()   { return MMinValue; }
+  float       getMaxValue()   { return MMaxValue; }
+  uint32_t    getNumSteps()   { return MNumSteps; }
 
 //------------------------------
 public:
