@@ -1129,7 +1129,7 @@ public:
   //----------
 
   void paint(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight) override {
-    //KODE_PRINT;
+    //KODE_Print("x %i y %i w %i h %i\n",AXpos,AYpos,AWidth,AHeight);
     //on_paint(MWindowPainter,ARect);
     on_window_paint(AXpos,AYpos,AWidth,AHeight);
   }

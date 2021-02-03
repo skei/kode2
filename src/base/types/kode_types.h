@@ -4,26 +4,16 @@
 
 #include <stdint.h>
 
-//#ifdef _STDINT_H
-//  typedef uint8_t             uint8;
-//  typedef uint16_t            uint16;
-//  typedef uint32_t            uint32;
-//  typedef uint64_t            uint64;
-//  typedef int8_t              int8;
-//  typedef int16_t             int16;
-//  typedef int32_t             int32;
-//  typedef int64_t             int64;
-//  typedef intptr_t            intptr;
-//#else
-//  typedef unsigned char       uint8;
-//  typedef unsigned short      uint16;
-//  typedef unsigned long       uint32;
-//  typedef unsigned long long  uint64;
-//  typedef signed char         int8;
-//  typedef signed short        int16;
-//  typedef signed long         int32;
-//  typedef signed long long    int64;
-//  typedef intptr_t            intptr;
+//#ifndef _STDINT_H
+//  typedef unsigned char       uint8_t;
+//  typedef unsigned short      uint16_t;
+//  typedef unsigned long       uint32_t;
+//  typedef unsigned long long  uint64_t;
+//  typedef signed char         int8_t;
+//  typedef signed short        int16_t;
+//  typedef signed long         int32_t;
+//  typedef signed long long    int64_t;
+//  typedef intptr              intptr_t;
 //#endif
 
 //----------
@@ -51,23 +41,6 @@
 #include "base/types/kode_rect.h"
 #include "base/types/kode_string.h"
 #include "base/types/kode_vector.h"
-
-//----------------------------------------------------------------------
-
-//template <typename T>
-//class KODE_Array {
-//};
-//
-//struct KODE_Rect {
-//  float x,y,w,h;
-//  KODE_Rect(float v) { x=v; y=v; w=v; h=v; }
-//  KODE_Rect(float aw, float ah) { x=0; y=0; w=aw; h=ah; }
-//  KODE_Rect(float ax, float ay, float aw, float ah) { x=ax; y=ay; w=aw; h=ah; }
-//};
-//
-//struct KODE_Color {
-//  float r,g,b,a;
-//};
 
 //----------------------------------------------------------------------
 #endif

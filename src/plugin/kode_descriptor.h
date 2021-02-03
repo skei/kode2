@@ -99,28 +99,32 @@ public:
 public:
 //------------------------------
 
-  void appendParameter(KODE_Parameter* AParameter) {
-    //uint32_t index = MParameters.size();
-    //AParameter->setIndex(index);
+  KODE_Parameter* appendParameter(KODE_Parameter* AParameter) {
+//    uint32_t index = MParameters.size();
+//    AParameter->setIndex(index);
     MParameters.append(AParameter);
+    return AParameter;
   }
 
   //----------
 
-  void appendProgram(KODE_Program* AProgram) {
+  KODE_Program* appendProgram(KODE_Program* AProgram) {
     MPrograms.append(AProgram);
+    return AProgram;
   }
 
   //----------
 
-  void appendInput(KODE_PluginPort* AInput) {
+  KODE_PluginPort* appendInput(KODE_PluginPort* AInput) {
     MInputs.append(AInput);
+    return AInput;
   }
 
   //----------
 
-  void appendOutput(KODE_PluginPort* AOutput) {
+  KODE_PluginPort* appendOutput(KODE_PluginPort* AOutput) {
     MOutputs.append(AOutput);
+    return AOutput;
   }
 
   //----------

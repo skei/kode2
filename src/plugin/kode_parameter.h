@@ -27,7 +27,9 @@ protected:
 public:
 //------------------------------
 
-  KODE_Parameter() {
+  KODE_Parameter(const char* AName, float AValue=0.0f) {
+    MName = AName;
+    MDefValue = AValue;
   }
 
   //----------

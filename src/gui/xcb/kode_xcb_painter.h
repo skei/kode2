@@ -289,13 +289,13 @@ public:
   void drawText(KODE_FRect ARect, const char* AText, uint32_t AAlignment, KODE_Color AColor) final {
     measure_string(AText);
     float x,y,w;
-    if (AAlignment & KODE_TEXT_ALIGN_TOP) y = ARect.y + MFontAscent;
+    if (AAlignment & KODE_TEXT_ALIGN_TOP) y = ARect.y    + MFontAscent;
     else if (AAlignment & KODE_TEXT_ALIGN_BOTTOM) y = ARect.y2() - MFontDescent;
-    else y = ARect.y + (MFontAscent * 0.5f) + (ARect.h * 0.5f );
+    else y = ARect.y + (MFontAscent * 0.5f) + (ARect.h * 0.5f);
     w = MFontWidth;
     if (AAlignment & KODE_TEXT_ALIGN_LEFT) x = ARect.x;
     else if (AAlignment & KODE_TEXT_ALIGN_RIGHT) x = ARect.x2() - w;
-    else x = ARect.x + (ARect.w * 0.5f) - ( w * 0.5f );
+    else x = ARect.x + (ARect.w * 0.5f) - (w * 0.5f);
     drawText(x,y,AText,AColor);
   }
 

@@ -3,22 +3,10 @@
 //----------------------------------------------------------------------
 
 /*
-  works:
-  - midi in (mpe-ready)
-  does not work:
-  - midi out?
-  does not handle:
-  - changing parameters or types
-  todo:
-  -
+  * does not handle changing parameters or types
 */
 
-#include <memory.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <vector>
-using namespace std;
+//----------------------------------------------------------------------
 
 #include "plugin/kode_editor.h"
 #include "plugin/kode_plugin_base.h"
@@ -112,8 +100,11 @@ public:
     return MDescriptor;
   }
 
-//  void setParameterFromEditor(uint32_t AIndex, float AValue) {
-  void  updateParameterFromEditor(uint32_t AIndex, float AValue) {
+//------------------------------
+public:
+//------------------------------
+
+  void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
     queueParameterToHost(AIndex,AValue);
   }
 
@@ -208,7 +199,7 @@ private:
                 paramQueue->getPoint(pointcount-1,offset,value); // last point
                 KODE_Parameter* param = MDescriptor->getParameter(id);
                 if (param) value = param->from01(value);
-                on_plugin_parameter(id,value,0);
+                on_plugin_parameter(0,id,value);
               //}
             } // id < param
             else {
@@ -605,7 +596,7 @@ public: // IAudioProcessor
     MSampleSize   = setup.symbolicSampleSize; // kode_vst3_Sample32, kode_vst3_Sample64
     MBlockSize    = setup.maxSamplesPerBlock;
     MSampleRate   = setup.sampleRate;
-//    on_plugin_prepare(MSampleRate,MBlockSize);
+    on_plugin_prepare(MSampleRate,MBlockSize);
     return kode_vst3_ResultOk;
   }
 
@@ -625,23 +616,23 @@ public: // IAudioProcessor
     bool _flush = ( (data.numInputs == 0) && (data.numOutputs == 0) && (data.numSamples == 0) );
     if (!_flush) {
       KODE_ProcessContext context;// = {0};
-//      uint32_t i;
-//      for (i=0; i<MDescriptor->getNumInputs(); i++)   { context.inputs[i]  = data.inputs[0].channelBuffers32[i]; }
-//      for (i=0; i<MDescriptor->getNumOutputs(); i++)  { context.outputs[i] = data.outputs[0].channelBuffers32[i]; }
-//      context.num_inputs    = MDescriptor->getNumInputs();
-//      context.num_outputs   = MDescriptor->getNumOutputs();
-//      context.num_samples   = data.numSamples;
-//      //context.oversample    = 1;
-//      context.sample_rate   = data.processContext->sampleRate;
-//      context.sample_pos    = data.processContext->continousTimeSamples;
-//      context.beat_pos      = data.processContext->projectTimeMusic;
-//      context.tempo         = data.processContext->tempo;
-//      context.timesig_num   = data.processContext->timeSigNumerator;
-//      context.timesig_denom = data.processContext->timeSigDenominator;
-//      context.play_state    = KODE_PLUGIN_PLAYSTATE_NONE;
-//      if (data.processContext->state & ProcessContext::StatesAndFlags::kode_vst3_Playing)      context.play_state |= KODE_PLUGIN_PLAYSTATE_PLAYING;
-//      if (data.processContext->state & ProcessContext::StatesAndFlags::kode_vst3_Recording)    context.play_state |= KODE_PLUGIN_PLAYSTATE_RECORDING;
-//      if (data.processContext->state & ProcessContext::StatesAndFlags::kode_vst3_CycleActive)  context.play_state |= KODE_PLUGIN_PLAYSTATE_LOOPING;
+      uint32_t i;
+      for (i=0; i<MDescriptor->getNumInputs(); i++)   { context.inputs[i]  = data.inputs[0].channelBuffers32[i]; }
+      for (i=0; i<MDescriptor->getNumOutputs(); i++)  { context.outputs[i] = data.outputs[0].channelBuffers32[i]; }
+      context.numinputs    = MDescriptor->getNumInputs();
+      context.numoutputs   = MDescriptor->getNumOutputs();
+      context.numsamples   = data.numSamples;
+      //context.oversample    = 1;
+      context.samplerate   = data.processContext->sampleRate;
+      context.samplepos    = data.processContext->continousTimeSamples;
+      context.beatpos      = data.processContext->projectTimeMusic;
+      context.tempo        = data.processContext->tempo;
+      context.timesignum   = data.processContext->timeSigNumerator;
+      context.timesigdenom = data.processContext->timeSigDenominator;
+      context.playstate    = KODE_PLUGIN_PLAYSTATE_NONE;
+      if (data.processContext->state & KODE_Vst3ProcessContext::StatesAndFlags::kode_vst3_Playing)      context.playstate |= KODE_PLUGIN_PLAYSTATE_PLAYING;
+      if (data.processContext->state & KODE_Vst3ProcessContext::StatesAndFlags::kode_vst3_Recording)    context.playstate |= KODE_PLUGIN_PLAYSTATE_RECORDING;
+      if (data.processContext->state & KODE_Vst3ProcessContext::StatesAndFlags::kode_vst3_CycleActive)  context.playstate |= KODE_PLUGIN_PLAYSTATE_LOOPING;
       on_plugin_processBlock(&context);
     }
     return kode_vst3_ResultOk;

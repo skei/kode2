@@ -84,4 +84,18 @@ public:
 };
 
 //----------------------------------------------------------------------
+//
+//
+//
+//----------------------------------------------------------------------
+
+const KODE_Color KODE_BLACK     = KODE_Color(0.0f);
+const KODE_Color KODE_DARK_GRAY = KODE_Color(0.25f);
+const KODE_Color KODE_GRAY      = KODE_Color(0.5f);
+const KODE_Color KODE_LIGHT     = KODE_Color(0.75f);
+const KODE_Color KODE_WHITE     = KODE_Color(1.0f);
+
+
+
+//----------------------------------------------------------------------
 #endif

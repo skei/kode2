@@ -40,6 +40,7 @@ public:
   //}
 
   void updateParameterFromHost(uint32_t AIndex, float AValue) override {
+    KODE_PRINT;
   }
 
 };

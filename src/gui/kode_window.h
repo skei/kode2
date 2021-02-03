@@ -47,7 +47,7 @@ protected:
   KODE_Widget*  MKeyCaptureWidget       = KODE_NULL;
 
   bool          MFillBackground         = false;
-  KODE_Color    MBackgroundColor        = KODE_Color(0.3f);
+  KODE_Color    MBackgroundColor        = KODE_Color(0.5f);
 
 //------------------------------
 protected:
@@ -90,22 +90,22 @@ public:
 public: // painted
 //------------------------------
 
-  void setFillBackground(bool AFill=true, KODE_Color AColor=KODE_Color(0.3f)) {
+  //virtual void setFillBackground(bool AFill=true, KODE_Color AColor) {
+  //  MFillBackground = AFill;
+  //  MBackgroundColor = AColor;
+  //}
+
+  //----------
+
+  void setFillBackground(bool AFill=true) {
     MFillBackground = AFill;
-    MBackgroundColor = AColor;
   }
 
   //----------
 
-  //void setFillBackground(bool AFill=true) {
-  //  MFillBackground = AFill;
-  //}
-
-  //----------
-
-  //void setBackgroundColor(KODE_Color AColor) {
-  //  MBackgroundColor = AColor;
-  //}
+  void setBackgroundColor(KODE_Color AColor) {
+    MBackgroundColor = AColor;
+  }
 
   //----------
 
@@ -122,7 +122,7 @@ public: // window
 //------------------------------
 
   void open() override {
-    KODE_PRINT;
+    //KODE_PRINT;
     alignChildren();
     KODE_ImplementedWindow::open();
     //#ifndef KODE_PLUGIN_EXE
@@ -190,7 +190,7 @@ public:
     MRect.w = AWidth;
     MRect.h = AHeight;
     alignChildren();
-    if (MWindowPainter) MWindowPainter->resize(AWidth,AHeight);
+    //if (MWindowPainter) MWindowPainter->resize(AWidth,AHeight);
   }
 
   //----------

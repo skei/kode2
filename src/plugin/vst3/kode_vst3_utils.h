@@ -10,15 +10,44 @@
 //
 //----------------------------------------------------------------------
 
+#include <string>
+#include <locale>
+#include <codecvt>
+
+char16_t* kode_vst3_str16cpy(char16_t* destination, const char16_t* source) {
+  char16_t* temp = destination;
+  while((*temp++ = *source++) != 0) ;
+  return destination;
+}
+
+//----------
+
 void KODE_CharToUtf16(const void* C, void* U) {
-  // TODO
+  std::string source = (char*)C;
+  std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,char16_t> convert;
+  std::u16string dest = convert.from_bytes(source);
+  kode_vst3_str16cpy((char16_t*)U,dest.data());
 }
 
 //----------
 
 void KODE_Utf16ToChar(const void* U, void* C) {
-  // TODO
+  std::u16string source = (char16_t*)U;
+  std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,char16_t> convert;
+  std::string dest = convert.to_bytes(source);
+  strcpy((char*)C,dest.data());
 }
+
+//----------
+
+//bool kode_vst3_iid_equal(const void* iid1, const void* iid2) {
+//  uint8_t* ptr1 = (uint8_t*)iid1;
+//  uint8_t* ptr2 = (uint8_t*)iid2;
+//  for (uint32_t i=0; i<16; i++) {
+//    if (*ptr1++ != *ptr2++) return false;
+//  }
+//  return true;
+//}
 
 //----------
 

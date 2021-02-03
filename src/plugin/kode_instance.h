@@ -80,7 +80,7 @@ public:
       KODE_Parameter* parameter = MDescriptor->getParameter(i);
       float value = MParameterValues[i];
       float v = parameter->from01(value);
-      on_plugin_parameter(i,v);
+      on_plugin_parameter(0,i,v);
       // if editor is open ...
     }
   }

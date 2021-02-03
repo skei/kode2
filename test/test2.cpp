@@ -5,6 +5,7 @@
 //----------------------------------------------------------------------
 
 #include "kode.h"
+#include "gui/kode_widgets.h"
 #include "plugin/kode_plugin.h"
 #include "plugin/vst3/kode_vst3_instance.h"
 
@@ -17,18 +18,47 @@ public:
   myEditor(KODE_BaseInstance* AInstance, void* AParent=KODE_NULL)
   : KODE_Editor(AInstance,AParent) {
     setFillBackground();
-    KODE_PRINT;
+    //KODE_PRINT;
+    appendWidget( KODE_New KODE_ColorWidget( KODE_FRect(10,10,100,20) ));
+    appendWidget( KODE_New KODE_PanelWidget( KODE_FRect(10,35,100,20) ));
+
+    KODE_ValueWidget* v;
+    v = (KODE_ValueWidget*)appendWidget( KODE_New KODE_ValueWidget( KODE_FRect(10,60,100,20) ));
+
+    //
+
+    KODE_TextWidget* tw;
+
+    tw = (KODE_TextWidget*)appendWidget( KODE_New KODE_TextWidget(  KODE_FRect(115,10,100,35) ));
+    //tw->setDrawBorder(false);
+    tw->setTextAlignment(KODE_TEXT_ALIGN_CENTER);
+
+    tw = (KODE_TextWidget*)appendWidget( KODE_New KODE_TextWidget(  KODE_FRect(115,50,100,35) ));
+    //tw->setDrawBorder(false);
+    tw->setTextAlignment(KODE_TEXT_ALIGN_LEFT);
+
+    tw = (KODE_TextWidget*)appendWidget( KODE_New KODE_TextWidget(  KODE_FRect(115,90,100,35) ));
+    //tw->setDrawBorder(false);
+    tw->setTextAlignment(KODE_TEXT_ALIGN_RIGHT);
+
+    tw = (KODE_TextWidget*)appendWidget( KODE_New KODE_TextWidget(  KODE_FRect(115,130,100,35) ));
+    //tw->setDrawBorder(false);
+    tw->setTextAlignment(KODE_TEXT_ALIGN_TOP);
+
+    tw = (KODE_TextWidget*)appendWidget( KODE_New KODE_TextWidget(  KODE_FRect(115,170,100,35) ));
+    //tw->setDrawBorder(false);
+    tw->setTextAlignment(KODE_TEXT_ALIGN_BOTTOM);
   }
 
-  void on_window_paint(uint32_t AXpos, uint32_t AYpos, uint32_t AWidth, uint32_t AHeight) final {
-    KODE_PRINT
-    KODE_Editor::on_window_paint(AXpos,AYpos,AWidth,AHeight);
-  }
+  //void on_window_paint(uint32_t AXpos, uint32_t AYpos, uint32_t AWidth, uint32_t AHeight) final {
+  //  KODE_PRINT
+  //  KODE_Editor::on_window_paint(AXpos,AYpos,AWidth,AHeight);
+  //}
 
-  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
-    KODE_PRINT;
-    KODE_Widget::on_widget_paint(APainter,ARect,AMode);
-  }
+  //void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
+  //  KODE_PRINT;
+  //  KODE_Widget::on_widget_paint(APainter,ARect,AMode);
+  //}
 
 };
 
@@ -42,6 +72,9 @@ public:
     MOptions.hasEditor = true;
     MEditorWidth = 640;
     MEditorHeight = 480;
+    appendParameter( KODE_New KODE_Parameter("param1",0.3f) );
+    appendParameter( KODE_New KODE_Parameter("param2",0.9f) );
+    appendParameter( KODE_New KODE_Parameter("param3",0.5f) );
   }
 };
 
@@ -56,14 +89,18 @@ public:
 
 public:
 
-  void* on_plugin_openEditor(void* AParent) override {
-    KODE_PRINT;
+  void on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) final {
+    //KODE_Print("offset %i index %i value %.3f mode %i\n",AOffset,AIndex,AValue,AMode);
+  }
+
+  void* on_plugin_openEditor(void* AParent) final {
+    //KODE_PRINT;
     myEditor* editor = (myEditor*)KODE_New myEditor(this,AParent);
     return editor;
   }
 
-  void  on_plugin_closeEditor(void* AEditor) override {
-    KODE_PRINT;
+  void  on_plugin_closeEditor(void* AEditor) final {
+    //KODE_PRINT;
     KODE_Delete (myEditor*)AEditor;
   }
 

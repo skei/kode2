@@ -27,15 +27,15 @@ public:
   virtual void      updateAllParameters() { KODE_PRINT; }
   virtual void      updateParameterFromEditor(uint32_t AIndex, float AValue) { KODE_PRINT; }
 public:
-  virtual void      on_plugin_open(/*KODE_Descriptor* ADescriptor*/) { KODE_PRINT; }
+  virtual void      on_plugin_open() { KODE_PRINT; }
   virtual void      on_plugin_close() { KODE_PRINT; }
   virtual void      on_plugin_initialize() { KODE_PRINT; }
   virtual void      on_plugin_terminate() { KODE_PRINT; }
   virtual void      on_plugin_activate() { KODE_PRINT; }
   virtual void      on_plugin_deactivate() { KODE_PRINT; }
   virtual void      on_plugin_prepare(float ASamplerate, uint32_t ABlocksize) { KODE_PRINT; }
-  virtual void      on_plugin_parameter(uint32_t AIndex, float AValue, uint32_t AMode=0/*, uint32_t AOffset=0*/) {}
-  virtual void      on_plugin_midi(uint8_t AMsg1, uint8_t AMsg2, uint8_t AMsg3, uint32_t AOffset=0, uint32_t AMode=0) {}
+  virtual void      on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) {}
+  virtual void      on_plugin_midi(uint32_t AOffset, uint8_t AMsg1, uint8_t AMsg2, uint8_t AMsg3, uint32_t AMode=0) {}
   virtual void      on_plugin_processBlock(KODE_ProcessContext* AContext) {}
   virtual void*     on_plugin_openEditor(void* AParent) { return KODE_NULL; }
   virtual void      on_plugin_closeEditor(void* AEditor) {}

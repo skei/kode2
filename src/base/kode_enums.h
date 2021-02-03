@@ -3,18 +3,22 @@
 //----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
+//
 // base
+//
 //----------------------------------------------------------------------
 
 enum KODE_EThreadIds {
-  KODE_THREAD_ID_NONE   = 0,
-  KODE_THREAD_ID_KILL   = 666,
-  KODE_THREAD_ID_TIMER  = 667,
-  KODE_THREAD_ID_IDLE   = 668
+  KODE_THREAD_ID_NONE             = 0,
+  KODE_THREAD_ID_KILL             = 666,
+  KODE_THREAD_ID_TIMER            = 667,
+  KODE_THREAD_ID_IDLE             = 668
 };
 
 //----------------------------------------------------------------------
+//
 // plugin
+//
 //----------------------------------------------------------------------
 
 enum KODE_EParameterUpdateModes {
@@ -47,7 +51,9 @@ enum KODE_EPluginStates {
 };
 
 //----------------------------------------------------------------------
+//
 // gui
+//
 //----------------------------------------------------------------------
 
 enum KODE_EMouseCursors {
@@ -75,12 +81,12 @@ enum KODE_EMouseCursors {
 };
 
 enum KODE_EKeyState {
-  KODE_KEY_NONE = 0,
-  KODE_KEY_SHIFT,
-  KODE_KEY_CAPS,
-  KODE_KEY_CTRL,
-  KODE_KEY_ALT,
-  KODE_KEY_ALTGR
+  KODE_KEY_NONE                   = 0,
+  KODE_KEY_SHIFT                  = 1,
+  KODE_KEY_CAPS                   = 2,
+  KODE_KEY_CTRL                   = 4,
+  KODE_KEY_ALT                    = 8,
+  KODE_KEY_ALTGR                  = 16
 };
 
 enum KODE_EWidgetAlignment {
@@ -109,11 +115,11 @@ enum KODE_EWidgetAlignment {
 };
 
 //enum KODE_EWidgetAnchors {
-//  KODE_WIDGET_ANCHOR_NONE   = 0,
-//  KODE_WIDGET_ANCHOR_LEFT   = 1,
-//  KODE_WIDGET_ANCHOR_TOP    = 2,
-//  KODE_WIDGET_ANCHOR_RIGHT  = 4,
-//  KODE_WIDGET_ANCHOR_BOTTOM = 8
+//  KODE_WIDGET_ANCHOR_NONE         = 0,
+//  KODE_WIDGET_ANCHOR_LEFT         = 1,
+//  KODE_WIDGET_ANCHOR_TOP          = 2,
+//  KODE_WIDGET_ANCHOR_RIGHT        = 4,
+//  KODE_WIDGET_ANCHOR_BOTTOM       = 8
 //};
 
 
@@ -124,39 +130,41 @@ enum KODE_EWidgetTypes {
 };
 
 //----------------------------------------------------------------------
+//
 // painting
+//
 //----------------------------------------------------------------------
 
 enum KODE_EFontSlants {
-  KODE_FONT_SLANT_NORMAL  = 0,
-  KODE_FONT_SLANT_ITALIC  = 1,
-  KODE_FONT_SLANT_OBLIQUE = 2
+  KODE_FONT_SLANT_NORMAL          = 0,
+  KODE_FONT_SLANT_ITALIC          = 1,
+  KODE_FONT_SLANT_OBLIQUE         = 2
 };
 
 enum KODE_EFfontWeights {
-  KODE_FONT_WEIGHT_NORMAL = 0,
-  KODE_FONT_WEIGHT_BOLD   = 1
+  KODE_FONT_WEIGHT_NORMAL         = 0,
+  KODE_FONT_WEIGHT_BOLD           = 1
 };
 
 enum KODE_ELineCaps {
-  KODE_LINE_CAP_BUTT      = 0,
-  KODE_LINE_CAP_ROUND     = 1,
-  KODE_LINE_CAP_SQUARE    = 2
+  KODE_LINE_CAP_BUTT              = 0,
+  KODE_LINE_CAP_ROUND             = 1,
+  KODE_LINE_CAP_SQUARE            = 2
 };
 
 enum KODE_ELineJoins {
-  KODE_LINE_JOIN_MITER    = 0,
-  KODE_LINE_JOIN_ROUND    = 1,
-  KODE_LINE_JOIN_BEVEL    = 2
+  KODE_LINE_JOIN_MITER            = 0,
+  KODE_LINE_JOIN_ROUND            = 1,
+  KODE_LINE_JOIN_BEVEL            = 2
 };
 
 enum KODE_ETextAlignment {
-  KODE_TEXT_ALIGN_NONE    = 0,
-  KODE_TEXT_ALIGN_TOP     = 1,
-  KODE_TEXT_ALIGN_BOTTOM  = 2,
-  KODE_TEXT_ALIGN_LEFT    = 3,
-  KODE_TEXT_ALIGN_RIGHT   = 4,
-  KODE_TEXT_ALIGN_CENTER  = 5
+  KODE_TEXT_ALIGN_NONE            = 0,
+  KODE_TEXT_ALIGN_TOP             = 1,
+  KODE_TEXT_ALIGN_BOTTOM          = 2,
+  KODE_TEXT_ALIGN_LEFT            = 4,
+  KODE_TEXT_ALIGN_RIGHT           = 8,
+  KODE_TEXT_ALIGN_CENTER          = 0
 };
 
 //----------------------------------------------------------------------
