@@ -10,7 +10,7 @@
 #endif
 
 class KODE_XcbPainter
-: public KODE_BasePainter {
+: public KODE_IPainter {
 
 //------------------------------
 private:
@@ -38,7 +38,7 @@ public:
 //------------------------------
 
   KODE_XcbPainter(KODE_Drawable* ATarget)
-  : KODE_BasePainter(ATarget) {
+  : KODE_IPainter(ATarget) {
     if (ATarget->isDrawable()) {
       MTarget     = ATarget;
       MConnection = ATarget->getXcbConnection();
@@ -183,6 +183,20 @@ public:
     values[0] = XCB_NONE;
     xcb_change_gc(MConnection, MGC, mask, values);
     xcb_flush(MConnection);
+  }
+
+//------------------------------
+public:
+//------------------------------
+
+  float getTextWidth(const char* AText) final {
+    measure_string(AText);
+    return MFontWidth;
+  }
+
+  float getTextHeight(const char* AText) final {
+    measure_string(AText);
+    return MFontHeight;
   }
 
 //------------------------------

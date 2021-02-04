@@ -51,7 +51,7 @@ public:
     MTextColor = AColor;
   }
 
-  virtual void drawText(KODE_BasePainter* APainter) {
+  virtual void drawText(KODE_IPainter* APainter) {
     KODE_FRect rect = MRect;
     rect.shrink(MTextOffset);
     if (MDrawText) {
@@ -63,7 +63,7 @@ public:
 public:
 //------------------------------
 
-  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+  void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     //KODE_ColorWidget::on_widget_paint(APainter,ARect,AMode);
     //drawBorder(APainter);
     fillBackground(APainter);

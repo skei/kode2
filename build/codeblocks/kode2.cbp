@@ -102,6 +102,10 @@
 			<Add library="SDL2_image" />
 			<Add library="SDL2_mixer" />
 		</Linker>
+		<Unit filename="../../plugins/template.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="../../src/audio/io/kode_jack.h" />
 		<Unit filename="../../src/audio/io/kode_portaudio.h" />
 		<Unit filename="../../src/base/debug/kode_debug.h" />
@@ -266,7 +270,14 @@
 		<Unit filename="../../src/gui/kode_painter.h" />
 		<Unit filename="../../src/gui/kode_surface.h" />
 		<Unit filename="../../src/gui/kode_widget.h" />
+		<Unit filename="../../src/gui/kode_widgets.h" />
 		<Unit filename="../../src/gui/kode_window.h" />
+		<Unit filename="../../src/gui/widgets/kode_color_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_image_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_panel_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_template_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_text_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_value_widget.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_image.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_painter.h" />

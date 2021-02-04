@@ -45,7 +45,7 @@ class KODE_Vst3Instance
 , public KODE_Vst3IPlugView
 , public KODE_Vst3ITimerHandler
 
-, public KODE_BaseInstance {
+, public KODE_IInstance {
 
 //------------------------------
 private:

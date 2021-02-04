@@ -1,15 +1,40 @@
+
+-I/../src
+
+compiler:
+  debug:   -g, -Wl,-Bsymbolic, -rdynamic
+  release: -O3, -s, -msse4, -mfpmath=sse
+  exe:     -fno-pie
+  vst:     -fPIC
+  all:     -std=c++11, -m64, -Wall, -faligned-new, .fexceptions, -Wl,--as-needed
+           
+
+linker:
+  exe:     -no-pie
+  vst:     -fPIE
+  all:     
+    -lrt, -lpthread,
+    -lxcb, -lxcb-util, -lxcb-image, -lxcb-cursor, -lxcb-keysyms
+    -lcairo,
+    -lportaudio
+    -lSDL2, -lSDL2_image, -lSDL2_image
+
+----------
+
 compile.sh
 
--i ../plugins/again.cpp
--o ./
--f vst3 (ladspa, dssi, lv2, vst2, vst3, exe)
--g xcb (xcb, sdl)
--p cairo (xcb, cairo, ctx)
--a portaudio (jack, rtaudio, portaudio)
-
+-i input    ../plugins/again.cpp
+-o output   ./
+-s srcpath  ../src
+-f format   ladspa, dssi, lv2, vst2 (vestige, fst, sdk), vst3 (sdk), exe
+-g gui      xcb, sdl
+-p painter  xcb, cairo, ctx
+-a audio    jack, rtaudio, portaudio
 -D debug
 -G gpl
 
+----------
+
 vst3: directory structure
-lv2: directory structure, .ttl
+lv2:  directory structure, .ttl
 

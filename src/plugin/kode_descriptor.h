@@ -99,6 +99,24 @@ public:
 public:
 //------------------------------
 
+  void setName(const char* AName)               { MName = AName; }
+  void setAuthor(const char* AAuthor)           { MAuthor = AAuthor; }
+  void setUrl(const char* AUrl)                 { MUrl = AUrl; }
+  void setEmail(const char* AEmail)             { MEmail = AEmail; }
+  void setVersion(uint32_t AVersion)            { MVersion = AVersion; }
+  void setIsSynth(bool AIsSynth)                { MOptions.isSynth = AIsSynth; }
+  void setHasEditor(bool AHasEditor)            { MOptions.hasEditor = AHasEditor; }
+  void setCanSendMidi(bool ACanSendMidi)        { MOptions.canSendMidi = ACanSendMidi; }
+  void setCanReceiveMidi(bool ACanReceiveMidi)  { MOptions.canReceiveMidi = ACanReceiveMidi; }
+  void setEditorWidth(uint32_t AWidth)          { MEditorWidth = AWidth; }
+  void setEditorHeight(uint32_t AHeight)        { MEditorHeight = AHeight; }
+  void setEditorSize(uint32_t W, uint32_t H)    { MEditorWidth = W; MEditorHeight = H; }
+
+
+//------------------------------
+public:
+//------------------------------
+
   KODE_Parameter* appendParameter(KODE_Parameter* AParameter) {
 //    uint32_t index = MParameters.size();
 //    AParameter->setIndex(index);
@@ -197,9 +215,10 @@ public:
 
   //----------
 
+    // 0x03030001 -> "3.3.1"
+
   const char* getVersionText() {
     char temp[16];
-    // 0x03030001 -> "3.3.1"
     uint32_t major = MVersion & 0xff000000;
     uint32_t minor = MVersion & 0x00ff0000;
     uint32_t build = MVersion & 0x0000ffff;

@@ -14,7 +14,7 @@
 //----------------------------------------------------------------------
 
 class KODE_XcbImage
-: public KODE_BaseImage
+: public KODE_IImage
 , public KODE_Drawable {
 
 //------------------------------
@@ -37,7 +37,7 @@ public:
 //------------------------------
 
   KODE_XcbImage(KODE_Drawable* ATarget, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=32)
-  : KODE_BaseImage(ATarget,AWidth,AHeight,ADepth) {
+  : KODE_IImage(ATarget,AWidth,AHeight,ADepth) {
     MTarget           = ATarget;
     MTargetConnection = MTarget->getXcbConnection();
     MTargetVisual     = MTarget->getXcbVisual();
@@ -53,7 +53,7 @@ public:
   //----------
 
   KODE_XcbImage(KODE_Drawable* ATarget, KODE_Bitmap* ABitmap)
-  : KODE_BaseImage(ATarget,ABitmap) {
+  : KODE_IImage(ATarget,ABitmap) {
     MTarget           = ATarget;
     MTargetConnection = MTarget->getXcbConnection();
     MTargetVisual     = MTarget->getXcbVisual();

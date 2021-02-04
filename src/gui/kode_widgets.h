@@ -7,6 +7,7 @@
 //----------
 
 #include "gui/widgets/kode_color_widget.h"
+#include "gui/widgets/kode_image_widget.h"
 #include "gui/widgets/kode_panel_widget.h"
 #include "gui/widgets/kode_text_widget.h"
 #include "gui/widgets/kode_value_widget.h"

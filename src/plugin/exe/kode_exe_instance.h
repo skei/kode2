@@ -7,7 +7,7 @@
 //----------------------------------------------------------------------
 
 class KODE_ExeInstance
-: public KODE_BaseInstance {
+: public KODE_IInstance {
 
 
 

@@ -44,7 +44,7 @@ const char* KODE_XCB_WM_CURSORS[20] = {
 //----------------------------------------------------------------------
 
 class KODE_XcbWindow
-: public KODE_BaseWindow
+: public KODE_IWindow
 , public KODE_Drawable {
 
 //------------------------------
@@ -100,7 +100,7 @@ public:
 //------------------------------
 
   KODE_XcbWindow(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL)
-  : KODE_BaseWindow(AWidth,AHeight,ATitle,AParent) {
+  : KODE_IWindow(AWidth,AHeight,ATitle,AParent) {
     MUseEventThread = AParent ? true : false;
     connect();
     initGC();

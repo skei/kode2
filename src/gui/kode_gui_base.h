@@ -9,39 +9,44 @@
 //
 //----------------------------------------------------------------------
 
-class KODE_BaseImage;
-class KODE_BaseSurface;
-class KODE_BaseWindow;
-class KODE_BasePainter;
+class KODE_IImage;
+class KODE_ISurface;
+class KODE_IWindow;
+class KODE_IPainter;
 
 //----------------------------------------------------------------------
 
-class KODE_BaseImage {
+class KODE_IImage {
 public:
-  KODE_BaseImage(KODE_Drawable* ATarget, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=32) {}
-  KODE_BaseImage(KODE_Drawable* ATarget, KODE_Bitmap* ABitmap) {}
-  virtual ~KODE_BaseImage() {}
+  KODE_IImage(KODE_Drawable* ATarget, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=32) {}
+  KODE_IImage(KODE_Drawable* ATarget, KODE_Bitmap* ABitmap) {}
+  virtual ~KODE_IImage() {}
 };
 
 //----------------------------------------------------------------------
 
-class KODE_BaseSurface {
+class KODE_ISurface {
 public:
-  KODE_BaseSurface(KODE_Drawable* ATarget) {}
-  KODE_BaseSurface(KODE_Drawable* ATarget, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=0) {}
-  virtual ~KODE_BaseSurface() {}
+  KODE_ISurface(KODE_Drawable* ATarget) {}
+  KODE_ISurface(KODE_Drawable* ATarget, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=0) {}
+  virtual ~KODE_ISurface() {}
 };
 
 //----------------------------------------------------------------------
 
-class KODE_BasePainter {
+class KODE_IPainter {
 public:
-  KODE_BasePainter(KODE_Drawable* ATarget) {}
-  virtual ~KODE_BasePainter() {}
+  KODE_IPainter(KODE_Drawable* ATarget) {}
+  virtual ~KODE_IPainter() {}
 public:
+
   virtual void resize(uint32_t AWidth, uint32_t AHeight) {}
   virtual void setClip(KODE_FRect ARect) {}
   virtual void resetClip() {}
+
+  virtual float getTextWidth(const char* AText) { return 0; }
+  virtual float getTextHeight(const char* AText) { return 0; }
+
   virtual void drawLine(float AXpos1, float AYpos1, float AXpos2, float AYpos2, KODE_Color AColor) {}
   virtual void drawRect(KODE_FRect ARect, KODE_Color AColor) {}
   virtual void fillRect(KODE_FRect ARect, KODE_Color AColor) {}
@@ -57,10 +62,10 @@ public:
 
 //----------------------------------------------------------------------
 
-class KODE_BaseWindow {
+class KODE_IWindow {
 public:
-  KODE_BaseWindow(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL) {}
-  virtual ~KODE_BaseWindow() {}
+  KODE_IWindow(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL) {}
+  virtual ~KODE_IWindow() {}
 public:
   virtual void on_window_move(uint32_t AXpos, uint32_t AYpos) { KODE_PRINT; }
   virtual void on_window_resize(uint32_t AWidth, uint32_t AHeight) { KODE_PRINT; }

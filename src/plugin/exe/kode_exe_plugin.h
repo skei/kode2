@@ -37,15 +37,25 @@ public:
   int main(int argc, char** argv) {
     KODE_Descriptor* descriptor = KODE_New DESC();
     KODE_Instance* instance = KODE_New INST(descriptor);
+    instance->on_plugin_open();
+    instance->on_plugin_initialize();
+    instance->on_plugin_activate();
+    instance->on_plugin_prepare(44100,256);
+    instance->setDefaultParameterValues();
+    instance->updateAllParameters();
     #ifndef KODE_NO_GUI
     if (descriptor->hasEditor()) {
       KODE_Editor* editor = (KODE_Editor*)instance->on_plugin_openEditor(KODE_NULL);
+      instance->updateAllEditorParameters(editor);
       editor->open();
       editor->eventLoop();
       editor->close();
       instance->on_plugin_closeEditor(editor);
     }
     #endif
+    instance->on_plugin_deactivate();
+    instance->on_plugin_terminate();
+    instance->on_plugin_close();
     KODE_Delete instance;
     KODE_Delete descriptor;
     return 0;

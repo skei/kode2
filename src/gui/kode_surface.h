@@ -32,7 +32,7 @@ public:
 
   //----------
 
-  //KODE_Surface(KODE_Drawable* AOwner, KODE_BaseImage* AImage)
+  //KODE_Surface(KODE_Drawable* AOwner, KODE_IImage* AImage)
   //: KODE_ImplementedSurface(AOwner,AImage) {
   //}
 

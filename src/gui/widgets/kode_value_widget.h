@@ -4,6 +4,8 @@
 
 #include "gui/widgets/kode_text_widget.h"
 
+#define KODE_VALUE_WIDGET_LABEL_SPACE 4.0f
+
 //----------------------------------------------------------------------
 
 class KODE_ValueWidget
@@ -19,6 +21,9 @@ protected:
   uint32_t    MValueTextAlignment = KODE_TEXT_ALIGN_RIGHT;
   KODE_FRect  MValueTextOffset    = KODE_FRect(2);
 
+  bool        MDrawLabel          = false;
+  const char* MLabel              = "";
+  KODE_Color  MLabelColor         = KODE_Color(0.8f);
 
 //------------------------------
 public:
@@ -35,7 +40,7 @@ public:
 public:
 //------------------------------
 
-  virtual void setDrawValueText(bool ADraw) {
+  virtual void setDrawValueText(bool ADraw=true) {
     MDrawValueText = ADraw;
   }
 
@@ -47,16 +52,45 @@ public:
     MValueTextColor = AColor;
   }
 
-  virtual void drawValueText(KODE_BasePainter* APainter) {
-    KODE_FRect rect = MRect;
-    rect.shrink(MValueTextOffset);
-    float value = MValue;
-    if (MParameter) {
-      value = MParameter->from01(value);
-    }
-    KODE_FloatToString(MValueText,value);
+  virtual void setDrawLabel(bool ADraw=true) {
+    MDrawLabel = ADraw;
+  }
+
+  virtual void setLabel(const char* ALabel) {
+    MLabel = ALabel;
+  }
+
+  virtual void setLabelColor(KODE_Color AColor) {
+    MLabelColor = AColor;
+  }
+
+  //----------
+
+  virtual void drawValueText(KODE_IPainter* APainter) {
     if (MDrawValueText) {
-      APainter->drawText(rect,MValueText,MValueTextAlignment,MValueTextColor);
+      KODE_FRect  value_rect  = MRect;
+      KODE_FRect  label_rect  = MRect;
+      float       value       = MValue;
+      const char* label       = MLabel;
+      if (MParameter) {
+        value = MParameter->from01(value);
+        label = MParameter->getLabel();
+      }
+      value_rect.shrink(MValueTextOffset);
+      label_rect.shrink(MValueTextOffset);
+      if (MDrawLabel) {
+        float width = APainter->getTextWidth(label);
+        label_rect.x = value_rect.x2() - width;
+        label_rect.w = width;
+        value_rect.w -= (width + KODE_VALUE_WIDGET_LABEL_SPACE);
+      }
+      KODE_FloatToString(MValueText,value);
+      if (MDrawValueText) {
+        APainter->drawText(value_rect,MValueText,MValueTextAlignment,MValueTextColor);
+      }
+      if (MDrawLabel) {
+        APainter->drawText(label_rect,label,MValueTextAlignment,MLabelColor);
+      }
     }
   }
 
@@ -64,15 +98,12 @@ public:
 public:
 //------------------------------
 
-  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
-    //KODE_ColorWidget::on_widget_paint(APainter,ARect,AMode);
-    //drawBorder(APainter);
+  void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     fillBackground(APainter);
     paintChildren(APainter,ARect,AMode);
     drawText(APainter);
     drawValueText(APainter);
     drawBorder(APainter);
-
   }
 
 //------------------------------

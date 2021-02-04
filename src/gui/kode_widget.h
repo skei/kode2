@@ -49,9 +49,11 @@ protected:
   float               MValue        = 0.0f;
   KODE_Widget*        MParent       = KODE_NULL;
   KODE_Widgets        MChildren;
+
   KODE_WidgetLayout   MLayout;
   KODE_WidgetOptions  MOptions;
   KODE_WidgetStates   MStates;
+
   KODE_FRect          MInitialRect  = KODE_FRect(0);
   KODE_FRect          MContentRect  = KODE_FRect(0);
   KODE_Parameter*     MParameter    = KODE_NULL;
@@ -76,13 +78,70 @@ public:
 public:
 //------------------------------
 
-  //void setWidgetOwner(KODE_BaseWindow* AWindow) override {}
-  //void setWidgetParent(KODE_BaseWidget* AWidget) override {}
-  //void setWidgetValue(float AValue) override {}
-  //float getWidgetValue() override { return 0.0f; }
+  /*
+  void setName( const char*         MName         = "KODE_Widget";
+  void setRect( KODE_FRect          MRect         = KODE_FRect(0);
+  void setValue( float               MValue        = 0.0f;
+  void setParent( KODE_Widget*        MParent       = KODE_NULL;
+  void setAlignment( uint32_t    MLayout.alignment     = KODE_WIDGET_ALIGN_PARENT;
+  void setInnerBorder( KODE_FRect  MLayout.innerBorder   = KODE_FRect(0);
+  void setWidgetSpacing( KODE_FPoint MLayout.widgetSpacing = KODE_FPoint(0);
+  void setAutoMouseCapture( bool MOptions.autoMouseCapture = true;
+  void setAutoClip( bool MOptions.autoClip         = true;
+  void setAutoHint( bool MOptions.autoHint         = true;
+  void setActive( bool MStates.active       = true;
+  void setVisible( bool MStates.visible      = true;
+  void setInteractive( bool MStates.interactive  = true;
+  void setHovering( bool MStates.hovering     = true;
+  void setClicked( bool MStates.clicked      = true;
+  void setInitialRect( KODE_FRect          MInitialRect  = KODE_FRect(0);
+  void setContentRect( KODE_FRect          MContentRect  = KODE_FRect(0);
+  void setParameter( KODE_Parameter*     MParameter    = KODE_NULL;
+  */
 
-  void setParameter(KODE_Parameter* p) { MParameter = p; }
-  KODE_Parameter* getParameter() { return MParameter; }
+  //void setPos(float AXpos, float AYpos) {
+  //  MRect.x = AXpos;
+  //  MRect.y = AYpos;
+  //}
+
+  //void setSize(float AWidth, float AHeight) {
+  //  MRect.w = AWidth;
+  //  MRect.h = AHeight;
+  //}
+
+  //----------
+
+  void setValue(float AValue) {
+    MValue = AValue;
+  }
+
+  //----------
+
+  void setParameter(KODE_Parameter* p) {
+    MParameter = p;
+  }
+
+//------------------------------
+public:
+//------------------------------
+
+  float getValue() {
+    return MValue;
+  }
+
+  //----------
+
+  KODE_Parameter* getParameter() {
+    return MParameter;
+  }
+
+//------------------------------
+public:
+//------------------------------
+
+  void redraw() {
+    do_widget_redraw(this,MRect,0);
+  }
 
 //------------------------------
 public:
@@ -123,7 +182,7 @@ public:
 
   //----------
 
-  void paintChildren(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
+  void paintChildren(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) {
     //KODE_PRINT;
     for (uint32_t i=0; i<MChildren.size(); i++) {
       KODE_Widget* widget = MChildren[i];
@@ -292,59 +351,40 @@ public:
 //------------------------------
 
   virtual void on_widget_setPos(float AXpos, float AYpos) {
-    MRect.x = AXpos;
-    MRect.y = AYpos;
+    //setPos(AXpos,AYpos);
   }
 
   virtual void on_widget_setSize(float AWidth, float AHeight) {
-    MRect.w = AWidth;
-    MRect.h = AHeight;
+    //setSize(AWidth,AHeight);
   }
 
-  virtual void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
-    //KODE_PRINT;
+  virtual void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) {
     paintChildren(APainter,ARect,AMode);
-//    for (uint32_t i=0; i<MChildren.size(); i++) {
-//      KODE_Widget* widget = MChildren[i];
-//      KODE_FRect rect = widget->MRect;
-//      rect.intersect(ARect);
-//      if (rect.isNotEmpty()) {
-//        widget->on_widget_paint(APainter,rect,AMode);
-//      }
-//    }
   }
 
   virtual void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) {
-    //mouseClick(AXpos,AYpos,AButton,AState);
   }
 
   virtual void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) {
-    //mouseRelease(AXpos,AYpos,AButton,AState);
   }
 
   virtual void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState) {
-    //mouseMove(AXpos,AYpos,AState);
   }
 
   virtual void on_widget_keyPress(uint32_t AKey, char AChar, uint32_t AState) {
-    //keyPress(AKey,AChar,AState);
   }
 
   virtual void on_widget_keyRelease(uint32_t AKey, char AChar, uint32_t AState) {
-    //keyRelease(AKey,AChar,AState);
   }
 
   virtual void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom) {
-    //enter(AXpos,AYpos,AFrom);
   }
 
   virtual void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo) {
-    //leave(AXpos,AYpos,ATo);
   }
 
-  //virtual void on_connect(KODE_Parameter* AParameter) {
-  //  connect(AParameter);
-  //}
+  virtual void on_connect(KODE_Parameter* AParameter) {
+  }
 
 //------------------------------
 public:

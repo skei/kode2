@@ -54,6 +54,19 @@ public:
 public:
 //------------------------------
 
+  void setCanAutomate(bool ACanAutomate)  { MOptions.canAutomate = ACanAutomate; }
+  void setName(const char* AName)         { MName = AName; }
+  void setShortName(const char* AName)    { MShortName = AName; }
+  void setLabel(const char* ALabel)       { MLabel = ALabel; }
+  void setDefValue(float AValue)          { MDefValue = AValue; }
+  void setMinValue(float AValue)          { MMinValue = AValue; }
+  void setMaxValue(float AValue)          { MMaxValue = AValue; }
+  void setNumSteps(uint32_t ANum)         { MNumSteps = ANum; }
+
+//------------------------------
+public:
+//------------------------------
+
   virtual float from01(float AValue) {
     return AValue;
   }

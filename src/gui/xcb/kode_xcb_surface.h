@@ -14,7 +14,7 @@
 //----------------------------------------------------------------------
 
 class KODE_XcbSurface
-: public KODE_BaseSurface
+: public KODE_ISurface
 , public KODE_Drawable {
 
 //------------------------------
@@ -37,10 +37,10 @@ public:
 //------------------------------
 
   //KODE_XcbSurface(KODE_Drawable* ATarget, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=0)
-  //: KODE_BaseSurface(ATarget,AWidth,AHeight,ADepth) {
+  //: KODE_ISurface(ATarget,AWidth,AHeight,ADepth) {
 
   KODE_XcbSurface(KODE_Drawable* ATarget)
-  : KODE_BaseSurface(ATarget) {
+  : KODE_ISurface(ATarget) {
     MConnection = ATarget->getXcbConnection();
     MTargetDrawable   = ATarget->getXcbDrawable();
     MTargetVisual     = ATarget->getXcbVisual();
@@ -55,7 +55,7 @@ public:
   //----------
 
   KODE_XcbSurface(KODE_Drawable* AOwner, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=0)
-  : KODE_BaseSurface(AOwner,AWidth,AHeight,ADepth) {
+  : KODE_ISurface(AOwner,AWidth,AHeight,ADepth) {
     MConnection = AOwner->getXcbConnection();
     MTargetDrawable   = AOwner->getXcbDrawable();
     MTargetVisual     = AOwner->getXcbVisual();
@@ -129,7 +129,7 @@ public:
   //void fill(KODE_Color AColor) final {
   //}
 
-  //void upload(KODE_BaseImage* AImage) final {
+  //void upload(KODE_IImage* AImage) final {
   //}
 
   //void resize(uint32_t AWidth, uint32_t AHeight) final {

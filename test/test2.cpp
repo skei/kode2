@@ -13,17 +13,33 @@
 
 class myEditor : public KODE_Editor {
 
+private:
+
+  KODE_Bitmap* MBitmap = KODE_NULL;
+
 public:
 
-  myEditor(KODE_BaseInstance* AInstance, void* AParent=KODE_NULL)
+  myEditor(KODE_IInstance* AInstance, void* AParent=KODE_NULL)
   : KODE_Editor(AInstance,AParent) {
     setFillBackground();
     //KODE_PRINT;
+
     appendWidget( KODE_New KODE_ColorWidget( KODE_FRect(10,10,100,20) ));
+
     appendWidget( KODE_New KODE_PanelWidget( KODE_FRect(10,35,100,20) ));
 
     KODE_ValueWidget* v;
     v = (KODE_ValueWidget*)appendWidget( KODE_New KODE_ValueWidget( KODE_FRect(10,60,100,20) ));
+    v->setValue(0.5f);
+    //v->setDrawLabel();
+    v->setLabel("db");
+
+    MBitmap = KODE_New KODE_Bitmap(100,100);
+    MBitmap->fill(0x80);
+
+    KODE_ImageWidget* i;
+    i = (KODE_ImageWidget*)appendWidget( KODE_New KODE_ImageWidget( KODE_FRect(10,85,100,100) ));
+    i->setImage(MBitmap);
 
     //
 
@@ -50,12 +66,16 @@ public:
     tw->setTextAlignment(KODE_TEXT_ALIGN_BOTTOM);
   }
 
+  virtual ~myEditor() {
+    if (MBitmap) KODE_Delete MBitmap;
+  }
+
   //void on_window_paint(uint32_t AXpos, uint32_t AYpos, uint32_t AWidth, uint32_t AHeight) final {
   //  KODE_PRINT
   //  KODE_Editor::on_window_paint(AXpos,AYpos,AWidth,AHeight);
   //}
 
-  //void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
+  //void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
   //  KODE_PRINT;
   //  KODE_Widget::on_widget_paint(APainter,ARect,AMode);
   //}
