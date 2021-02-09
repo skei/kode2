@@ -23,9 +23,12 @@ public:
   virtual void              setDescriptor(KODE_Descriptor* ADescriptor) {}
   virtual KODE_Descriptor*  getDescriptor() { return KODE_NULL; }
 protected:
+  virtual void              setParameterValue(uint32_t AIndex, float AValue) {}
+  virtual float             getParameterValue(uint32_t AIndex) { return 0.0f; }
   virtual void              setDefaultParameterValues() {}
   virtual void              updateAllParameters() {}
   virtual void              updateAllEditorParameters(KODE_IEditor* AEditor) {}
+public:
   virtual void              updateParameterFromEditor(uint32_t AIndex, float AValue) {}
 public:
   virtual void              on_plugin_open() {}

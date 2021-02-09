@@ -45,6 +45,16 @@ public:
 public:
 //------------------------------
 
+  void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
+    KODE_Parameter* parameter = MDescriptor->getParameter(AIndex);
+    float value = parameter->from01(AValue);
+    on_plugin_parameter(0,AIndex,value,0);
+  }
+
+//------------------------------
+public:
+//------------------------------
+
 };
 
 //----------------------------------------------------------------------

@@ -25,6 +25,14 @@ protected:
   const char* MLabel              = "";
   KODE_Color  MLabelColor         = KODE_Color(0.8f);
 
+  bool        MCanDragValue       = true;
+  float       MDragSensitivity    = 0.01f;
+  float       MClickedXpos        = 0.0f;
+  float       MClickedYpos        = 0.0f;
+  float       MClickedValue       = 0.0f;
+  float       MPrevXpos           = 0.0f;
+  float       MPrevYpos           = 0.0f;
+
 //------------------------------
 public:
 //------------------------------
@@ -105,6 +113,40 @@ public:
     drawValueText(APainter);
     drawBorder(APainter);
   }
+
+  void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) final {
+    //MClickedXpos = AXpos;
+    //MClickedYpos = AXpos;
+    //MClickedValue = MValue;
+    MPrevXpos = AXpos;
+    MPrevYpos = AYpos;
+  }
+
+  void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) final {
+    //KODE_Print("release\n");
+  }
+
+  void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState) final {
+    //KODE_Print("drag\n");
+    if (MStates.clicked) {
+      //KODE_Print("drag\n");
+      //float deltax = AXpos - MPrevXpos; // right is increasing
+      float deltay = MPrevYpos - AYpos; // up is increasing
+      //KODE_Print("deltax %.3f deltay %.3f\n",deltax,deltay);
+      MValue += (deltay * MDragSensitivity);
+      MValue = KODE_Clamp(MValue,0.0f, 1.0f);
+      update();
+      redraw();
+    }
+    MPrevXpos = AXpos;
+    MPrevYpos = AYpos;
+  }
+
+  //void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom) final {
+  //}
+
+  //void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo) final {
+  //}
 
 //------------------------------
 

@@ -22,6 +22,7 @@ protected:
   float                 MMinValue   = 0.0f;
   float                 MMaxValue   = 1.0f;
   uint32_t              MNumSteps   = 0;
+  int32_t               MIndex      = -1;
 
 //------------------------------
 public:
@@ -49,6 +50,7 @@ public:
   float       getMinValue()   { return MMinValue; }
   float       getMaxValue()   { return MMaxValue; }
   uint32_t    getNumSteps()   { return MNumSteps; }
+  int32_t     getIndex()      { return MIndex; }
 
 //------------------------------
 public:
@@ -62,6 +64,7 @@ public:
   void setMinValue(float AValue)          { MMinValue = AValue; }
   void setMaxValue(float AValue)          { MMaxValue = AValue; }
   void setNumSteps(uint32_t ANum)         { MNumSteps = ANum; }
+  void setIndex(int32_t AIndex)           { MIndex = AIndex; }
 
 //------------------------------
 public:

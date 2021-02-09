@@ -33,7 +33,7 @@ private:
   float*            MParameterValues  = KODE_NULL;
   KODE_Descriptor*  MDescriptor       = KODE_NULL;
 
-  KODE_IEditor*  MEditor           = KODE_NULL;
+  KODE_IEditor*     MEditor           = KODE_NULL;
 
 //------------------------------
 public:
@@ -66,6 +66,18 @@ public:
 //------------------------------
 public:
 //------------------------------
+
+  void setParameterValue(uint32_t AIndex, float AValue) override {
+    MParameterValues[AIndex] = AValue;
+  }
+
+  //----------
+
+  float getParameterValue(uint32_t AIndex) override {
+    return MParameterValues[AIndex];
+  }
+
+  //----------
 
   void setDefaultParameterValues() override {
     //KODE_PRINT;

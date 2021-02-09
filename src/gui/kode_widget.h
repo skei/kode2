@@ -139,6 +139,10 @@ public:
 public:
 //------------------------------
 
+  void update() {
+    do_widget_update(this);
+  }
+
   void redraw() {
     do_widget_redraw(this,MRect,0);
   }

@@ -31,6 +31,7 @@ public:
                 AInstance->getDescriptor()->getEditorHeight(),
                 "", AParent ) {
     MDescriptor = AInstance->getDescriptor();
+    MInstance = AInstance;
     uint32_t num = MDescriptor->getNumParameters();
     uint32_t size = num * sizeof(KODE_Widget*);
     MParameterToWidget = (KODE_Widget**)KODE_Malloc(size);
@@ -49,6 +50,20 @@ public:
 
   //void setInstance(KODE_IInstance* AInstance) override {
   //}
+
+//------------------------------
+public:
+//------------------------------
+
+  void do_widget_update(KODE_Widget* AWidget) override {
+    //KODE_PRINT;
+    KODE_Parameter* parameter = AWidget->getParameter();
+    if (parameter) {
+      int32_t index = parameter->getIndex();
+      float value = AWidget->getValue();
+      MInstance->updateParameterFromEditor(index,value);
+    }
+  }
 
 //------------------------------
 public:

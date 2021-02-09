@@ -1,10 +1,22 @@
 #ifndef kode_vst3_included
 #define kode_vst3_included
 //----------------------------------------------------------------------
+
+#ifdef KODE_DEBUG_VST3
+  #define VST3_Print   KODE_Print
+  #define VST3_DPrint  KODE_DPrint
+  #define VST3_PRINT   KODE_PRINT
+#else
+  #define VST3_Print   KODE_NoPrint
+  #define VST3_DPrint  KODE_NoPrint
+  #define VST3_PRINT   {}
+#endif
+
+//----------------------------------------------------------------------
+//
 // based on (extracted from) steinberg vst3 sdk (gpl3)
-
-
-//----------
+//
+//----------------------------------------------------------------------
 
 #ifdef KODE_LINUX
   #define KODE_VST3_COM_COMPATIBLE 0
@@ -16,11 +28,7 @@
   #define KODE_VST3_PLUGIN_API __stdcall
 #endif
 
-//----------------------------------------------------------------------
-//
-//
-//
-//----------------------------------------------------------------------
+//----------
 
 #if KODE_VST3_COM_COMPATIBLE
   #define KODE_VST3_INLINE_UID(l1,l2,l3,l4) {                                  \
@@ -133,27 +141,27 @@ typedef char16_t  KODE_Vst3String[128]; // was String128
 
   #ifdef KODE_WIN32
   enum {
-    kode_vst3_NoInterface		  = static_cast<int32_t>(0x80004002L),	// E_NOINTERFACE
-    kode_vst3_ResultOk         = static_cast<int32_t>(0x00000000L),	// S_OK
-    kode_vst3_ResultTrue       = kode_vst3_ResultOk,
-    kode_vst3_ResultFalse		  = static_cast<int32_t>(0x00000001L),	// S_FALSE
-    kode_vst3_InvalidArgument	= static_cast<int32_t>(0x80070057L),	// E_INVALIDARG
-    kode_vst3_NotImplemented		= static_cast<int32_t>(0x80004001L),	// E_NOTIMPL
-    kode_vst3_InternalError		= static_cast<int32_t>(0x80004005L),	// E_FAIL
-    kode_vst3_NotInitialized		= static_cast<int32_t>(0x8000FFFFL),	// E_UNEXPECTED
-    kode_vst3_OutOfMemory		  = static_cast<int32_t>(0x8007000EL)		// E_OUTOFMEMORY
+    kode_vst3_NoInterface     = 0x80004002;   // static_cast<int32_t>(0x80004002L),	// E_NOINTERFACE
+    kode_vst3_ResultOk        = 0x00000000;   //static_cast<int32_t>(0x00000000L),	// S_OK
+    kode_vst3_ResultTrue      = kode_vst3_ResultOk,
+    kode_vst3_ResultFalse     = 0x00000001;   // static_cast<int32_t>(0x00000001L),	// S_FALSE
+    kode_vst3_InvalidArgument = 0x80070057;   // static_cast<int32_t>(0x80070057L),	// E_INVALIDARG
+    kode_vst3_NotImplemented  = 0x80004001;   // static_cast<int32_t>(0x80004001L),	// E_NOTIMPL
+    kode_vst3_InternalError   = 0x80004005;   // static_cast<int32_t>(0x80004005L),	// E_FAIL
+    kode_vst3_NotInitialized  = 0x8000FFFF;   // static_cast<int32_t>(0x8000FFFFL),	// E_UNEXPECTED
+    kode_vst3_OutOfMemory     = 0x8007000E;   // static_cast<int32_t>(0x8007000EL)		// E_OUTOFMEMORY
   };
   #else
   enum {
-    kode_vst3_NoInterface      = static_cast<int32_t>(0x80000004L),	// E_NOINTERFACE
-    kode_vst3_ResultOk         = static_cast<int32_t>(0x00000000L),	// S_OK
-    kode_vst3_ResultTrue       = kode_vst3_ResultOk,
-    kode_vst3_ResultFalse      = static_cast<int32_t>(0x00000001L),	// S_FALSE
-    kode_vst3_InvalidArgument  = static_cast<int32_t>(0x80000003L),	// E_INVALIDARG
-    kode_vst3_NotImplemented   = static_cast<int32_t>(0x80000001L),	// E_NOTIMPL
-    kode_vst3_InternalError    = static_cast<int32_t>(0x80000008L),	// E_FAIL
-    kode_vst3_NotInitialized   = static_cast<int32_t>(0x8000FFFFL),	// E_UNEXPECTED
-    kode_vst3_OutOfMemory      = static_cast<int32_t>(0x80000002L)		// E_OUTOFMEMORY
+    kode_vst3_NoInterface     = 0x80000004; // static_cast<int32_t>(0x80000004L),	// E_NOINTERFACE
+    kode_vst3_ResultOk        = 0x00000000; // static_cast<int32_t>(0x00000000L),	// S_OK
+    kode_vst3_ResultTrue      = kode_vst3_ResultOk,
+    kode_vst3_ResultFalse     = 0x00000001; // static_cast<int32_t>(0x00000001L),	// S_FALSE
+    kode_vst3_InvalidArgument = 0x80000003; // static_cast<int32_t>(0x80000003L),	// E_INVALIDARG
+    kode_vst3_NotImplemented  = 0x80000001; // static_cast<int32_t>(0x80000001L),	// E_NOTIMPL
+    kode_vst3_InternalError   = 0x80000008; // static_cast<int32_t>(0x80000008L),	// E_FAIL
+    kode_vst3_NotInitialized  = 0x8000FFFF; // static_cast<int32_t>(0x8000FFFFL),	// E_UNEXPECTED
+    kode_vst3_OutOfMemory     = 0x80000002; // static_cast<int32_t>(0x80000002L)		// E_OUTOFMEMORY
   };
   #endif // KODE_WIN32
 
@@ -314,13 +322,13 @@ const uint64_t  kode_vst3_SpeakerR                     = 1 << 1;
 //  const CString kode_vst3_FxRestoration		      = "Fx|Restoration";
 //  const CString kode_vst3_FxReverb				        = "Fx|Reverb";
 //  const CString kode_vst3_FxSurround			        = "Fx|Surround";
-//  const CString kode_vst3_FxTools				        = "Fx|Tools";
-//  const CString kode_vst3_FxNetwork			        = "Fx|Network";
-//  const CString kode_vst3_Instrument			        = "Instrument";
-//  const CString kode_vst3_InstrumentDrum		      = "Instrument|Drum";
-//  const CString kode_vst3_InstrumentSampler	    = "Instrument|Sampler";
-//  const CString kode_vst3_InstrumentSynth		    = "Instrument|Synth";
-//  const CString kode_vst3_InstrumentSynthSampler = "Instrument|Synth|Sampler";
+//  const CString kode_vst3_FxTools                 = "Fx|Tools";
+//  const CString kode_vst3_FxNetwork               = "Fx|Network";
+//  const CString kode_vst3_Instrument              = "Instrument";
+//  const CString kode_vst3_InstrumentDrum          = "Instrument|Drum";
+//  const CString kode_vst3_InstrumentSampler       = "Instrument|Sampler";
+//  const CString kode_vst3_InstrumentSynth         = "Instrument|Synth";
+//  const CString kode_vst3_InstrumentSynthSampler  = "Instrument|Synth|Sampler";
 //  const CString kode_vst3_InstrumentExternal	    = "Instrument|External";
 //  const CString kode_vst3_Spatial				        = "Spatial";
 //  const CString kode_vst3_SpatialFx			= "Spatial|Fx";
@@ -343,9 +351,10 @@ const uint64_t  kode_vst3_SpeakerR                     = 1 << 1;
 
 //#define strncpy8 strncpy
 
-char* strncpy8(char* destination, const char* source, size_t num) {
-  memset(destination,0,num);
-  strncpy(destination,source,num-1);
+char* strncpy8(char* destination, const char* source, size_t maxnum) {
+  //memset(destination,0,maxnum);
+  destination[maxnum-1] = 0;
+  strncpy(destination,source,maxnum-1);
   return destination;
 }
 
@@ -357,10 +366,10 @@ char* strncpy8(char* destination, const char* source, size_t num) {
 //----------------------------------------------------------------------
 
 struct KODE_Vst3AudioBusBuffers {
-  KODE_Vst3AudioBusBuffers ()
-    : numChannels(0)
-    , silenceFlags(0)
-    , channelBuffers64(0) {}
+  //KODE_Vst3AudioBusBuffers ()
+  //  : numChannels(0)
+  //  , silenceFlags(0)
+  //  , channelBuffers64(0) {}
   int32_t   numChannels;
   uint64_t  silenceFlags;
   union {
@@ -370,25 +379,27 @@ struct KODE_Vst3AudioBusBuffers {
 };
 
 struct KODE_Vst3BusInfo {
+  enum BusFlags {
+    kode_vst3_DefaultActive = 1 << 0
+  };
+  //
   int32_t         mediaType;
   int32_t         direction;
   int32_t         channelCount;
   KODE_Vst3String name;
   int32_t         busType;
   uint32_t        flags;
-  enum BusFlags {
-    kode_vst3_DefaultActive = 1 << 0
-  };
 };
 
 struct KODE_Vst3Chord {
-  uint8_t keyNote;
-  uint8_t rootNote;
-  int16_t chordMask;
   enum Masks {
     kode_vst3_ChordMask    = 0x0FFF,
     kode_vst3_ReservedMask = 0xF000
   };
+  //
+  uint8_t keyNote;
+  uint8_t rootNote;
+  int16_t chordMask;
 };
 
 struct KODE_Vst3FrameRate {
@@ -396,6 +407,7 @@ struct KODE_Vst3FrameRate {
     kode_vst3_PullDownRate = 1 << 0,
     kode_vst3_DropRate     = 1 << 1
   };
+  //
   uint32_t  framesPerSecond;
   uint32_t  flags;
 };
@@ -412,14 +424,6 @@ struct KODE_Vst3KeyswitchInfo {
 };
 
 struct KODE_Vst3ParameterInfo {
-  uint32_t        id;
-  KODE_Vst3String title;
-  KODE_Vst3String shortTitle;
-  KODE_Vst3String units;
-  int32_t         stepCount;
-  double          defaultNormalizedValue;
-  int32_t         unitId;
-  int32_t         flags;
   enum ParameterFlags {
     kode_vst3_CanAutomate      = 1 << 0,
     kode_vst3_IsReadOnly       = 1 << 1,
@@ -428,6 +432,15 @@ struct KODE_Vst3ParameterInfo {
     kode_vst3_IsProgramChange  = 1 << 15,
     kode_vst3_IsBypass         = 1 << 16
   };
+  //
+  uint32_t        id;
+  KODE_Vst3String title;
+  KODE_Vst3String shortTitle;
+  KODE_Vst3String units;
+  int32_t         stepCount;
+  double          defaultNormalizedValue;
+  int32_t         unitId;
+  int32_t         flags;
 };
 
 struct KODE_Vst3PClassInfo {
@@ -438,58 +451,60 @@ struct KODE_Vst3PClassInfo {
     kode_vst3_CategorySize  = 32,
     kode_vst3_NameSize      = 64
   };
+  //
   KODE_Vst3Id cid;
   int32_t     cardinality;
   char        category[kode_vst3_CategorySize];
   char        name[kode_vst3_NameSize];
-  KODE_Vst3PClassInfo(const KODE_Vst3Id _cid, int32_t _cardinality, const char* _category, const char* _name) {
-    memset(this,0,sizeof(KODE_Vst3PClassInfo));
-    memcpy(cid,_cid,sizeof(KODE_Vst3Id));
-    if (_category) strncpy8(category,_category,kode_vst3_CategorySize);
-    if (_name) strncpy8(name,_name,kode_vst3_NameSize);
-    cardinality = _cardinality;
-  }
-  //#if SMTG_CPP11
-  constexpr KODE_Vst3PClassInfo() : cid(), cardinality(), category(), name() {}
-  //#else
-  //PClassInfo () { memset (this, 0, sizeof (PClassInfo)); }
-  //#endif
+//  KODE_Vst3PClassInfo(const KODE_Vst3Id _cid, int32_t _cardinality, const char* _category, const char* _name) {
+//    memset(this,0,sizeof(KODE_Vst3PClassInfo));
+//    memcpy(cid,_cid,sizeof(KODE_Vst3Id));
+//    if (_category) strncpy8(category,_category,kode_vst3_CategorySize);
+//    if (_name) strncpy8(name,_name,kode_vst3_NameSize);
+//    cardinality = _cardinality;
+//  }
+//  //#if SMTG_CPP11
+//  constexpr KODE_Vst3PClassInfo() : cid(), cardinality(), category(), name() {}
+//  //#else
+//  //PClassInfo () { memset (this, 0, sizeof (PClassInfo)); }
+//  //#endif
 };
 
 struct KODE_Vst3PClassInfo2 {
-	KODE_Vst3Id cid;
-	int32_t     cardinality;
-	char        category[KODE_Vst3PClassInfo::kode_vst3_CategorySize];
-	char        name[KODE_Vst3PClassInfo::kode_vst3_NameSize];
 	enum {
 		kode_vst3_VendorSize = 64,
 		kode_vst3_VersionSize = 64,
 		kode_vst3_SubCategoriesSize = 128
 	};
-	uint32_t  classFlags;
-	char      subCategories[kode_vst3_SubCategoriesSize];
-	char      vendor[kode_vst3_VendorSize];
-	char      version[kode_vst3_VersionSize];
-	char      sdkVersion[kode_vst3_VersionSize];
-	KODE_Vst3PClassInfo2 (const KODE_Vst3Id _cid, int32_t _cardinality, const char* _category, const char* _name,
-		int32_t _classFlags, const char* _subCategories, const char* _vendor, const char* _version, const char* _sdkVersion) {
-      memset (this, 0, sizeof (KODE_Vst3PClassInfo2));
-      memcpy (cid, _cid, sizeof (KODE_Vst3Id));
-      cardinality = _cardinality;
-      if (_category) strncpy8 (category, _category, KODE_Vst3PClassInfo::kode_vst3_CategorySize);
-      if (_name) strncpy8 (name, _name, KODE_Vst3PClassInfo::kode_vst3_NameSize);
-      classFlags = static_cast<uint32_t> (_classFlags);
-      if (_subCategories) strncpy8 (subCategories, _subCategories, kode_vst3_SubCategoriesSize);
-      if (_vendor) strncpy8 (vendor, _vendor, kode_vst3_VendorSize);
-      if (_version) strncpy8 (version, _version, kode_vst3_VersionSize);
-      if (_sdkVersion) strncpy8 (sdkVersion, _sdkVersion, kode_vst3_VersionSize);
-    }
-  //#if SMTG_CPP11
-	constexpr KODE_Vst3PClassInfo2()
-    : cid(), cardinality(), category(), name(), classFlags(), subCategories(), vendor(), version(), sdkVersion() {}
-  //#else
-  //	KODE_Vst3PClassInfo2() { memset(this,0,sizeof(KODE_Vst3PClassInfo2)); }
-  //#endif
+	//
+	KODE_Vst3Id cid;
+	int32_t     cardinality;
+	char        category[KODE_Vst3PClassInfo::kode_vst3_CategorySize];
+	char        name[KODE_Vst3PClassInfo::kode_vst3_NameSize];
+	uint32_t    classFlags;
+	char        subCategories[kode_vst3_SubCategoriesSize];
+	char        vendor[kode_vst3_VendorSize];
+	char        version[kode_vst3_VersionSize];
+	char        sdkVersion[kode_vst3_VersionSize];
+//	KODE_Vst3PClassInfo2 (const KODE_Vst3Id _cid, int32_t _cardinality, const char* _category, const char* _name,
+//		int32_t _classFlags, const char* _subCategories, const char* _vendor, const char* _version, const char* _sdkVersion) {
+//      memset (this, 0, sizeof (KODE_Vst3PClassInfo2));
+//      memcpy (cid, _cid, sizeof (KODE_Vst3Id));
+//      cardinality = _cardinality;
+//      if (_category) strncpy8 (category, _category, KODE_Vst3PClassInfo::kode_vst3_CategorySize);
+//      if (_name) strncpy8 (name, _name, KODE_Vst3PClassInfo::kode_vst3_NameSize);
+//      classFlags = static_cast<uint32_t> (_classFlags);
+//      if (_subCategories) strncpy8 (subCategories, _subCategories, kode_vst3_SubCategoriesSize);
+//      if (_vendor) strncpy8 (vendor, _vendor, kode_vst3_VendorSize);
+//      if (_version) strncpy8 (version, _version, kode_vst3_VersionSize);
+//      if (_sdkVersion) strncpy8 (sdkVersion, _sdkVersion, kode_vst3_VersionSize);
+//    }
+//  //#if SMTG_CPP11
+//	constexpr KODE_Vst3PClassInfo2()
+//    : cid(), cardinality(), category(), name(), classFlags(), subCategories(), vendor(), version(), sdkVersion() {}
+//  //#else
+//  //	KODE_Vst3PClassInfo2() { memset(this,0,sizeof(KODE_Vst3PClassInfo2)); }
+//  //#endif
 };
 
 /*
@@ -565,24 +580,25 @@ struct KODE_Vst3PFactoryInfo {
     kode_vst3_EmailSize  = 128,
     kode_vst3_NameSize   = 64
   };
+  //
   char    vendor[kode_vst3_NameSize];
   char    url[kode_vst3_URLSize];
   char    email[kode_vst3_EmailSize];
   int32_t flags;
-  KODE_Vst3PFactoryInfo(const char* _vendor, const char* _url, const char* _email, int32_t _flags) {
-    strncpy8(vendor,_vendor,kode_vst3_NameSize);
-    strncpy8(url,_url,kode_vst3_URLSize);
-    strncpy8(email,_email,kode_vst3_EmailSize);
-    flags = _flags;
-    //#ifdef UNICODE
-    //  flags |= kode_vst3_Unicode;
-    //#endif
-  }
-  //#if SMTG_CPP11
-  constexpr KODE_Vst3PFactoryInfo() : vendor(), url(), email(), flags() {}
-  //#else
-  //  KODE_Vst3PFactoryInfo() { memset(this,0,sizeof(PFactoryInfo)); }
-  //#endif
+//  KODE_Vst3PFactoryInfo(const char* _vendor, const char* _url, const char* _email, int32_t _flags) {
+//    strncpy8(vendor,_vendor,kode_vst3_NameSize);
+//    strncpy8(url,_url,kode_vst3_URLSize);
+//    strncpy8(email,_email,kode_vst3_EmailSize);
+//    flags = _flags;
+//    //#ifdef UNICODE
+//    //  flags |= kode_vst3_Unicode;
+//    //#endif
+//  }
+//  //#if SMTG_CPP11
+//  constexpr KODE_Vst3PFactoryInfo() : vendor(), url(), email(), flags() {}
+//  //#else
+//  //  KODE_Vst3PFactoryInfo() { memset(this,0,sizeof(PFactoryInfo)); }
+//  //#endif
 };
 
 struct KODE_Vst3ProgramListInfo {
@@ -610,6 +626,7 @@ struct KODE_Vst3ProcessContext {
 		kode_vst3_SmpteValid             = 1 << 14,
 		kode_vst3_ClockValid             = 1 << 15
 	};
+	//
 	uint32_t            state;
 	double              sampleRate;
 	int64_t             projectTimeSamples;
@@ -629,10 +646,10 @@ struct KODE_Vst3ProcessContext {
 };
 
 struct KODE_Vst3ProcessData {
-  KODE_Vst3ProcessData()
-    : processMode(0),symbolicSampleSize(kode_vst3_Sample32),numSamples(0),numInputs(0)
-    , numOutputs(0),inputs (0),outputs(0),inputParameterChanges(0),outputParameterChanges(0)
-    , inputEvents(0),outputEvents(0),processContext(0) {}
+//  KODE_Vst3ProcessData()
+//    : processMode(0),symbolicSampleSize(kode_vst3_Sample32),numSamples(0),numInputs(0)
+//    , numOutputs(0),inputs (0),outputs(0),inputParameterChanges(0),outputParameterChanges(0)
+//    , inputEvents(0),outputEvents(0),processContext(0) {}
   int32_t                     processMode;
   int32_t                     symbolicSampleSize;
   int32_t                     numSamples;
@@ -698,12 +715,13 @@ struct KODE_Vst3NoteOffEvent {
 };
 
 struct KODE_Vst3DataEvent {
-  uint32_t        size;
-  uint32_t        type;
-  const uint8_t*  bytes;
   enum DataTypes {
     kode_vst3_MidiSysEx = 0
   };
+  //
+  uint32_t        size;
+  uint32_t        type;
+  const uint8_t*  bytes;
 };
 
 struct KODE_Vst3PolyPressureEvent {
@@ -742,10 +760,6 @@ struct KODE_Vst3NoteExpressionTextEvent {
 };
 
 struct KODE_Vst3Event {
-  int32_t   busIndex;
-  int32_t   sampleOffset;
-  double    ppqPosition;
-  uint16_t  flags;
   enum EventFlags {
     kode_vst3_IsLive        = 1 << 0,
     kode_vst3_UserReserved1 = 1 << 14,
@@ -762,7 +776,12 @@ struct KODE_Vst3Event {
     kode_vst3_ChordEvent,
     kode_vst3_ScaleEvent
   };
-  uint16_t type;
+  //
+  int32_t   busIndex;
+  int32_t   sampleOffset;
+  double    ppqPosition;
+  uint16_t  flags;
+  uint16_t  type;
   union {
     KODE_Vst3NoteOnEvent noteOn;
     KODE_Vst3NoteOffEvent noteOff;
@@ -786,6 +805,7 @@ public:
 	virtual int32_t   KODE_VST3_PLUGIN_API queryInterface (const KODE_Vst3Id _iid, void** obj) = 0;
 	virtual uint32_t  KODE_VST3_PLUGIN_API addRef () = 0;
 	virtual uint32_t  KODE_VST3_PLUGIN_API release () = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -801,10 +821,12 @@ public:
     kode_vst3_IBSeekCur,
     kode_vst3_IBSeekEnd
   };
+  //
   virtual int32_t KODE_VST3_PLUGIN_API read(void* buffer, int32_t numBytes, int32_t* numBytesRead = 0) = 0;
   virtual int32_t KODE_VST3_PLUGIN_API write(void* buffer, int32_t numBytes, int32_t* numBytesWritten = 0) = 0;
   virtual int32_t KODE_VST3_PLUGIN_API seek(int64_t pos, int32_t mode, int64_t* result = 0) = 0;
   virtual int32_t KODE_VST3_PLUGIN_API tell(int64_t* pos) = 0;
+	//
   static const KODE_Vst3Id iid;
 };
 
@@ -819,6 +841,7 @@ public:
   virtual int32_t  KODE_VST3_PLUGIN_API countClasses() = 0;
   virtual int32_t  KODE_VST3_PLUGIN_API getClassInfo (int32_t index, KODE_Vst3PClassInfo* info) = 0;
   virtual int32_t  KODE_VST3_PLUGIN_API createInstance(const char* cid, const char* _iid, void** obj) = 0;
+	//
   static const KODE_Vst3Id iid;
 };
 
@@ -830,6 +853,7 @@ class KODE_Vst3IPluginFactory2
 : public KODE_Vst3IPluginFactory {
 public:
 	virtual int32_t KODE_VST3_PLUGIN_API getClassInfo2 (int32_t index, KODE_Vst3PClassInfo2* info) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -842,6 +866,7 @@ class KODE_Vst3IPluginFactory3
 public:
 	virtual int32_t KODE_VST3_PLUGIN_API getClassInfoUnicode(int32_t index, KODE_Vst3PClassInfoW* info) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API setHostContext(KODE_Vst3FUnknown* context) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -854,6 +879,7 @@ class KODE_Vst3IPluginBase
 public:
   virtual int32_t  KODE_VST3_PLUGIN_API initialize(KODE_Vst3FUnknown* context) = 0;
   virtual int32_t  KODE_VST3_PLUGIN_API terminate() = 0;
+	//
   static const KODE_Vst3Id iid;
 };
 
@@ -873,6 +899,7 @@ public:
   virtual int32_t  KODE_VST3_PLUGIN_API setActive(uint8_t state) = 0;
   virtual int32_t  KODE_VST3_PLUGIN_API setState(KODE_Vst3IBStream* state) = 0;
   virtual int32_t  KODE_VST3_PLUGIN_API getState(KODE_Vst3IBStream* state) = 0;
+	//
   static const KODE_Vst3Id iid;
 };
 
@@ -891,6 +918,7 @@ public:
   virtual int32_t  KODE_VST3_PLUGIN_API setProcessing(uint8_t state) = 0;
   virtual int32_t  KODE_VST3_PLUGIN_API process(KODE_Vst3ProcessData& data) = 0;
   virtual uint32_t KODE_VST3_PLUGIN_API getTailSamples() = 0;
+	//
   static const KODE_Vst3Id iid;
 };
 
@@ -913,6 +941,7 @@ public:
 	virtual int32_t KODE_VST3_PLUGIN_API selectUnit(int32_t unitId) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API getUnitByBus(int32_t type, int32_t dir, int32_t busIndex, int32_t channel, int32_t& unitId /*out*/) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API setUnitProgramData(int32_t listOrUnitId, int32_t programIndex, KODE_Vst3IBStream* data) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -932,6 +961,7 @@ public:
 	virtual int32_t KODE_VST3_PLUGIN_API getString(/*AttrID*/const char* id, char16_t* string, uint32_t size) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API setBinary(/*AttrID*/const char* id, const void* data, uint32_t size) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API getBinary(/*AttrID*/const char* id, const void*& data, uint32_t& size) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -945,6 +975,7 @@ public:
 	virtual const char*               KODE_VST3_PLUGIN_API getMessageID () = 0;
 	virtual void                      KODE_VST3_PLUGIN_API setMessageID (const char* id /*in*/) = 0;
 	virtual KODE_Vst3IAttributeList*  KODE_VST3_PLUGIN_API getAttributes () = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -958,6 +989,7 @@ public:
 	virtual int32_t KODE_VST3_PLUGIN_API connect(KODE_Vst3IConnectionPoint* other) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API disconnect(KODE_Vst3IConnectionPoint* other) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API notify(KODE_Vst3IMessage* message) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -969,6 +1001,7 @@ class KODE_Vst3IMidiMapping
 : public KODE_Vst3FUnknown {
 public:
 	virtual int32_t KODE_VST3_PLUGIN_API getMidiControllerAssignment (int32_t busIndex, int16_t channel, int16_t midiControllerNumber, uint32_t& id/*out*/) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -981,6 +1014,7 @@ class KODE_Vst3IKeyswitchController
 public:
 	virtual int32_t KODE_VST3_PLUGIN_API getKeyswitchCount (int32_t busIndex, int16_t channel) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API getKeyswitchInfo (int32_t busIndex, int16_t channel, int32_t keySwitchIndex, KODE_Vst3KeyswitchInfo& info /*out*/) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -999,6 +1033,7 @@ public:
 	virtual int32_t KODE_VST3_PLUGIN_API performEdit (uint32_t id, double valueNormalized) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API endEdit (uint32_t id) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API restartComponent (int32_t flags) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -1013,6 +1048,7 @@ public:
 	virtual int32_t KODE_VST3_PLUGIN_API requestOpenEditor (const char* name = /*ViewType::*/kode_vst3_Editor) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API startGroupEdit () = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API finishGroupEdit () = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -1037,6 +1073,7 @@ public:
 	virtual int32_t KODE_VST3_PLUGIN_API setFrame (KODE_Vst3IPlugFrame* frame) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API canResize () = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API checkSizeConstraint (KODE_Vst3ViewRect* rect) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -1048,6 +1085,7 @@ class KODE_Vst3IPlugFrame
 : public KODE_Vst3FUnknown {
 public:
 	virtual int32_t KODE_VST3_PLUGIN_API resizeView(KODE_Vst3IPlugView* view, KODE_Vst3ViewRect* newSize) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -1061,19 +1099,20 @@ KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IPlugFrame, 0x367FAF01, 0xAFA94693, 0x8D4D
 class KODE_Vst3IEditController
 : public KODE_Vst3IPluginBase {
 public:
-	virtual int32_t     KODE_VST3_PLUGIN_API setComponentState (KODE_Vst3IBStream* state) = 0;
-	virtual int32_t     KODE_VST3_PLUGIN_API setState (KODE_Vst3IBStream* state) = 0;
-	virtual int32_t     KODE_VST3_PLUGIN_API getState (KODE_Vst3IBStream* state) = 0;
-	virtual int32_t     KODE_VST3_PLUGIN_API getParameterCount () = 0;
-	virtual int32_t     KODE_VST3_PLUGIN_API getParameterInfo (int32_t paramIndex, KODE_Vst3ParameterInfo& info /*out*/) = 0;
-	virtual int32_t     KODE_VST3_PLUGIN_API getParamStringByValue (uint32_t id, double valueNormalized /*in*/, KODE_Vst3String string /*out*/) = 0;
-	virtual int32_t     KODE_VST3_PLUGIN_API getParamValueByString (uint32_t id, char16_t* string /*in*/, double& valueNormalized /*out*/) = 0;
-	virtual double      KODE_VST3_PLUGIN_API normalizedParamToPlain (uint32_t id, double valueNormalized) = 0;
-	virtual double      KODE_VST3_PLUGIN_API plainParamToNormalized (uint32_t id, double plainValue) = 0;
-	virtual double      KODE_VST3_PLUGIN_API getParamNormalized (uint32_t id) = 0;
-	virtual int32_t     KODE_VST3_PLUGIN_API setParamNormalized (uint32_t id, double value) = 0;
-	virtual int32_t     KODE_VST3_PLUGIN_API setComponentHandler (KODE_Vst3IComponentHandler* handler) = 0;
-	virtual KODE_Vst3IPlugView*  KODE_VST3_PLUGIN_API createView (const char* name) = 0;
+	virtual int32_t             KODE_VST3_PLUGIN_API setComponentState (KODE_Vst3IBStream* state) = 0;
+	virtual int32_t             KODE_VST3_PLUGIN_API setState (KODE_Vst3IBStream* state) = 0;
+	virtual int32_t             KODE_VST3_PLUGIN_API getState (KODE_Vst3IBStream* state) = 0;
+	virtual int32_t             KODE_VST3_PLUGIN_API getParameterCount () = 0;
+	virtual int32_t             KODE_VST3_PLUGIN_API getParameterInfo (int32_t paramIndex, KODE_Vst3ParameterInfo& info /*out*/) = 0;
+	virtual int32_t             KODE_VST3_PLUGIN_API getParamStringByValue (uint32_t id, double valueNormalized /*in*/, KODE_Vst3String string /*out*/) = 0;
+	virtual int32_t             KODE_VST3_PLUGIN_API getParamValueByString (uint32_t id, char16_t* string /*in*/, double& valueNormalized /*out*/) = 0;
+	virtual double              KODE_VST3_PLUGIN_API normalizedParamToPlain (uint32_t id, double valueNormalized) = 0;
+	virtual double              KODE_VST3_PLUGIN_API plainParamToNormalized (uint32_t id, double plainValue) = 0;
+	virtual double              KODE_VST3_PLUGIN_API getParamNormalized (uint32_t id) = 0;
+	virtual int32_t             KODE_VST3_PLUGIN_API setParamNormalized (uint32_t id, double value) = 0;
+	virtual int32_t             KODE_VST3_PLUGIN_API setComponentHandler (KODE_Vst3IComponentHandler* handler) = 0;
+	virtual KODE_Vst3IPlugView* KODE_VST3_PLUGIN_API createView (const char* name) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -1090,6 +1129,7 @@ public:
 	virtual int32_t KODE_VST3_PLUGIN_API setKnobMode (int32_t mode) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API openHelp (uint8_t onlyCheck) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API openAboutBox (uint8_t onlyCheck) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -1101,6 +1141,7 @@ class KODE_Vst3ITimerHandler
 : public KODE_Vst3FUnknown {
 public:
 	virtual void KODE_VST3_PLUGIN_API onTimer () = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -1115,6 +1156,7 @@ class KODE_Vst3IHostApplication
 public:
 	virtual int32_t KODE_VST3_PLUGIN_API getName (KODE_Vst3String name) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API createInstance (KODE_Vst3Id cid, KODE_Vst3Id _iid, void** obj) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -1126,6 +1168,7 @@ class KODE_Vst3IEventHandler
 : public KODE_Vst3FUnknown {
 public:
 	virtual void KODE_VST3_PLUGIN_API onFDIsSet (int fd) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -1140,6 +1183,7 @@ public:
 	virtual int32_t KODE_VST3_PLUGIN_API unregisterEventHandler (KODE_Vst3IEventHandler* handler) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API registerTimer (KODE_Vst3ITimerHandler* handler, uint64_t milliseconds) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API unregisterTimer (KODE_Vst3ITimerHandler* handler) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -1154,6 +1198,7 @@ public:
 	virtual int32_t   KODE_VST3_PLUGIN_API getPointCount () = 0;
 	virtual int32_t   KODE_VST3_PLUGIN_API getPoint (int32_t index, int32_t& sampleOffset /*out*/, double& value /*out*/) = 0;
 	virtual int32_t   KODE_VST3_PLUGIN_API addPoint (int32_t sampleOffset, double value, int32_t& index /*out*/) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -1167,6 +1212,7 @@ public:
 	virtual int32_t                     KODE_VST3_PLUGIN_API getParameterCount () = 0;
 	virtual KODE_Vst3IParamValueQueue*  KODE_VST3_PLUGIN_API getParameterData (int32_t index) = 0;
 	virtual KODE_Vst3IParamValueQueue*  KODE_VST3_PLUGIN_API addParameterData (const uint32_t& id, int32_t& index /*out*/) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 
@@ -1180,6 +1226,7 @@ public:
 	virtual int32_t KODE_VST3_PLUGIN_API getEventCount () = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API getEvent (int32_t index, KODE_Vst3Event& e /*out*/) = 0;
 	virtual int32_t KODE_VST3_PLUGIN_API addEvent (KODE_Vst3Event& e /*in*/) = 0;
+	//
 	static const KODE_Vst3Id iid;
 };
 

@@ -118,8 +118,8 @@ public:
 //------------------------------
 
   KODE_Parameter* appendParameter(KODE_Parameter* AParameter) {
-//    uint32_t index = MParameters.size();
-//    AParameter->setIndex(index);
+    uint32_t index = MParameters.size();
+    AParameter->setIndex(index);
     MParameters.append(AParameter);
     return AParameter;
   }
