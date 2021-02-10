@@ -286,23 +286,23 @@ enum KODE_Vst3SymbolicSampleSizes {
 //
 //----------------------------------------------------------------------
 
-const char*     kode_vst3_Editor                       = "editor";
+const char*     kode_vst3_Editor                        = "editor";
 const char*     kode_vst3_Fx					                  = "Fx";
 const char*     kode_vst3_Instrument			              = "Instrument";
 
-const char*     kode_vst3_PlatformTypeHWND             = "HWND";
-const char*     kode_vst3_PlatformTypeHIView           = "HIView";
-const char*     kode_vst3_PlatformTypeNSView           = "NSView";
-const char*     kode_vst3_PlatformTypeUIView           = "UIView";
-const char*     kode_vst3_PlatformTypeX11EmbedWindowID = "X11EmbedWindowID";
+const char*     kode_vst3_PlatformTypeHWND              = "HWND";
+const char*     kode_vst3_PlatformTypeHIView            = "HIView";
+const char*     kode_vst3_PlatformTypeNSView            = "NSView";
+const char*     kode_vst3_PlatformTypeUIView            = "UIView";
+const char*     kode_vst3_PlatformTypeX11EmbedWindowID  = "X11EmbedWindowID";
 
-const uint64_t  kode_vst3_SpeakerL                     = 1 << 0;
-const uint64_t  kode_vst3_SpeakerR                     = 1 << 1;
+const uint64_t  kode_vst3_SpeakerL                      = 1 << 0;
+const uint64_t  kode_vst3_SpeakerR                      = 1 << 1;
 
-/*static*/ const int32_t   kode_vst3_NoParentUnitId    = -1;
-/*static*/ const int32_t   kode_vst3_NoProgramListId   = -1;
-/*static*/ const uint32_t  kode_vst3_NoTail            = 0;
-/*static*/ const int32_t   kode_vst3_RootUnitId        = 0;
+/*static*/ const int32_t   kode_vst3_NoParentUnitId     = -1;
+/*static*/ const int32_t   kode_vst3_NoProgramListId    = -1;
+/*static*/ const uint32_t  kode_vst3_NoTail             = 0;
+/*static*/ const int32_t   kode_vst3_RootUnitId         = 0;
 
 //namespace KODE_Vst3PlugType {
 //  const CString kode_vst3_FxAnalyzer			        = "Fx|Analyzer";

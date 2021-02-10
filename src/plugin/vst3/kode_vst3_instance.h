@@ -45,6 +45,8 @@ class KODE_Vst3Instance
 , public KODE_Vst3IPlugView
 , public KODE_Vst3ITimerHandler
 
+, public KODE_Vst3IEventHandler
+
 , public KODE_IInstance {
 
 //------------------------------
@@ -116,6 +118,7 @@ public:
 
   void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
     //KODE_Print("%i = %.3f\n",AIndex,AValue);
+    MEditorParameterValues[AIndex] = AValue;
     queueParameterToHost(AIndex,AValue);
 //    setParameterValue(AIndex,AValue);
   }
@@ -160,13 +163,23 @@ private:
   */
 
   /*
+
+    Sets the normalized value to the parameter associated to the paramID.
+    The controller must never pass this value-change back to the host via the
+    IComponentHandler. It should update the according GUI element(s) only!
+  */
+
+  /*
     https://github.com/soundradix/JUCE/commit/2e9e66cbc8c65e889be5232ffae83c0ca78f9c7e
+
     performEdit ((Vst::ParamID) index, (double) newValue);
     // call setParamNormalized too, as without it value will reset at endEdit in Cubase.
     // setParamNormalized does not replace performEdit as it does not record automation.
+
     setParamNormalized ((Vst::ParamID) index, (double) newValue);
 
     https://sdk.steinberg.net/viewtopic.php?t=693
+
     "Remember that everything in the edit controller domain must happen on the
     main thread also calls to the IComponentHandler instance of the host. So
     don't call beginEdit, endEdit or performEdit on a secondary thread."
@@ -182,9 +195,7 @@ private:
     uint32_t index = 0;
     while (MHostParameterQueue.read(&index)) {
       float value = MHostParameterValues[index];
-
 //      setParameterValue(index,value);
-
       if (MComponentHandler) {
         //KODE_Print("%i = %.3f\n",index,value);
         //if (MComponentHandler2) MComponentHandler2->startGroupEdit();
@@ -232,6 +243,9 @@ private:
     if (paramChanges) {
       int32_t num_param_changes = paramChanges->getParameterCount();
       if (num_param_changes > 0) {
+
+        KODE_PRINT;
+
         for (int32_t i=0; i<num_param_changes; i++) {
           KODE_Vst3IParamValueQueue* paramQueue = paramChanges->getParameterData(i);
           if (paramQueue) {
@@ -243,10 +257,8 @@ private:
                 int32_t pointcount = paramQueue->getPointCount();
                 paramQueue->getPoint(pointcount-1,offset,value); // last point
                 //KODE_Print("%i = %.3f\n",id,value);
-
 //                MParameterValues[id] = value;
 //                setParameterValue(id,value);
-
                 KODE_Parameter* param = MDescriptor->getParameter(id);
                 if (param) value = param->from01(value);
                 on_plugin_parameter(0,id,value);
@@ -1503,10 +1515,8 @@ public: // IEditController
 
   double KODE_VST3_PLUGIN_API getParamNormalized(uint32_t id) final {
     if (id < MDescriptor->getNumParameters()) {
-
-      //float v = MEditorParameterValues[id];
-      float v = getParameterValue(id);
-
+      float v = MEditorParameterValues[id];
+      //float v = getParameterValue(id);
       //KODE_Print("%i -> %.3f\n",id,v);
       return v;
     }
@@ -1536,9 +1546,7 @@ public: // IEditController
     if (id >= MDescriptor->getNumParameters()) {
       return kode_vst3_ResultFalse; // ???
     }
-
     MEditorParameterValues[id] = value;
-
     if (MEditor) {
       MEditor->updateParameterFromHost(id,value);
     }
@@ -1644,8 +1652,12 @@ public: // IPlugView
         }
         MEditor = (KODE_Editor*)on_plugin_openEditor(parent);
         MEditor->open();
+
         //if (MRunLoop)
         MRunLoop->registerTimer(this,KODE_VST3_TIMER_MS);
+
+//        MRunLoop->registerEventHandler(this,0);
+
         return kode_vst3_ResultOk;
       }
     #endif // KODE_NO_GUI
@@ -1788,15 +1800,19 @@ public: // ITimerHandler
   */
 
   void onTimer() final {
+    KODE_PRINT;
     #ifndef KODE_NO_GUI
       on_plugin_updateEditor(MEditor);
       flushParametersToHost();
     #endif
   }
 
-  //--------------------
-  //
-  //--------------------
+//------------------------------
+public: // IEventHandler
+//------------------------------
+
+  void KODE_VST3_PLUGIN_API onFDIsSet(int fd) {
+  }
 
 };
 

@@ -1,10 +1,9 @@
 
 #define KODE_GUI_XCB
 
+#define KODE_DEBUG_PRINT_SOCKET
 #define KODE_DEBUG_PRINT_THREAD
 #define KODE_DEBUG_PRINT_TIME
-#define KODE_DEBUG_PRINT_SOCKET
-
 #define KODE_DEBUG_VST3
 
 //----------------------------------------------------------------------
@@ -36,9 +35,18 @@ public:
     #endif
     setAuthor("author");
     setVersion(0x0101001);
+
+    appendInput( KODE_New KODE_PluginPort("input1") );
+    appendInput( KODE_New KODE_PluginPort("input2") );
+    appendOutput( KODE_New KODE_PluginPort("output1") );
+    appendOutput( KODE_New KODE_PluginPort("output2") );
+
+
     KODE_Parameter* parameter;
     parameter = appendParameter( KODE_New KODE_Parameter("param1",0.3f) );
     parameter->setLabel("db");
+    parameter = appendParameter( KODE_New KODE_Parameter("param2",0.6f) );
+    parameter = appendParameter( KODE_New KODE_Parameter("param3",0.9f) );
     #ifndef KODE_NO_GUI
       setHasEditor(true);
       setEditorSize(640,480);
@@ -67,9 +75,17 @@ public:
     setFillBackground(true);
     setBackgroundColor(0.5f);
     KODE_ValueWidget* widget;
+
     widget = (KODE_ValueWidget*)appendWidget(KODE_New KODE_ValueWidget( KODE_FRect(10,10,150,20) ));
     widget->setDrawLabel(true);
     connectParameter(widget,0);
+
+    widget = (KODE_ValueWidget*)appendWidget(KODE_New KODE_ValueWidget( KODE_FRect(10,35,150,20) ));
+    connectParameter(widget,1);
+
+    widget = (KODE_ValueWidget*)appendWidget(KODE_New KODE_ValueWidget( KODE_FRect(10,60,150,20) ));
+    connectParameter(widget,2);
+
   }
 
   virtual ~myEditor() {
@@ -135,7 +151,7 @@ public:
   }
 
   void on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) final {
-    //KODE_Print("offset %i index %i value %.3f mode %i\n",AOffset,AIndex,AValue,AMode);
+    KODE_Print("%i = %.3f\n",AIndex,AValue);
   }
 
   void on_plugin_midi(uint32_t AOffset, uint8_t AMsg1, uint8_t AMsg2, uint8_t AMsg3, uint32_t AMode=0) final {

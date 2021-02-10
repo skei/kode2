@@ -249,17 +249,17 @@
 	"base/kode.h"
 	"gui/kode_drawable.h"
 
-1612452696 /DISKS/sda2/code/git/kode2/src/plugin/kode_descriptor.h
+1612552908 /DISKS/sda2/code/git/kode2/src/plugin/kode_descriptor.h
 	"plugin/kode_parameter.h"
 	"plugin/kode_program.h"
 
-1612452753 /DISKS/sda2/code/git/kode2/src/plugin/kode_parameter.h
+1612870401 /DISKS/sda2/code/git/kode2/src/plugin/kode_parameter.h
 
 1612057072 /DISKS/sda2/code/git/kode2/src/base/utils/kode_convert.h
 	<stdio.h>
 	<stdlib.h>
 
-1612383242 /DISKS/sda2/code/git/kode2/src/plugin/kode_instance.h
+1612910571 /DISKS/sda2/code/git/kode2/src/plugin/kode_instance.h
 	"kode.h"
 	"plugin/kode_editor.h"
 	"plugin/exe/kode_exe_instance.h"
@@ -287,7 +287,7 @@
 
 1612057073 /DISKS/sda2/code/git/kode2/src/plugin/exe/kode_exe.h
 
-1612524164 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_instance.h
+1612959972 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_instance.h
 	"plugin/kode_editor.h"
 	"plugin/kode_plugin_base.h"
 	"plugin/vst3/kode_vst3.h"
@@ -296,7 +296,7 @@
 1612057072 /DISKS/sda2/code/git/kode2/src/base/types/kode_queue.h
 	"kode.h"
 
-1612223710 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3.h
+1612913990 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3.h
 
 1610879184 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_api.h
 	<string>
@@ -306,13 +306,13 @@
 	<locale>
 	<codecvt>
 
-1612279127 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_utils.h
+1612785922 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_utils.h
 	"plugin/vst3/kode_vst3.h"
 	<string>
 	<locale>
 	<codecvt>
 
-1612227247 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_plugin.h
+1612966215 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_plugin.h
 	"plugin/vst3/kode_vst3.h"
 	"plugin/vst3/kode_vst3_instance.h"
 	"plugin/vst3/kode_vst3_utils.h"
@@ -529,7 +529,7 @@
 
 1612057072 /DISKS/sda2/code/git/kode2/src/base/utils/kode_utils.h
 
-1612452800 /DISKS/sda2/code/git/kode2/src/plugin/kode_plugin_base.h
+1612828178 /DISKS/sda2/code/git/kode2/src/plugin/kode_plugin_base.h
 	"kode.h"
 	"plugin/kode_descriptor.h"
 	"plugin/kode_parameter.h"
@@ -650,7 +650,7 @@
 1612383242 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_template_widget.h
 	"gui/kode_widget.h"
 
-1612524076 /DISKS/sda2/code/git/kode2/plugins/template.cpp
+1612966518 /DISKS/sda2/code/git/kode2/plugins/template.cpp
 	"kode.h"
 	"gui/kode_widgets.h"
 	"plugin/kode_plugin.h"

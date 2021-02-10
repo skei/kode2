@@ -17,9 +17,15 @@ struct KODE_PluginOptions {
 //----------
 
 struct KODE_PluginPort {
-  bool        isAudio; // else ?
-  bool        isInput; // else output
-  const char* name;
+  bool        isAudio = true; // else ?
+  bool        isInput = false; // else output
+  const char* name    = "";
+  //
+  KODE_PluginPort(const char* AName, bool AIsAudio=true) {
+    name    = AName;
+    isAudio = AIsAudio;
+    //isInput = AIsInput;
+  }
 };
 
 typedef KODE_Array<KODE_PluginPort*> KODE_PluginPorts;
@@ -134,6 +140,7 @@ public:
   //----------
 
   KODE_PluginPort* appendInput(KODE_PluginPort* AInput) {
+    AInput->isInput = true;
     MInputs.append(AInput);
     return AInput;
   }
@@ -141,6 +148,7 @@ public:
   //----------
 
   KODE_PluginPort* appendOutput(KODE_PluginPort* AOutput) {
+    AOutput->isInput = false;
     MOutputs.append(AOutput);
     return AOutput;
   }

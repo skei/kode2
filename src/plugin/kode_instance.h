@@ -31,8 +31,8 @@ private:
 
   uint32_t          MNumParameters    = 0;
   float*            MParameterValues  = KODE_NULL;
-  KODE_Descriptor*  MDescriptor       = KODE_NULL;
 
+  KODE_Descriptor*  MDescriptor       = KODE_NULL;
   KODE_IEditor*     MEditor           = KODE_NULL;
 
 //------------------------------
