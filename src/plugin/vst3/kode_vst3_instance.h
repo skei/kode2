@@ -2,12 +2,6 @@
 #define vst3_instance_included
 //----------------------------------------------------------------------
 
-/*
-  * does not handle changing parameters or types
-*/
-
-//----------------------------------------------------------------------
-
 #include "plugin/kode_editor.h"
 #include "plugin/kode_plugin_base.h"
 #include "plugin/vst3/kode_vst3.h"
@@ -69,7 +63,6 @@ private:
   char                          MHostName[129]          = {0};
   KODE_Descriptor*              MDescriptor             = KODE_NULL;
   KODE_Editor*                  MEditor                 = KODE_NULL;
-//  float*                        MParameterValues        = KODE_NULL;
   float*                        MEditorParameterValues  = KODE_NULL;
   float*                        MHostParameterValues    = KODE_NULL;
   KODE_Vst3UpdateQueue          MHostParameterQueue;
@@ -117,10 +110,8 @@ public:
   */
 
   void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
-    //KODE_Print("%i = %.3f\n",AIndex,AValue);
     MEditorParameterValues[AIndex] = AValue;
     queueParameterToHost(AIndex,AValue);
-//    setParameterValue(AIndex,AValue);
   }
 
 //------------------------------
@@ -129,8 +120,6 @@ private:
 
   void createParameterBuffers() {
     uint32_t num = MDescriptor->getNumParameters();
-//    MParameterValues = (float*)KODE_Malloc(num * sizeof(float));
-//    KODE_Memset(MParameterValues,0,num * sizeof(float));
     MEditorParameterValues = (float*)KODE_Malloc(num * sizeof(float));
     KODE_Memset(MEditorParameterValues,0,num * sizeof(float));
     MHostParameterValues = (float*)KODE_Malloc(num * sizeof(float));
@@ -140,7 +129,6 @@ private:
   //----------
 
   void destroyParameterBuffers() {
-//    if (MParameterValues) KODE_Free(MParameterValues);
     if (MEditorParameterValues) KODE_Free(MEditorParameterValues);
     if (MHostParameterValues) KODE_Free(MHostParameterValues);
   }
@@ -148,8 +136,6 @@ private:
   //----------
 
   void queueParameterToHost(uint32_t AIndex, float AValue) {
-    //KODE_Print("%i = %.3f\n",AIndex,AValue);
-    //MEditorParameterValues[AIndex] = AValue;
     MHostParameterValues[AIndex] = AValue;
     MHostParameterQueue.write(AIndex);
   }
@@ -160,16 +146,15 @@ private:
     must call the MComponentHandler from the same thread as we received it..
     same thread as setComponentHandler)
     IRunLoop
-  */
 
-  /*
+    ---
 
     Sets the normalized value to the parameter associated to the paramID.
     The controller must never pass this value-change back to the host via the
     IComponentHandler. It should update the according GUI element(s) only!
-  */
 
-  /*
+    ---
+
     https://github.com/soundradix/JUCE/commit/2e9e66cbc8c65e889be5232ffae83c0ca78f9c7e
 
     performEdit ((Vst::ParamID) index, (double) newValue);
@@ -177,6 +162,8 @@ private:
     // setParamNormalized does not replace performEdit as it does not record automation.
 
     setParamNormalized ((Vst::ParamID) index, (double) newValue);
+
+    ---
 
     https://sdk.steinberg.net/viewtopic.php?t=693
 
@@ -195,9 +182,7 @@ private:
     uint32_t index = 0;
     while (MHostParameterQueue.read(&index)) {
       float value = MHostParameterValues[index];
-//      setParameterValue(index,value);
       if (MComponentHandler) {
-        //KODE_Print("%i = %.3f\n",index,value);
         //if (MComponentHandler2) MComponentHandler2->startGroupEdit();
         MComponentHandler->beginEdit(index);          // click
         MComponentHandler->performEdit(index,value);  // drag
@@ -243,9 +228,6 @@ private:
     if (paramChanges) {
       int32_t num_param_changes = paramChanges->getParameterCount();
       if (num_param_changes > 0) {
-
-        KODE_PRINT;
-
         for (int32_t i=0; i<num_param_changes; i++) {
           KODE_Vst3IParamValueQueue* paramQueue = paramChanges->getParameterData(i);
           if (paramQueue) {
@@ -256,9 +238,6 @@ private:
                 double value = 0;
                 int32_t pointcount = paramQueue->getPointCount();
                 paramQueue->getPoint(pointcount-1,offset,value); // last point
-                //KODE_Print("%i = %.3f\n",id,value);
-//                MParameterValues[id] = value;
-//                setParameterValue(id,value);
                 KODE_Parameter* param = MDescriptor->getParameter(id);
                 if (param) value = param->from01(value);
                 on_plugin_parameter(0,id,value);
@@ -488,11 +467,12 @@ public: // FUnknown
       addRef();
       return kode_vst3_ResultOk;
     }
-    //if (KODE_iidEqual(KODE_Vst3ITimerHandler_iid,_iid) ) {
-    //  *obj = (KODE_Vst3ITimerHandler*)this;
-    //  addRef();
-    //  return kode_vst3_ResultOk;
-    //}
+    if (KODE_iidEqual(KODE_Vst3ITimerHandler_iid,_iid) ) {
+      //*obj = (KODE_Vst3ITimerHandler*)this;
+      //addRef();
+      //return kode_vst3_ResultOk;
+      return kode_vst3_NoInterface;
+    }
     return kode_vst3_NoInterface;
 
   }
@@ -514,9 +494,9 @@ public: // IPluginBase
     method rather than in the class' constructor!
     If the method does NOT return kResultOk, the object is released
     immediately. In this case terminate is not called!
-  */
 
-  /*
+    ---
+
     3.6.12
     Allow a Plug-in to ask the host if a given Plug-in interface is
     supported/used by the host. It is implemented by the hostContext given
@@ -528,11 +508,11 @@ public: // IPluginBase
         if (plugInterfaceSupport->isPlugInterfaceSupported (IMidiMapping::iid) == kResultTrue)
           // IMidiMapping is used by the host
       }
-      // ...
+      //...
     }
-  */
 
-  /*
+  ---
+
     IHostApplication: passed as 'context' in to IPluginBase::initialize()
   */
 
@@ -740,11 +720,9 @@ int32_t KODE_VST3_PLUGIN_API setIoMode(int32_t mode) final {
     could be called in the same thread than the process call. Check the
     workflow diagram Audio Processor Call Sequence for more info about in which
     state which interfaces are called.
-  */
 
-  //----------
+  ---
 
-  /*
     Restore: When the states are restored, the host passes the processor state
     to both the processor and the controller (IEditController::setComponentState).
     A host must always pass that state to the processor first. The controller
@@ -758,7 +736,6 @@ int32_t KODE_VST3_PLUGIN_API setIoMode(int32_t mode) final {
     uint32_t  version = 0;
     uint32_t  mode = 0;
     int32_t   size = 0;
-    //uint32_t  num_params = 0;
     int32_t   num_read = 0;
     state->read(&version, sizeof(uint32_t),&num_read);
     state->read(&mode, sizeof(uint32_t),&num_read);
@@ -773,17 +750,17 @@ int32_t KODE_VST3_PLUGIN_API setIoMode(int32_t mode) final {
         free(ptr);
         break;
       }
-//      case 1: {
-//        uint32_t  num_params = num_params = MDescriptor->getNumParameters();
-//        for (uint32_t i=0; i<num_params; i++) {
-//          float v = 0.f;
-//          state->read(&v,sizeof(float),&num_read);
-//          MParameterValues[i] = v;
-//          on_parameter(i,v,0);
-//        }
-//        updateAllParameters();
-//        break;
-//      }
+      case 1: {
+        uint32_t num_params = MDescriptor->getNumParameters();
+        for (uint32_t i=0; i<num_params; i++) {
+          float v = 0.f;
+          state->read(&v,sizeof(float),&num_read);
+          setParameterValue(i,v);
+          on_plugin_parameter(i,v,0);
+        }
+        updateAllParameters();
+        break;
+      }
     }
     return kode_vst3_ResultOk;
   }
@@ -805,11 +782,11 @@ int32_t KODE_VST3_PLUGIN_API setIoMode(int32_t mode) final {
     void*     ptr     = KODE_NULL;
     uint32_t  size    = 0;;
     size = on_plugin_saveState(&ptr,0);
-//    if ((size == 0) && (ptr == KODE_NULL)) {
-//      ptr = MParameterValues;
-//      size = MDescriptor->getNumParameters() * sizeof(float);
-//      mode = 1;
-//    }
+    if ((size == 0) && (ptr == KODE_NULL)) {
+      ptr = getParameterValues();
+      size = MDescriptor->getNumParameters() * sizeof(float);
+      mode = 1;
+    }
     int num_written  = 0;
     state->write(&version,sizeof(uint32_t), &num_written);
     state->write(&mode,sizeof(uint32_t), &num_written);
@@ -941,9 +918,9 @@ public: // IAudioProcessor
     in order to flush parameters (from host to Plug-in). Parameters flush could
     happen only when the host needs to send parameter changes and no processing
     is called.
-  */
 
-  /*
+    ---
+
     VST3_SDK/doc/vstsdk/faq.html#faqCommunication6
     Q: How my parameter changes (from UI interaction) are send to the
     processor if the host does not process?
@@ -970,9 +947,9 @@ public: // IAudioProcessor
     When the controller transmits a parameter change to the host, the host
     synchronizes the processor by passing the new values as Steinberg::Vst::
     IParameterChanges to the process call.
-  */
 
-  /*
+    ---
+
     http://www.noelborthwick.com/2014/01/22/developer-notes-sonar-x3-vst3-internals/
     The host may also send parameters to the plugin when no processing is
     active via a special “flush parameters” process call. This happens when
@@ -1078,7 +1055,6 @@ public: // INoteExpressionController
 
   /*
   int32 PLUGIN_API getNoteExpressionCount(int32 busIndex, int16 channel) override {
-    VST3_Trace("vst3: instance/getNoteExpressionCount busIndex:%i channel:%i\n",busIndex,channel);
     //if (busIndex==0) return 1;
     return 2;
   }
@@ -1087,7 +1063,6 @@ public: // INoteExpressionController
   //
 
   //int32_t KODE_VST3_PLUGIN_API getNoteExpressionInfo(int32_t busIndex, int16 channel, int32_t noteExpressionIndex, NoteExpressionTypeInfo& info) final {
-  //  VST3_Trace("vst3: instance/getNoteExpressionInfo busIndex:%i channel:%i noteExpressionIndex:%i\n",busIndex,channel,noteExpressionIndex);
   //  //if (busIndex==0) {
   //    switch(noteExpressionIndex) {
   //      case 0:
@@ -1142,19 +1117,21 @@ public: // INoteExpressionController
 public: // IKeyswitchController
 //------------------------------
 
-  // file:///WORK/code/VST3_SDK/doc/vstinterfaces/keyswitch.html
-
   /*
+    file:///WORK/code/VST3_SDK/doc/vstinterfaces/keyswitch.html
+
+    ---
+
     When a (instrument) Plugin supports such interface, the host could get
     from the Plug-in the current set of used key switches (megatrig/
     articulation) for a given channel of a event bus and then automatically use
     them (like in Cubase 6) to create VST Expression Map (allowing to
     associated symbol to a given articulation / key switch).
+
+    ---
+
+    Returns number of supported key switches for event bus index and channel.
   */
-
-  //----------
-
-  // Returns number of supported key switches for event bus index and channel.
 
   int32_t KODE_VST3_PLUGIN_API getKeyswitchCount(int32_t busIndex, int16_t channel) final {
     return 0;
@@ -1172,17 +1149,19 @@ public: // IKeyswitchController
 public: // IConnectionPoint
 //------------------------------
 
-  // file:///WORK/code/VST3_SDK/doc/vstinterfaces/index.html#vst3Communication
-
   /*
+    file:///WORK/code/VST3_SDK/doc/vstinterfaces/index.html#vst3Communication
+
+    ---
+
     This interface is used for the communication of separate components.
     Note that some hosts will place a proxy object between the components so
     that they are not directly connected.
+
+    ---
+
+    Connects this instance with another connection point.
   */
-
-  //----------
-
-  // Connects this instance with another connection point.
 
   int32_t KODE_VST3_PLUGIN_API connect(KODE_Vst3IConnectionPoint* other) final {
     //IMessage* msg;
@@ -1211,19 +1190,21 @@ public: // IConnectionPoint
 public: // IUnitInfo
 //------------------------------
 
-  // file:///WORK/code/VST3_SDK/doc/vstinterfaces/vst3Units.html
-
   /*
+    file:///WORK/code/VST3_SDK/doc/vstinterfaces/vst3Units.html
+
+    ---
+
     IUnitInfo describes the internal structure of the Plug-in.
     - The root unit is the component itself, so getUnitCount must return 1 at least.
     - The root unit id has to be 0 (kRootUnitId).
     - Each unit can reference one program list - this reference must not change.
     - Each unit using a program list, references one program of the list.
+
+    --
+
+    Returns the flat count of units.
   */
-
-  //----------
-
-  // Returns the flat count of units.
 
   int32_t KODE_VST3_PLUGIN_API getUnitCount() final {
     return 1;
@@ -1311,7 +1292,7 @@ public: // IUnitInfo
   */
 
   int32_t KODE_VST3_PLUGIN_API getProgramPitchName(int32_t listId, int32_t programIndex, int16_t midiPitch, KODE_Vst3String name) final {
-    // KODE_CharToUtf16("pitch",name);
+    //KODE_CharToUtf16("pitch",name);
     return kode_vst3_ResultFalse;
   }
 
@@ -1363,11 +1344,11 @@ public: // IUnitInfo
 public: // IEditController
 //------------------------------
 
-    // file:///WORK/code/VST3_SDK/doc/vstinterfaces/vst3Automation.html
-
-  //----------
-
   /*
+    file:///WORK/code/VST3_SDK/doc/vstinterfaces/vst3Automation.html
+
+    ---
+
     // https://forum.juce.com/t/automation-issue-in-cubase-nuendo/14566/5
     // Cubase and Nuendo need to inform the host of the current parameter values
     if (AudioProcessor* const pluginInstance = getPluginInstance()) {
@@ -1376,9 +1357,6 @@ public: // IEditController
     }
     return kResultFalse; // false?
   */
-
-  //
-
 
   int32_t KODE_VST3_PLUGIN_API setComponentState(KODE_Vst3IBStream* state) final {
     return kode_vst3_ResultOk;
@@ -1516,12 +1494,9 @@ public: // IEditController
   double KODE_VST3_PLUGIN_API getParamNormalized(uint32_t id) final {
     if (id < MDescriptor->getNumParameters()) {
       float v = MEditorParameterValues[id];
-      //float v = getParameterValue(id);
-      //KODE_Print("%i -> %.3f\n",id,v);
       return v;
     }
     else {
-      //KODE_Print("%i -> 0\n",id);
       return 0;
     }
   }
@@ -1542,7 +1517,6 @@ public: // IEditController
 
 
   int32_t KODE_VST3_PLUGIN_API setParamNormalized(uint32_t id, double value) final {
-    //KODE_Print("%i = %.3f\n",id,value);
     if (id >= MDescriptor->getNumParameters()) {
       return kode_vst3_ResultFalse; // ???
     }
@@ -1561,7 +1535,6 @@ public: // IEditController
   */
 
   int32_t KODE_VST3_PLUGIN_API setComponentHandler(KODE_Vst3IComponentHandler* handler) final {
-    //KODE_Print("%p\n",handler);
     MComponentHandler = handler;
     return kode_vst3_ResultOk;
   }
@@ -1611,7 +1584,6 @@ public: // IPlugView
 
   int32_t KODE_VST3_PLUGIN_API isPlatformTypeSupported(const char* type) final {
     #ifndef KODE_NO_GUI
-      //#ifdef __gnu_linux__
       #ifdef KODE_LINUX
         //"X11EmbedWindowID"
         if (type && strcmp(type,kode_vst3_PlatformTypeX11EmbedWindowID) == 0) {
@@ -1652,12 +1624,9 @@ public: // IPlugView
         }
         MEditor = (KODE_Editor*)on_plugin_openEditor(parent);
         MEditor->open();
-
         //if (MRunLoop)
         MRunLoop->registerTimer(this,KODE_VST3_TIMER_MS);
-
-//        MRunLoop->registerEventHandler(this,0);
-
+        //MRunLoop->registerEventHandler(this,0);
         return kode_vst3_ResultOk;
       }
     #endif // KODE_NO_GUI
@@ -1800,7 +1769,6 @@ public: // ITimerHandler
   */
 
   void onTimer() final {
-    KODE_PRINT;
     #ifndef KODE_NO_GUI
       on_plugin_updateEditor(MEditor);
       flushParametersToHost();

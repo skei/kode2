@@ -25,6 +25,7 @@ public:
 protected:
   virtual void              setParameterValue(uint32_t AIndex, float AValue) {}
   virtual float             getParameterValue(uint32_t AIndex) { return 0.0f; }
+  virtual float*            getParameterValues() { return KODE_NULL; }
   virtual void              setDefaultParameterValues() {}
   virtual void              updateAllParameters() {}
   virtual void              updateAllEditorParameters(KODE_IEditor* AEditor) {}

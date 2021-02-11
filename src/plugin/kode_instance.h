@@ -79,6 +79,12 @@ public:
 
   //----------
 
+  float* getParameterValues() {
+    return MParameterValues;
+  }
+
+  //----------
+
   void setDefaultParameterValues() override {
     //KODE_PRINT;
     uint32_t num = MDescriptor->getNumParameters();

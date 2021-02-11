@@ -29,14 +29,14 @@ public:
 //------------------------------
 
   KODE_VST3Plugin() {
-    KODE_PRINT;
+    //VST3_PRINT;
     MRefCount = 1;
   }
 
   //----------
 
   virtual ~KODE_VST3Plugin() {
-    KODE_PRINT;
+    //VST3_PRINT;
   }
 
 //------------------------------
@@ -44,16 +44,18 @@ public: // FUnknown
 //------------------------------
 
   uint32_t KODE_VST3_PLUGIN_API addRef() final {
-    KODE_PRINT;
+    //VST3_Print("");
     MRefCount++;
+    //VST3_DPrint("-> %i\n",MRefCount);
     return MRefCount;
   }
 
   //----------
 
   uint32_t KODE_VST3_PLUGIN_API release() final {
-    KODE_PRINT;
+    //VST3_Print("");
     const uint32_t r = --MRefCount;
+    //VST3_DPrint("-> %i %s",r, (r==0) ? "(delete)\n" : "\n" );
     if (r == 0) delete this;
     return r;
   }
@@ -61,17 +63,21 @@ public: // FUnknown
   //----------
 
   int32_t KODE_VST3_PLUGIN_API queryInterface(const KODE_Vst3Id _iid, void** obj) final {
-    KODE_PRINT;
+    //VST3_Print("_iid ");
+    //VST3_PrintIID(_iid);
     if (KODE_iidEqual(KODE_Vst3IPluginFactory2_iid,_iid)) {
+      //VST3_DPrint(" (IPluginFactory2)\n");
       *obj = (KODE_Vst3IPluginFactory2*)this;
       addRef();
       return kode_vst3_ResultOk;
     }
     if (KODE_iidEqual(KODE_Vst3IPluginFactory3_iid,_iid)) {
+      //VST3_DPrint(" (IPluginFactory3)\n");
       *obj = (KODE_Vst3IPluginFactory3*)this;
       addRef();
       return kode_vst3_ResultOk;
     }
+    //VST3_DPrint(" (unknown)\n");
     *obj = nullptr;
     return kode_vst3_NoInterface;
   }
@@ -85,7 +91,7 @@ public:
   //--------------------
 
   int32_t KODE_VST3_PLUGIN_API getFactoryInfo(KODE_Vst3PFactoryInfo* info) final {
-    KODE_PRINT;
+    //VST3_PRINT;
     strcpy(info->vendor,MDescriptor.getAuthor());
     strcpy(info->url,MDescriptor.getUrl());
     strcpy(info->email,MDescriptor.getEmail());
@@ -96,14 +102,14 @@ public:
   //----------
 
   int32_t KODE_VST3_PLUGIN_API countClasses() final {
-    KODE_PRINT;
+    //VST3_Print("-> 1\n");
     return 1;
   }
 
   //----------
 
   int32_t KODE_VST3_PLUGIN_API getClassInfo(int32_t index, KODE_Vst3PClassInfo* info) final {
-    KODE_PRINT;
+    //VST3_Print("index %i\n",index);
     switch (index) {
       case 0:
         memcpy(info->cid,MDescriptor.getLongId(),16);
@@ -118,8 +124,10 @@ public:
   //----------
 
   int32_t KODE_VST3_PLUGIN_API createInstance(const char* cid, const char* _iid, void** obj) final {
-    KODE_PRINT;
+    //VST3_Print("cid ");
+    //VST3_PrintIID(cid);
     if (KODE_iidEqual(MDescriptor.getLongId(),cid)) {
+      //VST3_DPrint(" (%s)\n",MDescriptor.getName());
       INST* instance = new INST(&MDescriptor);
       instance->on_plugin_open();
       instance->setDefaultParameterValues();
@@ -136,7 +144,7 @@ public: // IPluginFactory2
 //------------------------------
 
   int32_t KODE_VST3_PLUGIN_API getClassInfo2(int32_t index, KODE_Vst3PClassInfo2* info) final {
-    KODE_PRINT;
+    //VST3_Print("index %i\n",index);
     switch (index) {
       case 0:
         memcpy(info->cid,MDescriptor.getLongId(),16);
@@ -163,14 +171,14 @@ public: // IPluginFactory3
 //------------------------------
 
   int32_t KODE_VST3_PLUGIN_API getClassInfoUnicode(int32_t index, KODE_Vst3PClassInfoW* info) final {
-    KODE_PRINT;
+    //VST3_Print("index %i\n",index);
     return kode_vst3_ResultFalse;
   }
 
   //----------
 
   int32_t KODE_VST3_PLUGIN_API setHostContext(KODE_Vst3FUnknown* context) final {
-    KODE_PRINT;
+    //VST3_Print("context %p\n",context);
     MHostContext = context;
     return kode_vst3_ResultOk;
   }
@@ -192,7 +200,7 @@ KODE_Vst3IPluginFactory* KODE_VST3_PLUGIN_API vst3_entrypoint() VST3_MAIN_SYMBOL
                                                                       \
   __KODE_DLLEXPORT                                                    \
   KODE_Vst3IPluginFactory* KODE_VST3_PLUGIN_API vst3_entrypoint() {   \
-    KODE_PRINT;                                                       \
+    /*VST3_PRINT;*/                                                   \
     return KODE_New KODE_VST3Plugin<DESC,INST>();                     \
   }
 
