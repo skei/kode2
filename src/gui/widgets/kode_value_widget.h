@@ -26,7 +26,7 @@ protected:
   KODE_Color  MLabelColor         = KODE_Color(0.8f);
 
   bool        MCanDragValue       = true;
-  float       MDragSensitivity    = 0.01f;
+  float       MDragSensitivity    = 0.004f;
   float       MClickedXpos        = 0.0f;
   float       MClickedYpos        = 0.0f;
   float       MClickedValue       = 0.0f;

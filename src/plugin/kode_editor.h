@@ -27,9 +27,8 @@ public:
 //------------------------------
 
   KODE_Editor(KODE_IInstance* AInstance, void* AParent=KODE_NULL)
-  : KODE_Window(AInstance->getDescriptor()->getEditorWidth(),
-                AInstance->getDescriptor()->getEditorHeight(),
-                "", AParent ) {
+  : KODE_Window(AInstance->getDescriptor()->getEditorWidth(),AInstance->getDescriptor()->getEditorHeight(),"",AParent)
+  , KODE_IEditor(AInstance) {
     MDescriptor = AInstance->getDescriptor();
     MInstance = AInstance;
     uint32_t num = MDescriptor->getNumParameters();
@@ -77,14 +76,19 @@ public:
 
   //----------
 
-  void updateParameterFromHost(uint32_t AIndex, float AValue) override {
+  void updateParameterFromHost(uint32_t AIndex, float AValue, bool ARedraw=true) override {
     //KODE_PRINT;
     KODE_Widget* widget= MParameterToWidget[AIndex];
     if (widget) {
       //KODE_Parameter* parameter = MDescriptor->getParameter(AIndex);
       //float v = parameter->from01(AValue);
+
+      //MEditorParameterValues[AIndex] = AValue;
+
       widget->setValue(AValue);
-      widget->redraw();
+
+      if (ARedraw) widget->redraw();
+
     }
   }
 

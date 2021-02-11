@@ -21,7 +21,8 @@ private:
 public:
 //------------------------------
 
-  KODE_ExeInstance(/*KODE_Descriptor* ADescriptor*/) {
+  KODE_ExeInstance(KODE_Descriptor* ADescriptor)
+  : KODE_IInstance(ADescriptor) {
   }
 
   //----------
@@ -33,23 +34,23 @@ public:
 public:
 //------------------------------
 
-  void  setDescriptor(KODE_Descriptor* ADescriptor) override {
-    MDescriptor = ADescriptor;
-  }
+  //void  setDescriptor(KODE_Descriptor* ADescriptor) override {
+  //  MDescriptor = ADescriptor;
+  //}
 
-  KODE_Descriptor* getDescriptor() override {
-    return MDescriptor;
-  }
+//  KODE_Descriptor* getDescriptor() override {
+//    return MDescriptor;
+//  }
 
 //------------------------------
 public:
 //------------------------------
 
-  void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
-    KODE_Parameter* parameter = MDescriptor->getParameter(AIndex);
-    float value = parameter->from01(AValue);
-    on_plugin_parameter(0,AIndex,value,0);
-  }
+//  void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
+//    KODE_Parameter* parameter = MDescriptor->getParameter(AIndex);
+//    float value = parameter->from01(AValue);
+//    on_plugin_parameter(0,AIndex,value,0);
+//  }
 
 //------------------------------
 public:

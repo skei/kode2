@@ -27,11 +27,13 @@ public:
 //------------------------------
 
   myDescriptor() {
+
     #ifdef KODE_DEBUG
       setName("plugin_debug");
     #else
       setName("plugin");
     #endif
+
     setAuthor("author");
     setVersion(0x0101001);
 

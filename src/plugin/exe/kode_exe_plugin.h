@@ -41,6 +41,7 @@ public:
     instance->on_plugin_initialize();
     instance->on_plugin_activate();
     instance->on_plugin_prepare(44100,256);
+
     instance->setDefaultParameterValues();
     instance->updateAllParameters();
     #ifndef KODE_NO_GUI

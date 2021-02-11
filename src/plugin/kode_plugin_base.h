@@ -16,20 +16,15 @@ class KODE_IEditor;
 //----------------------------------------------------------------------
 
 class KODE_IInstance {
-//public:
-//  KODE_IInstance(KODE_Descriptor* ADescriptor) {}
-//  virtual ~KODE_IInstance() {}
 public:
-  virtual void              setDescriptor(KODE_Descriptor* ADescriptor) {}
+  KODE_IInstance(KODE_Descriptor* ADescriptor) {}
+  virtual ~KODE_IInstance() {}
+public:
   virtual KODE_Descriptor*  getDescriptor() { return KODE_NULL; }
-protected:
-  virtual void              setParameterValue(uint32_t AIndex, float AValue) {}
-  virtual float             getParameterValue(uint32_t AIndex) { return 0.0f; }
-  virtual float*            getParameterValues() { return KODE_NULL; }
+public:
   virtual void              setDefaultParameterValues() {}
   virtual void              updateAllParameters() {}
-  virtual void              updateAllEditorParameters(KODE_IEditor* AEditor) {}
-public:
+  virtual void              updateAllEditorParameters(KODE_IEditor* AEditor, bool ARedraw=true) {}
   virtual void              updateParameterFromEditor(uint32_t AIndex, float AValue) {}
 public:
   virtual void              on_plugin_open() {}
@@ -52,14 +47,12 @@ public:
 //----------------------------------------------------------------------
 
 class KODE_IEditor {
-//public:
-//  KODE_IEditor(KODE_IInstance* AInstance) {}
-//  virtual ~KODE_IEditor() {}
-//public:
-//  virtual void              setInstance(KODE_IInstance* AInstance) {}
+public:
+  KODE_IEditor(KODE_IInstance* AInstance) {}
+  virtual ~KODE_IEditor() {}
 public:
   virtual void              connectParameter(KODE_Widget* AWidget, uint32_t AParameter) {}
-  virtual void              updateParameterFromHost(uint32_t AIndex, float AValue) {}
+  virtual void              updateParameterFromHost(uint32_t AIndex, float AValue, bool ARedraw=true) {}
 };
 
 //----------------------------------------------------------------------
