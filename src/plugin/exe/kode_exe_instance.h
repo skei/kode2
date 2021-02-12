@@ -23,6 +23,7 @@ public:
 
   KODE_ExeInstance(KODE_Descriptor* ADescriptor)
   : KODE_IInstance(ADescriptor) {
+    MDescriptor = ADescriptor;
   }
 
   //----------
@@ -38,19 +39,82 @@ public:
   //  MDescriptor = ADescriptor;
   //}
 
-//  KODE_Descriptor* getDescriptor() override {
-//    return MDescriptor;
-//  }
+  KODE_Descriptor* getDescriptor() override {
+    return MDescriptor;
+  }
 
 //------------------------------
 public:
 //------------------------------
 
-//  void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
-//    KODE_Parameter* parameter = MDescriptor->getParameter(AIndex);
-//    float value = parameter->from01(AValue);
-//    on_plugin_parameter(0,AIndex,value,0);
+//  void setDefaultParameterValues() override {
+//    uint32_t num = MDescriptor->getNumParameters();
+//    for (uint32_t i=0; i<num; i++) {
+//      KODE_Parameter* parameter = MDescriptor->getParameter(i);
+//      float value = parameter->getDefValue();
+//      MParameterValues[i] = value;
+//    }
 //  }
+
+  //----------
+
+  void updateAllParameters() override {
+    //KODE_PRINT;
+    uint32_t num = MDescriptor->getNumParameters();
+    for (uint32_t i=0; i<num; i++) {
+      KODE_Parameter* parameter = MDescriptor->getParameter(i);
+      //float v = MParameterValues[i];
+      float v = parameter->getDefValue();
+      v = parameter->from01(v);
+      on_plugin_parameter(0,i,v);
+      // if editor is open ...
+    }
+  }
+
+  //----------
+
+  void updateAllEditorParameters(KODE_IEditor* AEditor, bool ARedraw=true) override {
+    uint32_t num = MDescriptor->getNumParameters();
+    for (uint32_t i=0; i<num; i++) {
+      KODE_Parameter* parameter = MDescriptor->getParameter(i);
+      float v = parameter->getDefValue();
+      //v = parameter->from01(v);
+      AEditor->updateParameterFromHost(i,v,ARedraw);
+    }
+  }
+
+  //----------
+
+  void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
+    KODE_Parameter* parameter = MDescriptor->getParameter(AIndex);
+    float v = parameter->from01(AValue);
+    on_plugin_parameter(0,AIndex,v,0);
+  }
+
+//------------------------------
+private:
+//------------------------------
+
+//  void createParameterBuffers() {
+//    uint32_t size = MDescriptor->getNumParameters() * sizeof(float);
+//    //MNumParameters = MDescriptor->getNumParameters();
+//    MParameterValues        = (float*)KODE_Malloc(size);
+//    //MEditorParameterValues  = (float*)KODE_Malloc(size);
+//    MHostParameterValues    = (float*)KODE_Malloc(size);
+//    KODE_Memset(MParameterValues,       0,size);
+//    //KODE_Memset(MEditorParameterValues, 0,size);
+//    KODE_Memset(MHostParameterValues,   0,size);
+//  }
+//
+//  //----------
+//
+//  void destroyParameterBuffers() {
+//    if (MParameterValues)       KODE_Free(MParameterValues);
+//    //if (MEditorParameterValues) KODE_Free(MEditorParameterValues);
+//    if (MHostParameterValues)   KODE_Free(MHostParameterValues);
+//  }
+//
+//  //----------
 
 //------------------------------
 public:

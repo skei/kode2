@@ -5,7 +5,7 @@
 #include "gui/kode_gui_base.h"
 #include "gui/xcb/kode_xcb_utils.h"
 
-#ifdef KODE_CAIRO
+#ifdef KODE_USE_CAIRO
   #include "gui/cairo/kode_cairo.h"
 #endif
 
@@ -89,7 +89,7 @@ public:
 public:
 //------------------------------
 
-  #ifdef KODE_CAIRO
+  #ifdef KODE_USE_CAIRO
   cairo_surface_t* void createCairoSurface() {
     cairo_surface_t* surface = MCairoSurface = cairo_xcb_surface_create(
       MConnection,
@@ -369,7 +369,7 @@ public:
       xcb_flush(MConnection);
     }
     else if (ASource->isSurface()) {
-      //#ifdef KODE_CAIRO
+      //#ifdef KODE_USE_CAIRO
       //cairo_surface_flush(MCairoSurface);
       //#endif
       xcb_copy_area(
@@ -385,7 +385,7 @@ public:
         ASource->getHeight()        // Height of the region we want to copy
       );
       xcb_flush(MConnection);
-      //#ifdef KODE_CAIRO
+      //#ifdef KODE_USE_CAIRO
       //cairo_surface_mark_dirty_rectangle(MCairoSurface,src_x,src_y,src_w,src_h);
       //#endif
     }
@@ -412,12 +412,12 @@ public:
         bitmap->getPixelPtr(ASrc.x,ASrc.y)  //getBuffer()
       );
       xcb_flush(MConnection);
-      //#ifdef KODE_CAIRO
+      //#ifdef KODE_USE_CAIRO
       //cairo_surface_mark_dirty_rectangle(MCairoSurface,src_x,src_y,src_w,src_h);
       //#endif
     }
     else if (ASource->isSurface()) {
-      //#ifdef KODE_CAIRO
+      //#ifdef KODE_USE_CAIRO
       //cairo_surface_flush(MCairoSurface);
       //#endif
       xcb_copy_area(
@@ -433,7 +433,7 @@ public:
         ASrc.h                       // Height of the region we want to copy
       );
       xcb_flush(MConnection);
-      //#ifdef KODE_CAIRO
+      //#ifdef KODE_USE_CAIRO
       //cairo_surface_mark_dirty_rectangle(MCairoSurface,src_x,src_y,src_w,src_h);
       //#endif
     }

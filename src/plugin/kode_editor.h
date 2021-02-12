@@ -71,7 +71,9 @@ public:
   void connectParameter(KODE_Widget* AWidget, uint32_t AIndex) override {
     MParameterToWidget[AIndex] = AWidget;
     KODE_Parameter* parameter = MDescriptor->getParameter(AIndex);
-    AWidget->setParameter(parameter);
+    //AWidget->setParameter(parameter);
+    AWidget->MParameter = parameter;
+    AWidget->on_widget_connect(parameter);
   }
 
   //----------
@@ -82,13 +84,10 @@ public:
     if (widget) {
       //KODE_Parameter* parameter = MDescriptor->getParameter(AIndex);
       //float v = parameter->from01(AValue);
-
       //MEditorParameterValues[AIndex] = AValue;
-
-      widget->setValue(AValue);
-
+      //widget->setValue(AValue);
+      widget->MValue = AValue;
       if (ARedraw) widget->redraw();
-
     }
   }
 

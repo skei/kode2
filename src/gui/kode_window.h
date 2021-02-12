@@ -8,7 +8,7 @@
 #include "gui/kode_surface.h"
 #include "gui/kode_widget.h"
 
-#ifdef KODE_XCB
+#ifdef KODE_USE_XCB
   #include "gui/xcb/kode_xcb_window.h"
 #endif
 

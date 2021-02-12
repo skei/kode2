@@ -428,7 +428,7 @@ public: // FUnknown
     const uint32_t r = --MRefCount; // const uint32_t ?
     if (r == 0) {
       on_plugin_close();
-      delete this;
+      KODE_Delete this;
     };
     return r;
   }
@@ -606,7 +606,7 @@ public: // IPluginBase
 
   int32_t KODE_VST3_PLUGIN_API getControllerClassId(KODE_Vst3Id classId) final {
     if (MDescriptor->hasEditor()) {
-      memcpy(classId,MDescriptor->getLongEditorId(),16);
+      KODE_Memcpy(classId,MDescriptor->getLongEditorId(),16);
       return kode_vst3_ResultOk;
     }
     else {
@@ -1453,7 +1453,7 @@ public: // IEditController
       if (paramIndex < (int32_t)MDescriptor->getNumParameters()) {
         //VST3_Parameter* param = MDescriptor->getParameter(paramIndex);
         //if (param) {
-          memcpy(&info,&MParamInfos[paramIndex],sizeof(KODE_Vst3ParameterInfo));
+          KODE_Memcpy(&info,&MParamInfos[paramIndex],sizeof(KODE_Vst3ParameterInfo));
           return kode_vst3_ResultOk;
         //}
       } // index < numparams

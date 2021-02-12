@@ -56,7 +56,7 @@ public: // FUnknown
     //VST3_Print("");
     const uint32_t r = --MRefCount;
     //VST3_DPrint("-> %i %s",r, (r==0) ? "(delete)\n" : "\n" );
-    if (r == 0) delete this;
+    if (r == 0) KODE_Delete this;
     return r;
   }
 
@@ -92,9 +92,9 @@ public:
 
   int32_t KODE_VST3_PLUGIN_API getFactoryInfo(KODE_Vst3PFactoryInfo* info) final {
     //VST3_PRINT;
-    strcpy(info->vendor,MDescriptor.getAuthor());
-    strcpy(info->url,MDescriptor.getUrl());
-    strcpy(info->email,MDescriptor.getEmail());
+    KODE_Strcpy(info->vendor,MDescriptor.getAuthor());
+    KODE_Strcpy(info->url,MDescriptor.getUrl());
+    KODE_Strcpy(info->email,MDescriptor.getEmail());
     info->flags = KODE_Vst3PFactoryInfo::kode_vst3_NoFlags;
     return kode_vst3_ResultOk;
   }
@@ -112,10 +112,10 @@ public:
     //VST3_Print("index %i\n",index);
     switch (index) {
       case 0:
-        memcpy(info->cid,MDescriptor.getLongId(),16);
+        KODE_Memcpy(info->cid,MDescriptor.getLongId(),16);
         info->cardinality = KODE_Vst3PClassInfo::kode_vst3_ManyInstances;
-        strncpy(info->category,kode_vst3_VstAudioEffectClass,KODE_Vst3PClassInfo::kode_vst3_CategorySize);
-        strncpy(info->name,MDescriptor.getName(),KODE_Vst3PClassInfo::kode_vst3_NameSize);
+        KODE_Strncpy(info->category,kode_vst3_VstAudioEffectClass,KODE_Vst3PClassInfo::kode_vst3_CategorySize);
+        KODE_Strncpy(info->name,MDescriptor.getName(),KODE_Vst3PClassInfo::kode_vst3_NameSize);
         return kode_vst3_ResultOk;
     }
     return kode_vst3_ResultFalse;
@@ -128,7 +128,7 @@ public:
     //VST3_PrintIID(cid);
     if (KODE_iidEqual(MDescriptor.getLongId(),cid)) {
       //VST3_DPrint(" (%s)\n",MDescriptor.getName());
-      INST* instance = new INST(&MDescriptor);
+      INST* instance = KODE_New INST(&MDescriptor);
       instance->on_plugin_open();
       instance->setDefaultParameterValues();
       instance->updateAllParameters();
@@ -147,20 +147,20 @@ public: // IPluginFactory2
     //VST3_Print("index %i\n",index);
     switch (index) {
       case 0:
-        memcpy(info->cid,MDescriptor.getLongId(),16);
+        KODE_Memcpy(info->cid,MDescriptor.getLongId(),16);
         info->cardinality = KODE_Vst3PClassInfo::kode_vst3_ManyInstances;
-        strcpy(info->category,kode_vst3_VstAudioEffectClass);
-        strcpy(info->name,MDescriptor.getName());
+        KODE_Strcpy(info->category,kode_vst3_VstAudioEffectClass);
+        KODE_Strcpy(info->name,MDescriptor.getName());
         info->classFlags = 0;
         if (MDescriptor.isSynth()) {
-          strcpy(info->subCategories,kode_vst3_Instrument);
+          KODE_Strcpy(info->subCategories,kode_vst3_Instrument);
         }
         else {
-          strcpy(info->subCategories,kode_vst3_Fx);
+          KODE_Strcpy(info->subCategories,kode_vst3_Fx);
         }
-        strcpy(info->vendor,MDescriptor.getAuthor());
-        strcpy(info->version,MDescriptor.getVersionText());
-        strcpy(info->sdkVersion,kode_vst3_VstVersionString);
+        KODE_Strcpy(info->vendor,MDescriptor.getAuthor());
+        KODE_Strcpy(info->version,MDescriptor.getVersionText());
+        KODE_Strcpy(info->sdkVersion,kode_vst3_VstVersionString);
         return kode_vst3_ResultOk;
     }
     return kode_vst3_ResultFalse;

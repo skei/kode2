@@ -337,7 +337,7 @@ float KODE_SinF2(float x) {
   const float B = 4/KODE_PI;
   const float C = -4/(KODE_PI*KODE_PI);
   float y = B * x + C * x * abs(x);
-  #ifdef KODE_MATH_EXTRA_PRECISION
+  #ifdef KODE_FAST_MATH_EXTRA_PRECISION
   //  const float Q = 0.775;
   const float P = 0.225;
   y = P * (y * abs(y) - y) + y;   // Q * y + P * y * abs(y)

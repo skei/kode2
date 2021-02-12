@@ -52,7 +52,7 @@ public:
   void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo) final {
   }
 
-  void on_connect(KODE_Parameter* AParameter) final {
+  void on_widget_connect(KODE_Parameter* AParameter) final {
   }
 
 //------------------------------

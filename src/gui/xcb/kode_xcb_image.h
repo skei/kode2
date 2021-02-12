@@ -7,7 +7,7 @@
 #include "gui/kode_drawable.h"
 #include "gui/kode_gui_base.h"
 
-#ifdef KODE_CAIRO
+#ifdef KODE_USE_CAIRO
 #include "gui/cairo/kode_cairo.h"
 #endif
 
@@ -86,7 +86,7 @@ public: // drawable
 
   KODE_Bitmap*      getBitmap()         final { return MBitmap; }
 
-  #ifdef KODE_XCB
+  #ifdef KODE_USE_XCB
   xcb_connection_t* getXcbConnection()  final { return MTargetConnection; }
   xcb_visualid_t    getXcbVisual()      final { return MTargetVisual; }
   xcb_image_t*      getXcbImage()       final { return MImage; }
@@ -165,7 +165,7 @@ private:
 public:
 //------------------------------
 
-  #ifdef KODE_CAIRO
+  #ifdef KODE_USE_CAIRO
   cairo_surface_t* createCairoSurface() {
     cairo_surface_t* surface = cairo_image_surface_create_for_data(
       (uint8_t*)MBitmap->getBuffer(),   // unsigned char *data,

@@ -362,7 +362,7 @@ const uint64_t  kode_vst3_SpeakerR                      = 1 << 1;
 //#define strncpy8 strncpy
 
 char* strncpy8(char* destination, const char* source, size_t maxnum) {
-  //memset(destination,0,maxnum);
+  //KODE_Memset(destination,0,maxnum);
   destination[maxnum-1] = 0;
   strncpy(destination,source,maxnum-1);
   return destination;
@@ -467,8 +467,8 @@ struct KODE_Vst3PClassInfo {
   char        category[kode_vst3_CategorySize];
   char        name[kode_vst3_NameSize];
 //  KODE_Vst3PClassInfo(const KODE_Vst3Id _cid, int32_t _cardinality, const char* _category, const char* _name) {
-//    memset(this,0,sizeof(KODE_Vst3PClassInfo));
-//    memcpy(cid,_cid,sizeof(KODE_Vst3Id));
+//    KODE_Memset(this,0,sizeof(KODE_Vst3PClassInfo));
+//    KODE_Memcpy(cid,_cid,sizeof(KODE_Vst3Id));
 //    if (_category) strncpy8(category,_category,kode_vst3_CategorySize);
 //    if (_name) strncpy8(name,_name,kode_vst3_NameSize);
 //    cardinality = _cardinality;
@@ -476,7 +476,7 @@ struct KODE_Vst3PClassInfo {
 //  //#if SMTG_CPP11
 //  constexpr KODE_Vst3PClassInfo() : cid(), cardinality(), category(), name() {}
 //  //#else
-//  //PClassInfo () { memset (this, 0, sizeof (PClassInfo)); }
+//  //PClassInfo () { KODE_Memset (this, 0, sizeof (PClassInfo)); }
 //  //#endif
 };
 
@@ -498,8 +498,8 @@ struct KODE_Vst3PClassInfo2 {
 	char        sdkVersion[kode_vst3_VersionSize];
 //	KODE_Vst3PClassInfo2 (const KODE_Vst3Id _cid, int32_t _cardinality, const char* _category, const char* _name,
 //		int32_t _classFlags, const char* _subCategories, const char* _vendor, const char* _version, const char* _sdkVersion) {
-//      memset (this, 0, sizeof (KODE_Vst3PClassInfo2));
-//      memcpy (cid, _cid, sizeof (KODE_Vst3Id));
+//      KODE_Memset (this, 0, sizeof (KODE_Vst3PClassInfo2));
+//      KODE_Memcpy (cid, _cid, sizeof (KODE_Vst3Id));
 //      cardinality = _cardinality;
 //      if (_category) strncpy8 (category, _category, KODE_Vst3PClassInfo::kode_vst3_CategorySize);
 //      if (_name) strncpy8 (name, _name, KODE_Vst3PClassInfo::kode_vst3_NameSize);
@@ -513,7 +513,7 @@ struct KODE_Vst3PClassInfo2 {
 //	constexpr KODE_Vst3PClassInfo2()
 //    : cid(), cardinality(), category(), name(), classFlags(), subCategories(), vendor(), version(), sdkVersion() {}
 //  //#else
-//  //	KODE_Vst3PClassInfo2() { memset(this,0,sizeof(KODE_Vst3PClassInfo2)); }
+//  //	KODE_Vst3PClassInfo2() { KODE_Memset(this,0,sizeof(KODE_Vst3PClassInfo2)); }
 //  //#endif
 };
 
@@ -533,8 +533,8 @@ struct KODE_Vst3PClassInfoW {
 	char16  version[kode_vst3_VersionSize];
 	char16  sdkVersion[kode_vst3_VersionSize];
 	KODE_Vst3PClassInfoW(const KODE_Vst3Id _cid, int32 _cardinality, const char8* _category, const char16* _name, int32 _classFlags, const char8* _subCategories, const char16* _vendor, const char16* _version, const char16* _sdkVersion) {
-    memset (this, 0, sizeof (PClassInfoW));
-    memcpy (cid, _cid, sizeof (KODE_Vst3Id));
+    KODE_Memset (this, 0, sizeof (PClassInfoW));
+    KODE_Memcpy (cid, _cid, sizeof (KODE_Vst3Id));
     cardinality = _cardinality;
     if (_category) strncpy8 (category, _category, PClassInfo::kode_vst3_CategorySize);
     if (_name) strncpy16 (name, _name, PClassInfo::kode_vst3_NameSize);
@@ -558,10 +558,10 @@ struct KODE_Vst3PClassInfoW {
   {
   }
   //#else
-  //	KODE_Vst3PClassInfoW () { memset (this, 0, sizeof (PClassInfoW)); }
+  //	KODE_Vst3PClassInfoW () { KODE_Memset (this, 0, sizeof (PClassInfoW)); }
   //#endif
   void fromAscii (const PClassInfo2& ci2) {
-    //memcpy (cid, ci2.cid, sizeof (KODE_Vst3Id));
+    //KODE_Memcpy (cid, ci2.cid, sizeof (KODE_Vst3Id));
     //cardinality = ci2.cardinality;
     //strncpy8 (category, ci2.category, PClassInfo::kode_vst3_CategorySize);
     //str8ToStr16 (name, ci2.name, PClassInfo::kode_vst3_NameSize);
@@ -607,7 +607,7 @@ struct KODE_Vst3PFactoryInfo {
 //  //#if SMTG_CPP11
 //  constexpr KODE_Vst3PFactoryInfo() : vendor(), url(), email(), flags() {}
 //  //#else
-//  //  KODE_Vst3PFactoryInfo() { memset(this,0,sizeof(PFactoryInfo)); }
+//  //  KODE_Vst3PFactoryInfo() { KODE_Memset(this,0,sizeof(PFactoryInfo)); }
 //  //#endif
 };
 

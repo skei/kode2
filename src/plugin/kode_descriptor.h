@@ -8,17 +8,17 @@
 //----------------------------------------------------------------------
 
 struct KODE_PluginOptions {
-  bool isSynth = false;
-  bool hasEditor = false;
-  bool canSendMidi = false;
+  bool isSynth        = false;
+  bool hasEditor      = false;
+  bool canSendMidi    = false;
   bool canReceiveMidi = false;
 };
 
 //----------
 
 struct KODE_PluginPort {
-  bool        isAudio = true; // else ?
-  bool        isInput = false; // else output
+  bool        isAudio = true;   // else ?
+  bool        isInput = false;  // else output
   const char* name    = "";
   //
   KODE_PluginPort(const char* AName, bool AIsAudio=true) {

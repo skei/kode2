@@ -2,13 +2,12 @@
 #define kode_bitmap_included
 //----------------------------------------------------------------------
 
-#define KODE_NO_BITMAP_PNG
-#define KODE_NO_BITMAP_PNG_FILE
-
-#define KODE_NO_BITMAP_DRAW
-#define KODE_NO_BITMAP_FONT
-#define KODE_NO_BITMAP_PROC
-#define KODE_NO_BITMAP_GEN
+//#define KODE_NO_BITMAP_PNG
+//#define KODE_NO_BITMAP_PNG_FILE
+//#define KODE_NO_BITMAP_DRAW
+//#define KODE_NO_BITMAP_FONT
+//#define KODE_NO_BITMAP_PROC
+//#define KODE_NO_BITMAP_GEN
 
 //----------------------------------------------------------------------
 
@@ -30,7 +29,7 @@
   #include "extern/stb/stb_truetype.h"
 #endif
 
-#ifdef KODE_CAIRO
+#ifdef KODE_USE_CAIRO
   #include "gui/cairo/kode_cairo.h"
 #endif
 
@@ -171,7 +170,7 @@ public:
 public:
 //------------------------------
 
-  #ifdef KODE_CAIRO
+  #ifdef KODE_USE_CAIRO
   cairo_surface_t* createCairoSurface() {
     cairo_surface_t* surface = cairo_image_surface_create_for_data(
       (uint8_t*)MBuffer,    // unsigned char *data,
@@ -212,7 +211,7 @@ public: // sub-bitmap
   */
 
   KODE_Bitmap* createSubBitmap(int32_t x, int32_t y, int32_t w, int32_t h) {
-    KODE_Bitmap* bitmap = new KODE_Bitmap();
+    KODE_Bitmap* bitmap = KODE_New KODE_Bitmap();
     bitmap->MWidth      = w;
     bitmap->MHeight     = h;
     bitmap->MStride     = MStride;

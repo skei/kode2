@@ -1,0 +1,22 @@
+[TODO]
+
+not sure yet..
+thinking about a triple-license of some sort,
+
+1) opensource
+   gpl(3)
+
+2) freeware
+   maybe requirements about plugin formats, etc..
+
+3) commercial
+   the ugly one..
+
+but i should probably talk to someone who knows more about this..
+see individual source files for more info and licenses (for derived stuff).
+anyway, if you use anything in here that is either gpl,
+or derived from things that are gpl, you have to be gpl too.
+
+
+TODO: list all external authors and licenses, (and relevant files )
+

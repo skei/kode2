@@ -113,13 +113,13 @@ public:
     //KODE_Print("offset %i index %i value %.3f mode %i\n",AOffset,AIndex,AValue,AMode);
   }
 
-  void* on_plugin_openEditor(void* AParent) final {
+  KODE_IEditor* on_plugin_openEditor(void* AParent) final {
     //KODE_PRINT;
     myEditor* editor = (myEditor*)KODE_New myEditor(this,AParent);
     return editor;
   }
 
-  void  on_plugin_closeEditor(void* AEditor) final {
+  void  on_plugin_closeEditor(KODE_IEditor* AEditor) final {
     //KODE_PRINT;
     KODE_Delete (myEditor*)AEditor;
   }

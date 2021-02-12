@@ -39,6 +39,7 @@ typedef KODE_Array<KODE_Widget*> KODE_Widgets;
 class KODE_Widget {
 
   friend class KODE_Window;
+  friend class KODE_Editor;
 
 //------------------------------
 protected:
@@ -78,48 +79,15 @@ public:
 public:
 //------------------------------
 
-  /*
-  void setName( const char*         MName         = "KODE_Widget";
-  void setRect( KODE_FRect          MRect         = KODE_FRect(0);
-  void setValue( float               MValue        = 0.0f;
-  void setParent( KODE_Widget*        MParent       = KODE_NULL;
-  void setAlignment( uint32_t    MLayout.alignment     = KODE_WIDGET_ALIGN_PARENT;
-  void setInnerBorder( KODE_FRect  MLayout.innerBorder   = KODE_FRect(0);
-  void setWidgetSpacing( KODE_FPoint MLayout.widgetSpacing = KODE_FPoint(0);
-  void setAutoMouseCapture( bool MOptions.autoMouseCapture = true;
-  void setAutoClip( bool MOptions.autoClip         = true;
-  void setAutoHint( bool MOptions.autoHint         = true;
-  void setActive( bool MStates.active       = true;
-  void setVisible( bool MStates.visible      = true;
-  void setInteractive( bool MStates.interactive  = true;
-  void setHovering( bool MStates.hovering     = true;
-  void setClicked( bool MStates.clicked      = true;
-  void setInitialRect( KODE_FRect          MInitialRect  = KODE_FRect(0);
-  void setContentRect( KODE_FRect          MContentRect  = KODE_FRect(0);
-  void setParameter( KODE_Parameter*     MParameter    = KODE_NULL;
-  */
-
-  //void setPos(float AXpos, float AYpos) {
-  //  MRect.x = AXpos;
-  //  MRect.y = AYpos;
-  //}
-
-  //void setSize(float AWidth, float AHeight) {
-  //  MRect.w = AWidth;
-  //  MRect.h = AHeight;
+  //void setValue(float AValue) {
+  //  MValue = AValue;
   //}
 
   //----------
 
-  void setValue(float AValue) {
-    MValue = AValue;
-  }
-
-  //----------
-
-  void setParameter(KODE_Parameter* p) {
-    MParameter = p;
-  }
+  //void setParameter(KODE_Parameter* p) {
+  //  MParameter = p;
+  //}
 
 //------------------------------
 public:
@@ -142,6 +110,8 @@ public:
   void update() {
     do_widget_update(this);
   }
+
+  //----------
 
   void redraw() {
     do_widget_redraw(this,MRect,0);
@@ -201,17 +171,12 @@ public:
   //----------
 
   void alignChildren() {
-
     //KODE_FRect parent = MRect;
-
     KODE_FRect client = MRect;
     client.shrink(MLayout.innerBorder);
-
     uint32_t num = MChildren.size();
     for (uint32_t i=0; i<num; i++) {
-
       KODE_Widget* widget = MChildren[i];
-
       /*
         MRect has already been aligned, and children has been aligned by
         _previous_ MRect..
@@ -219,9 +184,7 @@ public:
         (if we knew how much these have changed from, for example, the initial
         rect, we could just subtract it..)
       */
-
       KODE_FRect rect = widget->MInitialRect;
-
       switch (widget->MLayout.alignment) {
 
         case KODE_WIDGET_ALIGN_NONE:
@@ -342,11 +305,12 @@ public:
       } // switch
 
       widget->MRect = rect;
+      //widget->on_widget_setPos();
+      //widget->on_widget_setSize();
+
       //widget->MParentRect = MRect;
       widget->alignChildren();
-
     } // for
-
     //MAlignedRect = MRect;
   }
 
@@ -387,7 +351,8 @@ public:
   virtual void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo) {
   }
 
-  virtual void on_connect(KODE_Parameter* AParameter) {
+  virtual void on_widget_connect(KODE_Parameter* AParameter) {
+    //setParameter(AParameter);
   }
 
 //------------------------------

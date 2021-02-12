@@ -108,6 +108,8 @@
 		</Unit>
 		<Unit filename="../../src/audio/io/kode_jack.h" />
 		<Unit filename="../../src/audio/io/kode_portaudio.h" />
+		<Unit filename="../../src/audio/kode_audio_math.h" />
+		<Unit filename="../../src/audio/kode_audio_utils.h" />
 		<Unit filename="../../src/base/debug/kode_debug.h" />
 		<Unit filename="../../src/base/debug/kode_debug_assert.h" />
 		<Unit filename="../../src/base/debug/kode_debug_callstack.h" />
@@ -272,9 +274,11 @@
 		<Unit filename="../../src/gui/kode_widget.h" />
 		<Unit filename="../../src/gui/kode_widgets.h" />
 		<Unit filename="../../src/gui/kode_window.h" />
+		<Unit filename="../../src/gui/widgets/kode_cached_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_color_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_image_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_panel_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_slider_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_template_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_text_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_value_widget.h" />
@@ -291,12 +295,15 @@
 		<Unit filename="../../src/plugin/exe/kode_exe_utils.h" />
 		<Unit filename="../../src/plugin/kode_descriptor.h" />
 		<Unit filename="../../src/plugin/kode_editor.h" />
+		<Unit filename="../../src/plugin/kode_effect.h" />
 		<Unit filename="../../src/plugin/kode_instance.h" />
 		<Unit filename="../../src/plugin/kode_parameter.h" />
 		<Unit filename="../../src/plugin/kode_plugin.h" />
 		<Unit filename="../../src/plugin/kode_plugin_base.h" />
 		<Unit filename="../../src/plugin/kode_process_context.h" />
 		<Unit filename="../../src/plugin/kode_program.h" />
+		<Unit filename="../../src/plugin/kode_synth.h" />
+		<Unit filename="../../src/plugin/kode_voice.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_instance.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_plugin.h" />

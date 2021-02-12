@@ -9,7 +9,7 @@
 #include "gui/xcb/kode_xcb.h"
 #include "gui/xcb/kode_xcb_utils.h"
 
-#ifdef KODE_CAIRO
+#ifdef KODE_USE_CAIRO
   #include "gui/cairo/kode_cairo.h"
 #endif
 
@@ -142,7 +142,7 @@ public: // drawable
 public:
 //------------------------------
 
-  #ifdef KODE_CAIRO
+  #ifdef KODE_USE_CAIRO
   cairo_surface_t* createCairoSurface() {
     cairo_surface_t* surface = cairo_xcb_surface_create(
       MConnection,

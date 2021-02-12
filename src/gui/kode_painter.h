@@ -5,7 +5,7 @@
 #include "kode.h"
 //#include "gui/kode_gui_implementation.h"
 
-#ifdef KODE_XCB
+#ifdef KODE_USE_XCB
   #include "gui/xcb/kode_xcb_painter.h"
 #endif
 
