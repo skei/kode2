@@ -102,7 +102,11 @@
 			<Add library="SDL2_image" />
 			<Add library="SDL2_mixer" />
 		</Linker>
-		<Unit filename="../../plugins/template.cpp">
+		<Unit filename="../../plugins/effect_template.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/synth_template.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
