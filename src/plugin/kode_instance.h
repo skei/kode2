@@ -20,10 +20,22 @@
   typedef KODE_Vst3Instance KODE_ImplementedInstance;
 #endif
 
+//----------
+
+//#define KODE_PLUGIN_MESSAGE_QUEUE_SIZE 32
+//typedef KODE_Queue<uint32_t,KODE_PLUGIN_MESSAGE_QUEUE_SIZE> KODE_Uint32Queue;
+
 //----------------------------------------------------------------------
 
 class KODE_Instance
 : public KODE_ImplementedInstance {
+
+//------------------------------
+private:
+//------------------------------
+
+//  KODE_Uint32Queue  MProcessMessageQueue;
+//  KODE_Uint32Queue  MGuiMessageQueue;
 
 //------------------------------
 public:
@@ -38,9 +50,33 @@ public:
   virtual ~KODE_Instance() {
   }
 
-//------------------------------
-public:
-//------------------------------
+////------------------------------
+//public:
+////------------------------------
+//
+//  void queueProcessMessage(uint32_t AMessage) {
+//    MProcessMessageQueue.write(AMessage);
+//  }
+//
+//  void flushProcessMessages() {
+//    uint32_t message = 0;
+//    while (MProcessMessageQueue.read(&message)) {
+//      // handle message
+//      KODE_Print("%i\n",message);
+//    }
+//  }
+//
+//  void queueGuiMessage(uint32_t AMessage) {
+//    MGuiMessageQueue.write(AMessage);
+//  }
+//
+//  void flushGuiMessages() {
+//    uint32_t message = 0;
+//    while (MGuiMessageQueue.read(&message)) {
+//      // handle message
+//      KODE_Print("%i\n",message);
+//    }
+//  }
 
 };
 

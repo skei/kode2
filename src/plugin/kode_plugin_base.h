@@ -36,7 +36,7 @@ public:
   virtual void              on_plugin_prepare(float ASamplerate, uint32_t ABlocksize) {}
   virtual void              on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) {}
   virtual void              on_plugin_midi(uint32_t AOffset, uint8_t AMsg1, uint8_t AMsg2, uint8_t AMsg3, uint32_t AMode=0) {}
-  virtual void              on_plugin_processBlock(KODE_ProcessContext* AContext) {}
+  virtual void              on_plugin_process(KODE_ProcessContext* AContext) {}
   virtual uint32_t          on_plugin_saveState(void** ABuffer, uint32_t AMode) { *ABuffer = KODE_NULL; return 0; }
   virtual void              on_plugin_restoreState(uint32_t ASize, void* APointer, uint32_t AMode) {}
   virtual KODE_IEditor*     on_plugin_openEditor(void* AParent) { return KODE_NULL; }

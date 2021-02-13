@@ -303,7 +303,7 @@
 		<Unit filename="../../src/plugin/kode_process_context.h" />
 		<Unit filename="../../src/plugin/kode_program.h" />
 		<Unit filename="../../src/plugin/kode_synth.h" />
-		<Unit filename="../../src/plugin/kode_voice.h" />
+		<Unit filename="../../src/plugin/kode_voice_manager.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_instance.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_plugin.h" />

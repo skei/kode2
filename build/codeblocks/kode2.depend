@@ -648,7 +648,7 @@
 1613067350 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_template_widget.h
 	"gui/kode_widget.h"
 
-1613085942 /DISKS/sda2/code/git/kode2/plugins/template.cpp
+1613090852 /DISKS/sda2/code/git/kode2/plugins/template.cpp
 	"kode.h"
 	"plugin/kode_plugin.h"
 	"gui/kode_widgets.h"
@@ -670,7 +670,7 @@
 	"kode.h"
 	"plugin/kode_instance.h"
 
-1613085900 /DISKS/sda2/code/git/kode2/src/plugin/kode_voice.h
+1613092829 /DISKS/sda2/code/git/kode2/src/plugin/kode_voice.h
 	"kode.h"
 	"audio/kode_audio_math.h"
 	"plugin/kode_process_context.h"

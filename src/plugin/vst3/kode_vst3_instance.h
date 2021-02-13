@@ -69,6 +69,10 @@ private:
   KODE_Vst3UpdateQueue          MHostParameterQueue;
 
 //------------------------------
+protected:
+//------------------------------
+
+//------------------------------
 public:
 //------------------------------
 
@@ -945,7 +949,7 @@ public: // IAudioProcessor
 
   int32_t KODE_VST3_PLUGIN_API setProcessing(uint8_t state) final {
     MIsProcessing = state;
-    if (MIsProcessing) on_plugin_prepare(MSampleRate,MBlockSize);
+//    if (MIsProcessing) on_plugin_prepare(MSampleRate,MBlockSize);
     return kode_vst3_ResultOk;
   }
 
@@ -1032,7 +1036,7 @@ public: // IAudioProcessor
       if (data.processContext->state & KODE_Vst3ProcessContext::StatesAndFlags::kode_vst3_Playing)      context.playstate |= KODE_PLUGIN_PLAYSTATE_PLAYING;
       if (data.processContext->state & KODE_Vst3ProcessContext::StatesAndFlags::kode_vst3_Recording)    context.playstate |= KODE_PLUGIN_PLAYSTATE_RECORDING;
       if (data.processContext->state & KODE_Vst3ProcessContext::StatesAndFlags::kode_vst3_CycleActive)  context.playstate |= KODE_PLUGIN_PLAYSTATE_LOOPING;
-      on_plugin_processBlock(&context);
+      on_plugin_process(&context);
     }
     /*
       https://forum.juce.com/t/vst3-plugin-wrapper/12323/5
@@ -1821,12 +1825,16 @@ public: // ITimerHandler
     will be called afte we regisdter the timer:
       MRunLoop->registerTimer(this,KODE_PLUGIN_VST3_TIMER_MS);
     (in IEditView.attached)
+
   */
 
   void onTimer() final {
     #ifndef KODE_NO_GUI
-      on_plugin_updateEditor(MEditor);
+      if (MEditor) {
+        on_plugin_updateEditor(MEditor);
+      }
       flushParametersToHost();
+      //}
     #endif
   }
 

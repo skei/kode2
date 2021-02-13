@@ -14,6 +14,7 @@
 //
 //----------------------------------------------------------------------
 
-#include "../plugins/template.cpp"
+//#include "../plugins/effect_template.cpp"
+#include "../plugins/synth_template.cpp"
 
 //----------

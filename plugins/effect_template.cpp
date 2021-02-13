@@ -11,9 +11,8 @@
 #include "plugin/kode_plugin.h"
 #include "gui/kode_widgets.h"
 
-#include "plugin/kode_synth.h"
-#include "plugin/kode_voice.h"
-
+#define KODE_PLUGIN_MESSAGE_QUEUE_SIZE 32
+typedef KODE_Queue<uint32_t,KODE_PLUGIN_MESSAGE_QUEUE_SIZE> KODE_Uint32Queue;
 
 //----------------------------------------------------------------------
 //
@@ -55,10 +54,6 @@ public:
       setHasEditor(true);
       setEditorSize(640,480);
     #endif
-
-    // synth
-    setIsSynth(true);
-    setCanReceiveMidi(true);
 
   }
 };
@@ -111,45 +106,6 @@ public:
 
 //----------------------------------------------------------------------
 //
-// voice
-//
-//----------------------------------------------------------------------
-
-class myVoice {
-public:
-
-  void strike(float note, float vel) {
-    //KODE_Print("strike: hz %.3f vel %.3f\n",hz,vel);
-  }
-
-  void lift(float vel) {
-    //KODE_Print("lift: vel %.3f\n",vel);
-  }
-
-  void bend(float v, float mb) {
-    //KODE_Print("bend: v %.3f\n",v);
-  }
-
-//  void master_bend(float v) {
-//    //KODE_Print("bend: v %.3f\n",v);
-//  }
-
-  void press(float p, float mp) {
-    //KODE_Print("press: v %.3f\n",v);
-  }
-
-  void slide(float s) {
-    //KODE_Print("slide: v %.3f\n",v);
-  }
-
-  void ctrl(float v) {
-    //KODE_Print("ctrl: v %.3f\n",v);
-  }
-
-};
-
-//----------------------------------------------------------------------
-//
 // instance
 //
 //----------------------------------------------------------------------
@@ -157,7 +113,16 @@ public:
 class myInstance
 : public KODE_Instance {
 
-  KODE_VoiceManager<myVoice,16> MVoices;
+//------------------------------
+private:
+//------------------------------
+
+  myEditor*         MEditor       = KODE_NULL;
+  bool              MNeedRecalc   = false; // true;
+  uint32_t          MCounter      = 0;
+
+  KODE_Uint32Queue  MProcessMessageQueue;
+  KODE_Uint32Queue  MGuiMessageQueue;
 
 //------------------------------
 public:
@@ -202,6 +167,7 @@ public:
 
   void on_plugin_activate() final {
     KODE_Print("\n");
+    MCounter = 0;
   }
 
   //----------
@@ -214,27 +180,48 @@ public:
 
   void on_plugin_prepare(float ASamplerate, uint32_t ABlocksize) final {
     KODE_Print("sr %.3f bs %i\n",ASamplerate,ABlocksize);
-    MVoices.prepare(ASamplerate,ABlocksize);
   }
 
   //----------
 
   void on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) final {
     //KODE_Print("ofs %i idx %i val %.3f mode %i\n",AOffset,AIndex,AValue,AMode);
-    MVoices.parameter(AOffset,AIndex,AValue,AMode);
+    MNeedRecalc = true;
+    queueProcessMessage(AIndex);
   }
 
   //----------
 
   void on_plugin_midi(uint32_t AOffset, uint8_t AMsg1, uint8_t AMsg2, uint8_t AMsg3, uint32_t AMode=0) final {
     //KODE_Print("ofs %i msg %02x %02x %02x mode %i\n",AOffset,AMsg1,AMsg2,AMsg3,AMode);
-    MVoices.midi(AOffset,AMsg1,AMsg2,AMsg3,AMode);
   }
 
   //----------
 
-  void on_plugin_processBlock(KODE_ProcessContext* AContext) final {
-    //KODE_Print("\n");
+  void on_plugin_process(KODE_ProcessContext* AContext) final {
+    flushProcessMessages();
+    if (MNeedRecalc) {
+      recalc(AContext);
+      MNeedRecalc = false;
+    }
+    uint32_t len = AContext->numsamples;
+    float* in0 = AContext->inputs[0];
+    float* in1 = AContext->inputs[1];
+    float* out0 = AContext->outputs[0];
+    float* out1 = AContext->outputs[1];
+    for (uint32_t i=0; i<len; i++) {
+      float spl0 = *in0++;
+      float spl1 = *in1++;
+      processSample(AContext,spl0,spl1);
+      *out0++ = spl0;
+      *out1++ = spl1;
+    }
+    #ifndef KODE_NO_GUI
+    if (MEditor) {
+      queueGuiMessage(MCounter);
+    }
+    #endif
+    MCounter += 1;
   }
 
   //----------
@@ -257,24 +244,78 @@ public:
 
   KODE_IEditor* on_plugin_openEditor(void* AParent) final {
     KODE_Print("parent %p\n",AParent);
-    myEditor* editor = (myEditor*)KODE_New myEditor(this,AParent);
-    return editor;
+    //myEditor* editor = (myEditor*)KODE_New myEditor(this,AParent);
+    //return editor;
+    MEditor = KODE_New myEditor(this,AParent);
+    return MEditor;
   }
 
   //----------
 
   void  on_plugin_closeEditor(KODE_IEditor* AEditor) final {
     KODE_Print("\n");
-    KODE_Delete (myEditor*)AEditor;
+    KODE_Assert(AEditor == MEditor);
+    if (MEditor) {
+      //KODE_Delete (myEditor*)AEditor;
+      KODE_Delete MEditor;
+      MEditor = KODE_NULL;
+    }
   }
 
   //----------
 
   void on_plugin_updateEditor(KODE_IEditor* AEditor) final {
     //KODE_Print("\n");
+    KODE_Assert(AEditor == MEditor);
+    if (MEditor) {
+      flushGuiMessages();
+    }
   }
 
   #endif
+
+//------------------------------
+private:
+//------------------------------
+
+  void queueProcessMessage(uint32_t AMessage) {
+    MProcessMessageQueue.write(AMessage);
+  }
+
+  //----------
+
+  void queueGuiMessage(uint32_t AMessage) {
+    MGuiMessageQueue.write(AMessage);
+  }
+
+  //----------
+
+  void flushProcessMessages() {
+    uint32_t message = 0;
+    while (MProcessMessageQueue.read(&message)) {
+      //KODE_Print("%i\n",message);
+    }
+  }
+
+  //----------
+
+  void flushGuiMessages() {
+    uint32_t message = 0;
+    while (MGuiMessageQueue.read(&message)) {
+      //KODE_Print("%i\n",message);
+    }
+  }
+
+  //----------
+
+  void recalc(KODE_ProcessContext* AContext) {
+    //KODE_PRINT;
+  }
+
+  //----------
+
+  void processSample(KODE_ProcessContext* AContext, float spl0, float spl1) {
+  }
 
 };
 
@@ -285,3 +326,39 @@ public:
 //----------------------------------------------------------------------
 
 KODE_PLUGIN_ENTRYPOINT(myDescriptor,myInstance);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  void process(int ANumSamples, float* AResult) {
+//    int remaining = ANumSamples;
+//    int offset = 0;
+//    preprocess_events();
+//    while (remaining > 0) {
+//      if (remaining >= TICKSIZE) {
+//        process_events(offset);
+//        //MProcess.process();
+//        //copy_buffer(AResult + offset,MProcess.getBuffer());
+//        remaining -= TICKSIZE;
+//        offset += TICKSIZE;
+//      }
+//      else {
+//        process_events(offset,remaining);
+//        //MProcess.process(remaining);
+//        //copy_buffer(AResult + offset,MProcess.getBuffer(),remaining);
+//        remaining = 0;
+//      }
+//    }
+//    postprocess_events();
+//  }
