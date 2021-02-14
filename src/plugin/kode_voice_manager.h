@@ -144,12 +144,6 @@ public:
     preProcess();
     MVoiceContext.processContext = AContext;
     KODE_ClearStereoBuffer(AContext->outputs,AContext->numsamples);
-//    for (uint32_t i=0; i<NUM; i++) {
-//      if ((MVoiceState[i] == KODE_VOICE_PLAYING)
-//      || (MVoiceState[i] == KODE_VOICE_RELEASED)) {
-//        MVoices[i].process();
-//      }
-//    }
     processPlayingVoices();
     processReleasedVoices();
     postProcess();
@@ -177,7 +171,7 @@ private:
   void processPlayingVoices() {
     for (uint32_t i=0; i<NUM; i++) {
       if (MVoiceState[i] == KODE_VOICE_PLAYING) {
-        MVoices[i].process();
+        MVoiceState[i] = MVoices[i].process(KODE_VOICE_PLAYING);
       }
     }
   }
@@ -187,7 +181,7 @@ private:
   void processReleasedVoices() {
     for (uint32_t i=0; i<NUM; i++) {
       if (MVoiceState[i] == KODE_VOICE_RELEASED) {
-        MVoices[i].process();
+        MVoiceState[i] = MVoices[i].process(KODE_VOICE_RELEASED);
       }
     }
   }

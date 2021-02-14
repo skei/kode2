@@ -1,6 +1,6 @@
 # depslib dependency file v1.0
-1613075257 source:/DISKS/sda2/code/git/kode2/build/build.cpp
-	"../plugins/template.cpp"
+1613248760 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+	"../test/test_gui2.cpp"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
 	"kode_config.h"
@@ -21,7 +21,7 @@
 
 1610835692 /DISKS/sda2/code/git/kode2/src/base/types/kode_static_buffer.h
 
-1613066914 /DISKS/sda2/code/git/kode2/src/base/kode_config.h
+1613235304 /DISKS/sda2/code/git/kode2/src/base/kode_config.h
 
 1613064625 /DISKS/sda2/code/git/kode2/src/base/kode_defines.h
 
@@ -60,9 +60,14 @@
 1612057072 /DISKS/sda2/code/git/kode2/src/base/debug/kode_debug_assert.h
 	<assert.h>
 
-1612057072 /DISKS/sda2/code/git/kode2/src/base/debug/kode_debug_callstack.h
+1613236063 /DISKS/sda2/code/git/kode2/src/base/debug/kode_debug_callstack.h
+	<stdio.h>
+	<sys/unistd.h>
+	<cxxabi.h>
+	<execinfo.h>
 
-1612057072 /DISKS/sda2/code/git/kode2/src/base/debug/kode_debug_crash_handler.h
+1613248911 /DISKS/sda2/code/git/kode2/src/base/debug/kode_debug_crash_handler.h
+	<signal.h>
 
 1612057072 /DISKS/sda2/code/git/kode2/src/base/debug/kode_debug_memory.h
 
@@ -109,7 +114,7 @@
 1613064690 /DISKS/sda2/code/git/kode2/src/gui/kode_drawable.h
 	"gui/xcb/kode_xcb.h"
 
-1613068252 /DISKS/sda2/code/git/kode2/src/gfx/kode_bitmap.h
+1613255834 /DISKS/sda2/code/git/kode2/src/gfx/kode_bitmap.h
 	"kode.h"
 	"base/utils/kode_bgra.h"
 	"base/utils/kode_integer_math.h"
@@ -122,7 +127,7 @@
 	"gfx/kode_bitmap_proc.h"
 	"gfx/kode_bitmap_gen.h"
 
-1612057072 /DISKS/sda2/code/git/kode2/src/base/utils/kode_bgra.h
+1613255813 /DISKS/sda2/code/git/kode2/src/base/utils/kode_bgra.h
 	"kode_math.h"
 
 1612057072 /DISKS/sda2/code/git/kode2/src/base/utils/kode_integer.h
@@ -405,7 +410,7 @@
 	"kode.h"
 	"gui/xcb/kode_xcb_image.h"
 
-1613064625 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_image.h
+1613250465 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_image.h
 	"kode.h"
 	"gfx/kode_bitmap.h"
 	"gui/kode_drawable.h"
@@ -631,9 +636,9 @@
 
 1612109254 /DISKS/sda2/code/git/kode2/src/gfx/kode_bitmap_font.h
 
-1612109254 /DISKS/sda2/code/git/kode2/src/gfx/kode_bitmap_proc.h
+1613254855 /DISKS/sda2/code/git/kode2/src/gfx/kode_bitmap_proc.h
 
-1612109254 /DISKS/sda2/code/git/kode2/src/gfx/kode_bitmap_gen.h
+1613254903 /DISKS/sda2/code/git/kode2/src/gfx/kode_bitmap_gen.h
 
 1613066463 /DISKS/sda2/code/git/kode2/test/test2.cpp
 	"kode.h"
@@ -677,4 +682,11 @@
 
 1591574531 /DISKS/sda2/code/git/kode2/src/audio/kode_audio_math.h
 	<math.h>
+
+1613260124 /DISKS/sda2/code/git/kode2/test/test_gui2.cpp
+	"kode.h"
+	"gui/kode_window.h"
+	"gui/kode_surface.h"
+	"gui/kode_image.h"
+	"gui/kode_painter.h"
 

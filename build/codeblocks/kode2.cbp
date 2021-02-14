@@ -267,6 +267,10 @@
 		<Unit filename="../../src/extern/vst3/pluginterfaces/vst/vstspeaker.h" />
 		<Unit filename="../../src/extern/vst3/pluginterfaces/vst/vsttypes.h" />
 		<Unit filename="../../src/gfx/kode_bitmap.h" />
+		<Unit filename="../../src/gfx/kode_bitmap_draw.h" />
+		<Unit filename="../../src/gfx/kode_bitmap_font.h" />
+		<Unit filename="../../src/gfx/kode_bitmap_gen.h" />
+		<Unit filename="../../src/gfx/kode_bitmap_proc.h" />
 		<Unit filename="../../src/gui/cairo/kode_cairo.h" />
 		<Unit filename="../../src/gui/cairo/kode_cairo_painter.h" />
 		<Unit filename="../../src/gui/cairo/kode_cairo_utils.h" />
@@ -295,6 +299,7 @@
 		<Unit filename="../../src/gui/xcb/kode_xcb_surface.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_utils.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_window.h" />
+		<Unit filename="../../src/host/kode_hosted_plugin.h" />
 		<Unit filename="../../src/kode.h" />
 		<Unit filename="../../src/plugin/dssi/kode_dssi.h" />
 		<Unit filename="../../src/plugin/dssi/kode_dssi_instance.h" />
@@ -336,6 +341,10 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="../../test/test_gui1.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../test/test_gui2.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>

@@ -72,7 +72,6 @@
   }
 
   bool KODE_initCrashHandlers() {
-    KODE_PRINT;
     //for (int i=0; i<32; i++) KODE_InitSignalHandler(i);
     KODE_InitCrashHandler(SIGILL);
     KODE_InitCrashHandler(SIGABRT);

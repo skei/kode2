@@ -185,17 +185,17 @@ uint32_t KODE_BGRA_AlphaBlend(uint32_t c1, uint32_t c2) {
   //uint8_t a = (c1 & 0xff000000) >> 24;
   uint8_t a = (c2 & 0xff000000) >> 24;
   //a = 255 - a;
-  uint32_t r = (c2 & 0xff0000) >> 16;
-  uint32_t g = (c2 & 0x00ff00) >> 8;
-  uint32_t b = (c2 & 0x0000ff);
+  uint32_t r = (c2 & 0x00ff0000) >> 16;
+  uint32_t g = (c2 & 0x0000ff00) >> 8;
+  uint32_t b = (c2 & 0x000000ff);
   r = (r*a) >> 8;
   g = (g*a) >> 8;
   b = (b*a) >> 8;
   c2 = KODE_BGRA(r,g,b,a); // was RGB
   a = 255-a;
-  r = (c1 & 0xff0000) >> 16;
-  g = (c1 & 0x00ff00) >> 8;
-  b = (c1 & 0x0000ff);
+  r = (c1 & 0x00ff0000) >> 16;
+  g = (c1 & 0x0000ff00) >> 8;
+  b = (c1 & 0x000000ff);
   r = (r*a) >> 8;
   g = (g*a) >> 8;
   b = (b*a) >> 8;
@@ -207,17 +207,17 @@ uint32_t KODE_BGRA_AlphaBlend(uint32_t c1, uint32_t c2) {
 
 uint32_t KODE_BGRA_AlphaBlend(uint32_t c1, uint32_t c2, uint8_t a) {
   a = 255 - a;
-  uint32_t r = (c1 & 0xff0000) >> 16;
-  uint32_t g = (c1 & 0x00ff00) >> 8;
-  uint32_t b = (c1 & 0x0000ff);
+  uint32_t r = (c1 & 0x00ff0000) >> 16;
+  uint32_t g = (c1 & 0x0000ff00) >> 8;
+  uint32_t b = (c1 & 0x000000ff);
   r = (r*a) >> 8;
   g = (g*a) >> 8;
   b = (b*a) >> 8;
   c1 = KODE_BGRA(r,g,b); // was RGB
   a = 255-a;
-  r = (c2 & 0xff0000) >> 16;
-  g = (c2 & 0x00ff00) >> 8;
-  b = (c2 & 0x0000ff);
+  r = (c2 & 0x00ff0000) >> 16;
+  g = (c2 & 0x0000ff00) >> 8;
+  b = (c2 & 0x000000ff);
   r = (r*a) >> 8;
   g = (g*a) >> 8;
   b = (b*a) >> 8;

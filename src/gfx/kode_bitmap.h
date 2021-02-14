@@ -292,9 +292,8 @@ public:
   #define _alpha(c,a) (((c * a) >> 8) & 0xff)
 
   void blendPixel(uint32_t x, uint32_t y, uint32_t c, uint8_t AAlpha) {
-    if (x>=(uint32_t)MWidth) return;//x = MWidth-1;
-    if (y>=(uint32_t)MHeight) return;//y = MHeight-1;
-    //int32_t pos = (y*MWidth + x) * 4; // todo, stride
+    if (x >= (uint32_t)MWidth) return;
+    if (y >= (uint32_t)MHeight) return;
     uint8_t* ptr = (uint8_t*)getPixelPtr(x,y);
     uint8_t bb = ptr[0];
     uint8_t bg = ptr[1];
@@ -302,9 +301,6 @@ public:
     uint8_t cr = (c >> 16) & 0xff;
     uint8_t cg = (c >> 8 ) & 0xff;
     uint8_t cb = (c      ) & 0xff;
-    //*ptr++ = KODE_RGBA_Alpha(cb,AAlpha) + KODE_RGBA_Alpha(bb,(255-AAlpha));
-    //*ptr++ = KODE_RGBA_Alpha(cg,AAlpha) + KODE_RGBA_Alpha(bg,(255-AAlpha));
-    //*ptr++ = KODE_RGBA_Alpha(cr,AAlpha) + KODE_RGBA_Alpha(br,(255-AAlpha));
     *ptr++ = _alpha(cb,AAlpha) + _alpha(bb,(255-AAlpha));
     *ptr++ = _alpha(cg,AAlpha) + _alpha(bg,(255-AAlpha));
     *ptr++ = _alpha(cr,AAlpha) + _alpha(br,(255-AAlpha));
@@ -316,16 +312,16 @@ public:
 public:
 //------------------------------
 
-  void clear() {
-    for(uint32_t y=0; y<MHeight; y++) {
-      uint32_t* ptr = getLinePtr(y);
-      KODE_Memset(ptr,0,MWidth*4);
-    }
-  }
+  //void clear() {
+  //  for(uint32_t y=0; y<MHeight; y++) {
+  //    uint32_t* ptr = getLinePtr(y);
+  //    KODE_Memset(ptr,0,MWidth*4);
+  //  }
+  //}
 
   //----------
 
-  void fill(uint32_t AColor) {
+  void fill(uint32_t AColor=0xff000000) {
     for(uint32_t y=0; y<MHeight; y++) {
       uint32_t* ptr = getLinePtr(y);
       for(uint32_t x=0; x<MWidth; x++) {
@@ -342,27 +338,29 @@ public:
 
   //----------
 
-  #define _alpha(c,a) (((c * a) >> 8) & 0xff)
+  //#define _alpha(c,a) (((c * a) >> 8) & 0xff)
 
-  void premultAlpha(void) {
+  void premultAlpha(uint32_t AColor=0x000000) {
     if (MBuffer) {
       for(uint32_t y=0; y<MHeight; y++) {
-        uint8_t* ptr = (uint8_t*)getLinePtr(y);
+        uint32_t* ptr = (uint32_t*)getLinePtr(y);
         for(uint32_t x=0; x<MWidth; x++) {
-          uint8_t b = ptr[0];
-          uint8_t g = ptr[0];
-          uint8_t r = ptr[2];
-          uint8_t a = ptr[3];
-          *ptr++ = _alpha(b,a);
-          *ptr++ = _alpha(g,a);
-          *ptr++ = _alpha(r,a);
-          *ptr++ = a;
+          //uint8_t b = ptr[0];
+          //uint8_t g = ptr[1];
+          //uint8_t r = ptr[2];
+          //uint8_t a = ptr[3];
+          //*ptr++ = _alpha(b,a);
+          //*ptr++ = _alpha(g,a);
+          //*ptr++ = _alpha(r,a);
+          //*ptr++ = a;
+          uint32_t c = *ptr;
+          *ptr++ = KODE_BGRA_AlphaBlend(AColor,c);
         } //for x
       } //for y
     } //mBuffer
   }
 
-  #undef _alpha
+  //#undef _alpha
 
   //----------
 
@@ -402,64 +400,41 @@ public:
 public:
 //------------------------------
 
-  uint8_t getLayerValue(uint32_t x, uint32_t y, uint32_t ch) {
-    if (x>=(uint32_t)MWidth) return 0;
-    if (y>=(uint32_t)MHeight) return 0;
-    uint32_t* ptr = (uint32_t*)getPixelPtr(x,y);
+  uint8_t getLayerValue(uint32_t ch, uint32_t x, uint32_t y) {
+    if (x >= (uint32_t)MWidth) return 0;
+    if (y >= (uint32_t)MHeight) return 0;
+    uint8_t* ptr = (uint8_t*)getPixelPtr(x,y);
     return ptr[ch];
   }
 
   //----------
 
-  uint8_t getLayerValue_NoClip(uint32_t x, uint32_t y, uint32_t ch) {
-    if (x>=(uint32_t)MWidth) return 0;
-    if (y>=(uint32_t)MHeight) return 0;
-    uint32_t* ptr = (uint32_t*)getPixelPtr(x,y);
+  uint8_t getLayerValue_NoClip(uint32_t ch, uint32_t x, uint32_t y) {
+    if (x >= (uint32_t)MWidth) return 0;
+    if (y >= (uint32_t)MHeight) return 0;
+    uint8_t* ptr = (uint8_t*)getPixelPtr(x,y);
     return ptr[ch];
   }
 
   //----------
 
-  void setLayerValue(uint32_t x, uint32_t y, uint8_t v, uint32_t ch) {
-    if (x>=(uint32_t)MWidth) return;//x = MWidth - 1;
-    if (y>=(uint32_t)MHeight) return;//y = MHeight - 1;
-    uint32_t* ptr = (uint32_t*)getPixelPtr(x,y);
+  void setLayerValue(uint32_t ch, uint32_t x, uint32_t y, uint8_t v) {
+    if (x >= (uint32_t)MWidth) return;//x = MWidth - 1;
+    if (y >= (uint32_t)MHeight) return;//y = MHeight - 1;
+    uint8_t* ptr = (uint8_t*)getPixelPtr(x,y);
     ptr[ch] = v;
   }
 
   //----------
 
-  void setLayerValue_NoClip(uint32_t x, uint32_t y, uint8_t v, uint32_t ch) {
-    uint32_t* ptr = (uint32_t*)getPixelPtr(x,y);
+  void setLayerValue_NoClip(uint32_t ch, uint32_t x, uint32_t y, uint8_t v) {
+    uint8_t* ptr = (uint8_t*)getPixelPtr(x,y);
     ptr[ch] = v;
   }
 
   //----------
 
-  //TODO: stride / sub-bitmaps
-
-  void clearLayer(uint32_t ALayer) {
-    uint32_t size = MWidth * MHeight;
-    uint8_t* ptr = (uint8_t*)MBuffer;
-    ptr += ALayer;
-    for (uint32_t i=0; i<size; i++) {
-      *ptr = 0;
-      ptr += 4;
-    }
-  }
-
-  //----------
-
-  //TODO: stride / sub-bitmaps
-
-  void fillLayer(uint32_t ALayer, uint8_t AValue) {
-    //uint32_t size = MWidth * MHeight;
-    //uint8_t* ptr = (uint8_t*)MBuffer;
-    //ptr += ALayer;
-    //for (uint32_t i=0; i<size; i++) {
-    //  *ptr = AValue;
-    //  ptr += 4;
-    //}
+  void fillLayer(uint32_t ALayer, uint8_t AValue=0) {
     for (uint32_t y=0; y<MHeight; y++) {
       uint8_t* ptr = (uint8_t*)getLinePtr(y);
       ptr += ALayer;
@@ -468,36 +443,33 @@ public:
         ptr += 4;
       }
     }
-
   }
 
   //----------
-
-  //TODO: stride / sub-bitmaps
 
   void swapLayer(uint32_t ALayer1, uint32_t ALayer2) {
-    uint32_t size = MWidth * MHeight;
-    uint8_t* ptr = (uint8_t*)MBuffer;
-    for (uint32_t i=0; i<size; i++) {
-      uint8_t c1 = ptr[ALayer1];
-      uint8_t c2 = ptr[ALayer2];
-      ptr[ALayer1] = c2;
-      ptr[ALayer2] = c1;
-      ptr += 4;
+    for (uint32_t y=0; y<MHeight; y++) {
+      uint8_t* ptr = (uint8_t*)getLinePtr(y);
+      for (uint32_t x=0; x<MWidth; x++) {
+        uint8_t v1 = ptr[ALayer1];
+        uint8_t v2 = ptr[ALayer2];
+        ptr[ALayer1] =v2;
+        ptr[ALayer2] =v1;
+        ptr += 4;
+      }
     }
+
   }
 
   //----------
 
-  //TODO: stride / sub-bitmaps
-
   void copyLayer(uint32_t ADstLayer, uint32_t ASrcLayer) {
-    uint32_t size = MWidth * MHeight;
-    uint8_t* ptr = (uint8_t*)MBuffer;
-    for (uint32_t i=0; i<size; i++) {
-      uint8_t c = ptr[ASrcLayer];
-      ptr[ADstLayer] = c;
-      ptr += 4;
+    for (uint32_t y=0; y<MHeight; y++) {
+      uint8_t* ptr = (uint8_t*)getLinePtr(y);
+      for (uint32_t x=0; x<MWidth; x++) {
+        ptr[ADstLayer] = ptr[ASrcLayer];
+        ptr += 4;
+      }
     }
   }
 

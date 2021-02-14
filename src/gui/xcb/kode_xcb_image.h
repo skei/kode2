@@ -2,6 +2,13 @@
 #define kode_xcb_image_included
 //----------------------------------------------------------------------
 
+/*
+  todo:
+
+  * if bitmap.stride != width * 4, copy to temporary buffer
+
+*/
+
 #include "kode.h"
 #include "gfx/kode_bitmap.h"
 #include "gui/kode_drawable.h"

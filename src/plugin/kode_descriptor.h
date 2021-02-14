@@ -110,13 +110,18 @@ public:
   void setUrl(const char* AUrl)                 { MUrl = AUrl; }
   void setEmail(const char* AEmail)             { MEmail = AEmail; }
   void setVersion(uint32_t AVersion)            { MVersion = AVersion; }
-  void setIsSynth(bool AIsSynth)                { MOptions.isSynth = AIsSynth; }
-  void setHasEditor(bool AHasEditor)            { MOptions.hasEditor = AHasEditor; }
-  void setCanSendMidi(bool ACanSendMidi)        { MOptions.canSendMidi = ACanSendMidi; }
-  void setCanReceiveMidi(bool ACanReceiveMidi)  { MOptions.canReceiveMidi = ACanReceiveMidi; }
-  void setEditorWidth(uint32_t AWidth)          { MEditorWidth = AWidth; }
-  void setEditorHeight(uint32_t AHeight)        { MEditorHeight = AHeight; }
-  void setEditorSize(uint32_t W, uint32_t H)    { MEditorWidth = W; MEditorHeight = H; }
+
+  void setIsSynth(bool AIsSynth=true) {
+    MOptions.isSynth = AIsSynth;
+    if (AIsSynth) MOptions.canReceiveMidi = true;
+  }
+
+  void setHasEditor(bool AHasEditor=true)           { MOptions.hasEditor = AHasEditor; }
+  void setCanSendMidi(bool ACanSendMidi=true)       { MOptions.canSendMidi = ACanSendMidi; }
+  void setCanReceiveMidi(bool ACanReceiveMidi=true) { MOptions.canReceiveMidi = ACanReceiveMidi; }
+  void setEditorWidth(uint32_t AWidth)              { MEditorWidth = AWidth; }
+  void setEditorHeight(uint32_t AHeight)            { MEditorHeight = AHeight; }
+  void setEditorSize(uint32_t W, uint32_t H)        { MEditorWidth = W; MEditorHeight = H; }
 
 
 //------------------------------

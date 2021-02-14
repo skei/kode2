@@ -2,25 +2,25 @@
 #define kode_vst3_included
 //----------------------------------------------------------------------
 
-#ifdef KODE_DEBUG_VST3
-  #define VST3_Print   KODE_Print
-  #define VST3_DPrint  KODE_DPrint
-  #define VST3_PRINT   KODE_PRINT
-#else
-  #define VST3_Print   KODE_NoPrint
-  #define VST3_DPrint  KODE_NoPrint
-  #define VST3_PRINT   {}
-#endif
-
-#ifdef KODE_DEBUG_VST3_RT
-  #define VST3_RT_Print   KODE_Print
-  #define VST3_RT_DPrint  KODE_DPrint
-  #define VST3_RT_PRINT   KODE_PRINT
-#else
-  #define VST3_RT_Print   KODE_NoPrint
-  #define VST3_RT_DPrint  KODE_NoPrint
-  #define VST3_RT_PRINT   {}
-#endif
+//#ifdef KODE_DEBUG_VST3
+//  #define VST3_Print   KODE_Print
+//  #define VST3_DPrint  KODE_DPrint
+//  #define VST3_PRINT   KODE_PRINT
+//#else
+//  #define VST3_Print   KODE_NoPrint
+//  #define VST3_DPrint  KODE_NoPrint
+//  #define VST3_PRINT   {}
+//#endif
+//
+//#ifdef KODE_DEBUG_VST3_RT
+//  #define VST3_RT_Print   KODE_Print
+//  #define VST3_RT_DPrint  KODE_DPrint
+//  #define VST3_RT_PRINT   KODE_PRINT
+//#else
+//  #define VST3_RT_Print   KODE_NoPrint
+//  #define VST3_RT_DPrint  KODE_NoPrint
+//  #define VST3_RT_PRINT   {}
+//#endif
 
 //----------------------------------------------------------------------
 //

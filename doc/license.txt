@@ -17,6 +17,14 @@ see individual source files for more info and licenses (for derived stuff).
 anyway, if you use anything in here that is either gpl,
 or derived from things that are gpl, you have to be gpl too.
 
+---
+
+KLL - kode.libre.license (gpl3?)
+KFL - kode.free.license (mit/bsd variant)
+KPL - kode.proproetary.license (individual)
+
+---
 
 TODO: list all external authors and licenses, (and relevant files )
+
 
