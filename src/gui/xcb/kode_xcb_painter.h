@@ -194,6 +194,8 @@ public:
     return MFontWidth;
   }
 
+  //----------
+
   float getTextHeight(const char* AText) final {
     measure_string(AText);
     return MFontHeight;

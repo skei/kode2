@@ -76,23 +76,23 @@ bool KODE_iidEqual(const void* iid1, const void* iid2) {
 void VST3_PrintIID(const void* iid) {
   uint8_t* ptr = (uint8_t*)iid;
   for (uint32_t i=0; i<4; i++) {
-    VST3_DPrint("%c",KODE_HEX_TABLE[ ptr[i] >> 4 ]);
-    VST3_DPrint("%c",KODE_HEX_TABLE[ ptr[i] & 15 ]);
+    KODE_DPrint("%c",KODE_HEX_TABLE[ ptr[i] >> 4 ]);
+    KODE_DPrint("%c",KODE_HEX_TABLE[ ptr[i] & 15 ]);
   }
-  VST3_DPrint("-");
+  KODE_DPrint("-");
   for (uint32_t i=4; i<8; i++) {
-    VST3_DPrint("%c",KODE_HEX_TABLE[ ptr[i] >> 4 ]);
-    VST3_DPrint("%c",KODE_HEX_TABLE[ ptr[i] & 15 ]);
+    KODE_DPrint("%c",KODE_HEX_TABLE[ ptr[i] >> 4 ]);
+    KODE_DPrint("%c",KODE_HEX_TABLE[ ptr[i] & 15 ]);
   }
-  VST3_DPrint("-");
+  KODE_DPrint("-");
   for (uint32_t i=8; i<12; i++) {
-    VST3_DPrint("%c",KODE_HEX_TABLE[ ptr[i] >> 4 ]);
-    VST3_DPrint("%c",KODE_HEX_TABLE[ ptr[i] & 15 ]);
+    KODE_DPrint("%c",KODE_HEX_TABLE[ ptr[i] >> 4 ]);
+    KODE_DPrint("%c",KODE_HEX_TABLE[ ptr[i] & 15 ]);
   }
-  VST3_DPrint("-");
+  KODE_DPrint("-");
   for (uint32_t i=12; i<16; i++) {
-    VST3_DPrint("%c",KODE_HEX_TABLE[ ptr[i] >> 4 ]);
-    VST3_DPrint("%c",KODE_HEX_TABLE[ ptr[i] & 15 ]);
+    KODE_DPrint("%c",KODE_HEX_TABLE[ ptr[i] >> 4 ]);
+    KODE_DPrint("%c",KODE_HEX_TABLE[ ptr[i] & 15 ]);
   }
 }
 

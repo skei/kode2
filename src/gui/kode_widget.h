@@ -9,6 +9,8 @@
 
 //----------------------------------------------------------------------
 
+#define KODE_WIDGET_MAX_PARAMETERS 16
+
 struct KODE_WidgetOptions {
   bool autoMouseCapture = true;
   bool autoClip         = true;
@@ -46,18 +48,23 @@ protected:
 //------------------------------
 
   const char*         MName         = "KODE_Widget";
-  KODE_FRect          MRect         = KODE_FRect(0);
   float               MValue        = 0.0f;
-  KODE_Widget*        MParent       = KODE_NULL;
-  KODE_Widgets        MChildren;
 
   KODE_WidgetLayout   MLayout;
   KODE_WidgetOptions  MOptions;
   KODE_WidgetStates   MStates;
 
+  KODE_Widget*        MParent       = KODE_NULL;
+  KODE_Widgets        MChildren;
+
+  KODE_FRect          MRect         = KODE_FRect(0);
   KODE_FRect          MInitialRect  = KODE_FRect(0);
   KODE_FRect          MContentRect  = KODE_FRect(0);
-  KODE_Parameter*     MParameter    = KODE_NULL;
+
+  KODE_Parameter*     MParameter                              = KODE_NULL;
+
+  uint32_t            MSelectedParameter                      = 0;
+  KODE_Parameter*     MParameters[KODE_WIDGET_MAX_PARAMETERS] = {0};
 
 //------------------------------
 public:
@@ -101,6 +108,19 @@ public:
 
   KODE_Parameter* getParameter() {
     return MParameter;
+  }
+
+  //----------
+
+  //void setParameter(KODE_Parameter* AParameter, uint32_t AIndex=0) {
+  //  MParameters[AIndex] = AParameter;
+  //  MParameter = AParameter;
+  //}
+
+  //----------
+
+  void selectParameter(uint32_t AIndex) {
+    MParameter = MParameters[AIndex];
   }
 
 //------------------------------
@@ -170,6 +190,20 @@ public:
 
   //----------
 
+  /*
+
+    * the widgets are aligned from their MInitialRect, set up when the
+      widget is created.. so, if we resize the widget, it will be lost next
+      time the widgets are being 'realigned.. :-/
+
+      todo: have a MInitialDelta rect? difference from MInitialRect? in case
+      of runtime moving, resizing, etc.. ???
+
+      or modify the MInitialRect directly when needed (resizing the widget,
+      etc)..
+
+  */
+
   void alignChildren() {
     //KODE_FRect parent = MRect;
     KODE_FRect client = MRect;
@@ -177,13 +211,14 @@ public:
     uint32_t num = MChildren.size();
     for (uint32_t i=0; i<num; i++) {
       KODE_Widget* widget = MChildren[i];
+
       /*
         MRect has already been aligned, and children has been aligned by
-        _previous_ MRect..
-        so we start rebuilding the coords from 'scratch' (initial rect)..
-        (if we knew how much these have changed from, for example, the initial
-        rect, we could just subtract it..)
+        _previous_ MRect.. so we start rebuilding the coords from 'scratch'
+        (initial rect).. (if we knew how much these have changed from, for
+        example, the initial rect, we could just subtract it)..
       */
+
       KODE_FRect rect = widget->MInitialRect;
       switch (widget->MLayout.alignment) {
 
@@ -351,7 +386,7 @@ public:
   virtual void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo) {
   }
 
-  virtual void on_widget_connect(KODE_Parameter* AParameter) {
+  virtual void on_widget_connect(KODE_Parameter* AParameter, uint32_t ASubIndex) {
     //setParameter(AParameter);
   }
 

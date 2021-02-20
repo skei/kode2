@@ -8,6 +8,7 @@
 		<Build>
 			<Target title="debug.exe">
 				<Option output="../../bin/kode_debug" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
 				<Option object_output="obj/debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -25,6 +26,7 @@
 			</Target>
 			<Target title="release.exe">
 				<Option output="../../bin/kode_release" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../../bin/" />
 				<Option object_output="obj/release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -102,7 +104,15 @@
 			<Add library="SDL2_image" />
 			<Add library="SDL2_mixer" />
 		</Linker>
+		<Unit filename="../../apps/mdl_convert.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="../../plugins/effect_template.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/sa_sonic_maximizer.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
@@ -110,6 +120,9 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="../../src/3d/kode_3d.h" />
+		<Unit filename="../../src/3d/kode_mdl_converter.h" />
+		<Unit filename="../../src/3d/kode_mdl_importer.h" />
 		<Unit filename="../../src/audio/io/kode_jack.h" />
 		<Unit filename="../../src/audio/io/kode_portaudio.h" />
 		<Unit filename="../../src/audio/kode_audio_math.h" />
@@ -164,6 +177,7 @@
 		<Unit filename="../../src/base/utils/kode_math.h" />
 		<Unit filename="../../src/base/utils/kode_modular.h" />
 		<Unit filename="../../src/base/utils/kode_random.h" />
+		<Unit filename="../../src/base/utils/kode_resource.h" />
 		<Unit filename="../../src/base/utils/kode_sort.h" />
 		<Unit filename="../../src/base/utils/kode_strutils.h" />
 		<Unit filename="../../src/base/utils/kode_tcc.h" />
@@ -314,6 +328,7 @@
 		<Unit filename="../../src/plugin/kode_effect.h" />
 		<Unit filename="../../src/plugin/kode_instance.h" />
 		<Unit filename="../../src/plugin/kode_parameter.h" />
+		<Unit filename="../../src/plugin/kode_parameters.h" />
 		<Unit filename="../../src/plugin/kode_plugin.h" />
 		<Unit filename="../../src/plugin/kode_plugin_base.h" />
 		<Unit filename="../../src/plugin/kode_process_context.h" />
@@ -328,6 +343,11 @@
 		<Unit filename="../../src/plugin/lv2/kode_lv2_instance.h" />
 		<Unit filename="../../src/plugin/lv2/kode_lv2_plugin.h" />
 		<Unit filename="../../src/plugin/lv2/kode_lv2_utils.h" />
+		<Unit filename="../../src/plugin/parameters/kode_float_parameter.h" />
+		<Unit filename="../../src/plugin/parameters/kode_int_parameter.h" />
+		<Unit filename="../../src/plugin/parameters/kode_pow2_parameter.h" />
+		<Unit filename="../../src/plugin/parameters/kode_pow_parameter.h" />
+		<Unit filename="../../src/plugin/parameters/kode_text_parameter.h" />
 		<Unit filename="../../src/plugin/vst2/kode_vst2.h" />
 		<Unit filename="../../src/plugin/vst2/kode_vst2_instance.h" />
 		<Unit filename="../../src/plugin/vst2/kode_vst2_plugin.h" />

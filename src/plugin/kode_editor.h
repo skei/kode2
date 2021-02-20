@@ -55,12 +55,14 @@ public:
 //------------------------------
 
   void do_widget_update(KODE_Widget* AWidget) override {
-    //KODE_PRINT;
     KODE_Parameter* parameter = AWidget->getParameter();
     if (parameter) {
       int32_t index = parameter->getIndex();
       float value = AWidget->getValue();
-      MInstance->updateParameterFromEditor(index,value);
+      //if (value != MParameterValues[index]) {
+      //  MParameterValues[index] = value;
+        MInstance->updateParameterFromEditor(index,value);
+      //}
     }
   }
 
@@ -68,12 +70,16 @@ public:
 public:
 //------------------------------
 
-  void connectParameter(KODE_Widget* AWidget, uint32_t AIndex) override {
-    MParameterToWidget[AIndex] = AWidget;
-    KODE_Parameter* parameter = MDescriptor->getParameter(AIndex);
-    //AWidget->setParameter(parameter);
-    AWidget->MParameter = parameter;
-    AWidget->on_widget_connect(parameter);
+  void connectParameter(KODE_Widget* AWidget, uint32_t AParamIndex, uint32_t ASubIndex=0) override {
+    //if (!AWidget) return;
+    KODE_Assert(AWidget);
+    KODE_Parameter* parameter = MDescriptor->getParameter(AParamIndex);
+    if (parameter) {
+      MParameterToWidget[AParamIndex] = AWidget;
+      AWidget->MParameter = parameter;
+      AWidget->MParameters[ASubIndex] = parameter;
+      AWidget->on_widget_connect(parameter,ASubIndex);
+    }
   }
 
   //----------

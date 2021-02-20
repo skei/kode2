@@ -2,17 +2,19 @@
 #define KODE_GUI_XCB
 #define KODE_DEBUG_PRINT_TIME
 #define KODE_DEBUG_PRINT_THREAD
-#define KODE_DEBUG_PRINT_SOCKET
+//#define KODE_DEBUG_PRINT_SOCKET
 
 //----------
 
 #include "kode.h"
 #include "audio/kode_audio_utils.h"
+#include "plugin/kode_parameters.h"
 #include "plugin/kode_plugin.h"
 #include "plugin/kode_voice_manager.h"
 #include "gui/kode_widgets.h"
 
 #define KODE_PLUGIN_MESSAGE_QUEUE_SIZE 32
+
 typedef KODE_Queue<uint32_t,KODE_PLUGIN_MESSAGE_QUEUE_SIZE> KODE_Uint32Queue;
 
 class myVoice;
@@ -51,7 +53,7 @@ public:
     parameter = appendParameter( KODE_New KODE_Parameter("param1",0.2f) );
     parameter = appendParameter( KODE_New KODE_Parameter("param2",0.7f) );
     parameter->setLabel("db");
-    parameter = appendParameter( KODE_New KODE_Parameter("param3",0.4f) );
+    parameter = appendParameter( KODE_New KODE_FloatParameter("param3",0.0f,-1,2,0.25) );
     parameter->setLabel("%");
 
     #ifndef KODE_NO_GUI
@@ -306,6 +308,7 @@ public:
   //----------
 
   void on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) final {
+    KODE_Print("%i = %.3f\n",AIndex,AValue);
     //MNeedRecalc = true;
     //queueProcessMessage(AIndex);
     MVoices.parameter(AOffset,AIndex,AValue,AMode);

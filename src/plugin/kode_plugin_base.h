@@ -8,6 +8,8 @@
 #include "plugin/kode_program.h"
 #include "plugin/kode_process_context.h"
 
+#include "gui/kode_widget.h"
+
 //----------------------------------------------------------------------
 
 class KODE_IInstance;
@@ -51,7 +53,7 @@ public:
   KODE_IEditor(KODE_IInstance* AInstance) {}
   virtual ~KODE_IEditor() {}
 public:
-  virtual void              connectParameter(KODE_Widget* AWidget, uint32_t AParameter) {}
+  virtual void              connectParameter(KODE_Widget* AWidget, uint32_t AParameter, uint32_t AParamIndex=0) {}
   virtual void              updateParameterFromHost(uint32_t AIndex, float AValue, bool ARedraw=true) {}
 };
 

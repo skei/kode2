@@ -8,6 +8,8 @@ thinking about a triple-license of some sort,
 
 2) freeware
    maybe requirements about plugin formats, etc..
+   freely available/distributable binaries,
+   no registration or anything like that..
 
 3) commercial
    the ugly one..

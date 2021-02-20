@@ -7,7 +7,16 @@
 
 //#include "../test/test2.cpp"
 //#include "../test/test_gui1.cpp"
-#include "../test/test_gui2.cpp"
+//#include "../test/test_gui2.cpp"
+
+//----------------------------------------------------------------------
+//
+// apps
+//
+//----------------------------------------------------------------------
+
+#include "../apps/mdl_convert.cpp"
+
 
 //----------------------------------------------------------------------
 //
@@ -19,3 +28,5 @@
 //#include "../plugins/synth_template.cpp"
 
 //----------
+
+//#include "../plugins/ports/sa_sonic_maximizer.cpp"

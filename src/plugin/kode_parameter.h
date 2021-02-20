@@ -15,18 +15,26 @@ protected:
 //------------------------------
 
   KODE_ParameterOptions MOptions;
+  int32_t               MIndex      = -1;
+
   const char*           MName       = "";
   const char*           MShortName  = "";
   const char*           MLabel      = "";
+
   float                 MDefValue   = 0.0f;
+
   float                 MMinValue   = 0.0f;
   float                 MMaxValue   = 1.0f;
   uint32_t              MNumSteps   = 0;
-  int32_t               MIndex      = -1;
+  float                 MStepSize   = 0.0f;
 
 //------------------------------
 public:
 //------------------------------
+
+  KODE_Parameter() {
+  }
+
 
   KODE_Parameter(const char* AName, float AValue=0.0f) {
     MName = AName;
@@ -83,9 +91,10 @@ public:
 
   //----------
 
-  virtual void getDisplayString(float AValue, char* ABuffer) {
+  virtual char* getDisplayString(float AValue, char* ABuffer) {
     float value = from01(AValue);
     KODE_FloatToString(ABuffer,value);
+    return ABuffer;
   }
 
 };
