@@ -143,32 +143,32 @@ struct vec3_t {
   vec3_t& operator -= (const vec3_t& v)         { x-=v.x; y-=v.y; z-=v.z; return *this; }
   vec3_t& operator *= (const vec3_t& v)         { x*=v.x; y*=v.y; z*=v.z; return *this; }
   vec3_t& operator /= (const vec3_t& v)         { x/=v.x; y/=v.y; z/=v.z; return *this; }
-  vec3_t  operator +  (float s)          const { return vec3_t(x+s,y+s,z+s); }
-  vec3_t  operator -  (float s)          const { return vec3_t(x-s,y-s,z-s); }
-  vec3_t  operator *  (float s)          const { return vec3_t(x*s,y*s,z*s); }
-  vec3_t  operator /  (float s)          const { return vec3_t(x/s,y/s,z/s); }
-  vec3_t& operator += (const float& s)         { x+=s; y+=s; z+=s; return *this; }
-  vec3_t& operator -= (const float& s)         { x-=s; y-=s; z-=s; return *this; }
-  vec3_t& operator *= (const float& s)         { x*=s; y*=s; z*=s; return *this; }
-  vec3_t& operator /= (const float& s)         { x/=s; y/=s; z/=s; return *this; }
-  vec3_t  operator -  ()                 const { return vec3_t(-x,-y,-z); }
+  vec3_t  operator +  (float s)           const { return vec3_t(x+s,y+s,z+s); }
+  vec3_t  operator -  (float s)           const { return vec3_t(x-s,y-s,z-s); }
+  vec3_t  operator *  (float s)           const { return vec3_t(x*s,y*s,z*s); }
+  vec3_t  operator /  (float s)           const { return vec3_t(x/s,y/s,z/s); }
+  vec3_t& operator += (const float& s)          { x+=s; y+=s; z+=s; return *this; }
+  vec3_t& operator -= (const float& s)          { x-=s; y-=s; z-=s; return *this; }
+  vec3_t& operator *= (const float& s)          { x*=s; y*=s; z*=s; return *this; }
+  vec3_t& operator /= (const float& s)          { x/=s; y/=s; z/=s; return *this; }
+  vec3_t  operator -  ()                  const { return vec3_t(-x,-y,-z); }
 
   float dot(vec3_t v1) {
-    return x * v1.x + y * v1.y + z * v1.z;
+    return (x * v1.x) + (y * v1.y) + (z * v1.z);
   }
 
   vec3_t cross(vec3_t v1) {
     return vec3_t(
-      y * v1.z - z * v1.y,
-      z * v1.x - x * v1.z,
-      x * v1.y - y * v1.x
+      (y * v1.z) - (z * v1.y),
+      (z * v1.x) - (x * v1.z),
+      (x * v1.y) - (y * v1.x)
     );
   }
 
   void cross(vec3_t v0, vec3_t v1) {
-    x = v0.y * v1.z - v0.z * v1.y;
-    y = v0.z * v1.x - v0.x * v1.z;
-    z = v0.x * v1.y - v0.y * v1.x;
+    x = (v0.y * v1.z) - (v0.z * v1.y);
+    y = (v0.z * v1.x) - (v0.x * v1.z);
+    z = (v0.x * v1.y) - (v0.y * v1.x);
   }
 
   float length(void) {
@@ -208,9 +208,9 @@ float KODE_Vector3_dot(vec3_t v0, vec3_t v1) {
 
 vec3_t KODE_Vector3_cross(vec3_t v0, vec3_t v1) {
   return vec3_t(
-    v0.y * v1.z - v0.z * v1.y,
-    v0.z * v1.x - v0.x * v1.z,
-    v0.x * v1.y - v0.y * v1.x
+    (v0.y * v1.z) - (v0.z * v1.y),
+    (v0.z * v1.x) - (v0.x * v1.z),
+    (v0.x * v1.y) - (v0.y * v1.x)
   );
 }
 

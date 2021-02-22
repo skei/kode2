@@ -826,15 +826,20 @@
 	"kode.h"
 	"3d/kode_3d.h"
 
-1613776990 /DISKS/sda2/code/git/kode2/src/3d/kode_mdl_importer.h
+1613868341 /DISKS/sda2/code/git/kode2/src/3d/kode_mdl_importer.h
 	"kode.h"
 	"3d/kode_3d.h"
+	"3d/kode_mdl.h"
+	"extern/stb/stb_image_write.h"
 
-1613776929 /DISKS/sda2/code/git/kode2/apps/mdl_convert.cpp
+1613866059 /DISKS/sda2/code/git/kode2/apps/mdl_convert.cpp
 	"kode.h"
 	"3d/kode_mdl_importer.h"
 
 1613774383 /DISKS/sda2/code/git/kode2/src/3d/kode_mdl_converter.h
 	"kode.h"
 	"extern/stb/stb_image_write.h"
+
+1613846789 /DISKS/sda2/code/git/kode2/src/3d/kode_mdl.h
+	"kode.h"
 
