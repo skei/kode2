@@ -2,8 +2,15 @@
 #define kode_mdl_importer_included
 //----------------------------------------------------------------------
 
+//#ifndef kode_included
+//  #define KODE_NULL     0
+//  #define KODE_INV255F  (1.0f/255.0f)
+//  #define KODE_Malloc   malloc
+//  #define KODE_Free     free
+//  // vec2_t, vec3_t
+//#endif
+
 #include "kode.h"
-#include "3d/kode_3d.h"
 #include "3d/kode_mdl.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -60,16 +67,15 @@ public:
 //------------------------------
 
   bool read(const char* AFilename) {
-    KODE_DPrint("Reading '%s'\n",AFilename);
+    //printf("Reading '%s'\n",AFilename);
     read_fp = fopen(AFilename,"rb");
     if (!read_fp) {
-      KODE_DPrint("Error. Couldn't open '%s'\n",AFilename);
+      printf("* Error. Couldn't open '%s'\n",AFilename);
       return false;
     }
     read_mdl_header();
-    print_mdl_header();
     if ((mdl_header.ident != 1330660425) || (mdl_header.version != 6)) {
-      fprintf(stderr, "Error: bad version or identifier\n");
+      printf("* Error: bad version or identifier\n");
       fclose(read_fp);
       return false;
     }
@@ -84,18 +90,21 @@ public:
   //----------
 
   bool write(const char* AName) {
-    //char temp[256];
-    //sprintf(temp,"%s.tscn",AName);
-    KODE_DPrint("Writing '%s'\n",AName);
     write_skins(AName);
     write_vertex_frames(AName);
     write_normal_frames(AName);
-    //write_script(1);
     write_mesh(AName);
     //write_shader();
     //write_material();
+    //write_script(1);
     return true;
   };
+
+  //----------
+
+  void dump() {
+    print_mdl_header();
+  }
 
   //----------
 
@@ -128,21 +137,21 @@ public:
 //------------------------------
 
   void print_mdl_header() {
-    KODE_DPrint("header:\n");
-    KODE_DPrint("  ident           %i\n",mdl_header.ident);
-    KODE_DPrint("  scale           %.3f, %.3f, %.3f\n",mdl_header.scale.x, mdl_header.scale.y, mdl_header.scale.z);
-    KODE_DPrint("  translate       %.3f, %.3f, %.3f\n",mdl_header.translate.x, mdl_header.translate.y, mdl_header.translate.z);
-    KODE_DPrint("  bounding_radius %.3f\n",mdl_header.boundingradius);
-    KODE_DPrint("  eye_position    %.3f, %.3f, %.3f\n",mdl_header.eyeposition.x,mdl_header.eyeposition.y,mdl_header.eyeposition.z);
-    KODE_DPrint("  num_skins       %i\n",mdl_header.num_skins);
-    KODE_DPrint("  skin_width      %i\n",mdl_header.skinwidth);
-    KODE_DPrint("  skin_height     %i\n",mdl_header.skinheight);
-    KODE_DPrint("  num_verts       %i\n",mdl_header.num_verts);
-    KODE_DPrint("  num_tris        %i\n",mdl_header.num_tris);
-    KODE_DPrint("  num_frames      %i\n",mdl_header.num_frames);
-    KODE_DPrint("  sync_type       %i\n",mdl_header.synctype);
-    KODE_DPrint("  flags           %i\n",mdl_header.flags);
-    KODE_DPrint("  size            %.3f\n",mdl_header.size);
+    printf("header:\n");
+    printf("  ident           %i\n",mdl_header.ident);
+    printf("  scale           %.3f, %.3f, %.3f\n",mdl_header.scale.x, mdl_header.scale.y, mdl_header.scale.z);
+    printf("  translate       %.3f, %.3f, %.3f\n",mdl_header.translate.x, mdl_header.translate.y, mdl_header.translate.z);
+    printf("  bounding_radius %.3f\n",mdl_header.boundingradius);
+    printf("  eye_position    %.3f, %.3f, %.3f\n",mdl_header.eyeposition.x,mdl_header.eyeposition.y,mdl_header.eyeposition.z);
+    printf("  num_skins       %i\n",mdl_header.num_skins);
+    printf("  skin_width      %i\n",mdl_header.skinwidth);
+    printf("  skin_height     %i\n",mdl_header.skinheight);
+    printf("  num_verts       %i\n",mdl_header.num_verts);
+    printf("  num_tris        %i\n",mdl_header.num_tris);
+    printf("  num_frames      %i\n",mdl_header.num_frames);
+    printf("  sync_type       %i\n",mdl_header.synctype);
+    printf("  flags           %i\n",mdl_header.flags);
+    printf("  size            %.3f\n",mdl_header.size);
   }
 
 //------------------------------
@@ -278,9 +287,12 @@ private:
         //s.data  = convert_skin(temp,size);
       }
       else {
+        printf("* error.. skin group %i (group_skin) not supported yet (skin %i)\n",group,i);
+        exit(100);
+
         //s.group = 1;
         //s.nb    = read_int();
-        //KODE_DPrint("    group: %i\n",s.nb);
+        //printf("    group: %i\n",s.nb);
         //s.time  = read_float_buffer(s.nb);
         ////s.data  = read_byte_buffer(s.nb * mdl_header.skin_width * mdl_header.skin_height);
         //temp = read_byte_buffer(s.nb * size);
@@ -310,7 +322,7 @@ private:
       mdl_texcoords[i].onseam = read_int();
       mdl_texcoords[i].s      = read_int();
       mdl_texcoords[i].t      = read_int();
-      //KODE_DPrint("  texcoord %i onseam %i u %i v %i\n",i,mdl_texcoords[i].onseam,mdl_texcoords[i].s,mdl_texcoords[i].t);
+      //printf("  texcoord %i onseam %i u %i v %i\n",i,mdl_texcoords[i].onseam,mdl_texcoords[i].s,mdl_texcoords[i].t);
     }
   }
 
@@ -326,7 +338,7 @@ private:
     mdl_triangles = (mdl_triangle_t *)KODE_Malloc(sizeof(mdl_triangle_t) * mdl_header.num_tris);
     for (int i=0; i<mdl_header.num_tris; i++) {
       mdl_triangles[i] = read_triangle();
-      //KODE_DPrint("  triangle %i front %i x %i y %i z %i\n",i,mdl_triangles[i].facesfront,mdl_triangles[i].vertex[0],mdl_triangles[i].vertex[1],mdl_triangles[i].vertex[2]);
+      //printf("  triangle %i front %i x %i y %i z %i\n",i,mdl_triangles[i].facesfront,mdl_triangles[i].vertex[0],mdl_triangles[i].vertex[1],mdl_triangles[i].vertex[2]);
     }
   }
 
@@ -341,7 +353,7 @@ private:
     mdl_vertex_t* vertices = (mdl_vertex_t *)KODE_Malloc(sizeof(mdl_vertex_t) * num);
     for (int i=0; i<num; i++) {
       vertices[i] = read_vertex();
-      //KODE_DPrint("  vertex %i v1 %i v2 %i v3 %i normal %i\n",i,vertices[i].v[0],vertices[i].v[1],vertices[i].v[2]);
+      //printf("  vertex %i v1 %i v2 %i v3 %i normal %i\n",i,vertices[i].v[0],vertices[i].v[1],vertices[i].v[2]);
     }
     return vertices;
   }
@@ -357,11 +369,12 @@ private:
         mdl_frames[i].frame.bboxmin = read_vertex();
         mdl_frames[i].frame.bboxmax = read_vertex();
         read_string(mdl_frames[i].frame.name,16);
-        //KODE_DPrint("  frame %i type %i name %s\n",i,mdl_frames[i].type,mdl_frames[i].frame.name);
+        //printf("  frame %i type %i name %s\n",i,mdl_frames[i].type,mdl_frames[i].frame.name);
         mdl_frames[i].frame.verts   = read_mdl_vertices(mdl_header.num_verts);
       }
       else { // mdl_groupframe_t
-        KODE_DPrint("  frame %i type %i (groupframe)\n",i,type);
+        printf("* error.. fram type %i (groupframe)  not supported yet (frame %i)\n",type,i);
+        exit(100);
         //int num               = type;
         //mdl_frames[i].type    = type;               /* !0 = group */
         //mdl_frames[i].min     = read_vertex();      /* min pos in all simple frames */
@@ -783,7 +796,7 @@ private:
   //----------
 
   void write_mesh(const char* AName) {
-    KODE_DPrint("Writing mesh: %s.tres\n",AName);
+    //printf("Writing mesh: %s.tres\n",AName);
     char filename[256];
     sprintf(filename,"%s.tres",AName);
     write_fp = fopen(filename,"wt");
@@ -843,7 +856,7 @@ private:
   //----------
 
   void write_vertex_frames(const char* AName) {
-    KODE_DPrint("Writing vertex frames: %s_vertices.png\n",AName);
+    //printf("Writing vertex frames: %s_vertices.png\n",AName);
     char filename[256];
     sprintf(filename,"%s_vertex_frames.png",AName);
     uint32_t num_tris = mdl_header.num_tris;
@@ -867,7 +880,7 @@ private:
   //----------
 
   void write_normal_frames(const char* AName) {
-    KODE_DPrint("Writing normal frames: %s_normal_frames.png\n",AName);
+    //printf("Writing normal frames: %s_normal_frames.png\n",AName);
     char filename[256];
     sprintf(filename,"%s_normal_frames.png",AName);
     uint32_t num_tris = mdl_header.num_tris;
@@ -921,11 +934,11 @@ private:
   //----------
 
   void write_skin(const char* AName, uint32_t ASkin) {
-    KODE_DPrint("Writing skin(%i): %s.png\n",ASkin,AName);
+    //printf("Writing skin(%i): %s.png\n",ASkin,AName);
     char filename[256];
     sprintf(filename,"%s_vertices.png",AName);
     //int num = mdl_header.num_skins;
-    //KODE_DPrint("writing %i skins to '%s'\n",num, filename);
+    //printf("writing %i skins to '%s'\n",num, filename);
     int width = mdl_header.skinwidth;
     int height = mdl_header.skinheight;
     uint8_t* buffer = convert_skin(mdl_skins[ASkin].data,(width*height));
@@ -943,11 +956,11 @@ private:
   //----------
 
   void write_skins(const char* AName) {
-    KODE_DPrint("Writing skins: %s.png\n",AName);
+    //printf("Writing skins: %s.png\n",AName);
     char filename[256];
     sprintf(filename,"%s_skins.png",AName);
     int num = mdl_header.num_skins;
-    KODE_DPrint("writing %i skins to '%s'\n",num, filename);
+    //printf("writing %i skins to '%s'\n",num, filename);
     int width = mdl_header.skinwidth;
     int height = mdl_header.skinheight;
     int size = width * height * 4;
