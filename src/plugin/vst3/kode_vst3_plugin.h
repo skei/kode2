@@ -1,5 +1,10 @@
-#ifndef vst3_plugin_included
-#define vst3_plugin_included
+#ifndef kode_vst3_plugin_included
+#define kode_vst3_plugin_included
+//----------------------------------------------------------------------
+//
+// needs kode_vst3.h, which is gpl3
+// so this file also needs to be gpl3
+//
 //----------------------------------------------------------------------
 
 #include "plugin/vst3/kode_vst3.h"

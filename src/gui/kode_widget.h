@@ -86,15 +86,15 @@ public:
 public:
 //------------------------------
 
-  //void setValue(float AValue) {
-  //  MValue = AValue;
-  //}
+  void setValue(float AValue) {
+    MValue = AValue;
+  }
 
   //----------
 
-  //void setParameter(KODE_Parameter* p) {
-  //  MParameter = p;
-  //}
+  void setParameter(KODE_Parameter* p) {
+    MParameter = p;
+  }
 
 //------------------------------
 public:

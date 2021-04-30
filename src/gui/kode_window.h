@@ -90,13 +90,6 @@ public:
 public: // painted
 //------------------------------
 
-  //virtual void setFillBackground(bool AFill=true, KODE_Color AColor) {
-  //  MFillBackground = AFill;
-  //  MBackgroundColor = AColor;
-  //}
-
-  //----------
-
   void setFillBackground(bool AFill=true) {
     MFillBackground = AFill;
   }
@@ -340,6 +333,11 @@ public: // "widget listener"
   }
 
   //----------
+
+  /*
+    when we invalidate, we lose all information about which widget triggered
+    the redraw, so we need to paint from the top
+  */
 
   void do_widget_redraw(KODE_Widget* AWidget, KODE_FRect ARect, uint32_t AMode=0) override {
     //KODE_PRINT;

@@ -1,30 +1,9 @@
 #ifndef kode_vst3_included
 #define kode_vst3_included
 //----------------------------------------------------------------------
-
-//#ifdef KODE_DEBUG_VST3
-//  #define VST3_Print   KODE_Print
-//  #define VST3_DPrint  KODE_DPrint
-//  #define VST3_PRINT   KODE_PRINT
-//#else
-//  #define VST3_Print   KODE_NoPrint
-//  #define VST3_DPrint  KODE_NoPrint
-//  #define VST3_PRINT   {}
-//#endif
-//
-//#ifdef KODE_DEBUG_VST3_RT
-//  #define VST3_RT_Print   KODE_Print
-//  #define VST3_RT_DPrint  KODE_DPrint
-//  #define VST3_RT_PRINT   KODE_PRINT
-//#else
-//  #define VST3_RT_Print   KODE_NoPrint
-//  #define VST3_RT_DPrint  KODE_NoPrint
-//  #define VST3_RT_PRINT   {}
-//#endif
-
-//----------------------------------------------------------------------
 //
 // based on (extracted from) steinberg vst3 sdk (gpl3)
+// so this file also needs to be gpl3
 //
 //----------------------------------------------------------------------
 
@@ -41,7 +20,7 @@
 //----------
 
 #if KODE_VST3_COM_COMPATIBLE
-  #define KODE_VST3_INLINE_UID(l1,l2,l3,l4) {                                  \
+  #define KODE_VST3_INLINE_UID(l1,l2,l3,l4) {                             \
     (int8_t)((l1 & 0x000000FF)      ), (int8_t)((l1 & 0x0000FF00) >>  8), \
     (int8_t)((l1 & 0x00FF0000) >> 16), (int8_t)((l1 & 0xFF000000) >> 24), \
     (int8_t)((l2 & 0x00FF0000) >> 16), (int8_t)((l2 & 0xFF000000) >> 24), \
@@ -52,7 +31,7 @@
     (int8_t)((l4 & 0x0000FF00) >>  8), (int8_t)((l4 & 0x000000FF)      )  \
   }
 #else
-  #define KODE_VST3_INLINE_UID(l1,l2,l3,l4) {                               \
+  #define KODE_VST3_INLINE_UID(l1,l2,l3,l4) {                             \
     (int8_t)((l1 & 0xFF000000) >> 24), (int8_t)((l1 & 0x00FF0000) >> 16), \
     (int8_t)((l1 & 0x0000FF00) >>  8), (int8_t)((l1 & 0x000000FF)      ), \
     (int8_t)((l2 & 0xFF000000) >> 24), (int8_t)((l2 & 0x00FF0000) >> 16), \

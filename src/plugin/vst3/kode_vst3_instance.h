@@ -1,6 +1,11 @@
 #ifndef vst3_instance_included
 #define vst3_instance_included
 //----------------------------------------------------------------------
+//
+// needs kode_vst3.h, which is gpl3
+// so this file also needs to be gpl3
+//
+//----------------------------------------------------------------------
 
 #include "plugin/kode_editor.h"
 #include "plugin/kode_plugin_base.h"
@@ -67,10 +72,6 @@ private:
   float*                        MHostParameterValues    = KODE_NULL;
 
   KODE_Vst3UpdateQueue          MHostParameterQueue;
-
-//------------------------------
-protected:
-//------------------------------
 
 //------------------------------
 public:
@@ -406,6 +407,10 @@ private:
     } // if input events
   }
 
+//----------------------------------------------------------------------
+// vst3
+//----------------------------------------------------------------------
+
 //------------------------------
 public: // FUnknown
 //------------------------------
@@ -625,7 +630,7 @@ public: // IPluginBase
     See IoModes
   */
 
-int32_t KODE_VST3_PLUGIN_API setIoMode(int32_t mode) final {
+  int32_t KODE_VST3_PLUGIN_API setIoMode(int32_t mode) final {
     MIoMode = mode;
     return kode_vst3_ResultOk;
   }
@@ -1822,7 +1827,7 @@ public: // ITimerHandler
   // tid = same as setComponentHandler..
 
   /*
-    will be called afte we regisdter the timer:
+    will be called afte we register the timer:
       MRunLoop->registerTimer(this,KODE_PLUGIN_VST3_TIMER_MS);
     (in IEditView.attached)
 
