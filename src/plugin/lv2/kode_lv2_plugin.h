@@ -11,8 +11,7 @@
 //----------
 
 template <class DESC, class INST>
-class KODE_Lv2Plugin
-/*: public KODE_Vst3IPluginFactory3*/ {
+class KODE_Lv2Plugin {
 
   friend const LV2_Descriptor* kode_lv2_entryPoint(unsigned long Index);
 
@@ -21,18 +20,17 @@ private:
 //------------------------------
 
   /*
-    static beacuse the lv2_instantiate_callback accesses it..
+    static because the lv2_instantiate_callback accesses it..
   */
 
-  static
-  DESC            MDescriptor;
+  static DESC MDescriptor;
 
 
 //------------------------------
 private:
 //------------------------------
 
-  LV2_Descriptor  MLv2Descriptor  = {0};
+  LV2_Descriptor  MLv2Descriptor                          = {0};
   char            MLv2Uri[KODE_PLUGIN_LV2_MAX_URI_LENGTH] = {0};
 
 //------------------------------
@@ -40,7 +38,6 @@ public:
 //------------------------------
 
   KODE_Lv2Plugin() {
-    //MLv2Uri = (char*)malloc(KODE_PLUGIN_LV2_MAX_URI_LENGTH+1);
     setup_lv2_uri();
     setup_lv2_descriptor();
   }
@@ -48,8 +45,6 @@ public:
   //----------
 
   virtual ~KODE_Lv2Plugin() {
-    //if (MLv2Descriptor) free(MLv2Descriptor);
-    //free(MLv2Uri);
   }
 
 //------------------------------
@@ -85,44 +80,48 @@ private: // lv2 callbacks
 //----------------------------------------------------------------------
 
   /*
+     Instantiate the plugin.
+
+     Note that instance initialisation should generally occur in activate()
+     rather than here. If a host calls instantiate(), it MUST call cleanup()
+     at some point in the future.
+
+     @param descriptor Descriptor of the plugin to instantiate.
+
+     @param sample_rate Sample rate, in Hz, for the new plugin instance.
+
+     @param bundle_path Path to the LV2 bundle which contains this plugin
+     binary. It MUST include the trailing directory separator so that simply
+     appending a filename will yield the path to that file in the bundle.
+
+     @param features A NULL terminated array of LV2_Feature structs which
+     represent the features the host supports. Plugins may refuse to
+     instantiate if required features are not found here. However, hosts MUST
+     NOT use this as a discovery mechanism: instead, use the RDF data to
+     determine which features are required and do not attempt to instantiate
+     unsupported plugins at all. This parameter MUST NOT be NULL, i.e. a host
+     that supports no features MUST pass a single element array containing
+     NULL.
+
+     @return A handle for the new plugin instance, or NULL if instantiation
+     has failed.
+  */
+
+  //-----
+
+  /*
     todo: new/separate descriptor per instance?
     (so we don't ned to keep the MDescriptor static..)
     we could return a struct...
+
+    todo2: send the features pointer to the instance constructor, and
+    let it sort it out itself?
 
   */
 
   static
   LV2_Handle lv2_instantiate_callback(const struct _LV2_Descriptor* descriptor, double sample_rate, const char* bundle_path, const LV2_Feature* const* features) {
-
-    KODE_Lv2Instance* lv2_instance = new KODE_Lv2Instance(MDescriptor,sample_rate);
-
-    /*
-    #ifdef KODE_DEBUG_LV2
-    LV2_DTrace("	features:\n");
-    KODE_uint32 i = 0;
-    while ( features[i] ) {
-      KODE_pchar uri = features[i]->URI;
-      LV2_DTrace("	%i: %s\n",i,uri);
-      i++;
-    }
-    #endif
-    */
-
-    LV2_URID_Map* map = KODE_NULL;
-    for (int i=0; features[i]; ++i) {
-      if (!strcmp(features[i]->URI, LV2_URID__map)) {
-        map = (LV2_URID_Map*)features[i]->data;
-        break;
-      }
-    }
-    if (!map) return nullptr;
-
-    if (MDescriptor.canReceiveMidi()) {
-      LV2_URID lv2_midi_input_urid = map->map(map->handle, LV2_MIDI__MidiEvent);
-      lv2_instance->_setMidiInputUrid(lv2_midi_input_urid);
-
-    }
-
+    KODE_Lv2Instance* lv2_instance = new KODE_Lv2Instance(MDescriptor,sample_rate,bundle_path,features);
     return (LV2_Handle)lv2_instance;
   }
 
@@ -130,7 +129,7 @@ private: // lv2 callbacks
 
   static
   void lv2_connect_port_callback(LV2_Handle instance, uint32_t port, void* data_location) {
-    //KODE_Trace("lv2: lv2_connect_port_callback\n");
+    //KODE_Print("lv2: lv2_connect_port_callback\n");
     KODE_Lv2Instance* lv2_instance = (KODE_Lv2Instance*)instance;
     if (lv2_instance) lv2_instance->lv2_connect_port(port,data_location);
   }
@@ -139,7 +138,7 @@ private: // lv2 callbacks
 
   static
   void lv2_activate_callback(LV2_Handle instance) {
-    //KODE_Trace("lv2: lv2_activate_callback\n");
+    //KODE_Print("lv2: lv2_activate_callback\n");
     KODE_Lv2Instance* lv2_instance = (KODE_Lv2Instance*)instance;
     if (lv2_instance) lv2_instance->lv2_activate();
   }
@@ -148,7 +147,7 @@ private: // lv2 callbacks
 
   static
   void lv2_run_callback(LV2_Handle instance, uint32_t sample_count) {
-    //KODE_Trace("lv2: lv2_run_callback\n");
+    //KODE_Print("lv2: lv2_run_callback\n");
     KODE_Lv2Instance* lv2_instance = (KODE_Lv2Instance*)instance;
     if (lv2_instance) lv2_instance->lv2_run(sample_count);
   }
@@ -157,7 +156,7 @@ private: // lv2 callbacks
 
   static
   void lv2_deactivate_callback(LV2_Handle instance) {
-    //KODE_Trace("lv2: lv2_deactivate_callback\n");
+    //KODE_Print("lv2: lv2_deactivate_callback\n");
     KODE_Lv2Instance* lv2_instance = (KODE_Lv2Instance*)instance;
     if (lv2_instance) lv2_instance->lv2_deactivate();
   }
@@ -166,7 +165,7 @@ private: // lv2 callbacks
 
   static
   void lv2_cleanup_callback(LV2_Handle instance) {
-    //KODE_Trace("lv2: lv2_cleanup_callback\n");
+    //KODE_Print("lv2: lv2_cleanup_callback\n");
     KODE_Lv2Instance* lv2_instance = (KODE_Lv2Instance*)instance;
     if (lv2_instance) lv2_instance->lv2_cleanup();
     delete lv2_instance;
@@ -174,9 +173,23 @@ private: // lv2 callbacks
 
   //----------
 
+  /*
+     Return additional plugin data defined by some extension.
+
+     A typical use of this facility is to return a struct containing function
+     pointers to extend the LV2_Descriptor API.
+
+     The actual type and meaning of the returned object MUST be specified
+     precisely by the extension. This function MUST return NULL for any
+     unsupported URI. If a plugin does not support any extension data, this
+     field may be NULL.
+
+     The host is never responsible for freeing the returned value.
+  */
+
   static
   const void* lv2_extension_data_callback(const char* uri) {
-    //KODE_Trace("lv2: lv2_extension_data_callback: %s\n",uri);
+    //KODE_Print("lv2: lv2_extension_data_callback: %s\n",uri);
     return nullptr;
   }
 
@@ -211,6 +224,30 @@ public:
 // entrypoint
 //
 //----------------------------------------------------------------------
+
+/*
+   Prototype for plugin accessor function.
+
+   Plugins are discovered by hosts using RDF data (not by loading libraries).
+   See http://lv2plug.in for details on the discovery process, though most
+   hosts should use an existing library to implement this functionality.
+
+   This is the simple plugin discovery API, suitable for most statically
+   defined plugins.  Advanced plugins that need access to their bundle during
+   discovery can use lv2_lib_descriptor() instead.  Plugin libraries MUST
+   include a function called "lv2_descriptor" or "lv2_lib_descriptor" with
+   C-style linkage, but SHOULD provide "lv2_descriptor" wherever possible.
+
+   When it is time to load a plugin (designated by its URI), the host loads the
+   plugin's library, gets the lv2_descriptor() function from it, and uses this
+   function to find the LV2_Descriptor for the desired plugin.  Plugins are
+   accessed by index using values from 0 upwards.  This function MUST return
+   NULL for out of range indices, so the host can enumerate plugins by
+   increasing `index` until NULL is returned.
+
+   Note that `index` has no meaning, hosts MUST NOT depend on it remaining
+   consistent between loads of the plugin library.
+*/
 
 #define KODE_LV2_MAIN_SYMBOL asm ("lv2_descriptor");
 const LV2_Descriptor* kode_lv2_entrypoint(unsigned long Index) KODE_LV2_MAIN_SYMBOL

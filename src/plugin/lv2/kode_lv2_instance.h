@@ -25,62 +25,96 @@ class KODE_Lv2Instance
 private:
 //------------------------------
 
-  KODE_Descriptor*          MDescriptor             = KODE_NULL;
-  KODE_Editor*              MEditor                 = KODE_NULL;
+  KODE_Descriptor*          MDescriptor       = KODE_NULL;
+  KODE_Editor*              MEditor           = KODE_NULL;
 
-  LV2_URID                  MMidiInputUrid          = 0;
-  const LV2_Atom_Sequence*  MAtomSequence           = KODE_NULL;
-  float                     MSampleRate             = 0.0f;
+  LV2_URID                  MMidiInputUrid    = 0;
+  const LV2_Atom_Sequence*  MAtomSequence     = KODE_NULL;
+  float                     MSampleRate       = 0.0f;
 
-  float*                    MParameterValues        = KODE_NULL;
-  //float*                    MEditorParameterValues  = KODE_NULL;
-  //float*                    MHostParameterValues    = KODE_NULL;
-  //KODE_Lv2UpdateQueue       MHostParameterQueue;
 
   uint32_t                  MNumInputs        = 0;
   uint32_t                  MNumOutputs       = 0;
   uint32_t                  MNumParameters    = 0;
-  float**                   MInputPtrs        = nullptr;
-  float**                   MOutputPtrs       = nullptr;
-  float**                   MParameterPtrs    = nullptr;
-  float*                    MHostValues       = nullptr;
-  float*                    MProcessValues    = nullptr;
+  float**                   MInputPtrs        = KODE_NULL;
+  float**                   MOutputPtrs       = KODE_NULL;
+  float**                   MParameterPtrs    = KODE_NULL;
+  float*                    MParameterValues  = KODE_NULL;
+  float*                    MHostValues       = KODE_NULL;
+  float*                    MProcessValues    = KODE_NULL;
+
+  //float*                    MEditorParameterValues  = KODE_NULL;
+  //float*                    MHostParameterValues    = KODE_NULL;
+  //KODE_Lv2UpdateQueue       MHostParameterQueue;
 
 //------------------------------
 public:
 //------------------------------
 
-  KODE_Lv2Instance(KODE_Descriptor* ADescriptor, float ASampleRate)
+  /*
+     Note that instance initialisation should generally occur in activate()
+     rather than here. If a host calls instantiate(), it MUST call cleanup()
+     at some point in the future.
+
+     path: Path to the LV2 bundle which contains this plugin
+     binary. It MUST include the trailing directory separator so that simply
+     appending a filename will yield the path to that file in the bundle.
+
+     features :A NULL terminated array of LV2_Feature structs which
+     represent the features the host supports. Plugins may refuse to
+     instantiate if required features are not found here. However, hosts MUST
+     NOT use this as a discovery mechanism: instead, use the RDF data to
+     determine which features are required and do not attempt to instantiate
+     unsupported plugins at all. This parameter MUST NOT be NULL, i.e. a host
+     that supports no features MUST pass a single element array containing
+     NULL.
+  */
+
+
+  KODE_Lv2Instance(KODE_Descriptor* ADescriptor, float ASampleRate, const char* path, const LV2_Feature* const* features)
   : KODE_IInstance(ADescriptor) {
-//    MRefCount = 1;
-//    createParameterBuffers();
-//    createParameterInfo();
-    MDescriptor = ADescriptor;
-    MSampleRate = ASampleRate;
-    MNumInputs      = MDescriptor->getNumInputs();
-    MNumOutputs     = MDescriptor->getNumOutputs();
-    MNumParameters  = MDescriptor->getNumParameters();
-    MInputPtrs      = (float**)malloc(MNumInputs     * sizeof(float*));
-    MOutputPtrs     = (float**)malloc(MNumOutputs    * sizeof(float*));
-    MParameterPtrs  = (float**)malloc(MNumParameters * sizeof(float*));
-//    MHostValues     = (float*) malloc(MNumParameters * sizeof(float ));
-//    MProcessValues  = (float*) malloc(MNumParameters * sizeof(float ));
+
 //    //instance->on_open();
 //    MInstance->on_initialize(); // open?
 
+    MDescriptor       = ADescriptor;
+    MSampleRate       = ASampleRate;
+    MNumInputs        = MDescriptor->getNumInputs();
+    MNumOutputs       = MDescriptor->getNumOutputs();
+    MNumParameters    = MDescriptor->getNumParameters();
+
+    MInputPtrs        = (float**)malloc(MNumInputs     * sizeof(float*));
+    MOutputPtrs       = (float**)malloc(MNumOutputs    * sizeof(float*));
+    MParameterPtrs    = (float**)malloc(MNumParameters * sizeof(float*));
+    MParameterValues  = (float*) malloc(MNumParameters * sizeof(float ));
+    MHostValues       = (float*) malloc(MNumParameters * sizeof(float ));
+    MProcessValues    = (float*) malloc(MNumParameters * sizeof(float ));
+
+    #ifdef KODE_DEBUG_LV2
+      KODE_DPrint("lv2 bundle_path: %s",path);
+      KODE_DPrint("lv2 features:");
+      kode_lv2_dump_features(features);
+    #endif
+
+    LV2_URID_Map* urid_map = (LV2_URID_Map*)kode_lv2_find_feature(LV2_URID__map,features);
+
+    if (urid_map) {
+      if (MDescriptor->canReceiveMidi()) {
+        MMidiInputUrid = kode_lv2_map_urid(LV2_MIDI__MidiEvent,urid_map);
+      }
+    }
 
   }
 
   //----------
 
   virtual ~KODE_Lv2Instance() {
-//    deleteParameterInfo();
-//    destroyParameterBuffers();
-    if (MInputPtrs)     free(MInputPtrs);
-    if (MOutputPtrs)    free(MOutputPtrs);
-    if (MParameterPtrs) free(MParameterPtrs);
-    if (MHostValues)    free(MHostValues);
-    if (MProcessValues) free(MProcessValues);
+    if (MInputPtrs)         free(MInputPtrs);
+    if (MOutputPtrs)        free(MOutputPtrs);
+    if (MParameterPtrs)     free(MParameterPtrs);
+    if (MParameterValues)   free(MParameterValues);
+    if (MHostValues)        free(MHostValues);
+    if (MProcessValues)     free(MProcessValues);
   }
 
 //------------------------------
@@ -95,9 +129,9 @@ public:
 
   // (shouldn't be public)
 
-  void _setMidiInputUrid(LV2_URID lv2_midi_input_urid) {
-    MMidiInputUrid = lv2_midi_input_urid;
-  }
+  //void _setMidiInputUrid(LV2_URID lv2_midi_input_urid) {
+  //  MMidiInputUrid = lv2_midi_input_urid;
+  //}
 
 //------------------------------
 public:
@@ -109,6 +143,7 @@ public:
       KODE_Parameter* parameter = MDescriptor->getParameter(i);
       float value = parameter->getDefValue();
       MParameterValues[i] = value;
+      //MHostParameterValues[i] = value;
     }
   }
 
@@ -151,8 +186,44 @@ public:
 // lv2
 //----------------------------------------------------------------------
 
+  /*
+     Connect a port on a plugin instance to a memory location.
+
+     Plugin writers should be aware that the host may elect to use the same
+     buffer for more than one port and even use the same buffer for both
+     input and output (see lv2:inPlaceBroken in lv2.ttl).
+
+     If the plugin has the feature lv2:hardRTCapable then there are various
+     things that the plugin MUST NOT do within the connect_port() function;
+     see lv2core.ttl for details.
+
+     connect_port() MUST be called at least once for each port before run()
+     is called, unless that port is lv2:connectionOptional. The plugin must
+     pay careful attention to the block size passed to run() since the block
+     allocated may only just be large enough to contain the data, and is not
+     guaranteed to remain constant between run() calls.
+
+     connect_port() may be called more than once for a plugin instance to
+     allow the host to change the buffers that the plugin is reading or
+     writing. These calls may be made before or after activate() or
+     deactivate() calls.
+
+     @param instance Plugin instance containing the port.
+
+     @param port Index of the port to connect. The host MUST NOT try to
+     connect a port index that is not defined in the plugin's RDF data. If
+     it does, the plugin's behaviour is undefined (a crash is likely).
+
+     @param data_location Pointer to data of the type defined by the port
+     type in the plugin's RDF data (for example, an array of float for an
+     lv2:AudioPort). This pointer must be stored by the plugin instance and
+     used to read/write data when run() is called. Data present at the time
+     of the connect_port() call MUST NOT be considered meaningful.
+  */
+
   void lv2_connect_port(uint32_t port, void* data_location) {
-    //LV2_Trace("lv2_connect_port: port %i data_location 0x%x\n",port,data_location);
+    //KODE_Print("lv2_connect_port: port %i data_location 0x%x\n",port,data_location);
+
     if (port < MNumInputs) {
       MInputPtrs[port] = (float*)data_location;
       return;
@@ -176,17 +247,65 @@ public:
 
   //----------
 
+  /*
+     Initialise a plugin instance and activate it for use.
+
+     This is separated from instantiate() to aid real-time support and so
+     that hosts can reinitialise a plugin instance by calling deactivate()
+     and then activate(). In this case the plugin instance MUST reset all
+     state information dependent on the history of the plugin instance except
+     for any data locations provided by connect_port(). If there is nothing
+     for activate() to do then this field may be NULL.
+
+     When present, hosts MUST call this function once before run() is called
+     for the first time. This call SHOULD be made as close to the run() call
+     as possible and indicates to real-time plugins that they are now live,
+     however plugins MUST NOT rely on a prompt call to run() after
+     activate().
+
+     The host MUST NOT call activate() again until deactivate() has been
+     called first. If a host calls activate(), it MUST call deactivate() at
+     some point in the future. Note that connect_port() may be called before
+     or after activate().
+  */
+
   void lv2_activate() {
-    //KODE_Trace("lv2_activate\n");
-//    on_start();
-//    on_activate();
+    KODE_Print("lv2_activate\n");
+    on_plugin_open();
+    on_plugin_activate();
   }
 
   //----------
 
+  /*
+     Run a plugin instance for a block.
+
+     Note that if an activate() function exists then it must be called before
+     run(). If deactivate() is called for a plugin instance then run() may
+     not be called until activate() has been called again.
+
+     If the plugin has the feature lv2:hardRTCapable then there are various
+     things that the plugin MUST NOT do within the run() function (see
+     lv2core.ttl for details).
+
+     As a special case, when `sample_count` is 0, the plugin should update
+     any output ports that represent a single instant in time (for example,
+     control ports, but not audio ports). This is particularly useful for
+     latent plugins, which should update their latency output port so hosts
+     can pre-roll plugins to compute latency. Plugins MUST NOT crash when
+     `sample_count` is 0.
+
+     @param instance Instance to be run.
+
+     @param sample_count The block size (in samples) for which the plugin
+     instance must run.
+  */
+
   void lv2_run(uint32_t sample_count) {
-    //KODE_Trace("lv2_run\n");
+    //KODE_Print("lv2_run: %i\n",sample_count);
+
     // parameters
+
     for (uint32_t i=0; i<MNumParameters; i++) {
       float v = *MParameterPtrs[i];
       MHostValues[i] = v;
@@ -198,7 +317,9 @@ public:
         on_plugin_parameter(0,i,v);
       }
     }
+
     // midi
+
     if (MDescriptor->canReceiveMidi()) {
       uint32_t offset = 0;
       LV2_ATOM_SEQUENCE_FOREACH(MAtomSequence, ev) {
@@ -209,115 +330,75 @@ public:
         }
       }
     }
+
     KODE_ProcessContext context;
-
-    //context.inputs      = MInputPtrs;
-    //context.outputs     = MOutputPtrs;
-
     context.numinputs = MDescriptor->getNumInputs();
     context.numoutputs = MDescriptor->getNumOutputs();
     for (uint32_t i=0; i<context.numinputs; i++)  { context.inputs[i]  = MInputPtrs[i]; }
     for (uint32_t i=0; i<context.numoutputs; i++) { context.outputs[i] = MOutputPtrs[i]; }
     context.numsamples  = sample_count;
     context.samplerate  = MSampleRate;
-//    context.offset      = 0;
-//    context.oversample  = 1;
+    //context.offset      = 0;
+    //context.oversample  = 1;
     on_plugin_process(&context);
     //todo: flush midi
   }
 
   //----------
 
+  /*
+     Deactivate a plugin instance (counterpart to activate()).
+
+     Hosts MUST deactivate all activated instances after they have been run()
+     for the last time. This call SHOULD be made as close to the last run()
+     call as possible and indicates to real-time plugins that they are no
+     longer live, however plugins MUST NOT rely on prompt deactivation. If
+     there is nothing for deactivate() to do then this field may be NULL
+
+     Deactivation is not similar to pausing since the plugin instance will be
+     reinitialised by activate(). However, deactivate() itself MUST NOT fully
+     reset plugin state. For example, the host may deactivate a plugin, then
+     store its state (using some extension to do so).
+
+     Hosts MUST NOT call deactivate() unless activate() was previously
+     called. Note that connect_port() may be called before or after
+     deactivate().
+  */
+
   void lv2_deactivate() {
-    //KODE_Trace("lv2_deactivate\n");
-//    MInstance->on_deactivate();
-//    MInstance->on_stop();
+    KODE_Print("lv2_deactivate\n");
+    on_plugin_close();
+    on_plugin_deactivate();
   }
 
   //----------
+
+  /*
+     Clean up a plugin instance (counterpart to instantiate()).
+
+     Once an instance of a plugin has been finished with it must be deleted
+     using this function. The instance handle passed ceases to be valid after
+     this call.
+
+     If activate() was called for a plugin instance then a corresponding call
+     to deactivate() MUST be made before cleanup() is called. Hosts MUST NOT
+     call cleanup() unless instantiate() was previously called.
+  */
 
   void lv2_cleanup() {
-    //KODE_Trace("lv2_cleanup\n");
-    //on_stop();
-//    on_terminate();
+    KODE_Print("lv2_cleanup\n");
+    on_plugin_terminate();
   }
 
   //----------
 
-  static
-  const void* lv2_extension_data_callback(const char* uri) {
-    //KODE_Trace("lv2: lv2_extension_data_callback\n");
-    return KODE_NULL;
-  }
+  //static
+  //const void* lv2_extension_data_callback(const char* uri) {
+  //  KODE_Print("lv2_extension_data_callback: '%s'\n",uri);
+  //  return KODE_NULL;
+  //}
 
 };
 
 //----------------------------------------------------------------------
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#if 0
-
-
-
-//------------------------------
-private:
-//------------------------------
-
-  void lv2_connect_port(uint32_t port, void* data_location) {
-  }
-
-  //----------
-
-  void lv2_activate() {
-  }
-
-  //----------
-
-  void lv2_run(uint32_t sample_count) {
-  }
-
-  //----------
-
-  void lv2_deactivate() {
-  }
-
-  //----------
-
-  void lv2_cleanup() {
-  }
-
-  //----------
-
-  const void* lv2_extension_data(const char* uri) {
-    //LV2_Trace("lv2_extension_data: uri %s\n",uri);
-    return nullptr;
-  }
-
-};
-
-
-#endif // 0
