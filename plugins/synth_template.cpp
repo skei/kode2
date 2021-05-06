@@ -82,7 +82,7 @@ class myEditor
 public:
 //------------------------------
 
-  myEditor(KODE_IInstance* AInstance, void* AParent=KODE_NULL)
+  myEditor(KODE_BaseInstance* AInstance, void* AParent=KODE_NULL)
   : KODE_Editor(AInstance,AParent) {
 
     setFillBackground(true);
@@ -358,14 +358,14 @@ public:
 
   #ifndef KODE_NO_GUI
 
-  KODE_IEditor* on_plugin_openEditor(void* AParent) final {
+  KODE_BaseEditor* on_plugin_openEditor(void* AParent) final {
     MEditor = KODE_New myEditor(this,AParent);
     return MEditor;
   }
 
   //----------
 
-  void  on_plugin_closeEditor(KODE_IEditor* AEditor) final {
+  void  on_plugin_closeEditor(KODE_BaseEditor* AEditor) final {
     //KODE_Assert(AEditor == MEditor);
     if (MEditor) {
       KODE_Delete MEditor;
@@ -375,7 +375,7 @@ public:
 
   //----------
 
-  void on_plugin_updateEditor(KODE_IEditor* AEditor) final {
+  void on_plugin_updateEditor(KODE_BaseEditor* AEditor) final {
     //KODE_Assert(AEditor == MEditor);
     //if (MEditor) {
     //  flushGuiMessages();

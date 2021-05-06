@@ -19,6 +19,12 @@
 
 //----------
 
+#ifdef KODE_PLUGIN_LV2
+  #include "plugin/lv2/kode_lv2_plugin.h"
+  #define KODE_PLUGIN_ENTRYPOINT KODE_LV2_ENTRYPOINT
+#endif
+//----------
+
 #ifdef KODE_PLUGIN_VST3
   #include "plugin/vst3/kode_vst3_plugin.h"
   #define KODE_PLUGIN_ENTRYPOINT KODE_VST3_ENTRYPOINT

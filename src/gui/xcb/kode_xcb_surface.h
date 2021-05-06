@@ -14,7 +14,7 @@
 //----------------------------------------------------------------------
 
 class KODE_XcbSurface
-: public KODE_ISurface
+: public KODE_BaseSurface
 , public KODE_Drawable {
 
 //------------------------------
@@ -40,7 +40,7 @@ public:
   //: KODE_ISurface(ATarget,AWidth,AHeight,ADepth) {
 
   KODE_XcbSurface(KODE_Drawable* ATarget)
-  : KODE_ISurface(ATarget) {
+  : KODE_BaseSurface(ATarget) {
     MConnection = ATarget->getXcbConnection();
     MTargetDrawable   = ATarget->getXcbDrawable();
     MTargetVisual     = ATarget->getXcbVisual();
@@ -55,7 +55,7 @@ public:
   //----------
 
   KODE_XcbSurface(KODE_Drawable* AOwner, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=0)
-  : KODE_ISurface(AOwner,AWidth,AHeight,ADepth) {
+  : KODE_BaseSurface(AOwner,AWidth,AHeight,ADepth) {
     MConnection = AOwner->getXcbConnection();
     MTargetDrawable   = AOwner->getXcbDrawable();
     MTargetVisual     = AOwner->getXcbVisual();

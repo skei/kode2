@@ -14,7 +14,7 @@ protected:
 //------------------------------
 
   bool        MDrawValueBar       = true;
-  KODE_Color  MValueBarColor      = KODE_Color(0.5f, 0.5f, 0.0f);
+  KODE_Color  MValueBarColor      = KODE_Color(0.45f, 0.45f, 0.45f);
   uint32_t    MValueBarDirection  = KODE_RIGHT;
   KODE_FRect  MValueBarOffset     = KODE_FRect(1);
 
@@ -24,6 +24,12 @@ public:
 
   KODE_SliderWidget(KODE_FRect ARect)
   : KODE_ValueWidget(ARect) {
+    MDrawBorder = true;
+    MBackgroundColor  = KODE_Color( 0.7,  0.7,  0.7 );
+    MTextColor        = KODE_Color( 0,    0,    0   );
+    MValueTextColor   = KODE_Color( 0,    0,    0   );
+    MValueBarColor    = KODE_Color( 0.55, 0.55, 0.55);
+    MTextOffset = KODE_FRect(6,0,0,0);
   }
 
   virtual ~KODE_SliderWidget() {
@@ -47,7 +53,7 @@ public:
 
   //----------
 
-  virtual void drawValueBar(KODE_IPainter* APainter) {
+  virtual void drawValueBar(KODE_BasePainter* APainter) {
     if (MDrawValueBar) {
       KODE_FRect  rect  = MRect;
       float       value = MValue;
@@ -78,7 +84,7 @@ public:
 public:
 //------------------------------
 
-  void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     fillBackground(APainter);
     paintChildren(APainter,ARect,AMode);
     drawValueBar(APainter);

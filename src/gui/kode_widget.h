@@ -47,8 +47,8 @@ class KODE_Widget {
 protected:
 //------------------------------
 
-  const char*         MName         = "KODE_Widget";
   float               MValue        = 0.0f;
+  const char*         MText         = "KODE_Widget";
 
   KODE_WidgetLayout   MLayout;
   KODE_WidgetOptions  MOptions;
@@ -92,6 +92,12 @@ public:
 
   //----------
 
+  void setText(const char* AText) {
+    MText = AText;
+  }
+
+  //----------
+
   void setParameter(KODE_Parameter* p) {
     MParameter = p;
   }
@@ -102,6 +108,12 @@ public:
 
   float getValue() {
     return MValue;
+  }
+
+  //----------
+
+  const char* getText() {
+    return MText;
   }
 
   //----------
@@ -176,7 +188,7 @@ public:
 
   //----------
 
-  void paintChildren(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) {
+  void paintChildren(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
     //KODE_PRINT;
     for (uint32_t i=0; i<MChildren.size(); i++) {
       KODE_Widget* widget = MChildren[i];
@@ -361,7 +373,7 @@ public:
     //setSize(AWidth,AHeight);
   }
 
-  virtual void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) {
+  virtual void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
     paintChildren(APainter,ARect,AMode);
   }
 

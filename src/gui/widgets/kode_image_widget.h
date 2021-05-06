@@ -39,10 +39,14 @@ public:
     MDrawImage = ADraw;;
   }
 
+  //----------
+
   virtual void setImage(KODE_Drawable* ADrawable) {
     MDrawable = ADrawable;
     MImageRect = KODE_FRect(0,0,ADrawable->getWidth(),ADrawable->getHeight());
   }
+
+  //----------
 
   virtual void setImage(KODE_Bitmap* ABitmap) {
     MBitmap = ABitmap;
@@ -51,7 +55,21 @@ public:
 
   //----------
 
-  virtual void drawImage(KODE_IPainter* APainter) {
+  // TODO
+
+  virtual void setImage(const char* APath) {
+    // create bitmap
+    // load png
+    // premultalpha
+    // create surface
+    // upload to surface
+    // delete bitmap
+    // set flag: need_to_elete_surface (destructor)
+  }
+
+  //----------
+
+  virtual void drawImage(KODE_BasePainter* APainter) {
     if (MDrawImage) {
       if (MDrawable) {
         APainter->drawBitmap(MRect.x,MRect.y,MDrawable,MImageRect);
@@ -66,7 +84,7 @@ public:
 public:
 //------------------------------
 
-  void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     fillBackground(APainter);
     drawImage(APainter);
     paintChildren(APainter,ARect,AMode);

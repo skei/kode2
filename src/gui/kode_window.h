@@ -60,7 +60,7 @@ public:
   KODE_Window(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL)
   : KODE_ImplementedWindow(AWidth,AHeight,ATitle,AParent)
   , KODE_Widget(KODE_FRect(AWidth,AHeight)) {
-    MName = "KODE_Window";
+    MText = "KODE_Window";
     MRect = KODE_FRect(AWidth,AHeight);
     MWindowWidth = AWidth;
     MWindowHeight = AHeight;

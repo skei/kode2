@@ -47,7 +47,7 @@ public:
   void resizeSurface(uint32_t AWidth, uint32_t AHeight) {
   }
 
-  void updateSurface(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) {
+  void updateSurface(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
   }
 
 //------------------------------
@@ -59,7 +59,7 @@ public:
     setDirty();
   }
 
-  void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
+  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
     if (MSurfaceDirty) {
       updateSurface(APainter,ARect,AMode);
       MSurfaceDirty = false;

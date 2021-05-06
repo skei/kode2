@@ -7,7 +7,7 @@
 //----------------------------------------------------------------------
 
 class KODE_ExeInstance
-: public KODE_IInstance {
+: public KODE_BaseInstance {
 
 
 
@@ -22,7 +22,7 @@ public:
 //------------------------------
 
   KODE_ExeInstance(KODE_Descriptor* ADescriptor)
-  : KODE_IInstance(ADescriptor) {
+  : KODE_BaseInstance(ADescriptor) {
     MDescriptor = ADescriptor;
   }
 
@@ -73,7 +73,7 @@ public:
 
   //----------
 
-  void updateAllEditorParameters(KODE_IEditor* AEditor, bool ARedraw=true) override {
+  void updateAllEditorParameters(KODE_BaseEditor* AEditor, bool ARedraw=true) override {
     uint32_t num = MDescriptor->getNumParameters();
     for (uint32_t i=0; i<num; i++) {
       KODE_Parameter* parameter = MDescriptor->getParameter(i);

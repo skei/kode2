@@ -1,11 +1,22 @@
 
 #define KODE_GUI_XCB
+#define KODE_PLUGIN_LV2_DUMPTTL
+#define KODE_DEBUG_PRINT_SOCKET
+
+//----------
 
 #include "kode.h"
 #include "plugin/kode_descriptor.h"
 #include "plugin/kode_instance.h"
 #include "plugin/kode_parameters.h"
 #include "plugin/kode_plugin.h"
+#include "gui/kode_widgets.h"
+
+#include "../data/img/sa_logo_40_trans_black.h"
+
+#ifdef KODE_PLUGIN_LV2_DUMPTTL
+  #include "plugin/lv2/kode_lv2_utils.h"
+#endif
 
 //----------------------------------------------------------------------
 
@@ -34,6 +45,10 @@
 #define freqLP_p2 -KODE_PI2 * freqLP
 
 //----------------------------------------------------------------------
+//
+//
+//
+//----------------------------------------------------------------------
 
 class myDescriptor : public KODE_Descriptor {
 
@@ -56,7 +71,14 @@ public:
     appendOutput( KODE_New KODE_PluginPort("output2"));
     appendParameter( KODE_New KODE_FloatParameter("Low Cont",  1,  0,  10, 0.1 ) );
     appendParameter( KODE_New KODE_FloatParameter("Process",   1,  0,  10, 0.1 ) );
-    appendParameter( KODE_New KODE_FloatParameter("Outout",    1, -30, 0,  0.1 ) );
+    appendParameter( KODE_New KODE_FloatParameter("Output",   -3, -30, 0,  0.1 ) );
+    setHasEditor();
+    setEditorSize(320,155);
+
+    #ifdef KODE_PLUGIN_LV2_DUMPTTL
+      KODE_WriteLv2Manifest(this);
+    #endif
+
   }
 
   //----------
@@ -67,6 +89,71 @@ public:
 };
 
 //----------------------------------------------------------------------
+//
+//
+//
+//----------------------------------------------------------------------
+
+class myEditor : public KODE_Editor {
+
+//------------------------------
+private:
+//------------------------------
+
+  KODE_Bitmap*  MBitmap = KODE_NULL;
+
+//------------------------------
+public:
+//------------------------------
+
+  myEditor(KODE_BaseInstance* AInstance, void* AParent=KODE_NULL)
+  : KODE_Editor(AInstance,AParent) {
+    setFillBackground();
+    setBackgroundColor(KODE_Color(0.6,0.6,0.6));
+
+    MBitmap = KODE_New KODE_Bitmap(sa_logo_40_trans_black,sa_logo_40_trans_black_size);
+    MBitmap->premultAlpha(0x999999);
+    KODE_ImageWidget* imagewidget = KODE_New KODE_ImageWidget( KODE_FRect(10,10,64,64) );
+    imagewidget->setImage(MBitmap);
+    appendWidget(imagewidget);
+
+    KODE_TextWidget* text1 = KODE_New KODE_TextWidget( KODE_FRect(64,10,200,20) );
+    KODE_TextWidget* text2 = KODE_New KODE_TextWidget( KODE_FRect(64,30,200,20) );
+    text1->setText("sa_sonic_maximizer");
+    text2->setText("v0.0.2");
+    appendWidget(text1);
+    appendWidget(text2);
+    KODE_SliderWidget* slider1 = KODE_New KODE_SliderWidget( KODE_FRect( 10,64 + 10,300,20) );
+    KODE_SliderWidget* slider2 = KODE_New KODE_SliderWidget( KODE_FRect( 10,64 + 35,300,20) );
+    KODE_SliderWidget* slider3 = KODE_New KODE_SliderWidget( KODE_FRect( 10,64 + 60,300,20) );
+
+    //appendWidget(header);
+    appendWidget(slider1);
+    appendWidget(slider2);
+    appendWidget(slider3);
+
+    connectParameter(slider1,0);
+    connectParameter(slider2,1);
+    connectParameter(slider3,2);
+  }
+
+  //----------
+
+  virtual ~myEditor() {
+    KODE_Delete MBitmap;
+  }
+
+//------------------------------
+private:
+//------------------------------
+
+};
+
+//----------------------------------------------------------------------
+//
+//
+//
+//----------------------------------------------------------------------
 
 class myInstance : public KODE_Instance {
 
@@ -74,24 +161,27 @@ class myInstance : public KODE_Instance {
 private:
 //------------------------------
 
-  float slider1     = 0.0f;
-  float slider2     = 0.0f;
-  float slider3     = 0.0f;
-  float band1       = 0.0f;
-//float band2       = 1.0f;
-  float band3       = 0.0f;
-  float tmplLP      = 0.0f;
-  float tmprLP      = 0.0f;
-  float tmplHP      = 0.0f;
-  float tmprHP      = 0.0f;
-  float amp         = 0.0f;
-  float xLP         = 0.0f;
-  float xHP         = 0.0f;
-  float a0LP        = 0.0f;
-  float a0HP        = 0.0f;
-  float b1LP        = 0.0f;
-  float b1HP        = 0.0f;
-  bool need_recalc  = true;
+  myEditor* MEditor     = KODE_NULL;
+  bool      need_recalc = true;
+
+  float     param1      = 0.0f;
+  float     param2      = 0.0f;
+  float     param3      = 0.0f;
+
+  float     band1       = 0.0f;
+//float     band2       = 1.0f;
+  float     band3       = 0.0f;
+  float     tmplLP      = 0.0f;
+  float     tmprLP      = 0.0f;
+  float     tmplHP      = 0.0f;
+  float     tmprHP      = 0.0f;
+  float     amp         = 0.0f;
+  float     xLP         = 0.0f;
+  float     xHP         = 0.0f;
+  float     a0LP        = 0.0f;
+  float     a0HP        = 0.0f;
+  float     b1LP        = 0.0f;
+  float     b1HP        = 0.0f;
 
 //------------------------------
 public:
@@ -126,16 +216,16 @@ public:
   void on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) final {
     switch (AIndex) {
       case 0:
-        slider1 = AValue;
-        band1 = expf( (slider1+3) / c_ampdB );
+        param1 = AValue;
+        band1 = expf( (param1+3) / c_ampdB );
         break;
       case 1:
-        slider2 = AValue;
-        band3 = expf( (slider2+3) / c_ampdB );
+        param2 = AValue;
+        band3 = expf( (param2+3) / c_ampdB );
         break;
       case 2:
-        slider3 = AValue;
-        amp = expf( slider3 / c_ampdB );
+        param3 = AValue;
+        amp = expf( param3 / c_ampdB );
         break;
     }
     //band2 := 1; // exp(0/c_ampdB);
@@ -173,7 +263,59 @@ public:
     }
   }
 
+//------------------------------
+public:
+//------------------------------
+
+  #ifndef KODE_NO_GUI
+
+  KODE_BaseEditor* on_plugin_openEditor(void* AParent) final {
+    //KODE_Print("parent %p\n",AParent);
+    //myEditor* editor = (myEditor*)KODE_New myEditor(this,AParent);
+    //return editor;
+    //MEditor = KODE_New myEditor(this,AParent);
+    MEditor = KODE_New myEditor(this,AParent);
+//    MEditor->setFillBackground();
+//    MEditor->setBackgroundColor(KODE_Color(0.6,0.6,0.6));
+//    KODE_SliderWidget* slider1 = KODE_New KODE_SliderWidget( KODE_FRect( 10,10,200,25) );
+//    KODE_SliderWidget* slider2 = KODE_New KODE_SliderWidget( KODE_FRect( 10,40,200,25) );
+//    KODE_SliderWidget* slider3 = KODE_New KODE_SliderWidget( KODE_FRect( 10,70,200,25) );
+//    MEditor->appendWidget(slider1);
+//    MEditor->appendWidget(slider2);
+//    MEditor->appendWidget(slider3);
+//    MEditor->connectParameter(slider1,0);
+//    MEditor->connectParameter(slider2,1);
+//    MEditor->connectParameter(slider3,2);
+    return MEditor;
+  }
+
   //----------
+
+  void on_plugin_closeEditor(KODE_BaseEditor* AEditor) final {
+    //KODE_Print("\n");
+    KODE_Assert(AEditor == MEditor);
+    if (MEditor) {
+      //KODE_Delete (myEditor*)AEditor;
+      KODE_Delete MEditor;
+      MEditor = KODE_NULL;
+    }
+  }
+
+  //----------
+
+  void on_plugin_updateEditor(KODE_BaseEditor* AEditor) final {
+    //KODE_Print("\n");
+    KODE_Assert(AEditor == MEditor);
+//    if (MEditor) {
+//      flushGuiMessages();
+//    }
+  }
+
+  #endif
+
+//------------------------------
+public:
+//------------------------------
 
 };
 

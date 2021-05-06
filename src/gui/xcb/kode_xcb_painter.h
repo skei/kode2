@@ -10,7 +10,7 @@
 #endif
 
 class KODE_XcbPainter
-: public KODE_IPainter {
+: public KODE_BasePainter {
 
 //------------------------------
 private:
@@ -38,7 +38,7 @@ public:
 //------------------------------
 
   KODE_XcbPainter(KODE_Drawable* ATarget)
-  : KODE_IPainter(ATarget) {
+  : KODE_BasePainter(ATarget) {
     if (ATarget->isDrawable()) {
       MTarget     = ATarget;
       MConnection = ATarget->getXcbConnection();

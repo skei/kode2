@@ -12,21 +12,21 @@
 
 //----------------------------------------------------------------------
 
-class KODE_IInstance;
-class KODE_IEditor;
+class KODE_BaseInstance;
+class KODE_BaseEditor;
 
 //----------------------------------------------------------------------
 
-class KODE_IInstance {
+class KODE_BaseInstance {
 public:
-  KODE_IInstance(KODE_Descriptor* ADescriptor) {}
-  virtual ~KODE_IInstance() {}
+  KODE_BaseInstance(KODE_Descriptor* ADescriptor) {}
+  virtual ~KODE_BaseInstance() {}
 public:
   virtual KODE_Descriptor*  getDescriptor() { return KODE_NULL; }
 public:
   virtual void              setDefaultParameterValues() {}
   virtual void              updateAllParameters() {}
-  virtual void              updateAllEditorParameters(KODE_IEditor* AEditor, bool ARedraw=true) {}
+  virtual void              updateAllEditorParameters(KODE_BaseEditor* AEditor, bool ARedraw=true) {}
   virtual void              updateParameterFromEditor(uint32_t AIndex, float AValue) {}
 public:
   virtual void              on_plugin_open() {}
@@ -41,17 +41,17 @@ public:
   virtual void              on_plugin_process(KODE_ProcessContext* AContext) {}
   virtual uint32_t          on_plugin_saveState(void** ABuffer, uint32_t AMode) { *ABuffer = KODE_NULL; return 0; }
   virtual void              on_plugin_restoreState(uint32_t ASize, void* APointer, uint32_t AMode) {}
-  virtual KODE_IEditor*     on_plugin_openEditor(void* AParent) { return KODE_NULL; }
-  virtual void              on_plugin_closeEditor(KODE_IEditor* AEditor) {}
-  virtual void              on_plugin_updateEditor(KODE_IEditor* AEditor) {}
+  virtual KODE_BaseEditor*  on_plugin_openEditor(void* AParent) { return KODE_NULL; }
+  virtual void              on_plugin_closeEditor(KODE_BaseEditor* AEditor) {}
+  virtual void              on_plugin_updateEditor(KODE_BaseEditor* AEditor) {}
 };
 
 //----------------------------------------------------------------------
 
-class KODE_IEditor {
+class KODE_BaseEditor {
 public:
-  KODE_IEditor(KODE_IInstance* AInstance) {}
-  virtual ~KODE_IEditor() {}
+  KODE_BaseEditor(KODE_BaseInstance* AInstance) {}
+  virtual ~KODE_BaseEditor() {}
 public:
   virtual void              connectParameter(KODE_Widget* AWidget, uint32_t AParameter, uint32_t AParamIndex=0) {}
   virtual void              updateParameterFromHost(uint32_t AIndex, float AValue, bool ARedraw=true) {}

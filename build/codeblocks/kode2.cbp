@@ -24,6 +24,40 @@
 					<Add option="-no-pie" />
 				</Linker>
 			</Target>
+			<Target title="debug.lv2">
+				<Option output="../../bin/kode_debug.lv2/kode_debug.so" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/debug/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-fPIC" />
+					<Add option="-g" />
+					<Add option="-Wl,-Bsymbolic" />
+					<Add option="-rdynamic" />
+					<Add option="-DKODE_PLUGIN_LV2" />
+					<Add option="-DKODE_DEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-fPIE" />
+				</Linker>
+			</Target>
+			<Target title="debug.vst3">
+				<Option output="../../bin/kode_debug.vst3/Contents/x86_64-linux/kode_debug.so" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/debug/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-fPIC" />
+					<Add option="-g" />
+					<Add option="-Wl,-Bsymbolic" />
+					<Add option="-rdynamic" />
+					<Add option="-DKODE_PLUGIN_VST3" />
+					<Add option="-DKODE_DEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-fPIE" />
+				</Linker>
+			</Target>
 			<Target title="release.exe">
 				<Option output="../../bin/kode_release" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
@@ -43,20 +77,21 @@
 					<Add option="-no-pie" />
 				</Linker>
 			</Target>
-			<Target title="debug.vst3">
-				<Option output="../../bin/kode_debug.vst3/Contents/x86_64-linux/kode_debug.so" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
-				<Option object_output="obj/debug/" />
+			<Target title="release.lv2">
+				<Option output="../../bin/kode_release.lv2/kode_release.so" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/release/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-O3" />
+					<Add option="-O2" />
 					<Add option="-fPIC" />
-					<Add option="-g" />
-					<Add option="-Wl,-Bsymbolic" />
-					<Add option="-rdynamic" />
-					<Add option="-DKODE_PLUGIN_VST3" />
-					<Add option="-DKODE_DEBUG" />
+					<Add option="-msse4" />
+					<Add option="-mfpmath=sse" />
+					<Add option="-DKODE_PLUGIN_LV2" />
 				</Compiler>
 				<Linker>
+					<Add option="-s" />
 					<Add option="-fPIE" />
 				</Linker>
 			</Target>
@@ -81,7 +116,7 @@
 			<Target title="sanitize.exe">
 				<Option output="../../bin/kode_sanitize" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../../bin/" />
-				<Option object_output="obj/debug/" />
+				<Option object_output="obj/sanitize/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -98,9 +133,28 @@
 					<Add option="-fsanitize=address" />
 				</Linker>
 			</Target>
+			<Target title="sanitize.lv2">
+				<Option output="../../bin/kode_sanitize.lv2/kode_sanitize.so" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/sanitize/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-fPIC" />
+					<Add option="-g" />
+					<Add option="-Wl,-Bsymbolic" />
+					<Add option="-rdynamic" />
+					<Add option="-fsanitize=address" />
+					<Add option="-DKODE_PLUGIN_LV2" />
+					<Add option="-DKODE_DEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-fPIE" />
+					<Add option="-fsanitize=address" />
+				</Linker>
+			</Target>
 			<Target title="sanitize.vst3">
 				<Option output="../../bin/kode_sanitize.vst3/Contents/x86_64-linux/kode_sanitize.so" imp_lib="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
-				<Option object_output="obj/debug/" />
+				<Option object_output="obj/sanitize/" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -342,6 +396,7 @@
 		<Unit filename="../../src/gui/widgets/kode_color_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_image_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_panel_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_saheader_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_slider_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_template_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_text_widget.h" />
@@ -404,6 +459,16 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="../../test/test_gui2.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../tools/bin2h.c">
+			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../tools/dump_ttl.c">
+			<Option compilerVar="CC" />
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>

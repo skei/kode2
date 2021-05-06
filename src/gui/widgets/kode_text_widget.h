@@ -14,7 +14,7 @@ protected:
 //------------------------------
 
   bool        MDrawText       = true;
-  const char* MText           = "text";
+  //const char* MText           = "text";
   KODE_Color  MTextColor      = KODE_Color(0.1f);
   uint32_t    MTextAlignment  = KODE_TEXT_ALIGN_LEFT;
   KODE_FRect  MTextOffset     = KODE_FRect(2);
@@ -39,9 +39,9 @@ public:
     MDrawText = ADraw;
   }
 
-  virtual void setText(const char* AText) {
-    MText = AText;
-  }
+  //virtual void setText(const char* AText) {
+  //  MText = AText;
+  //}
 
   virtual void setTextAlignment(uint32_t AAlignment) {
     MTextAlignment = AAlignment;
@@ -51,7 +51,7 @@ public:
     MTextColor = AColor;
   }
 
-  virtual void drawText(KODE_IPainter* APainter) {
+  virtual void drawText(KODE_BasePainter* APainter) {
     KODE_FRect rect = MRect;
     rect.shrink(MTextOffset);
     if (MDrawText) {
@@ -63,7 +63,7 @@ public:
 public:
 //------------------------------
 
-  void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     //KODE_ColorWidget::on_widget_paint(APainter,ARect,AMode);
     //drawBorder(APainter);
     fillBackground(APainter);

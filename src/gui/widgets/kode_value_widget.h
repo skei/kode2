@@ -74,7 +74,7 @@ public:
 
   //----------
 
-  virtual void drawValueText(KODE_IPainter* APainter) {
+  virtual void drawValueText(KODE_BasePainter* APainter) {
     if (MDrawValueText) {
       KODE_FRect  value_rect  = MRect;
       KODE_FRect  label_rect  = MRect;
@@ -106,7 +106,7 @@ public:
 public:
 //------------------------------
 
-  void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     fillBackground(APainter);
     paintChildren(APainter,ARect,AMode);
     drawText(APainter);

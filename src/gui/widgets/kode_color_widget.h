@@ -41,7 +41,7 @@ public:
 
   //----------
 
-  virtual void fillBackground(KODE_IPainter* APainter) {
+  virtual void fillBackground(KODE_BasePainter* APainter) {
     if (MFillBackground) {
       APainter->fillRect(MRect,MBackgroundColor);
     }
@@ -51,7 +51,7 @@ public:
 public:
 //------------------------------
 
-  void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     fillBackground(APainter);
     //KODE_Widget::on_widget_paint(APainter,ARect,AMode);
     paintChildren(APainter,ARect,AMode);

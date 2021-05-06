@@ -12,23 +12,23 @@
 
 class KODE_Editor
 : public KODE_Window
-, public KODE_IEditor {
+, public KODE_BaseEditor {
 
 //------------------------------
 private:
 //------------------------------
 
-  KODE_Descriptor*  MDescriptor         = KODE_NULL;
-  KODE_IInstance*   MInstance           = KODE_NULL;
-  KODE_Widget**     MParameterToWidget  = KODE_NULL;
+  KODE_Descriptor*    MDescriptor         = KODE_NULL;
+  KODE_BaseInstance*  MInstance           = KODE_NULL;
+  KODE_Widget**       MParameterToWidget  = KODE_NULL;
 
 //------------------------------
 public:
 //------------------------------
 
-  KODE_Editor(KODE_IInstance* AInstance, void* AParent=KODE_NULL)
+  KODE_Editor(KODE_BaseInstance* AInstance, void* AParent=KODE_NULL)
   : KODE_Window(AInstance->getDescriptor()->getEditorWidth(),AInstance->getDescriptor()->getEditorHeight(),"",AParent)
-  , KODE_IEditor(AInstance) {
+  , KODE_BaseEditor(AInstance) {
     MDescriptor = AInstance->getDescriptor();
     MInstance = AInstance;
     uint32_t num = MDescriptor->getNumParameters();
@@ -49,6 +49,8 @@ public:
 
   //void setInstance(KODE_IInstance* AInstance) override {
   //}
+
+  //uint32_t appendWidget(KODE_Widget* AWidget)
 
 //------------------------------
 public:
@@ -76,6 +78,9 @@ public:
     KODE_Parameter* parameter = MDescriptor->getParameter(AParamIndex);
     if (parameter) {
       MParameterToWidget[AParamIndex] = AWidget;
+
+      AWidget->setText( parameter->getName() );
+
       AWidget->MParameter = parameter;
       AWidget->MParameters[ASubIndex] = parameter;
       AWidget->on_widget_connect(parameter,ASubIndex);

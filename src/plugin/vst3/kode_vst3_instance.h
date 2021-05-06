@@ -44,7 +44,7 @@ class KODE_Vst3Instance
 , public KODE_Vst3IPlugView
 , public KODE_Vst3ITimerHandler
 , public KODE_Vst3IEventHandler
-, public KODE_IInstance {
+, public KODE_BaseInstance {
 
 //------------------------------
 private:
@@ -78,7 +78,7 @@ public:
 //------------------------------
 
   KODE_Vst3Instance(KODE_Descriptor* ADescriptor)
-  : KODE_IInstance(ADescriptor) {
+  : KODE_BaseInstance(ADescriptor) {
     MRefCount = 1;
     MDescriptor = ADescriptor;
     createParameterBuffers();
@@ -129,7 +129,7 @@ public:
 
   //----------
 
-  void updateAllEditorParameters(KODE_IEditor* AEditor, bool ARedraw=true) override {
+  void updateAllEditorParameters(KODE_BaseEditor* AEditor, bool ARedraw=true) override {
     uint32_t num = MDescriptor->getNumParameters();
     for (uint32_t i=0; i<num; i++) {
       float value = MParameterValues[i];

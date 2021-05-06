@@ -15,6 +15,13 @@
 
 //----------
 
+#ifdef KODE_PLUGIN_LV2
+  #include "plugin/lv2/kode_lv2_instance.h"
+  typedef KODE_Lv2Instance KODE_ImplementedInstance;
+#endif
+
+//----------
+
 #ifdef KODE_PLUGIN_VST3
   #include "plugin/vst3/kode_vst3_instance.h"
   typedef KODE_Vst3Instance KODE_ImplementedInstance;

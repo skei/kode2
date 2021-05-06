@@ -9,35 +9,35 @@
 //
 //----------------------------------------------------------------------
 
-class KODE_IImage;
-class KODE_ISurface;
-class KODE_IWindow;
-class KODE_IPainter;
+class KODE_BaseImage;
+class KODE_BaseSurface;
+class KODE_BaseWindow;
+class KODE_BasePainter;
 
 //----------------------------------------------------------------------
 
-class KODE_IImage {
+class KODE_BaseImage {
 public:
-  KODE_IImage(KODE_Drawable* ATarget, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=32) {}
-  KODE_IImage(KODE_Drawable* ATarget, KODE_Bitmap* ABitmap) {}
-  virtual ~KODE_IImage() {}
+  KODE_BaseImage(KODE_Drawable* ATarget, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=32) {}
+  KODE_BaseImage(KODE_Drawable* ATarget, KODE_Bitmap* ABitmap) {}
+  virtual ~KODE_BaseImage() {}
 };
 
 //----------------------------------------------------------------------
 
-class KODE_ISurface {
+class KODE_BaseSurface {
 public:
-  KODE_ISurface(KODE_Drawable* ATarget) {}
-  KODE_ISurface(KODE_Drawable* ATarget, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=0) {}
-  virtual ~KODE_ISurface() {}
+  KODE_BaseSurface(KODE_Drawable* ATarget) {}
+  KODE_BaseSurface(KODE_Drawable* ATarget, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=0) {}
+  virtual ~KODE_BaseSurface() {}
 };
 
 //----------------------------------------------------------------------
 
-class KODE_IPainter {
+class KODE_BasePainter {
 public:
-  KODE_IPainter(KODE_Drawable* ATarget) {}
-  virtual ~KODE_IPainter() {}
+  KODE_BasePainter(KODE_Drawable* ATarget) {}
+  virtual ~KODE_BasePainter() {}
 public:
   virtual void  resize(uint32_t AWidth, uint32_t AHeight) {}
   virtual void  setClip(KODE_FRect ARect) {}
@@ -59,10 +59,10 @@ public:
 
 //----------------------------------------------------------------------
 
-class KODE_IWindow {
+class KODE_BaseWindow {
 public:
-  KODE_IWindow(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL) {}
-  virtual ~KODE_IWindow() {}
+  KODE_BaseWindow(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL) {}
+  virtual ~KODE_BaseWindow() {}
 public:
   virtual void on_window_move(uint32_t AXpos, uint32_t AYpos) { KODE_PRINT; }
   virtual void on_window_resize(uint32_t AWidth, uint32_t AHeight) { KODE_PRINT; }

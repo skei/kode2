@@ -19,7 +19,7 @@ typedef KODE_Queue<uint32_t,KODE_LV2_QUEUE_SIZE> KODE_Lv2UpdateQueue;
 //----------------------------------------------------------------------
 
 class KODE_Lv2Instance
-: public KODE_IInstance {
+: public KODE_BaseInstance {
 
 //------------------------------
 private:
@@ -71,14 +71,14 @@ public:
   */
 
 
-  KODE_Lv2Instance(KODE_Descriptor* ADescriptor, float ASampleRate, const char* path, const LV2_Feature* const* features)
-  : KODE_IInstance(ADescriptor) {
+  KODE_Lv2Instance(KODE_Descriptor* ADescriptor/*, float ASampleRate, const char* path, const LV2_Feature* const* features*/)
+  : KODE_BaseInstance(ADescriptor) {
 
 //    //instance->on_open();
 //    MInstance->on_initialize(); // open?
 
     MDescriptor       = ADescriptor;
-    MSampleRate       = ASampleRate;
+//    MSampleRate       = ASampleRate;
     MNumInputs        = MDescriptor->getNumInputs();
     MNumOutputs       = MDescriptor->getNumOutputs();
     MNumParameters    = MDescriptor->getNumParameters();
@@ -90,19 +90,19 @@ public:
     MHostValues       = (float*) malloc(MNumParameters * sizeof(float ));
     MProcessValues    = (float*) malloc(MNumParameters * sizeof(float ));
 
-    #ifdef KODE_DEBUG_LV2
-      KODE_DPrint("lv2 bundle_path: %s",path);
-      KODE_DPrint("lv2 features:");
-      kode_lv2_dump_features(features);
-    #endif
-
-    LV2_URID_Map* urid_map = (LV2_URID_Map*)kode_lv2_find_feature(LV2_URID__map,features);
-
-    if (urid_map) {
-      if (MDescriptor->canReceiveMidi()) {
-        MMidiInputUrid = kode_lv2_map_urid(LV2_MIDI__MidiEvent,urid_map);
-      }
-    }
+//    #ifdef KODE_DEBUG_LV2
+//      KODE_DPrint("lv2 bundle_path: %s",path);
+//      KODE_DPrint("lv2 features:");
+//      kode_lv2_dump_features(features);
+//    #endif
+//
+//    LV2_URID_Map* urid_map = (LV2_URID_Map*)kode_lv2_find_feature(LV2_URID__map,features);
+//
+//    if (urid_map) {
+//      if (MDescriptor->canReceiveMidi()) {
+//        MMidiInputUrid = kode_lv2_map_urid(LV2_MIDI__MidiEvent,urid_map);
+//      }
+//    }
 
   }
 
@@ -163,7 +163,7 @@ public:
 
   //----------
 
-  void updateAllEditorParameters(KODE_IEditor* AEditor, bool ARedraw=true) override {
+  void updateAllEditorParameters(KODE_BaseEditor* AEditor, bool ARedraw=true) override {
     uint32_t num = MDescriptor->getNumParameters();
     for (uint32_t i=0; i<num; i++) {
       float value = MParameterValues[i];
@@ -185,6 +185,24 @@ public:
 //----------------------------------------------------------------------
 // lv2
 //----------------------------------------------------------------------
+
+  void lv2_setup(float ASampleRate, const char* path, const LV2_Feature* const* features) {
+    #ifdef KODE_DEBUG_LV2
+      KODE_DPrint("lv2 bundle_path: %s",path);
+      KODE_DPrint("lv2 features:");
+      kode_lv2_dump_features(features);
+    #endif
+    MSampleRate = ASampleRate;
+    LV2_URID_Map* urid_map = (LV2_URID_Map*)kode_lv2_find_feature(LV2_URID__map,features);
+    if (urid_map) {
+      if (MDescriptor->canReceiveMidi()) {
+        MMidiInputUrid = kode_lv2_map_urid(LV2_MIDI__MidiEvent,urid_map);
+      }
+    }
+
+  }
+
+  //----------
 
   /*
      Connect a port on a plugin instance to a memory location.
