@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1620162716 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+1628551325 source:/DISKS/sda2/code/git/kode2/build/build.cpp
 	"../plugins/ports/sa_sonic_maximizer.cpp"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
@@ -412,7 +412,7 @@
 	"kode.h"
 	"gui/xcb/kode_xcb_image.h"
 
-1613250465 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_image.h
+1628550808 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_image.h
 	"kode.h"
 	"gfx/kode_bitmap.h"
 	"gui/kode_drawable.h"
@@ -646,7 +646,7 @@
 
 1613254903 /DISKS/sda2/code/git/kode2/src/gfx/kode_bitmap_gen.h
 
-1613066463 /DISKS/sda2/code/git/kode2/test/test2.cpp
+1628550931 /DISKS/sda2/code/git/kode2/test/test2.cpp
 	"kode.h"
 	"gui/kode_widgets.h"
 	"plugin/kode_plugin.h"
@@ -666,7 +666,7 @@
 	"plugin/kode_synth.h"
 	"plugin/kode_voice.h"
 
-1613068368 /DISKS/sda2/code/git/kode2/test/test_gui1.cpp
+1628550845 /DISKS/sda2/code/git/kode2/test/test_gui1.cpp
 	"kode.h"
 	"gui/kode_window.h"
 	"gui/kode_surface.h"
@@ -689,7 +689,7 @@
 1591574531 /DISKS/sda2/code/git/kode2/src/audio/kode_audio_math.h
 	<math.h>
 
-1613260124 /DISKS/sda2/code/git/kode2/test/test_gui2.cpp
+1628550891 /DISKS/sda2/code/git/kode2/test/test_gui2.cpp
 	"kode.h"
 	"gui/kode_window.h"
 	"gui/kode_surface.h"
@@ -846,7 +846,7 @@
 1613846789 /DISKS/sda2/code/git/kode2/src/3d/kode_mdl.h
 	"kode.h"
 
-1620248575 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_instance.h
+1620344173 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_instance.h
 	"plugin/kode_editor.h"
 	"plugin/kode_plugin_base.h"
 	"plugin/lv2/kode_lv2.h"
@@ -864,16 +864,16 @@
 	<lv2/midi/midi.h>
 	<lv2/urid/urid.h>
 
-1620327094 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_utils.h
+1620336953 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_utils.h
 	"kode.h"
 	"plugin/lv2/kode_lv2.h"
 
-1620249249 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_plugin.h
+1620337565 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_plugin.h
 	"plugin/lv2/kode_lv2.h"
 	"plugin/lv2/kode_lv2_instance.h"
 	"plugin/lv2/kode_lv2_utils.h"
 
-1620324897 /DISKS/sda2/code/git/kode2/plugins/ports/sa_sonic_maximizer.cpp
+1620391153 /DISKS/sda2/code/git/kode2/plugins/ports/sa_sonic_maximizer.cpp
 	"kode.h"
 	"plugin/kode_descriptor.h"
 	"plugin/kode_instance.h"

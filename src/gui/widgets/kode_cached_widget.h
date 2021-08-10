@@ -2,7 +2,7 @@
 #define kode_cached_widget_included
 //----------------------------------------------------------------------
 
-// untested..
+// unfinished, untested..
 
 #include "gui/kode_surface.h"
 #include "gui/kode_widget.h"

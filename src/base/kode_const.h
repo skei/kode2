@@ -16,10 +16,10 @@ const char    KODE_CSYMBOLS[]     = "___________________________________________
 // abcdefghijklmnopqrstuvwxyz
 // 5f = _
 
-#define KODE_MAGIC        0x4b5f0000    // 'K_' + 0x0000
-#define KODE_MAGIC_USER   0x6b5f0000    // 'k_' + 0x0000
-#define KODE_MAGIC_K_PL   0x4b5f504c
-#define KODE_MAGIC_K_ED   0x4b5f4544
+#define KODE_MAGIC        0x4b5f0000    // 'K_'   // + 0x0000
+#define KODE_MAGIC_USER   0x6b5f0000    // 'k_'   // + 0x0000
+#define KODE_MAGIC_K_PL   0x4b5f504c    // K_PL   // plugin
+#define KODE_MAGIC_K_ED   0x4b5f4544    // K_ED   // editor
 
 #ifdef KODE_CPP11
   #define KODE_NULL nullptr

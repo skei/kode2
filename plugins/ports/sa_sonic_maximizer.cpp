@@ -270,32 +270,16 @@ public:
   #ifndef KODE_NO_GUI
 
   KODE_BaseEditor* on_plugin_openEditor(void* AParent) final {
-    //KODE_Print("parent %p\n",AParent);
-    //myEditor* editor = (myEditor*)KODE_New myEditor(this,AParent);
-    //return editor;
-    //MEditor = KODE_New myEditor(this,AParent);
     MEditor = KODE_New myEditor(this,AParent);
-//    MEditor->setFillBackground();
-//    MEditor->setBackgroundColor(KODE_Color(0.6,0.6,0.6));
-//    KODE_SliderWidget* slider1 = KODE_New KODE_SliderWidget( KODE_FRect( 10,10,200,25) );
-//    KODE_SliderWidget* slider2 = KODE_New KODE_SliderWidget( KODE_FRect( 10,40,200,25) );
-//    KODE_SliderWidget* slider3 = KODE_New KODE_SliderWidget( KODE_FRect( 10,70,200,25) );
-//    MEditor->appendWidget(slider1);
-//    MEditor->appendWidget(slider2);
-//    MEditor->appendWidget(slider3);
-//    MEditor->connectParameter(slider1,0);
-//    MEditor->connectParameter(slider2,1);
-//    MEditor->connectParameter(slider3,2);
     return MEditor;
   }
 
   //----------
 
   void on_plugin_closeEditor(KODE_BaseEditor* AEditor) final {
-    //KODE_Print("\n");
+    //KODE_Delete (myEditor*)AEditor;
     KODE_Assert(AEditor == MEditor);
     if (MEditor) {
-      //KODE_Delete (myEditor*)AEditor;
       KODE_Delete MEditor;
       MEditor = KODE_NULL;
     }
@@ -303,13 +287,9 @@ public:
 
   //----------
 
-  void on_plugin_updateEditor(KODE_BaseEditor* AEditor) final {
-    //KODE_Print("\n");
-    KODE_Assert(AEditor == MEditor);
-//    if (MEditor) {
-//      flushGuiMessages();
-//    }
-  }
+  //void on_plugin_updateEditor(KODE_BaseEditor* AEditor) final {
+  //  KODE_Assert(AEditor == MEditor);
+  //}
 
   #endif
 

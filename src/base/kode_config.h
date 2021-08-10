@@ -15,15 +15,15 @@
 //----------------------------------------------------------------------
 
 //#define KODE_DEBUG
-#define KODE_DEBUG_ASSERT
-#define KODE_DEBUG_CALLSTACK
-#define KODE_DEBUG_CRASH_HANDLER
+  #define KODE_DEBUG_ASSERT
+  #define KODE_DEBUG_CALLSTACK
+  #define KODE_DEBUG_CRASH_HANDLER
 //#define KODE_DEBUG_MEMORY
-#define KODE_DEBUG_MEMORY_PRINT
+  #define KODE_DEBUG_MEMORY_PRINT
 //#define KODE_DEBUG_PRINT_LOGFILE
 //#define KODE_DEBUG_PRINT_SOCKET
-#define KODE_DEBUG_PRINT_THREAD
-#define KODE_DEBUG_PRINT_TIME
+  #define KODE_DEBUG_PRINT_THREAD
+  #define KODE_DEBUG_PRINT_TIME
 //#define KODE_DEBUG_PRINT_WINDOW
 
 //#define KODE_FAST_MATH_EXTRA_PRECISION
@@ -52,6 +52,11 @@
 //#define KODE_PLUGIN_EXE
 //#define KODE_PLUGIN_VST2
 //#define KODE_PLUGIN_VST3
+
+//#define KODE_PLUGIN_VST2_SDK
+//#define KODE_PLUGIN_VST2_VESTIGE
+//#define KODE_PLUGIN_VST2_FST
+//#define KODE_PLUGIN_VST3_SDK
 
 //#define KODE_USE_CAIRO
 //#define KODE_USE_CTX

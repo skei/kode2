@@ -275,7 +275,7 @@ enum KODE_Vst3SymbolicSampleSizes {
 //
 //----------------------------------------------------------------------
 
-const char*     kode_vst3_Editor                        = "editor";
+const char*     kode_vst3_Editor                        = "editor"; // not capitalized?
 const char*     kode_vst3_Fx					                  = "Fx";
 const char*     kode_vst3_Instrument			              = "Instrument";
 

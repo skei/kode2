@@ -30,8 +30,8 @@ private:
 
   LV2_URID                  MMidiInputUrid    = 0;
   const LV2_Atom_Sequence*  MAtomSequence     = KODE_NULL;
-  float                     MSampleRate       = 0.0f;
 
+  float                     MSampleRate       = 0.0f;
 
   uint32_t                  MNumInputs        = 0;
   uint32_t                  MNumOutputs       = 0;
@@ -137,50 +137,50 @@ public:
 public:
 //------------------------------
 
-  void setDefaultParameterValues() override {
-    uint32_t num = MDescriptor->getNumParameters();
-    for (uint32_t i=0; i<num; i++) {
-      KODE_Parameter* parameter = MDescriptor->getParameter(i);
-      float value = parameter->getDefValue();
-      MParameterValues[i] = value;
-      //MHostParameterValues[i] = value;
-    }
-  }
+//  void setDefaultParameterValues() override {
+//    uint32_t num = MDescriptor->getNumParameters();
+//    for (uint32_t i=0; i<num; i++) {
+//      KODE_Parameter* parameter = MDescriptor->getParameter(i);
+//      float value = parameter->getDefValue();
+//      MParameterValues[i] = value;
+//      //MHostParameterValues[i] = value;
+//    }
+//  }
 
   //----------
 
-  void updateAllParameters() override {
-    //KODE_PRINT;
-    uint32_t num = MDescriptor->getNumParameters();
-    for (uint32_t i=0; i<num; i++) {
-      KODE_Parameter* parameter = MDescriptor->getParameter(i);
-      float value = MParameterValues[i];
-      float v = parameter->from01(value);
-      on_plugin_parameter(0,i,v);
-      // if editor is open ...
-    }
-  }
+//  void updateAllParameters() override {
+//    //KODE_PRINT;
+//    uint32_t num = MDescriptor->getNumParameters();
+//    for (uint32_t i=0; i<num; i++) {
+//      KODE_Parameter* parameter = MDescriptor->getParameter(i);
+//      float value = MParameterValues[i];
+//      float v = parameter->from01(value);
+//      on_plugin_parameter(0,i,v);
+//      // if editor is open ...
+//    }
+//  }
 
   //----------
 
-  void updateAllEditorParameters(KODE_BaseEditor* AEditor, bool ARedraw=true) override {
-    uint32_t num = MDescriptor->getNumParameters();
-    for (uint32_t i=0; i<num; i++) {
-      float value = MParameterValues[i];
-      //KODE_Parameter* parameter = MDescriptor->getParameter(i);
-      //float v = parameter->from01(value);
-      float v = value;
-      //on_plugin_parameter(0,i,v);
-      AEditor->updateParameterFromHost(i,v,ARedraw);
-    }
-  }
+//  void updateAllEditorParameters(KODE_BaseEditor* AEditor, bool ARedraw=true) override {
+//    uint32_t num = MDescriptor->getNumParameters();
+//    for (uint32_t i=0; i<num; i++) {
+//      float value = MParameterValues[i];
+//      //KODE_Parameter* parameter = MDescriptor->getParameter(i);
+//      //float v = parameter->from01(value);
+//      float v = value;
+//      //on_plugin_parameter(0,i,v);
+//      AEditor->updateParameterFromHost(i,v,ARedraw);
+//    }
+//  }
 
   //----------
 
-  void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
-//    //MEditorParameterValues[AIndex] = AValue;
-//    queueParameterToHost(AIndex,AValue);
-  }
+//  void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
+////    //MEditorParameterValues[AIndex] = AValue;
+////    queueParameterToHost(AIndex,AValue);
+//  }
 
 //----------------------------------------------------------------------
 // lv2
@@ -327,7 +327,7 @@ public:
     for (uint32_t i=0; i<MNumParameters; i++) {
       float v = *MParameterPtrs[i];
       MHostValues[i] = v;
-      if (v != MProcessValues[i]) {
+      if (v != MProcessValues[i]) { // todo: slmilar_to?
         MProcessValues[i] = v;
         // to/from01 ??
         //KODE_Parameter* param = MPlugin->getParameter(i);
