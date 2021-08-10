@@ -222,7 +222,7 @@ public:
   //----------
 
   uint8_t* getLongEditorId() {
-    uint32_t* ptr = (uint32_t*)MLongId;
+    uint32_t* ptr = (uint32_t*)MLongEditorId;
     ptr[0] = KODE_MAGIC_K_ED;
     ptr[1] = KODE_HashString(MName);
     ptr[2] = KODE_HashString(MAuthor);
