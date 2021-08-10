@@ -19,7 +19,7 @@ private:
 
 public:
 
-  myEditor(KODE_IInstance* AInstance, void* AParent=KODE_NULL)
+  myEditor(KODE_BaseInstance* AInstance, void* AParent=KODE_NULL)
   : KODE_Editor(AInstance,AParent) {
     setFillBackground();
     //KODE_PRINT;
@@ -75,7 +75,7 @@ public:
   //  KODE_Editor::on_window_paint(AXpos,AYpos,AWidth,AHeight);
   //}
 
-  //void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
+  //void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
   //  KODE_PRINT;
   //  KODE_Widget::on_widget_paint(APainter,ARect,AMode);
   //}
@@ -113,13 +113,13 @@ public:
     //KODE_Print("offset %i index %i value %.3f mode %i\n",AOffset,AIndex,AValue,AMode);
   }
 
-  KODE_IEditor* on_plugin_openEditor(void* AParent) final {
+  KODE_BaseEditor* on_plugin_openEditor(void* AParent) final {
     //KODE_PRINT;
     myEditor* editor = (myEditor*)KODE_New myEditor(this,AParent);
     return editor;
   }
 
-  void  on_plugin_closeEditor(KODE_IEditor* AEditor) final {
+  void  on_plugin_closeEditor(KODE_BaseEditor* AEditor) final {
     //KODE_PRINT;
     KODE_Delete (myEditor*)AEditor;
   }

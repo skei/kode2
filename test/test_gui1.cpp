@@ -37,7 +37,7 @@ public:
     KODE_Delete MSurface;
   }
 
-  void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
+  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
     APainter->drawBitmap(10,120,MImage,KODE_FRect(0,0,100,100)); // only full image (width)
     APainter->drawBitmap(120,120,MSurface,KODE_FRect(0,0,100,100));
   }
