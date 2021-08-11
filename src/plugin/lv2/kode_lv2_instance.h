@@ -3,7 +3,9 @@
 //----------------------------------------------------------------------
 
 #include "plugin/kode_editor.h"
-#include "plugin/kode_plugin_base.h"
+//#include "plugin/kode_plugin_base.h"
+#include "plugin/base/kode_base_editor.h"
+#include "plugin/base/kode_base_instance.h"
 #include "plugin/lv2/kode_lv2.h"
 #include "plugin/lv2/kode_lv2_utils.h"
 

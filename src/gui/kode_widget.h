@@ -3,7 +3,11 @@
 //----------------------------------------------------------------------
 
 #include "kode.h"
-#include "gui/kode_gui_base.h"
+//#include "gui/kode_gui_base.h"
+//#include "gui/base/kode_base_image.h"
+//#include "gui/base/kode_base_surface.h"
+//#include "gui/base/kode_base_painter.h"
+//#include "gui/base/kode_base_window.h"
 #include "gui/kode_painter.h"
 #include "plugin/kode_parameter.h"
 

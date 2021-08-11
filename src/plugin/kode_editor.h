@@ -3,10 +3,11 @@
 //----------------------------------------------------------------------
 
 #ifndef KODE_NO_GUI
-#include "gui/kode_window.h"
+  #include "gui/kode_window.h"
 #endif
 
-#include "plugin/kode_plugin_base.h"
+#include "plugin/base/kode_base_editor.h"
+#include "plugin/base/kode_base_instance.h"
 
 //----------------------------------------------------------------------
 
@@ -78,9 +79,7 @@ public:
     KODE_Parameter* parameter = MDescriptor->getParameter(AParamIndex);
     if (parameter) {
       MParameterToWidget[AParamIndex] = AWidget;
-
       AWidget->setText( parameter->getName() );
-
       AWidget->MParameter = parameter;
       AWidget->MParameters[ASubIndex] = parameter;
       AWidget->on_widget_connect(parameter,ASubIndex);

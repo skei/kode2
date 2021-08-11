@@ -1,18 +1,12 @@
-#ifndef kode_plugin_base_included
-#define kode_plugin_base_included
+#ifndef kode_base_instance_included
+#define kode_base_instance_included
 //----------------------------------------------------------------------
 
 #include "kode.h"
 #include "plugin/kode_descriptor.h"
-#include "plugin/kode_parameter.h"
-#include "plugin/kode_program.h"
 #include "plugin/kode_process_context.h"
 
-#include "gui/kode_widget.h"
-
-//----------------------------------------------------------------------
-
-class KODE_BaseInstance;
+// not #include, to avoid cyclic dependencies..
 class KODE_BaseEditor;
 
 //----------------------------------------------------------------------
@@ -44,17 +38,6 @@ public:
   virtual KODE_BaseEditor*  on_plugin_openEditor(void* AParent) { return KODE_NULL; }
   virtual void              on_plugin_closeEditor(KODE_BaseEditor* AEditor) {}
   virtual void              on_plugin_updateEditor(KODE_BaseEditor* AEditor) {}
-};
-
-//----------------------------------------------------------------------
-
-class KODE_BaseEditor {
-public:
-  KODE_BaseEditor(KODE_BaseInstance* AInstance) {}
-  virtual ~KODE_BaseEditor() {}
-public:
-  virtual void              connectParameter(KODE_Widget* AWidget, uint32_t AParameter, uint32_t AParamIndex=0) {}
-  virtual void              updateParameterFromHost(uint32_t AIndex, float AValue, bool ARedraw=true) {}
 };
 
 //----------------------------------------------------------------------

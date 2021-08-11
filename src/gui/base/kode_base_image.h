@@ -1,0 +1,21 @@
+#ifndef kode_base_image_included
+#define kode_base_image_included
+//----------------------------------------------------------------------
+
+#include "kode.h"
+#include "base/types/kode_color.h"
+#include "gfx/kode_bitmap.h"
+#include "gui/kode_drawable.h"
+//
+//----------------------------------------------------------------------
+
+class KODE_BaseImage {
+public:
+  KODE_BaseImage(KODE_Drawable* ATarget, uint32_t AWidth, uint32_t AHeight, uint32_t ADepth=32) {}
+  KODE_BaseImage(KODE_Drawable* ATarget, KODE_Bitmap* ABitmap) {}
+  virtual ~KODE_BaseImage() {}
+};
+
+//----------------------------------------------------------------------
+#endif
+
