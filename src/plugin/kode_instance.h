@@ -3,24 +3,34 @@
 //----------------------------------------------------------------------
 
 #include "kode.h"
-//#include "gui/kode_gui_base.h"
 #include "plugin/kode_editor.h"
 
 //----------
+
+#ifdef KODE_PLUGIN_DSSI
+  #include "plugin/dssi/kode_dssi_instance.h"
+  typedef KODE_DssiInstance KODE_ImplementedInstance;
+#endif
 
 #ifdef KODE_PLUGIN_EXE
   #include "plugin/exe/kode_exe_instance.h"
   typedef KODE_ExeInstance KODE_ImplementedInstance;
 #endif
 
-//----------
+#ifdef KODE_PLUGIN_LADSPA
+  #include "plugin/ladspa/kode_ladspa_instance.h"
+  typedef KODE_LadspaInstance KODE_ImplementedInstance;
+#endif
 
 #ifdef KODE_PLUGIN_LV2
   #include "plugin/lv2/kode_lv2_instance.h"
   typedef KODE_Lv2Instance KODE_ImplementedInstance;
 #endif
 
-//----------
+#ifdef KODE_PLUGIN_VST2
+  #include "plugin/vst2/kode_vst2_instance.h"
+  typedef KODE_Vst2Instance KODE_ImplementedInstance;
+#endif
 
 #ifdef KODE_PLUGIN_VST3
   #include "plugin/vst3/kode_vst3_instance.h"

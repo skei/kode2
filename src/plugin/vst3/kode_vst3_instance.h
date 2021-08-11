@@ -1,26 +1,28 @@
 #ifndef vst3_instance_included
 #define vst3_instance_included
 //----------------------------------------------------------------------
-//
+
 // needs kode_vst3.h, which is gpl3
 // so this file also needs to be gpl3
-//
+
 //----------------------------------------------------------------------
 
 #include "plugin/kode_editor.h"
-#include "plugin/kode_plugin_base.h"
+//#include "plugin/kode_plugin_base.h"
+#include "plugin/base/kode_base_editor.h"
+#include "plugin/base/kode_base_instance.h"
 #include "plugin/vst3/kode_vst3.h"
 #include "plugin/vst3/kode_vst3_utils.h"
 
 //----------------------------------------------------------------------
 
-#define KODE_VST3_MAX_INPUTS             8
-#define KODE_VST3_MAX_OUTPUTS            8
-#define KODE_VST3_PARAM_AFTERTOUCH       0x10000 // kode_vst3_AfterTouch (128)
-#define KODE_VST3_PARAM_PITCHBEND        0x20000 // kode_vst3_PitchBend (129)
-#define KODE_VST3_PARAM_BRIGHTNESS       0x30000 // kode_vst3_CtrlFilterResonance (74)
-#define KODE_VST3_QUEUE_SIZE             1024
-#define KODE_VST3_TIMER_MS               30
+#define KODE_VST3_MAX_INPUTS        8
+#define KODE_VST3_MAX_OUTPUTS       8
+#define KODE_VST3_PARAM_AFTERTOUCH  0x10000 // kode_vst3_AfterTouch (128)
+#define KODE_VST3_PARAM_PITCHBEND   0x20000 // kode_vst3_PitchBend (129)
+#define KODE_VST3_PARAM_BRIGHTNESS  0x30000 // kode_vst3_CtrlFilterResonance (74)
+#define KODE_VST3_QUEUE_SIZE        1024
+#define KODE_VST3_TIMER_MS          30
 
 typedef KODE_Queue<uint32_t,KODE_VST3_QUEUE_SIZE> KODE_Vst3UpdateQueue;
 
@@ -190,17 +192,13 @@ private:
   //----------
 
   /*
-    must call the MComponentHandler from the same thread as we received it..
-    same thread as setComponentHandler)
+    must call the MComponentHandler from the same thread as we received it
+    (same thread as setComponentHandler)
     IRunLoop
-
-    ---
 
     Sets the normalized value to the parameter associated to the paramID.
     The controller must never pass this value-change back to the host via the
     IComponentHandler. It should update the according GUI element(s) only!
-
-    ---
 
     https://github.com/soundradix/JUCE/commit/2e9e66cbc8c65e889be5232ffae83c0ca78f9c7e
 
@@ -209,8 +207,6 @@ private:
     // setParamNormalized does not replace performEdit as it does not record automation.
 
     setParamNormalized ((Vst::ParamID) index, (double) newValue);
-
-    ---
 
     https://sdk.steinberg.net/viewtopic.php?t=693
 
@@ -222,7 +218,13 @@ private:
     EditController::setParamNormalized(AIndex,AValue);
 
     MComponentHandler->performEdit(AIndex,AValue); // drag
+  */
 
+  /*
+    todo:
+    beginEdit when mouseClick
+    performEdit while mouseDrag
+    endEdit when mouseRelease
   */
 
   void flushParametersToHost() {
@@ -231,15 +233,22 @@ private:
       float value = MHostParameterValues[index];
       if (MComponentHandler) {
         //if (MComponentHandler2) MComponentHandler2->startGroupEdit();
-        MComponentHandler->beginEdit(index);          // click
-        MComponentHandler->performEdit(index,value);  // drag
-        MComponentHandler->endEdit(index);            // release
+        MComponentHandler->beginEdit(index);
+        MComponentHandler->performEdit(index,value);
+        MComponentHandler->endEdit(index);
         //if (MComponentHandler2) MComponentHandler2->finishGroupEdit();
       }
     }
   }
 
   //----------
+
+  /*
+    reaper asks for this all the time, so we create (and cache) it, and
+    return a ptr to the same buffer each time..
+    (re-check this, as i think i remember i saw something about this in a
+    recent reaper update log)
+  */
 
   void createParameterInfo() {
     if (!MParamInfos) {
@@ -270,6 +279,16 @@ private:
 
   //----------
 
+  /*
+    no interpolation, or sample-accurate automation yet..
+    we 'cheat', and only use the last value for each block
+    (plugins can interpolate this)
+    a) fill a buffer (blocksize) with parameter values?
+    b) split process-buffer, and send parameter updates inbetween?
+       (not interpolated)
+    #define KODE_VST3_PARAMS_LAST, _STEPPED, _INTERPOLATED
+  */
+
   void handleParametersInProcess(KODE_Vst3ProcessData& data) {
     KODE_Vst3IParameterChanges* paramChanges = data.inputParameterChanges;
     if (paramChanges) {
@@ -283,13 +302,10 @@ private:
               //for (int32_t j=0; j<paramQueue->getPointCount(); j++) {
                 int32_t offset = 0;
                 double value = 0;
-
                 int32_t pointcount = paramQueue->getPointCount();
                 paramQueue->getPoint(pointcount-1,offset,value); // last point
-
                 MParameterValues[id] = value;
                 //KODE_Print("MParameterValues[%i] = %.3f\n",id,value);
-
                 KODE_Parameter* param = MDescriptor->getParameter(id);
                 if (param) value = param->from01(value);
                 on_plugin_parameter(0,id,value);
@@ -434,7 +450,7 @@ public: // FUnknown
   */
 
   uint32_t KODE_VST3_PLUGIN_API release() final {
-    const uint32_t r = --MRefCount; // const uint32_t ?
+    const uint32_t r = --MRefCount;
     if (r == 0) {
       on_plugin_close();
       KODE_Delete this;
@@ -458,7 +474,7 @@ public: // FUnknown
     IAudioProcessor and on success uses it as controller.
 
     reaper asks for:
-      C3B17BC0-2C174494-80293402-FBC4BBF8 (IContextInfoHandler,   plsextensions)
+      C3B17BC0-2C174494-80293402-FBC4BBF8 (IContextInfoHandler,   pslextensions)
       31E29A7A-E55043AD-8B95B9B8-DA1FBE1E (IContextInfoHandler2,  pslextensions)
 
     bitwig asks for:
@@ -800,10 +816,10 @@ public: // IPluginBase
       case 0: {
         // is it safe to malloc/free here?
         // use static, pre malloc'd buffer?
-        void* ptr = malloc(size);
+        void* ptr = KODE_Malloc(size);
         state->read(&ptr,size,&num_read);
         on_plugin_restoreState(size,ptr,0);
-        free(ptr);
+        KODE_Free(ptr);
         break;
       }
       case 1: {
@@ -813,7 +829,7 @@ public: // IPluginBase
           state->read(&v,sizeof(float),&num_read);
           //setParameterValue(i,v);
           MParameterValues[i] = v;
-//          on_plugin_parameter(i,v,0);
+          //on_plugin_parameter(i,v,0);
         }
         updateAllParameters();
         break;
@@ -874,6 +890,7 @@ public: // IAudioProcessor
   // const SpeakerArrangement kStereo = kSpeakerL | kSpeakerR;
 
   int32_t KODE_VST3_PLUGIN_API setBusArrangements(uint64_t* inputs, int32_t numIns, uint64_t* outputs, int32_t numOuts) final {
+    //todo
     return kode_vst3_ResultTrue;
   }
 
@@ -954,7 +971,7 @@ public: // IAudioProcessor
 
   int32_t KODE_VST3_PLUGIN_API setProcessing(uint8_t state) final {
     MIsProcessing = state;
-//    if (MIsProcessing) on_plugin_prepare(MSampleRate,MBlockSize);
+    //if (MIsProcessing) on_plugin_prepare(MSampleRate,MBlockSize);
     return kode_vst3_ResultOk;
   }
 
@@ -1581,9 +1598,7 @@ public: // IEditController
     if (id >= MDescriptor->getNumParameters()) {
       return kode_vst3_ResultFalse; // ???
     }
-
     //MEditorParameterValues[id] = value;
-
     if (MEditor) {
       MEditor->updateParameterFromHost(id,value);
     }

@@ -8,6 +8,7 @@
 //
 //----------------------------------------------------------------------
 
+//#include "../test/test1.cpp"
 //#include "../test/test2.cpp"
 //#include "../test/test_gui1.cpp"
 //#include "../test/test_gui2.cpp"
@@ -27,8 +28,8 @@
 //----------------------------------------------------------------------
 
 //#include "../plugins/effect_template.cpp"
-//#include "../plugins/synth_template.cpp"
+#include "../plugins/synth_template.cpp"
 
 //----------
 
-#include "../plugins/ports/sa_sonic_maximizer.cpp"
+//#include "../plugins/ports/sa_sonic_maximizer.cpp"

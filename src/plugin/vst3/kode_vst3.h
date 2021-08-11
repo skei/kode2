@@ -54,8 +54,10 @@
 
 //----------
 
+// todo: implement newer vst3 version..
+
 //#ifndef kode_vst3_VstVersionString
-#define kode_vst3_VstVersionString	"VST 3.6.10"	///< SDK version for PClassInfo2
+#define kode_vst3_VstVersionString	"VST 3.6.10"	// SDK version for PClassInfo2
 //#endif
 
 //#ifndef kode_vst3_VstAudioEffectClass
@@ -130,27 +132,27 @@ typedef char16_t  KODE_Vst3String[128]; // was String128
 
   #ifdef KODE_WIN32
   enum {
-    kode_vst3_NoInterface     = 0x80004002;   // static_cast<int32_t>(0x80004002L),	// E_NOINTERFACE
-    kode_vst3_ResultOk        = 0x00000000;   //static_cast<int32_t>(0x00000000L),	// S_OK
+    kode_vst3_NoInterface     = 0x80004002;         // static_cast<int32_t>(0x80004002L), // E_NOINTERFACE
+    kode_vst3_ResultOk        = 0x00000000;         // static_cast<int32_t>(0x00000000L), // S_OK
     kode_vst3_ResultTrue      = kode_vst3_ResultOk,
-    kode_vst3_ResultFalse     = 0x00000001;   // static_cast<int32_t>(0x00000001L),	// S_FALSE
-    kode_vst3_InvalidArgument = 0x80070057;   // static_cast<int32_t>(0x80070057L),	// E_INVALIDARG
-    kode_vst3_NotImplemented  = 0x80004001;   // static_cast<int32_t>(0x80004001L),	// E_NOTIMPL
-    kode_vst3_InternalError   = 0x80004005;   // static_cast<int32_t>(0x80004005L),	// E_FAIL
-    kode_vst3_NotInitialized  = 0x8000FFFF;   // static_cast<int32_t>(0x8000FFFFL),	// E_UNEXPECTED
-    kode_vst3_OutOfMemory     = 0x8007000E;   // static_cast<int32_t>(0x8007000EL)		// E_OUTOFMEMORY
+    kode_vst3_ResultFalse     = 0x00000001;         // static_cast<int32_t>(0x00000001L), // S_FALSE
+    kode_vst3_InvalidArgument = 0x80070057;         // static_cast<int32_t>(0x80070057L), // E_INVALIDARG
+    kode_vst3_NotImplemented  = 0x80004001;         // static_cast<int32_t>(0x80004001L), // E_NOTIMPL
+    kode_vst3_InternalError   = 0x80004005;         // static_cast<int32_t>(0x80004005L), // E_FAIL
+    kode_vst3_NotInitialized  = 0x8000FFFF;         // static_cast<int32_t>(0x8000FFFFL), // E_UNEXPECTED
+    kode_vst3_OutOfMemory     = 0x8007000E;         // static_cast<int32_t>(0x8007000EL)  // E_OUTOFMEMORY
   };
   #else
   enum {
-    kode_vst3_NoInterface     = 0x80000004; // static_cast<int32_t>(0x80000004L),	// E_NOINTERFACE
-    kode_vst3_ResultOk        = 0x00000000; // static_cast<int32_t>(0x00000000L),	// S_OK
+    kode_vst3_NoInterface     = 0x80000004;         // static_cast<int32_t>(0x80000004L), // E_NOINTERFACE
+    kode_vst3_ResultOk        = 0x00000000;         // static_cast<int32_t>(0x00000000L), // S_OK
     kode_vst3_ResultTrue      = kode_vst3_ResultOk,
-    kode_vst3_ResultFalse     = 0x00000001; // static_cast<int32_t>(0x00000001L),	// S_FALSE
-    kode_vst3_InvalidArgument = 0x80000003; // static_cast<int32_t>(0x80000003L),	// E_INVALIDARG
-    kode_vst3_NotImplemented  = 0x80000001; // static_cast<int32_t>(0x80000001L),	// E_NOTIMPL
-    kode_vst3_InternalError   = 0x80000008; // static_cast<int32_t>(0x80000008L),	// E_FAIL
-    kode_vst3_NotInitialized  = 0x8000FFFF; // static_cast<int32_t>(0x8000FFFFL),	// E_UNEXPECTED
-    kode_vst3_OutOfMemory     = 0x80000002; // static_cast<int32_t>(0x80000002L)		// E_OUTOFMEMORY
+    kode_vst3_ResultFalse     = 0x00000001;         // static_cast<int32_t>(0x00000001L), // S_FALSE
+    kode_vst3_InvalidArgument = 0x80000003;         // static_cast<int32_t>(0x80000003L), // E_INVALIDARG
+    kode_vst3_NotImplemented  = 0x80000001;         // static_cast<int32_t>(0x80000001L), // E_NOTIMPL
+    kode_vst3_InternalError   = 0x80000008;         // static_cast<int32_t>(0x80000008L), // E_FAIL
+    kode_vst3_NotInitialized  = 0x8000FFFF;         // static_cast<int32_t>(0x8000FFFFL), // E_UNEXPECTED
+    kode_vst3_OutOfMemory     = 0x80000002;         // static_cast<int32_t>(0x80000002L)  // E_OUTOFMEMORY
   };
   #endif // KODE_WIN32
 
@@ -172,17 +174,19 @@ typedef char16_t  KODE_Vst3String[128]; // was String128
 
 //----------
 
-//enum NoteExpressionTypeIDs {
-//  kode_vst3_VolumeTypeID = 0,
-//  kode_vst3_PanTypeID,
-//  kode_vst3_TuningTypeID,
-//  kode_vst3_VibratoTypeID,
-//  kode_vst3_ExpressionTypeID,
-//  kode_vst3_BrightnessTypeID,
-//  kode_vst3_TextTypeID,
-//  kode_vst3_PhonemeTypeID,
-//  kode_vst3_CustomStart = 100000
-//};
+/*
+enum NoteExpressionTypeIDs {
+  kode_vst3_VolumeTypeID = 0,
+  kode_vst3_PanTypeID,
+  kode_vst3_TuningTypeID,
+  kode_vst3_VibratoTypeID,
+  kode_vst3_ExpressionTypeID,
+  kode_vst3_BrightnessTypeID,
+  kode_vst3_TextTypeID,
+  kode_vst3_PhonemeTypeID,
+  kode_vst3_CustomStart = 100000
+};
+*/
 
 enum KODE_Vst3BusDirections {
   kode_vst3_Input = 0,
@@ -288,49 +292,52 @@ const char*     kode_vst3_PlatformTypeX11EmbedWindowID  = "X11EmbedWindowID";
 const uint64_t  kode_vst3_SpeakerL                      = 1 << 0;
 const uint64_t  kode_vst3_SpeakerR                      = 1 << 1;
 
-/*static*/ const int32_t   kode_vst3_NoParentUnitId     = -1;
-/*static*/ const int32_t   kode_vst3_NoProgramListId    = -1;
-/*static*/ const uint32_t  kode_vst3_NoTail             = 0;
-/*static*/ const int32_t   kode_vst3_RootUnitId         = 0;
+/*static*/
+const int32_t   kode_vst3_NoParentUnitId                = -1;
+const int32_t   kode_vst3_NoProgramListId               = -1;
+const uint32_t  kode_vst3_NoTail                        = 0;
+const int32_t   kode_vst3_RootUnitId                    = 0;
 
-//namespace KODE_Vst3PlugType {
-//  const CString kode_vst3_FxAnalyzer			        = "Fx|Analyzer";
-//  const CString kode_vst3_FxDelay				        = "Fx|Delay";
-//  const CString kode_vst3_FxDistortion		        = "Fx|Distortion";
-//  const CString kode_vst3_FxDynamics			        = "Fx|Dynamics";
-//  const CString kode_vst3_FxEQ					          = "Fx|EQ";
-//  const CString kode_vst3_FxFilter				        = "Fx|Filter";
-//  const CString kode_vst3_Fx					            = "Fx";
-//  const CString kode_vst3_FxInstrument			      = "Fx|Instrument";
-//  const CString kode_vst3_FxInstrumentExternal	  = "Fx|Instrument|External";
-//  const CString kode_vst3_FxSpatial			        = "Fx|Spatial";
-//  const CString kode_vst3_FxGenerator			      = "Fx|Generator";
-//  const CString kode_vst3_FxMastering			      = "Fx|Mastering";
-//  const CString kode_vst3_FxModulation			      = "Fx|Modulation";
-//  const CString kode_vst3_FxPitchShift			      = "Fx|Pitch Shift";
-//  const CString kode_vst3_FxRestoration		      = "Fx|Restoration";
-//  const CString kode_vst3_FxReverb				        = "Fx|Reverb";
-//  const CString kode_vst3_FxSurround			        = "Fx|Surround";
-//  const CString kode_vst3_FxTools                 = "Fx|Tools";
-//  const CString kode_vst3_FxNetwork               = "Fx|Network";
-//  const CString kode_vst3_Instrument              = "Instrument";
-//  const CString kode_vst3_InstrumentDrum          = "Instrument|Drum";
-//  const CString kode_vst3_InstrumentSampler       = "Instrument|Sampler";
-//  const CString kode_vst3_InstrumentSynth         = "Instrument|Synth";
-//  const CString kode_vst3_InstrumentSynthSampler  = "Instrument|Synth|Sampler";
-//  const CString kode_vst3_InstrumentExternal	    = "Instrument|External";
-//  const CString kode_vst3_Spatial				        = "Spatial";
-//  const CString kode_vst3_SpatialFx			= "Spatial|Fx";
-//  const CString kode_vst3_OnlyRealTime			= "OnlyRT";
-//  const CString kode_vst3_OnlyOfflineProcess	= "OnlyOfflineProcess";
-//  const CString kode_vst3_NoOfflineProcess		= "NoOfflineProcess";
-//  const CString kode_vst3_UpDownMix			= "Up-Downmix";
-//  const CString kode_vst3_Analyzer			    = "Analyzer";
-//  const CString kode_vst3_Ambisonic			= "Ambisonic";
-//  const CString kode_vst3_Mono					= "Mono";
-//  const CString kode_vst3_Stereo				= "Stereo";
-//  const CString kode_vst3_Surround				= "Surround";
-//};
+/*
+namespace KODE_Vst3PlugType {
+  const CString kode_vst3_FxAnalyzer              = "Fx|Analyzer";
+  const CString kode_vst3_FxDelay                 = "Fx|Delay";
+  const CString kode_vst3_FxDistortion            = "Fx|Distortion";
+  const CString kode_vst3_FxDynamics              = "Fx|Dynamics";
+  const CString kode_vst3_FxEQ                    = "Fx|EQ";
+  const CString kode_vst3_FxFilter				        = "Fx|Filter";
+  const CString kode_vst3_Fx					            = "Fx";
+  const CString kode_vst3_FxInstrument			      = "Fx|Instrument";
+  const CString kode_vst3_FxInstrumentExternal	  = "Fx|Instrument|External";
+  const CString kode_vst3_FxSpatial			          = "Fx|Spatial";
+  const CString kode_vst3_FxGenerator			        = "Fx|Generator";
+  const CString kode_vst3_FxMastering			        = "Fx|Mastering";
+  const CString kode_vst3_FxModulation			      = "Fx|Modulation";
+  const CString kode_vst3_FxPitchShift			      = "Fx|Pitch Shift";
+  const CString kode_vst3_FxRestoration           = "Fx|Restoration";
+  const CString kode_vst3_FxReverb                = "Fx|Reverb";
+  const CString kode_vst3_FxSurround              = "Fx|Surround";
+  const CString kode_vst3_FxTools                 = "Fx|Tools";
+  const CString kode_vst3_FxNetwork               = "Fx|Network";
+  const CString kode_vst3_Instrument              = "Instrument";
+  const CString kode_vst3_InstrumentDrum          = "Instrument|Drum";
+  const CString kode_vst3_InstrumentSampler       = "Instrument|Sampler";
+  const CString kode_vst3_InstrumentSynth         = "Instrument|Synth";
+  const CString kode_vst3_InstrumentSynthSampler  = "Instrument|Synth|Sampler";
+  const CString kode_vst3_InstrumentExternal      = "Instrument|External";
+  const CString kode_vst3_Spatial                 = "Spatial";
+  const CString kode_vst3_SpatialFx               = "Spatial|Fx";
+  const CString kode_vst3_OnlyRealTime            = "OnlyRT";
+  const CString kode_vst3_OnlyOfflineProcess      = "OnlyOfflineProcess";
+  const CString kode_vst3_NoOfflineProcess        = "NoOfflineProcess";
+  const CString kode_vst3_UpDownMix               = "Up-Downmix";
+  const CString kode_vst3_Analyzer                = "Analyzer";
+  const CString kode_vst3_Ambisonic               = "Ambisonic";
+  const CString kode_vst3_Mono                    = "Mono";
+  const CString kode_vst3_Stereo                  = "Stereo";
+  const CString kode_vst3_Surround                = "Surround";
+};
+*/
 
 //----------------------------------------------------------------------
 //
@@ -941,15 +948,14 @@ KODE_VST3_DECLARE_CLASS_IID (KODE_Vst3IUnitInfo, 0x3D4BD6B5, 0x913A4FD2, 0xA886E
 class KODE_Vst3IAttributeList
 : public KODE_Vst3FUnknown {
 public:
-	//typedef const char* AttrID;
-	virtual int32_t KODE_VST3_PLUGIN_API setInt(/*AttrID*/const char* id, int64_t value) = 0;
-	virtual int32_t KODE_VST3_PLUGIN_API getInt(/*AttrID*/const char* id, int64_t& value) = 0;
-	virtual int32_t KODE_VST3_PLUGIN_API setFloat(/*AttrID*/const char* id, double value) = 0;
-	virtual int32_t KODE_VST3_PLUGIN_API getFloat(/*AttrID*/const char* id, double& value) = 0;
-	virtual int32_t KODE_VST3_PLUGIN_API setString(/*AttrID*/const char* id, const char16_t* string) = 0;
-	virtual int32_t KODE_VST3_PLUGIN_API getString(/*AttrID*/const char* id, char16_t* string, uint32_t size) = 0;
-	virtual int32_t KODE_VST3_PLUGIN_API setBinary(/*AttrID*/const char* id, const void* data, uint32_t size) = 0;
-	virtual int32_t KODE_VST3_PLUGIN_API getBinary(/*AttrID*/const char* id, const void*& data, uint32_t& size) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API setInt(const char* id, int64_t value) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getInt(const char* id, int64_t& value) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API setFloat(const char* id, double value) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getFloat(const char* id, double& value) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API setString(const char* id, const char16_t* string) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getString(const char* id, char16_t* string, uint32_t size) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API setBinary(const char* id, const void* data, uint32_t size) = 0;
+	virtual int32_t KODE_VST3_PLUGIN_API getBinary(const char* id, const void*& data, uint32_t& size) = 0;
 	//
 	static const KODE_Vst3Id iid;
 };
