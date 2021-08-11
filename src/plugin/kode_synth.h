@@ -1,5 +1,5 @@
-#ifndef kdoe_synth_included
-#define kdoe_synth_included
+#ifndef kode_synth_included
+#define kode_synth_included
 //----------------------------------------------------------------------
 
 //#include "kode.h"

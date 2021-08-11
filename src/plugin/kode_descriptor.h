@@ -123,11 +123,6 @@ public:
   void setEditorHeight(uint32_t AHeight)            { MEditorHeight = AHeight; }
   void setEditorSize(uint32_t W, uint32_t H)        { MEditorWidth = W; MEditorHeight = H; }
 
-  //bool isSynth()                                    { return MOptions.isSynth; }
-  //bool hasEditor()                                  { return MOptions.hasEditor; }
-  //bool canSendMidi(bool ACanSendMidi=true)          { return MOptions.canSendMidi; }
-  //bool canReceiveMidi(bool ACanReceiveMidi=true)    { return MOptions.canReceiveMidi; }
-
 //------------------------------
 public:
 //------------------------------

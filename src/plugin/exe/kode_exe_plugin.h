@@ -35,6 +35,7 @@ public:
 //------------------------------
 
   int main(int argc, char** argv) {
+    //init_audio();
     KODE_Descriptor* descriptor = KODE_New DESC();
     KODE_Instance* instance = KODE_New INST(descriptor);
     instance->on_plugin_open();
@@ -59,6 +60,7 @@ public:
     instance->on_plugin_close();
     KODE_Delete instance;
     KODE_Delete descriptor;
+    //shutdown_audio();
     return 0;
   }
 

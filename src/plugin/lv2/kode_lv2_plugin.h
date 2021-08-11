@@ -281,6 +281,7 @@ private: // lv2 callbacks
 #define KODE_LV2_MAIN_SYMBOL asm ("lv2_descriptor");
 const LV2_Descriptor* kode_lv2_entrypoint(unsigned long Index) KODE_LV2_MAIN_SYMBOL
 
+//#ifdef KODE_PLUGIN_LV2_DUMPTTL
 //#define KODE_LV2_DUMPTTL_SYMBOL asm ("lv2_dumpttl");
 //void kode_lv2_dumpttl(void) KODE_LV2_DUMPTTL_SYMBOL
 
@@ -299,7 +300,6 @@ const LV2_Descriptor* kode_lv2_entrypoint(unsigned long Index) KODE_LV2_MAIN_SYM
   KODE_Descriptor* kode_lv2_get_descriptor() {                        \
     return _KODE_LV2_PLUGIN.getDescriptor();                          \
   }                                                                   \
-
 
 //__KODE_DLLEXPORT
 //void kode_lv2_dumpttl(void) {
