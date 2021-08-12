@@ -31,25 +31,25 @@ public:
   void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
   }
 
-  void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) final {
+  void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
   }
 
-  void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) final {
+  void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
   }
 
-  void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState) final {
+  void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState, uint32_t ATimeStamp=0) final {
   }
 
-  void on_widget_keyPress(uint32_t AKey, char AChar, uint32_t AState) final {
+  void on_widget_keyPress(uint32_t AKey, char AChar, uint32_t AState, uint32_t ATimeStamp=0) final {
   }
 
-  void on_widget_keyRelease(uint32_t AKey, char AChar, uint32_t AState) final {
+  void on_widget_keyRelease(uint32_t AKey, char AChar, uint32_t AState, uint32_t ATimeStamp=0) final {
   }
 
-  void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom) final {
+  void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom, uint32_t ATimeStamp=0) final {
   }
 
-  void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo) final {
+  void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo, uint32_t ATimeStamp=0) final {
   }
 
   void on_widget_connect(KODE_Parameter* AParameter, uint32_t ASubIndex) final {
@@ -67,8 +67,8 @@ public:
     if (MParent) MParent->do_widget_redraw(ASender,ARect,AMode);
   }
 
-  void do_widget_grabMouse(KODE_Widget* ASender) final {
-    if (MParent) MParent->do_widget_grabMouse(ASender);
+  void do_widget_grabMouseCursor(KODE_Widget* ASender) final {
+    if (MParent) MParent->do_widget_grabMouseCursor(ASender);
   }
 
   void do_widget_grabKeyboard(KODE_Widget* ASender) final {
@@ -83,8 +83,8 @@ public:
     if (MParent) MParent->do_widget_setMouseCursor(ASender,ACursor);
   }
 
-  void do_widget_setMousePos(KODE_Widget* ASender, float AXpos, float AYpos) final {
-    if (MParent) MParent->do_widget_setMousePos(ASender,AXpos,AYpos);
+  void do_widget_setMouseCursorPos(KODE_Widget* ASender, float AXpos, float AYpos) final {
+    if (MParent) MParent->do_widget_setMouseCursorPos(ASender,AXpos,AYpos);
   }
 
   void do_widget_setHint(KODE_Widget* ASender, const char* AHint) final {

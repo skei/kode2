@@ -40,7 +40,7 @@ public:
     MBitmap->fillArea(0,0,32,16,0xffffff);
 
     //MBitmap2->rotozoom( MBitmap, -KODE_PI05,  1.0f, -247,0,  0,0, false);
-    MBitmap2->rotate( MBitmap, 128,128, 128,128, -KODE_PI05, 1.0f, 0xff0000);
+    MBitmap2->rotate( MBitmap, 128,128, 128,128, 0.1f/*-KODE_PI05*/, 0.9f, 0xff0000);
     //MBitmap2->copyBitmap(0,0,MBitmap);
 
     MSurface = KODE_New KODE_Surface(this,256,256);

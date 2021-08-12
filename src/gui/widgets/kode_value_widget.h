@@ -26,12 +26,15 @@ protected:
   KODE_Color  MLabelColor         = KODE_Color(0.8f);
 
   bool        MCanDragValue       = true;
+  bool        MIsDragging         = false;
   float       MDragSensitivity    = 0.004f;
+  float       MDragSensitivity2   = 0.05;
   float       MClickedXpos        = 0.0f;
   float       MClickedYpos        = 0.0f;
   float       MClickedValue       = 0.0f;
   float       MPrevXpos           = 0.0f;
   float       MPrevYpos           = 0.0f;
+  uint32_t    MPrevClickTime      = 0;
 
 //------------------------------
 public:
@@ -40,9 +43,9 @@ public:
   KODE_ValueWidget(KODE_FRect ARect)
   : KODE_TextWidget(ARect) {
     MMouseCursor = KODE_CURSOR_ARROWUPDOWN;
-    MOptions.autoMouseCursor = true;
-    MOptions.autoMouseCapture = true;
-    MOptions.autoMouseHide = true;
+    //MOptions.autoMouseCursor = true;
+    //MOptions.autoMouseCapture = true;
+    //MOptions.autoMouseHide = true;
   }
 
   virtual ~KODE_ValueWidget() {
@@ -118,30 +121,39 @@ public:
     drawBorder(APainter);
   }
 
-  void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) final {
-    //MClickedXpos = AXpos;
-    //MClickedYpos = AXpos;
-    //MClickedValue = MValue;
-    MPrevXpos = AXpos;
-    MPrevYpos = AYpos;
-    //do_widget_setMouseCursor(this,KODE_CURSOR_HIDE);
-    //do_widget_setMouseCursor(this,KODE_CURSOR_GRAB);
+  void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
+    if (AButton == KODE_BUTTON_LEFT) {
+
+      //bool double_click = false;
+      //if ((ATimeStamp - MPrevClickTime) < KODE_GUI_DBLCLICK_MS) {
+      //  double_click = true;
+      //}
+      //MPrevClickTime = ATimeStamp;
+      //if (double_click) KODE_DPrint("double click\n");
+
+      if (MOptions.autoMouseCapture) do_widget_setMouseCursor(this,KODE_CURSOR_GRAB);
+      if (MOptions.autoMouseHide) do_widget_setMouseCursor(this,KODE_CURSOR_HIDE);
+      MPrevXpos = AXpos;
+      MPrevYpos = AYpos;
+      MIsDragging = true;
+    }
   }
 
-  void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) final {
-    //KODE_Print("release\n");
-    //do_widget_setMouseCursor(this,KODE_CURSOR_SHOW);
-    //do_widget_setMouseCursor(this,KODE_CURSOR_RELEASE);
+  void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
+    if (AButton == KODE_BUTTON_LEFT) {
+      if (MOptions.autoMouseCapture) do_widget_setMouseCursor(this,KODE_CURSOR_RELEASE);
+      if (MOptions.autoMouseHide) do_widget_setMouseCursor(this,KODE_CURSOR_SHOW);
+      MIsDragging = false;
+    }
   }
 
-  void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState) final {
-    //KODE_DPrint("  AXpos %.2f AYpos %.2f\n",AXpos,AYpos);
-    if (MStates.clicked) {
-      //KODE_Print("drag\n");
+  void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState, uint32_t ATimeStamp=0) final {
+    if (MIsDragging) {
       //float deltax = AXpos - MPrevXpos; // right is increasing
       float deltay = MPrevYpos - AYpos; // up is increasing
-      //KODE_DPrint("  deltax %.2f deltay %.2f\n",deltax,deltay);
-      MValue += (deltay * MDragSensitivity);
+      float sens = MDragSensitivity;
+      if (AState & KODE_KEY_SHIFT) sens *= MDragSensitivity2;
+      MValue += (deltay * sens);
       MValue = KODE_Clamp(MValue,0.0f, 1.0f);
       update();
       redraw();
@@ -150,12 +162,10 @@ public:
     MPrevYpos = AYpos;
   }
 
-  void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom) final {
-    //do_widget_setMouseCursor(this,KODE_CURSOR_ARROWUPDOWN);
+  void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom, uint32_t ATimeStamp=0) final {
   }
 
-  void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo) final {
-    //do_widget_setMouseCursor(KODE_DEFAULT);
+  void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo, uint32_t ATimeStamp=0) final {
   }
 
 //------------------------------

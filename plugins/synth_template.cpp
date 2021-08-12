@@ -1,7 +1,7 @@
 
 #define KODE_GUI_XCB
-#define KODE_DEBUG_PRINT_TIME
-#define KODE_DEBUG_PRINT_THREAD
+//#define KODE_DEBUG_PRINT_TIME
+//#define KODE_DEBUG_PRINT_THREAD
 //#define KODE_DEBUG_PRINT_SOCKET
 
 //----------
@@ -337,6 +337,7 @@ public:
     //  queueGuiMessage(MCounter);
     //}
     //#endif
+    //
     //MCounter += 1;
 
   }
@@ -439,13 +440,19 @@ KODE_PLUGIN_ENTRYPOINT(myDescriptor,myInstance);
 
 
 
+  //----------
+
+  /*
+    process-buffer = cache-aligned (64 bytes)
+    ticksize = 16 floats = 4 simd instructions = 64 bytes
+    hardcode all processing
+    a) 16 samples.. optimized.. 4 simd.. unrolled, consts..
+    b) 1..15 for the remaining (if 'uneven' buffer)
+  */
 
 
-
-
-
-/*
-  void process(int ANumSamples, float* AResult) {
+  /*
+  void process_tick(int ANumSamples, float* AResult) {
     int remaining = ANumSamples;
     int offset = 0;
     preprocess_events();
@@ -466,4 +473,4 @@ KODE_PLUGIN_ENTRYPOINT(myDescriptor,myInstance);
     }
     postprocess_events();
   }
-*/
+  */

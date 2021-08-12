@@ -31,17 +31,21 @@ const char    KODE_CSYMBOLS[]     = "___________________________________________
 //
 //----------------------------------------------------------------------
 
-#define KODE_ALIGNMENT_SIMD                   16
-#define KODE_ALIGNMENT_CACHE                  64
-//#define KODE_AUDIO_TICKSIZE                 16
-//#define KODE_BITMAP_RASTERIZER_MAX_HEIGHT   2048
-#define KODE_DSP_SIZE                         16
-#define KODE_DSP_NUM_BUFFERS                  16
-//#define KODE_MAX_AUDIO_NODES                256
-#define KODE_MAX_DSP_EVENTS                   256
-#define KODE_MAX_DSP_MIDI_EVENTS              256
-#define KODE_MAX_PATH_LENGTH                  512
-#define KODE_MAX_STRING_LENGTH                256
+#define KODE_ALIGNMENT_SIMD             16
+#define KODE_ALIGNMENT_CACHE            64
+
+#define KODE_AUDIO_MAX_EVENTS           256
+#define KODE_AUDIO_MAX_MIDI_EVENTS      256
+#define KODE_AUDIO_MAX_NODES            256
+#define KODE_AUDIO_TICKSIZE             16
+#define KODE_AUDIO_NUM_TICK_BUFFERS     16
+
+#define KODE_BITMAP_RASTER_MAX_HEIGHT   2048
+
+#define KODE_GUI_DBLCLICK_MS            200
+
+#define KODE_MAX_PATH_LENGTH            512
+#define KODE_MAX_STRING_LENGTH          256
 
 //----------------------------------------------------------------------
 // midi

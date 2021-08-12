@@ -96,6 +96,17 @@ enum KODE_EMouseCursors {
   KODE_CURSOR_IBEAM               = 19
 };
 
+enum KODE_EMouseButtons {
+  KODE_BUTTON_NONE                = 0,
+  KODE_BUTTON_LEFT                = 1,
+  KODE_BUTTON_MIDDLE              = 2,
+  KODE_BUTTON_RIGHT               = 3,
+  KODE_BUTTON_SCROLL_UP           = 4,
+  KODE_BUTTON_SCROLL_DOWN         = 5,
+  KODE_BUTTON_BACKWARD            = 8,
+  KODE_BUTTON_FORWARD             = 9
+};
+
 enum KODE_EKeyState {
   KODE_KEY_NONE                   = 0,
   KODE_KEY_SHIFT                  = 1,
