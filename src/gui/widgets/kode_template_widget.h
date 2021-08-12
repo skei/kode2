@@ -79,7 +79,7 @@ public:
     if (MParent) MParent->do_widget_grabModal(ASender);
   }
 
-  void do_widget_setMouseCursor(KODE_Widget* ASender, uint32_t ACursor) final {
+  void do_widget_setMouseCursor(KODE_Widget* ASender, int32_t ACursor) final {
     if (MParent) MParent->do_widget_setMouseCursor(ASender,ACursor);
   }
 

@@ -43,6 +43,7 @@ public:
 
     setAuthor("author");
     setVersion(0x0101001);
+    setIsSynth(true);
 
     appendInput(  KODE_New KODE_PluginPort("input1")  );
     appendInput(  KODE_New KODE_PluginPort("input2")  );
@@ -60,9 +61,6 @@ public:
       setHasEditor(true);
       setEditorSize(640,480);
     #endif
-
-    setIsSynth(true);
-    //setCanReceiveMidi(true);
 
   }
 };
@@ -131,9 +129,9 @@ private:
   float               MMasterBend   = 0.0f;
   float               MMasterPress  = 0.0f;
 
-  float srate = 0.0f;
-  float ph    = 0.0f;
-  float phadd = 0.0f;
+  float srate = 0.0f; // sample rate
+  float ph    = 0.0f; // phase
+  float phadd = 0.0f; // phase add
 
 //------------------------------
 public:
@@ -249,6 +247,7 @@ private:
 
   //bool              MNeedRecalc   = false;
   //uint32_t          MCounter      = 0;
+
   //KODE_Uint32Queue  MProcessMessageQueue;
   //KODE_Uint32Queue  MGuiMessageQueue;
 
@@ -308,7 +307,7 @@ public:
   //----------
 
   void on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) final {
-    KODE_Print("%i = %.3f\n",AIndex,AValue);
+    //KODE_Print("%i = %.3f\n",AIndex,AValue);
     //MNeedRecalc = true;
     //queueProcessMessage(AIndex);
     MVoices.parameter(AOffset,AIndex,AValue,AMode);

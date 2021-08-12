@@ -76,6 +76,7 @@ private:
   int32_t                     MWindowHeight                 = 0;
   bool                        MWindowMapped                 = false;
   bool                        MWindowExposed                = false;
+
   xcb_atom_t                  MWMProtocolsAtom              = XCB_NONE; // KWantQuitEvents
   xcb_atom_t                  MWMDeleteWindowAtom           = XCB_NONE; // KWantQuitEvents
 

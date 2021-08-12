@@ -32,7 +32,7 @@
 
 1628553584 /DISKS/sda2/code/git/kode2/src/base/kode_const.h
 
-1613071963 /DISKS/sda2/code/git/kode2/src/base/kode_enums.h
+1628722993 /DISKS/sda2/code/git/kode2/src/base/kode_enums.h
 
 1612057072 /DISKS/sda2/code/git/kode2/src/base/kode_stdlib.h
 	<inttypes.h>
@@ -80,7 +80,7 @@
 	"plugin/lv2/kode_lv2_plugin.h"
 	"plugin/vst3/kode_vst3_plugin.h"
 
-1620163526 /DISKS/sda2/code/git/kode2/src/plugin/exe/kode_exe_plugin.h
+1628644465 /DISKS/sda2/code/git/kode2/src/plugin/exe/kode_exe_plugin.h
 	"plugin/exe/kode_exe.h"
 
 1610852002 /DISKS/sda2/code/git/kode2/src/audio/io/kode_portaudio.h
@@ -101,7 +101,7 @@
 	<stdlib.h>
 	"kode.h"
 
-1620164571 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
+1628803977 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"gui/kode_surface.h"
@@ -227,7 +227,7 @@
 	"kode.h"
 	"gui/kode_drawable.h"
 
-1628640763 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
+1628800554 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"plugin/kode_parameter.h"
@@ -241,7 +241,7 @@
 1612057072 /DISKS/sda2/code/git/kode2/src/base/types/kode_rect.h
 	"kode.h"
 
-1628640618 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_window.h
+1628723263 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_window.h
 	"kode.h"
 	"gui/kode_drawable.h"
 	"gui/base/kode_base_window.h"
@@ -283,7 +283,7 @@
 1606532326 /DISKS/sda2/code/git/kode2/src/plugin/kode_plugin_event.h
 	"base/kode.h"
 
-1628640035 /DISKS/sda2/code/git/kode2/src/plugin/base/kode_base_instance.h
+1628644666 /DISKS/sda2/code/git/kode2/src/plugin/base/kode_base_instance.h
 	"kode.h"
 	"plugin/kode_descriptor.h"
 	"plugin/kode_process_context.h"
@@ -350,7 +350,7 @@
 	"gui/kode_painter.h"
 	"gui/kode_widget.h"
 
-1620247253 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_value_widget.h
+1628804088 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_value_widget.h
 	"gui/widgets/kode_text_widget.h"
 
 1610847314 /DISKS/sda2/code/git/kode2/test/test_plugin.h
@@ -659,7 +659,7 @@
 	<math.h>
 	"kode.h"
 
-1620247195 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_template_widget.h
+1628723038 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_template_widget.h
 	"gui/kode_widget.h"
 
 1613090852 /DISKS/sda2/code/git/kode2/plugins/template.cpp
@@ -704,7 +704,7 @@
 	"plugin/kode_plugin.h"
 	"gui/kode_widgets.h"
 
-1620162696 /DISKS/sda2/code/git/kode2/plugins/synth_template.cpp
+1628721228 /DISKS/sda2/code/git/kode2/plugins/synth_template.cpp
 	"kode.h"
 	"audio/kode_audio_utils.h"
 	"plugin/kode_parameters.h"
@@ -872,7 +872,7 @@
 	"kode.h"
 	"plugin/lv2/kode_lv2.h"
 
-1620337565 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_plugin.h
+1628644369 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_plugin.h
 	"plugin/lv2/kode_lv2.h"
 	"plugin/lv2/kode_lv2_instance.h"
 	"plugin/lv2/kode_lv2_utils.h"
@@ -892,7 +892,7 @@
 1620168920 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_saheader_widget.h
 	"gui/widgets/kode_panel_widget.h"
 
-1628640040 /DISKS/sda2/code/git/kode2/src/plugin/base/kode_base_editor.h
+1628644669 /DISKS/sda2/code/git/kode2/src/plugin/base/kode_base_editor.h
 	"kode.h"
 	"gui/kode_widget.h"
 

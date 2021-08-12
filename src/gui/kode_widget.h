@@ -16,7 +16,9 @@
 #define KODE_WIDGET_MAX_PARAMETERS 16
 
 struct KODE_WidgetOptions {
-  bool autoMouseCapture = true;
+  bool autoMouseCapture = false;
+  bool autoMouseCursor  = false;
+  bool autoMouseHide    = false;
   bool autoClip         = true;
   bool autoHint         = true;
 };
@@ -54,6 +56,8 @@ protected:
   float               MValue        = 0.0f;
   const char*         MText         = "KODE_Widget";
 
+  int32_t             MMouseCursor  = KODE_CURSOR_ARROWUPDOWN;
+
   KODE_WidgetLayout   MLayout;
   KODE_WidgetOptions  MOptions;
   KODE_WidgetStates   MStates;
@@ -66,7 +70,6 @@ protected:
   KODE_FRect          MContentRect  = KODE_FRect(0);
 
   KODE_Parameter*     MParameter                              = KODE_NULL;
-
   uint32_t            MSelectedParameter                      = 0;
   KODE_Parameter*     MParameters[KODE_WIDGET_MAX_PARAMETERS] = {0};
 
@@ -193,7 +196,6 @@ public:
   //----------
 
   void paintChildren(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
-    //KODE_PRINT;
     for (uint32_t i=0; i<MChildren.size(); i++) {
       KODE_Widget* widget = MChildren[i];
       KODE_FRect rect = widget->MRect;
@@ -207,17 +209,17 @@ public:
   //----------
 
   /*
+    the widgets are aligned from their MInitialRect, set up when the
+    widget is created.. so, if we resize the widget, it will be lost next
+    time the widgets are being 'realigned.. :-/
 
-    * the widgets are aligned from their MInitialRect, set up when the
-      widget is created.. so, if we resize the widget, it will be lost next
-      time the widgets are being 'realigned.. :-/
+    todo: have a MInitialDelta rect? difference from MInitialRect? in case
+    of runtime moving, resizing, etc.. ???
+    or modify the MInitialRect directly when needed (resizing the widget,
+    etc)..
 
-      todo: have a MInitialDelta rect? difference from MInitialRect? in case
-      of runtime moving, resizing, etc.. ???
-
-      or modify the MInitialRect directly when needed (resizing the widget,
-      etc)..
-
+    todo: pre/post for scrollboxes, to find size of child widgets, etc..
+    ???
   */
 
   void alignChildren() {
@@ -244,12 +246,18 @@ public:
         case KODE_WIDGET_ALIGN_PARENT:
           //rect.x += parent.x;
           //rect.y += parent.y;
-          //break;
+          break;
+
+        //case KODE_WIDGET_ALIGN_PARENT_CENTER:
+        //  break;
 
         case KODE_WIDGET_ALIGN_CLIENT:
           rect.x += client.x;
           rect.y += client.y;
           break;
+
+        //case KODE_WIDGET_ALIGN_CLIENT_CENTER:
+        //  break;
 
         case KODE_WIDGET_ALIGN_FILL_CLIENT:
           rect.x = client.x;
@@ -299,6 +307,9 @@ public:
           rect.y += client.y;
           break;
 
+        //case KODE_WIDGET_ALIGN_LEFT_CENTER:
+        //  break;
+
         case KODE_WIDGET_ALIGN_LEFT_BOTTOM:
           rect.x += client.x;
           rect.y += client.y2() - rect.h;
@@ -308,10 +319,16 @@ public:
           rect.x += client.x2() - rect.w;
           break;
 
-        case KODE_WIDGET_ALIGN_RIGHT_TOP:
+        case KODE_WIDGET_ALIGN_RIGHT_TOP:        //case KODE_WIDGET_ALIGN_LEFT_CENTER:
+        //  break;
+
+
           rect.x += client.x2() - rect.w;
           rect.y += client.y;
           break;
+
+        //case KODE_WIDGET_ALIGN_RIGHT_CENTER:
+        //  break;
 
         case KODE_WIDGET_ALIGN_RIGHT_BOTTOM:
           rect.x += client.x2() - rect.w;
@@ -327,6 +344,12 @@ public:
           rect.y += client.y;
           break;
 
+        //case KODE_WIDGET_ALIGN_TOP_CENTER:
+        //  break;
+        //case KODE_WIDGET_ALIGN_LEFT_CENTER:
+        //  break;
+
+
         case KODE_WIDGET_ALIGN_TOP_RIGHT:
           rect.x += client.x2() - rect.w;
           rect.y += client.y;
@@ -340,6 +363,9 @@ public:
           rect.x += client.x;
           rect.y += client.y2() - rect.h;
           break;
+
+        //case KODE_WIDGET_ALIGN_BOTTOM_CENTER:
+        //  break;
 
         case KODE_WIDGET_ALIGN_BOTTOM_RIGHT:
           rect.x += client.x2() - rect.w;
@@ -430,7 +456,7 @@ public:
     if (MParent) MParent->do_widget_grabModal(ASender);
   }
 
-  virtual void do_widget_setMouseCursor(KODE_Widget* ASender, uint32_t ACursor) {
+  virtual void do_widget_setMouseCursor(KODE_Widget* ASender, int32_t ACursor) {
     if (MParent) MParent->do_widget_setMouseCursor(ASender,ACursor);
   }
 
