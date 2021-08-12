@@ -70,6 +70,9 @@ enum KODE_EPluginStates {
 //----------------------------------------------------------------------
 
 enum KODE_EMouseCursors {
+  KODE_CURSOR_GRAB                = -4,
+  KODE_CURSOR_RELEASE             = -3,
+  KODE_CURSOR_SHOW                = -2,
   KODE_CURSOR_HIDE                = -1,
   KODE_CURSOR_DEFAULT             = 0,
   KODE_CURSOR_ARROW               = 1,

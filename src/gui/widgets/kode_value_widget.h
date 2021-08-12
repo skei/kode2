@@ -39,6 +39,10 @@ public:
 
   KODE_ValueWidget(KODE_FRect ARect)
   : KODE_TextWidget(ARect) {
+    MMouseCursor = KODE_CURSOR_ARROWUPDOWN;
+    MOptions.autoMouseCursor = true;
+    MOptions.autoMouseCapture = true;
+    MOptions.autoMouseHide = true;
   }
 
   virtual ~KODE_ValueWidget() {
@@ -120,19 +124,23 @@ public:
     //MClickedValue = MValue;
     MPrevXpos = AXpos;
     MPrevYpos = AYpos;
+    //do_widget_setMouseCursor(this,KODE_CURSOR_HIDE);
+    //do_widget_setMouseCursor(this,KODE_CURSOR_GRAB);
   }
 
   void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState) final {
     //KODE_Print("release\n");
+    //do_widget_setMouseCursor(this,KODE_CURSOR_SHOW);
+    //do_widget_setMouseCursor(this,KODE_CURSOR_RELEASE);
   }
 
   void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState) final {
-    //KODE_Print("drag\n");
+    //KODE_DPrint("  AXpos %.2f AYpos %.2f\n",AXpos,AYpos);
     if (MStates.clicked) {
       //KODE_Print("drag\n");
       //float deltax = AXpos - MPrevXpos; // right is increasing
       float deltay = MPrevYpos - AYpos; // up is increasing
-      //KODE_Print("deltax %.3f deltay %.3f\n",deltax,deltay);
+      //KODE_DPrint("  deltax %.2f deltay %.2f\n",deltax,deltay);
       MValue += (deltay * MDragSensitivity);
       MValue = KODE_Clamp(MValue,0.0f, 1.0f);
       update();
@@ -142,11 +150,13 @@ public:
     MPrevYpos = AYpos;
   }
 
-  //void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom) final {
-  //}
+  void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom) final {
+    //do_widget_setMouseCursor(this,KODE_CURSOR_ARROWUPDOWN);
+  }
 
-  //void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo) final {
-  //}
+  void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo) final {
+    //do_widget_setMouseCursor(KODE_DEFAULT);
+  }
 
 //------------------------------
 

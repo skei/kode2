@@ -44,7 +44,19 @@ protected:
   KODE_Widget*  MHoverWidget            = KODE_NULL;
   KODE_Widget*  MModalWidget            = KODE_NULL;
   KODE_Widget*  MMouseClickedWidget     = KODE_NULL;
+  KODE_Widget*  MMouseCapturedWidget    = KODE_NULL;
   KODE_Widget*  MKeyCaptureWidget       = KODE_NULL;
+
+  int32_t       MMousePrevX             = 0;
+  int32_t       MMousePrevY             = 0;
+
+  int32_t       MMouseClickedX          = 0;
+  int32_t       MMouseClickedY          = 0;
+  uint32_t      MMouseClickedB          = 0;
+  uint32_t      MMouseClickedS          = 0;
+
+  int32_t      MMouseDragX              = 0;
+  int32_t      MMouseDragY              = 0;
 
   bool          MFillBackground         = false;
   KODE_Color    MBackgroundColor        = KODE_Color(0.5f);
@@ -195,10 +207,16 @@ public:
       if (MHoverWidget) {
         MHoverWidget->MStates.hovering = false;
         MHoverWidget->on_widget_leave(AXpos,AYpos,hover);
+        //if (MHoverWidget->MOptions.autoMouseCursor) setMouseCursor(MHoverWidget->MMouseCursor);
       }
       if (hover) {
         hover->MStates.hovering = true;
         hover->on_widget_enter(AXpos,AYpos,MHoverWidget);
+        if (hover->MOptions.autoMouseCursor) setMouseCursor(hover->MMouseCursor);
+      }
+      else {
+        //KODE_DPrint("default\n");
+        setMouseCursor(KODE_CURSOR_DEFAULT);
       }
       MHoverWidget = hover;
     }
@@ -240,11 +258,23 @@ public: // base window
   //----------
 
   void on_window_mouseClick(int32_t AXpos, int32_t AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp) override {
+    MMouseClickedX  = AXpos;
+    MMouseClickedY  = AYpos;
+    MMousePrevX     = AXpos;
+    MMousePrevY     = AYpos;
+    MMouseDragX     = AXpos;
+    MMouseDragY     = AYpos;
     if (MHoverWidget) {
+      grabMouseCursor();
       MMouseClickedWidget = MHoverWidget;
-      MHoverWidget->MStates.clicked = true;
-      MHoverWidget->on_widget_mouseClick(AXpos,AYpos,AButton,AState);
-      //grabMouseCursor();
+      if (MMouseClickedWidget->MOptions.autoMouseHide) {
+        hideMouseCursor();
+      }
+      if (MMouseClickedWidget->MOptions.autoMouseCapture) {
+        MMouseCapturedWidget = MMouseClickedWidget;
+      }
+      MMouseClickedWidget->MStates.clicked = true;
+      MMouseClickedWidget->on_widget_mouseClick(AXpos,AYpos,AButton,AState);
     }
   }
 
@@ -252,39 +282,69 @@ public: // base window
 
   void on_window_mouseRelease(int32_t AXpos, int32_t AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp) override {
     if (MMouseClickedWidget) {
+      releaseMouseCursor();
       MMouseClickedWidget->MStates.clicked = false;
       MMouseClickedWidget->on_widget_mouseRelease(AXpos,AYpos,AButton,AState);
+      if (MMouseClickedWidget->MOptions.autoMouseHide) {
+        showMouseCursor();
+      }
+      if (MMouseClickedWidget->MOptions.autoMouseCapture) {
+      }
+      MMouseCapturedWidget = KODE_NULL;
       MMouseClickedWidget = KODE_NULL;
-      //releaseMouseCursor();
+      updateHoverWidget(AXpos,AYpos);
     }
-    //else {
-    //  on_widget_mouseRelease(AXpos,AYpos,AButton,AState);
-    //}
+    else {
+      on_widget_mouseRelease(AXpos,AYpos,AButton,AState);
+    }
   }
 
   //----------
 
   void on_window_mouseMove(int32_t AXpos, int32_t AYpos, uint32_t AState, uint32_t ATimeStamp) override {
     if (MMouseClickedWidget) {
-      MMouseClickedWidget->on_widget_mouseMove(AXpos,AYpos,AState);
+      if (MMouseCapturedWidget) {
+        if ((AXpos == MMouseClickedX) && (AYpos == MMouseClickedY)) {
+          MMousePrevX = AXpos;
+          MMousePrevY = AYpos;
+          return;
+        }
+        int32_t deltax = AXpos - MMouseClickedX;
+        int32_t deltay = AYpos - MMouseClickedY;
+        MMouseDragX += deltax;
+        MMouseDragY += deltay;
+        MMouseClickedWidget->on_widget_mouseMove(MMouseDragX,MMouseDragY,AState);
+        setMouseCursorPos(MMouseClickedX,MMouseClickedY);
+      }
+      else {
+        MMouseClickedWidget->on_widget_mouseMove(AXpos,AYpos,AState);
+      }
     }
     else {
       updateHoverWidget(AXpos,AYpos);
     }
+    MMousePrevX = AXpos;
+    MMousePrevY = AYpos;
   }
 
   //----------
 
   void on_window_enter(int32_t AXpos, int32_t AYpos, uint32_t ATimeStamp) override {
-    updateHoverWidget(AXpos,AYpos);
-    //on_widget_enter(AXpos,AYpos,KODE_NULL);
+    if (!MMouseClickedWidget) {
+      updateHoverWidget(AXpos,AYpos);
+      //on_widget_enter(AXpos,AYpos,KODE_NULL);
+    }
   }
 
   //----------
 
+  //TODO: if not dragging?
+
   void on_window_leave(int32_t AXpos, int32_t AYpos, uint32_t ATimeStamp) override {
-    updateHoverWidget(AXpos,AYpos,true);
-    //on_widget_leave(AXpos,AYpos,KODE_NULL);
+    if (!MMouseClickedWidget) {
+      updateHoverWidget(AXpos,AYpos,true);
+      //on_widget_leave(AXpos,AYpos,KODE_NULL);
+    }
   }
 
   //----------
@@ -363,8 +423,28 @@ public: // "widget listener"
 //    }
 //  }
 
-  void do_widget_setMouseCursor(KODE_Widget* AWidget, uint32_t ACursor) override {
-    setMouseCursor(ACursor);
+  void do_widget_setMouseCursor(KODE_Widget* AWidget, int32_t ACursor) override {
+    switch (ACursor) {
+      case KODE_CURSOR_GRAB:
+        grabMouseCursor();
+        break;
+      case KODE_CURSOR_RELEASE:
+        releaseMouseCursor();
+        break;
+      case KODE_CURSOR_SHOW:
+        showMouseCursor();
+        break;
+      case KODE_CURSOR_HIDE:
+        hideMouseCursor();
+        break;
+      default:
+        //if (ACursor != MCurrentCursor) {
+        //  MCurrentCursor = ACursor;
+        //  setCursor(ACursor);
+        //}
+        setMouseCursor(ACursor);
+        break;
+    }
   }
 
 //  void do_setCursorPos(KODE_Widget* ASender, float AXpos, float AYpos) override {
