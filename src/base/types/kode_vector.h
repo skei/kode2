@@ -8,10 +8,10 @@
 #include <math.h>
 
 //----------------------------------------------------------------------
-// vec2_t
+// KODE_Vector2
 //----------------------------------------------------------------------
 
-struct vec2_t {
+struct KODE_Vector2 {
 
   union {
     float el[2];
@@ -20,40 +20,40 @@ struct vec2_t {
 
   //----------
 
-  vec2_t()                    {}
-  vec2_t(float v)             { x=v; y=v; }
-  vec2_t(float ax, float ay)  { x=ax; y=ay; }
+  KODE_Vector2()                    {}
+  KODE_Vector2(float v)             { x=v; y=v; }
+  KODE_Vector2(float ax, float ay)  { x=ax; y=ay; }
 
-  vec2_t  operator +  (const vec2_t& rhs)  const { return vec2_t(x+rhs.x,y+rhs.y); }
-  vec2_t  operator -  (const vec2_t& rhs)  const { return vec2_t(x-rhs.x,y-rhs.y); }
-  vec2_t  operator *  (const vec2_t& rhs)  const { return vec2_t(x*rhs.x,y*rhs.y); }
-  vec2_t  operator /  (const vec2_t& rhs)  const { return vec2_t(x/rhs.x,y/rhs.y); }
-  vec2_t& operator += (const vec2_t& v)          { x+=v.x; y+=v.y; return *this; }
-  vec2_t& operator -= (const vec2_t& v)          { x-=v.x; y-=v.y; return *this; }
-  vec2_t& operator *= (const vec2_t& v)          { x*=v.x; y*=v.y; return *this; }
-  vec2_t& operator /= (const vec2_t& v)          { x/=v.x; y/=v.y; return *this; }
-  vec2_t  operator +  (float s)          const { return vec2_t(x+s,y+s); }
-  vec2_t  operator -  (float s)          const { return vec2_t(x-s,y-s); }
-  vec2_t  operator *  (float s)          const { return vec2_t(x*s,y*s); }
-  vec2_t  operator /  (float s)          const { return vec2_t(x/s,y/s); }
-  vec2_t& operator += (const float& s)         { x+=s; y+=s; return *this; }
-  vec2_t& operator -= (const float& s)         { x-=s; y-=s; return *this; }
-  vec2_t& operator *= (const float& s)         { x*=s; y*=s; return *this; }
-  vec2_t& operator /= (const float& s)         { x/=s; y/=s; return *this; }
-  vec2_t  operator -  ()                 const { return vec2_t(-x,-y); }
+  KODE_Vector2  operator +  (const KODE_Vector2& rhs)  const { return KODE_Vector2(x+rhs.x,y+rhs.y); }
+  KODE_Vector2  operator -  (const KODE_Vector2& rhs)  const { return KODE_Vector2(x-rhs.x,y-rhs.y); }
+  KODE_Vector2  operator *  (const KODE_Vector2& rhs)  const { return KODE_Vector2(x*rhs.x,y*rhs.y); }
+  KODE_Vector2  operator /  (const KODE_Vector2& rhs)  const { return KODE_Vector2(x/rhs.x,y/rhs.y); }
+  KODE_Vector2& operator += (const KODE_Vector2& v)          { x+=v.x; y+=v.y; return *this; }
+  KODE_Vector2& operator -= (const KODE_Vector2& v)          { x-=v.x; y-=v.y; return *this; }
+  KODE_Vector2& operator *= (const KODE_Vector2& v)          { x*=v.x; y*=v.y; return *this; }
+  KODE_Vector2& operator /= (const KODE_Vector2& v)          { x/=v.x; y/=v.y; return *this; }
+  KODE_Vector2  operator +  (float s)          const { return KODE_Vector2(x+s,y+s); }
+  KODE_Vector2  operator -  (float s)          const { return KODE_Vector2(x-s,y-s); }
+  KODE_Vector2  operator *  (float s)          const { return KODE_Vector2(x*s,y*s); }
+  KODE_Vector2  operator /  (float s)          const { return KODE_Vector2(x/s,y/s); }
+  KODE_Vector2& operator += (const float& s)         { x+=s; y+=s; return *this; }
+  KODE_Vector2& operator -= (const float& s)         { x-=s; y-=s; return *this; }
+  KODE_Vector2& operator *= (const float& s)         { x*=s; y*=s; return *this; }
+  KODE_Vector2& operator /= (const float& s)         { x/=s; y/=s; return *this; }
+  KODE_Vector2  operator -  ()                 const { return KODE_Vector2(-x,-y); }
 
-  float dot(vec2_t v1) {
+  float dot(KODE_Vector2 v1) {
     return x * v1.x + y * v1.y;
   }
 
-  vec2_t cross(vec2_t v1) {
-    return vec2_t(
+  KODE_Vector2 cross(KODE_Vector2 v1) {
+    return KODE_Vector2(
       0,
       0
     );
   }
 
-  void cross(vec2_t v0, vec2_t v1) {
+  void cross(KODE_Vector2 v0, KODE_Vector2 v1) {
     x = 0;
     y = 0;
   }
@@ -76,96 +76,96 @@ struct vec2_t {
 
 //----------------------------------------------------------------------
 
-vec2_t  KODE_Vector2_add(vec2_t v0, vec2_t v1)  { vec2_t r = { v0.x + v1.x, v0.y + v1.y }; return r; }
-vec2_t  KODE_Vector2_sub(vec2_t v0, vec2_t v1)  { vec2_t r = { v0.x - v1.x, v0.y - v1.y }; return r; }
-vec2_t  KODE_Vector2_mul(vec2_t v0, vec2_t v1)  { vec2_t r = { v0.x * v1.x, v0.y * v1.y }; return r; }
-vec2_t  KODE_Vector2_div(vec2_t v0, vec2_t v1)  { vec2_t r = { v0.x / v1.x, v0.y / v1.y }; return r; }
+KODE_Vector2  KODE_Vector2_add(KODE_Vector2 v0, KODE_Vector2 v1)  { KODE_Vector2 r = { v0.x + v1.x, v0.y + v1.y }; return r; }
+KODE_Vector2  KODE_Vector2_sub(KODE_Vector2 v0, KODE_Vector2 v1)  { KODE_Vector2 r = { v0.x - v1.x, v0.y - v1.y }; return r; }
+KODE_Vector2  KODE_Vector2_mul(KODE_Vector2 v0, KODE_Vector2 v1)  { KODE_Vector2 r = { v0.x * v1.x, v0.y * v1.y }; return r; }
+KODE_Vector2  KODE_Vector2_div(KODE_Vector2 v0, KODE_Vector2 v1)  { KODE_Vector2 r = { v0.x / v1.x, v0.y / v1.y }; return r; }
 
-vec2_t  KODE_Vector2_add(vec2_t v, float f)   { vec2_t r = { v.x + f, v.y + f }; return r; }
-vec2_t  KODE_Vector2_sub(vec2_t v, float f)   { vec2_t r = { v.x - f, v.y - f }; return r; }
-vec2_t  KODE_Vector2_mul(vec2_t v, float f)   { vec2_t r = { v.x * f, v.y * f }; return r; }
-vec2_t  KODE_Vector2_div(vec2_t v, float f)   { vec2_t r = { v.x / f, v.y / f }; return r; }
+KODE_Vector2  KODE_Vector2_add(KODE_Vector2 v, float f)   { KODE_Vector2 r = { v.x + f, v.y + f }; return r; }
+KODE_Vector2  KODE_Vector2_sub(KODE_Vector2 v, float f)   { KODE_Vector2 r = { v.x - f, v.y - f }; return r; }
+KODE_Vector2  KODE_Vector2_mul(KODE_Vector2 v, float f)   { KODE_Vector2 r = { v.x * f, v.y * f }; return r; }
+KODE_Vector2  KODE_Vector2_div(KODE_Vector2 v, float f)   { KODE_Vector2 r = { v.x / f, v.y / f }; return r; }
 
-float KODE_Vector2_dot(vec2_t v0, vec2_t v1) {
+float KODE_Vector2_dot(KODE_Vector2 v0, KODE_Vector2 v1) {
   return (v0.x * v1.x)
        + (v0.y * v1.y);
 }
 
-vec2_t KODE_Vector2_cross(vec2_t v0, vec2_t v1) {
-  return vec2_t(
+KODE_Vector2 KODE_Vector2_cross(KODE_Vector2 v0, KODE_Vector2 v1) {
+  return KODE_Vector2(
     0,
     0
   );
 } // USUALLY FAIL
 
-float KODE_Vector2_length(vec2_t v) {
+float KODE_Vector2_length(KODE_Vector2 v) {
   return sqrtf( (v.x*v.x) + (v.y*v.y) );
 }
 
-float KODE_Vector2_length_sq(vec2_t v) {
+float KODE_Vector2_length_sq(KODE_Vector2 v) {
   return ( (v.x*v.x) + (v.y*v.y) );
 }
 
-vec2_t KODE_Vector2_normalize(vec2_t v) {
+KODE_Vector2 KODE_Vector2_normalize(KODE_Vector2 v) {
   float fi = 1.0f / KODE_Vector2_length(v);
-  return vec2_t(
+  return KODE_Vector2(
     v.x * fi,
     v.y * fi
   );
 }
 
 //----------------------------------------------------------------------
-// vec3_t
+// KODE_Vector3
 //----------------------------------------------------------------------
 
-struct vec3_t {
+struct KODE_Vector3 {
 
   union {
     float el[3];
     struct { float x,y,z; };
     struct { float r,g,b; };
-    vec2_t xy;
+    KODE_Vector2 xy;
   };
 
   //----------
 
-  vec3_t()                              { x=0.0f; y=0.0f; z=0.0f; }
-  vec3_t(float v)                       { x=v; y=v; z=v; }
-  vec3_t(float ax, float ay, float az)  { x=ax; y=ay; z=az; }
-  //vec3_t(vec2_t axy, float az, float aw)            { x=axy.x; y=axy.y; z=az; w=aw; }
-  //vec3_t(vec3_t axyz, float aw)                     { x=axyz.x; y=axyz.y; z=axyz.z; w=aw; }
+  KODE_Vector3()                              { x=0.0f; y=0.0f; z=0.0f; }
+  KODE_Vector3(float v)                       { x=v; y=v; z=v; }
+  KODE_Vector3(float ax, float ay, float az)  { x=ax; y=ay; z=az; }
+  //KODE_Vector3(KODE_Vector2 axy, float az, float aw)            { x=axy.x; y=axy.y; z=az; w=aw; }
+  //KODE_Vector3(KODE_Vector3 axyz, float aw)                     { x=axyz.x; y=axyz.y; z=axyz.z; w=aw; }
 
-  vec3_t  operator +  (const vec3_t& rhs) const { return vec3_t(x+rhs.x,y+rhs.y,z+rhs.z); }
-  vec3_t  operator -  (const vec3_t& rhs) const { return vec3_t(x-rhs.x,y-rhs.y,z-rhs.z); }
-  vec3_t  operator *  (const vec3_t& rhs) const { return vec3_t(x*rhs.x,y*rhs.y,z*rhs.z); }
-  vec3_t  operator /  (const vec3_t& rhs) const { return vec3_t(x/rhs.x,y/rhs.y,z/rhs.z); }
-  vec3_t& operator += (const vec3_t& v)         { x+=v.x; y+=v.y; z+=v.z; return *this; }
-  vec3_t& operator -= (const vec3_t& v)         { x-=v.x; y-=v.y; z-=v.z; return *this; }
-  vec3_t& operator *= (const vec3_t& v)         { x*=v.x; y*=v.y; z*=v.z; return *this; }
-  vec3_t& operator /= (const vec3_t& v)         { x/=v.x; y/=v.y; z/=v.z; return *this; }
-  vec3_t  operator +  (float s)           const { return vec3_t(x+s,y+s,z+s); }
-  vec3_t  operator -  (float s)           const { return vec3_t(x-s,y-s,z-s); }
-  vec3_t  operator *  (float s)           const { return vec3_t(x*s,y*s,z*s); }
-  vec3_t  operator /  (float s)           const { return vec3_t(x/s,y/s,z/s); }
-  vec3_t& operator += (const float& s)          { x+=s; y+=s; z+=s; return *this; }
-  vec3_t& operator -= (const float& s)          { x-=s; y-=s; z-=s; return *this; }
-  vec3_t& operator *= (const float& s)          { x*=s; y*=s; z*=s; return *this; }
-  vec3_t& operator /= (const float& s)          { x/=s; y/=s; z/=s; return *this; }
-  vec3_t  operator -  ()                  const { return vec3_t(-x,-y,-z); }
+  KODE_Vector3  operator +  (const KODE_Vector3& rhs) const { return KODE_Vector3(x+rhs.x,y+rhs.y,z+rhs.z); }
+  KODE_Vector3  operator -  (const KODE_Vector3& rhs) const { return KODE_Vector3(x-rhs.x,y-rhs.y,z-rhs.z); }
+  KODE_Vector3  operator *  (const KODE_Vector3& rhs) const { return KODE_Vector3(x*rhs.x,y*rhs.y,z*rhs.z); }
+  KODE_Vector3  operator /  (const KODE_Vector3& rhs) const { return KODE_Vector3(x/rhs.x,y/rhs.y,z/rhs.z); }
+  KODE_Vector3& operator += (const KODE_Vector3& v)         { x+=v.x; y+=v.y; z+=v.z; return *this; }
+  KODE_Vector3& operator -= (const KODE_Vector3& v)         { x-=v.x; y-=v.y; z-=v.z; return *this; }
+  KODE_Vector3& operator *= (const KODE_Vector3& v)         { x*=v.x; y*=v.y; z*=v.z; return *this; }
+  KODE_Vector3& operator /= (const KODE_Vector3& v)         { x/=v.x; y/=v.y; z/=v.z; return *this; }
+  KODE_Vector3  operator +  (float s)           const { return KODE_Vector3(x+s,y+s,z+s); }
+  KODE_Vector3  operator -  (float s)           const { return KODE_Vector3(x-s,y-s,z-s); }
+  KODE_Vector3  operator *  (float s)           const { return KODE_Vector3(x*s,y*s,z*s); }
+  KODE_Vector3  operator /  (float s)           const { return KODE_Vector3(x/s,y/s,z/s); }
+  KODE_Vector3& operator += (const float& s)          { x+=s; y+=s; z+=s; return *this; }
+  KODE_Vector3& operator -= (const float& s)          { x-=s; y-=s; z-=s; return *this; }
+  KODE_Vector3& operator *= (const float& s)          { x*=s; y*=s; z*=s; return *this; }
+  KODE_Vector3& operator /= (const float& s)          { x/=s; y/=s; z/=s; return *this; }
+  KODE_Vector3  operator -  ()                  const { return KODE_Vector3(-x,-y,-z); }
 
-  float dot(vec3_t v1) {
+  float dot(KODE_Vector3 v1) {
     return (x * v1.x) + (y * v1.y) + (z * v1.z);
   }
 
-  vec3_t cross(vec3_t v1) {
-    return vec3_t(
+  KODE_Vector3 cross(KODE_Vector3 v1) {
+    return KODE_Vector3(
       (y * v1.z) - (z * v1.y),
       (z * v1.x) - (x * v1.z),
       (x * v1.y) - (y * v1.x)
     );
   }
 
-  void cross(vec3_t v0, vec3_t v1) {
+  void cross(KODE_Vector3 v0, KODE_Vector3 v1) {
     x = (v0.y * v1.z) - (v0.z * v1.y);
     y = (v0.z * v1.x) - (v0.x * v1.z);
     z = (v0.x * v1.y) - (v0.y * v1.x);
@@ -190,41 +190,41 @@ struct vec3_t {
 
 //----------------------------------------------------------------------
 
-vec3_t  KODE_Vector3_add(vec3_t v0, vec3_t v1)  { vec3_t r = { v0.x + v1.x, v0.y + v1.y, v0.z + v1.z }; return r; }
-vec3_t  KODE_Vector3_sub(vec3_t v0, vec3_t v1)  { vec3_t r = { v0.x - v1.x, v0.y - v1.y, v0.z - v1.z }; return r; }
-vec3_t  KODE_Vector3_mul(vec3_t v0, vec3_t v1)  { vec3_t r = { v0.x * v1.x, v0.y * v1.y, v0.z * v1.z }; return r; }
-vec3_t  KODE_Vector3_div(vec3_t v0, vec3_t v1)  { vec3_t r = { v0.x / v1.x, v0.y / v1.y, v0.z / v1.z }; return r; }
+KODE_Vector3  KODE_Vector3_add(KODE_Vector3 v0, KODE_Vector3 v1)  { KODE_Vector3 r = { v0.x + v1.x, v0.y + v1.y, v0.z + v1.z }; return r; }
+KODE_Vector3  KODE_Vector3_sub(KODE_Vector3 v0, KODE_Vector3 v1)  { KODE_Vector3 r = { v0.x - v1.x, v0.y - v1.y, v0.z - v1.z }; return r; }
+KODE_Vector3  KODE_Vector3_mul(KODE_Vector3 v0, KODE_Vector3 v1)  { KODE_Vector3 r = { v0.x * v1.x, v0.y * v1.y, v0.z * v1.z }; return r; }
+KODE_Vector3  KODE_Vector3_div(KODE_Vector3 v0, KODE_Vector3 v1)  { KODE_Vector3 r = { v0.x / v1.x, v0.y / v1.y, v0.z / v1.z }; return r; }
 
-vec3_t  KODE_Vector3_add(vec3_t v, float f)   { vec3_t r = { v.x + f, v.y + f, v.z + f }; return r; }
-vec3_t  KODE_Vector3_sub(vec3_t v, float f)   { vec3_t r = { v.x - f, v.y - f, v.z - f }; return r; }
-vec3_t  KODE_Vector3_mul(vec3_t v, float f)   { vec3_t r = { v.x * f, v.y * f, v.z * f }; return r; }
-vec3_t  KODE_Vector3_div(vec3_t v, float f)   { vec3_t r = { v.x / f, v.y / f, v.z / f }; return r; }
+KODE_Vector3  KODE_Vector3_add(KODE_Vector3 v, float f)   { KODE_Vector3 r = { v.x + f, v.y + f, v.z + f }; return r; }
+KODE_Vector3  KODE_Vector3_sub(KODE_Vector3 v, float f)   { KODE_Vector3 r = { v.x - f, v.y - f, v.z - f }; return r; }
+KODE_Vector3  KODE_Vector3_mul(KODE_Vector3 v, float f)   { KODE_Vector3 r = { v.x * f, v.y * f, v.z * f }; return r; }
+KODE_Vector3  KODE_Vector3_div(KODE_Vector3 v, float f)   { KODE_Vector3 r = { v.x / f, v.y / f, v.z / f }; return r; }
 
-float KODE_Vector3_dot(vec3_t v0, vec3_t v1) {
+float KODE_Vector3_dot(KODE_Vector3 v0, KODE_Vector3 v1) {
   return (v0.x * v1.x)
        + (v0.y * v1.y)
        + (v0.z * v1.z);
 }
 
-vec3_t KODE_Vector3_cross(vec3_t v0, vec3_t v1) {
-  return vec3_t(
+KODE_Vector3 KODE_Vector3_cross(KODE_Vector3 v0, KODE_Vector3 v1) {
+  return KODE_Vector3(
     (v0.y * v1.z) - (v0.z * v1.y),
     (v0.z * v1.x) - (v0.x * v1.z),
     (v0.x * v1.y) - (v0.y * v1.x)
   );
 }
 
-float KODE_Vector3_length(vec3_t v) {
+float KODE_Vector3_length(KODE_Vector3 v) {
   return sqrtf( (v.x*v.x) + (v.y*v.y) + (v.z*v.z) );
 }
 
-float KODE_Vector3_length_sq(vec3_t v) {
+float KODE_Vector3_length_sq(KODE_Vector3 v) {
   return ( (v.x*v.x) + (v.y*v.y) + (v.z*v.z) );
 }
 
-vec3_t KODE_Vector3_normalize(vec3_t v) {
+KODE_Vector3 KODE_Vector3_normalize(KODE_Vector3 v) {
   float fi = 1.0f / KODE_Vector3_length(v);
-  return vec3_t(
+  return KODE_Vector3(
     v.x * fi,
     v.y * fi,
     v.z * fi

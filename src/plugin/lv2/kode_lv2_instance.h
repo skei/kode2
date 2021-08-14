@@ -2,9 +2,12 @@
 #define kode_lv2_instance_included
 //----------------------------------------------------------------------
 
-#include "plugin/kode_editor.h"
+#ifndef KODE_NO_GUI
+  #include "plugin/kode_editor.h"
+#endif
+
 //#include "plugin/kode_plugin_base.h"
-#include "plugin/base/kode_base_editor.h"
+//#include "plugin/base/kode_base_editor.h"
 #include "plugin/base/kode_base_instance.h"
 #include "plugin/lv2/kode_lv2.h"
 #include "plugin/lv2/kode_lv2_utils.h"
@@ -28,7 +31,9 @@ private:
 //------------------------------
 
   KODE_Descriptor*          MDescriptor       = KODE_NULL;
+  #ifndef KODE_NO_GUI
   KODE_Editor*              MEditor           = KODE_NULL;
+  #endif
 
   LV2_URID                  MMidiInputUrid    = 0;
   const LV2_Atom_Sequence*  MAtomSequence     = KODE_NULL;

@@ -7,9 +7,12 @@
 
 //----------------------------------------------------------------------
 
-#include "plugin/kode_editor.h"
+#ifndef KODE_NO_GUI
+  #include "plugin/kode_editor.h"
+#endif
+
 //#include "plugin/kode_plugin_base.h"
-#include "plugin/base/kode_base_editor.h"
+//#include "plugin/base/kode_base_editor.h"
 #include "plugin/base/kode_base_instance.h"
 #include "plugin/vst3/kode_vst3.h"
 #include "plugin/vst3/kode_vst3_utils.h"
@@ -67,7 +70,9 @@ private:
   bool                          MIsProcessing           = false;
   char                          MHostName[129]          = {0};
   KODE_Descriptor*              MDescriptor             = KODE_NULL;
+  #ifndef KODE_NO_GUI
   KODE_Editor*                  MEditor                 = KODE_NULL;
+  #endif
 
   float*                        MParameterValues        = KODE_NULL;
   //float*                        MEditorParameterValues  = KODE_NULL;
@@ -131,6 +136,7 @@ public:
 
   //----------
 
+  #ifndef KODE_NO_GUI
   void updateAllEditorParameters(KODE_BaseEditor* AEditor, bool ARedraw=true) override {
     uint32_t num = MDescriptor->getNumParameters();
     for (uint32_t i=0; i<num; i++) {
@@ -142,6 +148,7 @@ public:
       AEditor->updateParameterFromHost(i,v,ARedraw);
     }
   }
+  #endif
 
   //----------
 
@@ -154,10 +161,12 @@ public:
     next process()
   */
 
+  #ifndef KODE_NO_GUI
   void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
     //MEditorParameterValues[AIndex] = AValue;
     queueParameterToHost(AIndex,AValue);
   }
+  #endif
 
 //------------------------------
 private:
@@ -1599,9 +1608,11 @@ public: // IEditController
       return kode_vst3_ResultFalse; // ???
     }
     //MEditorParameterValues[id] = value;
+    #ifndef KODE_NO_GUI
     if (MEditor) {
       MEditor->updateParameterFromHost(id,value);
     }
+    #endif
     return kode_vst3_ResultOk;
   }
 

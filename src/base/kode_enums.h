@@ -12,7 +12,9 @@ enum KODE_EDirections {
   KODE_UP                         = 0,
   KODE_DOWN                       = 1,
   KODE_LEFT                       = 2,
-  KODE_RIGHT                      = 3
+  KODE_RIGHT                      = 3,
+  KODE_HORIZONTAL                 = 0,
+  KODE_VERTICAL                   = 1
 };
 
 //----------------------------------------------------------------------

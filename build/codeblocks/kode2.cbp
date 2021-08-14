@@ -205,6 +205,14 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="../../plugins/ports/sa_compciter.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/sa_event_horizon.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="../../plugins/ports/sa_sonic_maximizer.cpp">
 			<Option compile="0" />
 			<Option link="0" />
@@ -395,12 +403,14 @@
 		<Unit filename="../../src/gui/kode_widget.h" />
 		<Unit filename="../../src/gui/kode_widgets.h" />
 		<Unit filename="../../src/gui/kode_window.h" />
+		<Unit filename="../../src/gui/widgets/kode_button_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_cached_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_color_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_image_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_panel_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_saheader_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_slider_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_switch_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_template_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_text_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_value_widget.h" />
@@ -458,15 +468,23 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="../../test/test2.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
 		<Unit filename="../../test/test_gui1.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
 		<Unit filename="../../test/test_gui2.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../test/test_gui3.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../test/test_widgets1.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../test/test_widgets2.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>

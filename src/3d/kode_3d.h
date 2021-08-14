@@ -7,48 +7,48 @@
 
 //----------------------------------------------------------------------
 
-struct KODE_3D_Vertex {
-  uint32_t          flags         = 0;
-  vec3_t            pos           = vec3_t(0.0f, 0.0f, 0.0f);
-  vec3_t            normal        = vec3_t(0.0f, 0.0f,-1.0f);
+struct KODE_3DVertex {
+  uint32_t              flags         = 0;
+  KODE_Vector3          pos           = KODE_Vector3(0.0f, 0.0f, 0.0f);
+  KODE_Vector3          normal        = KODE_Vector3(0.0f, 0.0f,-1.0f);
 };
 
-struct KODE_3D_TexCoord {
-  uint32_t          flags         = 0;
-  float             u             = 0.0f;
-  float             v             = 0.0f;
+struct KODE_3DTexCoord {
+  uint32_t              flags         = 0;
+  float                 u             = 0.0f;
+  float                 v             = 0.0f;
 };
 
-struct KODE_3D_Morph {
-  KODE_3D_Vertex*   vertices      = KODE_NULL;
+struct KODE_3DMorphTarget {
+  KODE_3DVertex*        vertices      = KODE_NULL;
 };
 
-struct KODE_3D_Triangle {
-  uint32_t          flags         = 0;
-  uint32_t          v1            = 0;
-  uint32_t          v2            = 0;
-  uint32_t          v3            = 0;
+struct KODE_3DTriangle {
+  uint32_t              flags         = 0;
+  uint32_t              v1            = 0;
+  uint32_t              v2            = 0;
+  uint32_t              v3            = 0;
 };
 
-struct KODE_3D_Material {
-  uint32_t          flags         = 0;
-  uint32_t          num_textures  = 0;
-  KODE_Bitmap**     textures      = KODE_NULL;
+struct KODE_3DMaterial {
+  uint32_t              flags         = 0;
+  uint32_t              num_textures  = 0;
+  KODE_Bitmap**         textures      = KODE_NULL;
 };
 
-struct KODE_3D_Mesh {
-  uint32_t          num_vertices  = 0;
-  uint32_t          num_triangles = 0;
-  uint32_t          num_morphs    = 0;
-  KODE_3D_Vertex*   vertices      = KODE_NULL;
-  KODE_3D_TexCoord* texcoords     = KODE_NULL;
-  KODE_3D_Triangle* triangles     = KODE_NULL;
-  KODE_3D_Morph*    morphs        = KODE_NULL;
+struct KODE_3DMesh {
+  uint32_t              num_vertices  = 0;
+  uint32_t              num_triangles = 0;
+  uint32_t              num_morphs    = 0;
+  KODE_3DVertex*        vertices      = KODE_NULL;
+  KODE_3DTexCoord*      texcoords     = KODE_NULL;
+  KODE_3DTriangle*      triangles     = KODE_NULL;
+  KODE_3DMorphTarget*   morphtargets  = KODE_NULL;
 };
 
-struct KODE_3D_Model {
-  KODE_3D_Mesh*     mesh          = KODE_NULL;;
-  KODE_3D_Material* material      = KODE_NULL;;
+struct KODE_3DModel {
+  KODE_3DMesh*          mesh          = KODE_NULL;;
+  KODE_3DMaterial*      material      = KODE_NULL;;
 };
 
 //----------------------------------------------------------------------

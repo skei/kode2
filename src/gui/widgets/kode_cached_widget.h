@@ -59,7 +59,7 @@ public:
     setDirty();
   }
 
-  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
+  void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) final {
     if (MSurfaceDirty) {
       updateSurface(APainter,ARect,AMode);
       MSurfaceDirty = false;

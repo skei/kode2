@@ -34,6 +34,19 @@ public:
 
   //----------
 
+//  KODE_Image(KODE_Drawable* AOwner, uint8_t* buffer, uint32_t len)
+//  : KODE_XcbImage(AOwner,ABitmap) {
+//
+//    MBitmap = KODE_New KODE_Bitmap(sa_logo_40_trans_black,sa_logo_40_trans_black_size);
+//    MBitmap->premultAlpha(0x999999);
+//    MSurface = KODE_New KODE_Surface(ATarget,MBitmap->getWidth(),MBitmap->getHeight());
+//    KODE_Painter* painter = KODE_New KODE_Painter(MSurface);
+//    painter->uploadBitmap(0,0,MBitmap);
+//  }
+
+
+  //----------
+
   virtual ~KODE_Image() {
   }
 

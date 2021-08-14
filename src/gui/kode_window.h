@@ -71,7 +71,7 @@ public:
   KODE_Window(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL)
   : KODE_ImplementedWindow(AWidth,AHeight,ATitle,AParent)
   , KODE_Widget(KODE_FRect(AWidth,AHeight)) {
-    MText = "KODE_Window";
+    //MText = "KODE_Window";
     MRect = KODE_FRect(AWidth,AHeight);
     MWindowWidth = AWidth;
     MWindowHeight = AHeight;
@@ -215,12 +215,12 @@ public:
       if (hover) {
         hover->MStates.hovering = true;
         hover->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);
-        if (hover->MOptions.autoMouseCursor) setMouseCursor(hover->MMouseCursor);
+        //if (hover->MOptions.autoMouseCursor) setMouseCursor(hover->MMouseCursor);
       }
-      else {
-        //KODE_DPrint("default\n");
-        setMouseCursor(KODE_CURSOR_DEFAULT);
-      }
+      //else {
+      //  //KODE_DPrint("default\n");
+      //  setMouseCursor(KODE_CURSOR_DEFAULT);
+      //}
       MHoverWidget = hover;
     }
   }
@@ -261,20 +261,17 @@ public: // base window
   //----------
 
   void on_window_mouseClick(int32_t AXpos, int32_t AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp) override {
-
     //bool double_click = false;
     //if ((ATimeStamp - MPrevClickTime) < KODE_GUI_DBLCLICK_MS) {
     //  double_click = true;
     //}
     //MPrevClickTime = ATimeStamp;
-
     MMouseClickedX  = AXpos;
     MMouseClickedY  = AYpos;
     MMousePrevX     = AXpos;
     MMousePrevY     = AYpos;
     MMouseDragX     = AXpos;
     MMouseDragY     = AYpos;
-
     if (MHoverWidget) {
       grabMouseCursor();
       MMouseClickedWidget = MHoverWidget;
@@ -303,6 +300,7 @@ public: // base window
       //}
       MMouseCapturedWidget = KODE_NULL;
       MMouseClickedWidget = KODE_NULL;
+      MHoverWidget = KODE_NULL;
       updateHoverWidget(AXpos,AYpos,ATimeStamp);
     }
     //else {
@@ -342,6 +340,7 @@ public: // base window
 
   void on_window_enter(int32_t AXpos, int32_t AYpos, uint32_t ATimeStamp) override {
     if (!MMouseClickedWidget) {
+      MHoverWidget = KODE_NULL;
       updateHoverWidget(AXpos,AYpos,ATimeStamp);
       //on_widget_enter(AXpos,AYpos,KODE_NULL);
     }
@@ -353,6 +352,7 @@ public: // base window
 
   void on_window_leave(int32_t AXpos, int32_t AYpos, uint32_t ATimeStamp) override {
     if (!MMouseClickedWidget) {
+      //MHoverWidget = KODE_NULL;
       updateHoverWidget(AXpos,AYpos,ATimeStamp,true);
       //on_widget_leave(AXpos,AYpos,KODE_NULL);
     }

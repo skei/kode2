@@ -29,7 +29,7 @@ public:
     MTextColor        = KODE_Color( 0,    0,    0   );
     MValueTextColor   = KODE_Color( 0,    0,    0   );
     MValueBarColor    = KODE_Color( 0.55, 0.55, 0.55);
-    MTextOffset = KODE_FRect(6,0,0,0);
+    MTextOffset       = KODE_FRect(6,0,0,0);
   }
 
   virtual ~KODE_SliderWidget() {
@@ -84,7 +84,7 @@ public:
 public:
 //------------------------------
 
-  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+  void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     fillBackground(APainter);
     paintChildren(APainter,ARect,AMode);
     drawValueBar(APainter);

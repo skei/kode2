@@ -24,6 +24,13 @@ public:
 
   //----------
 
+  KODE_ColorWidget(KODE_FRect ARect, KODE_Color AColor)
+  : KODE_Widget(ARect) {
+    MBackgroundColor = AColor;
+  }
+
+  //----------
+
   virtual ~KODE_ColorWidget() {
   }
 
@@ -51,7 +58,7 @@ public:
 public:
 //------------------------------
 
-  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+  void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     fillBackground(APainter);
     //KODE_Widget::on_widget_paint(APainter,ARect,AMode);
     paintChildren(APainter,ARect,AMode);

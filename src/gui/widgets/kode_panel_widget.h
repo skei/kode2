@@ -49,7 +49,7 @@ public:
 public:
 //------------------------------
 
-  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+  void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     //KODE_ColorWidget::on_widget_paint(APainter,ARect,AMode);
     fillBackground(APainter);
     paintChildren(APainter,ARect,AMode);

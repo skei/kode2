@@ -3,7 +3,10 @@
 //----------------------------------------------------------------------
 
 //#include "plugin/kode_plugin_base.h"
-#include "plugin/base/kode_base_editor.h"
+#ifndef KODE_NO_GUI
+  #include "plugin/base/kode_base_editor.h"
+#endif
+
 #include "plugin/base/kode_base_instance.h"
 
 //----------------------------------------------------------------------
@@ -75,6 +78,7 @@ public:
 
   //----------
 
+  #ifndef KODE_NO_GUI
   void updateAllEditorParameters(KODE_BaseEditor* AEditor, bool ARedraw=true) override {
     uint32_t num = MDescriptor->getNumParameters();
     for (uint32_t i=0; i<num; i++) {
@@ -84,9 +88,11 @@ public:
       AEditor->updateParameterFromHost(i,v,ARedraw);
     }
   }
+  #endif
 
   //----------
 
+  #ifndef KODE_NO_GUI
   void updateParameterFromEditor(uint32_t AIndex, float AValue) override {
     //if (MParameterValues[AIndex] != AValue) {
     //  MParameterValues[AIndex] = AValue;
@@ -95,6 +101,7 @@ public:
       on_plugin_parameter(0,AIndex,v,0);
     //}
   }
+  #endif
 
 //------------------------------
 private:

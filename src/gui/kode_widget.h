@@ -16,18 +16,18 @@
 #define KODE_WIDGET_MAX_PARAMETERS 16
 
 struct KODE_WidgetOptions {
-  bool autoMouseCapture = false;
-  bool autoMouseCursor  = false;
-  bool autoMouseHide    = false;
-  bool autoClip         = false;
-  bool autoHint         = false;
+//bool autoMouseCapture = false;
+//bool autoMouseHide    = false;
+//bool autoMouseCursor  = true;
+//bool autoClip         = true;
+//bool autoHint         = false;
 };
 
 struct KODE_WidgetStates {
   bool active       = true;
   bool visible      = true;
-  bool interactive  = true;
-  bool hovering     = true;
+  bool interactive  = false;
+  bool hovering     = false;
   //bool clicked      = true;
 };
 
@@ -54,9 +54,9 @@ protected:
 //------------------------------
 
   float               MValue        = 0.0f;
-  const char*         MText         = "KODE_Widget";
+  //const char*         MText         = "KODE_Widget";
 
-  int32_t             MMouseCursor  = KODE_CURSOR_ARROWUPDOWN;
+  int32_t             MMouseCursor  = KODE_CURSOR_DEFAULT;
 
   KODE_WidgetLayout   MLayout;
   KODE_WidgetOptions  MOptions;
@@ -90,7 +90,7 @@ public:
   }
 
 //------------------------------
-public:
+public: // set
 //------------------------------
 
   void setValue(float AValue) {
@@ -99,9 +99,9 @@ public:
 
   //----------
 
-  void setText(const char* AText) {
-    MText = AText;
-  }
+  //void setText(const char* AText) {
+  //  MText = AText;
+  //}
 
   //----------
 
@@ -109,8 +109,14 @@ public:
     MParameter = p;
   }
 
+  //----------
+
+  void selectParameter(uint32_t AIndex) {
+    MParameter = MParameters[AIndex];
+  }
+
 //------------------------------
-public:
+public: // get
 //------------------------------
 
   float getValue() {
@@ -119,9 +125,9 @@ public:
 
   //----------
 
-  const char* getText() {
-    return MText;
-  }
+  //const char* getText() {
+  //  return MText;
+  //}
 
   //----------
 
@@ -129,18 +135,9 @@ public:
     return MParameter;
   }
 
-  //----------
-
-  //void setParameter(KODE_Parameter* AParameter, uint32_t AIndex=0) {
-  //  MParameters[AIndex] = AParameter;
-  //  MParameter = AParameter;
-  //}
-
-  //----------
-
-  void selectParameter(uint32_t AIndex) {
-    MParameter = MParameters[AIndex];
-  }
+  KODE_WidgetLayout*   getLayout() { return &MLayout; }
+  KODE_WidgetOptions*  getOptions() { return &MOptions; }
+  KODE_WidgetStates*   getStates() { return &MStates; }
 
 //------------------------------
 public:
@@ -195,7 +192,14 @@ public:
 
   //----------
 
-  void paintChildren(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
+  KODE_Widget* getOwner() {
+    if (MParent) return MParent->getOwner();
+    else return this;
+  }
+
+  //----------
+
+  void paintChildren(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
     for (uint32_t i=0; i<MChildren.size(); i++) {
       KODE_Widget* widget = MChildren[i];
       KODE_FRect rect = widget->MRect;
@@ -403,7 +407,7 @@ public:
     //setSize(AWidth,AHeight);
   }
 
-  virtual void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
+  virtual void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
     paintChildren(APainter,ARect,AMode);
   }
 

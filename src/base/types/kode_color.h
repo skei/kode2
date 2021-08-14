@@ -41,26 +41,26 @@ public:
 public:
 //------------------------------
 
-//  operator uint32_t () {
-//    uint8_t rr = r * 255.0f;
-//    uint8_t gg = g * 255.0f;
-//    uint8_t bb = b * 255.0f;
-//    uint8_t aa = a * 255.0f;
-//    uint32_t color = (aa << 24) + (rr << 16) + (gg << 8) + bb;
-//    return color;
-//  }
+  operator uint32_t () {
+    uint8_t rr = r * 255.0f;
+    uint8_t gg = g * 255.0f;
+    uint8_t bb = b * 255.0f;
+    uint8_t aa = a * 255.0f;
+    uint32_t color = (aa << 24) + (rr << 16) + (gg << 8) + bb;
+    return color;
+  }
 
-//  KODE_Color& operator = (uint32_t color) {
-//    float aa = (color & 0xff000000) >> 24;
-//    float rr = (color & 0x00ff0000) >> 16;
-//    float gg = (color & 0x0000ff00) >> 8;
-//    float bb = (color & 0x000000ff);
-//    r = rr * KODE_INV255F;
-//    g = gg * KODE_INV255F;
-//    b = bb * KODE_INV255F;
-//    a = aa * KODE_INV255F;
-//    return *this;
-//  }
+  KODE_Color& operator = (uint32_t color) {
+    float aa = (color & 0xff000000) >> 24;
+    float rr = (color & 0x00ff0000) >> 16;
+    float gg = (color & 0x0000ff00) >> 8;
+    float bb = (color & 0x000000ff);
+    r = rr * KODE_INV255F;
+    g = gg * KODE_INV255F;
+    b = bb * KODE_INV255F;
+    a = aa * KODE_INV255F;
+    return *this;
+  }
 
   KODE_Color& operator += (uint32_t color) {
     return *this;
@@ -89,13 +89,11 @@ public:
 //
 //----------------------------------------------------------------------
 
-const KODE_Color KODE_BLACK     = KODE_Color(0.0f);
-const KODE_Color KODE_DARK_GRAY = KODE_Color(0.25f);
-const KODE_Color KODE_GRAY      = KODE_Color(0.5f);
-const KODE_Color KODE_LIGHT     = KODE_Color(0.75f);
-const KODE_Color KODE_WHITE     = KODE_Color(1.0f);
-
-
+const KODE_Color KODE_COLOR_BLACK       = KODE_Color(0.0f);
+const KODE_Color KODE_COLOR_DARK_GRAY   = KODE_Color(0.25f);
+const KODE_Color KODE_COLOR_GRAY        = KODE_Color(0.5f);
+const KODE_Color KODE_COLOR_LIGHT_GRAY  = KODE_Color(0.75f);
+const KODE_Color KODE_COLOR_WHITE       = KODE_Color(1.0f);
 
 //----------------------------------------------------------------------
 #endif

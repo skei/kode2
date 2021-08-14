@@ -2,13 +2,9 @@
 #define vst3_utils_included
 //----------------------------------------------------------------------
 
-#include "plugin/vst3/kode_vst3.h"
+// TODO: move to str/string files/classes..
 
-//----------------------------------------------------------------------
-//
-//
-//
-//----------------------------------------------------------------------
+#include "plugin/vst3/kode_vst3.h"
 
 #include <string>
 #include <locale>
@@ -73,7 +69,7 @@ bool KODE_iidEqual(const void* iid1, const void* iid2) {
 
 //----------
 
-void VST3_PrintIID(const void* iid) {
+void KODE_PrintVst3IID(const void* iid) {
   uint8_t* ptr = (uint8_t*)iid;
   for (uint32_t i=0; i<4; i++) {
     KODE_DPrint("%c",KODE_HEX_TABLE[ ptr[i] >> 4 ]);

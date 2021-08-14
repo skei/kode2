@@ -3,7 +3,10 @@
 //----------------------------------------------------------------------
 
 #include "kode.h"
-#include "plugin/kode_editor.h"
+
+#ifndef KODE_NO_GUI
+  #include "plugin/kode_editor.h"
+#endif
 
 //----------
 

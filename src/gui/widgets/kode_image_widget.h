@@ -15,6 +15,7 @@ protected:
   KODE_FRect      MImageRect  = KODE_FRect(0);
   KODE_Drawable*  MDrawable   = KODE_NULL;
   KODE_Bitmap*    MBitmap     = KODE_NULL;
+  //KODE_Surface*   MSurface    = KODE_NULL;
 
 //------------------------------
 public:
@@ -29,6 +30,7 @@ public:
   //----------
 
   virtual ~KODE_ImageWidget() {
+    //if (MSurface) KODE_Delete MSurface;
   }
 
 //------------------------------
@@ -51,20 +53,14 @@ public:
   virtual void setImage(KODE_Bitmap* ABitmap) {
     MBitmap = ABitmap;
     MImageRect = KODE_FRect(0,0,ABitmap->getWidth(),ABitmap->getHeight());
+    //MSurface = KODE_New KODE_Surface(ATarget,MBitmap->getWidth(),MBitmap->getHeight());
+    //KODE_Painter* painter = KODE_New KODE_Painter(MSurface);
+    //painter->uploadBitmap(0,0,MBitmap);
   }
 
-  //----------
-
-  // TODO
-
-  virtual void setImage(const char* APath) {
-    // create bitmap
-    // load png
-    // premultalpha
-    // create surface
-    // upload to surface
-    // delete bitmap
-    // set flag: need_to_elete_surface (destructor)
+  virtual void setImage(uint8_t* ABuffer, uint32_t ASize) {
+    MBitmap = KODE_New KODE_Bitmap(ABuffer,ASize);
+    MBitmap->premultAlpha( MBackgroundColor );
   }
 
   //----------
@@ -84,7 +80,7 @@ public:
 public:
 //------------------------------
 
-  void on_widget_paint(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+  void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     fillBackground(APainter);
     drawImage(APainter);
     paintChildren(APainter,ARect,AMode);

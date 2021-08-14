@@ -5,6 +5,8 @@
 #include "gui//kode_image.h"
 #include "gui/widgets/kode_panel_widget.h"
 
+#include "../data/img/sa_logo_40_trans_black.h"
+
 //----------
 
 class KODE_SAHeaderWidget
@@ -14,81 +16,54 @@ class KODE_SAHeaderWidget
 private:
 //------------------------------
 
-//  KODE_Bitmap*  MBitmap   = KODE_NULL;
-//  //KODE_Image*   MImage    = KODE_NULL;
-//  //KODE_Surface* MSurface  = KODE_NULL;
-//  KODE_ImageWidget* MImageWidget  = KODE_NULL;
+  const char* MName = "";
+  const char* MVersion = "";
+  KODE_Color  MNameColor = KODE_COLOR_BLACK;
+  KODE_Color  MVersionColor = KODE_COLOR_DARK_GRAY;
+
+  KODE_Bitmap*  MBitmap   = KODE_NULL;
+  KODE_Surface* MSurface  = KODE_NULL;
+  KODE_Painter* MPainter  = KODE_NULL;
 
 //------------------------------
 public:
 //------------------------------
 
-  KODE_SAHeaderWidget(KODE_FRect ARect)
+  KODE_SAHeaderWidget(KODE_FRect ARect, const char* AName, const char* AVersion, KODE_Drawable* ATarget)
   : KODE_PanelWidget(ARect) {
-//    MBitmap = KODE_New KODE_Bitmap(sa_logo_40_trans_black,sa_logo_40_trans_black_size);
-    MLayout.arrangement = KODE_WIDGET_ALIGN_TOP;
+    MFillBackground = false;
+    MDrawBorder = false;
+    MBackgroundColor = KODE_Color(0.5f);
+    MName = AName;
+    MVersion = AVersion;
+    MLayout.alignment = KODE_WIDGET_ALIGN_TOP;
+    MBitmap = KODE_New KODE_Bitmap(sa_logo_40_trans_black,sa_logo_40_trans_black_size);
+    MBitmap->premultAlpha( MBackgroundColor );
+    MSurface = KODE_New KODE_Surface(ATarget,MBitmap->getWidth(),MBitmap->getHeight());
+    KODE_Painter* painter = KODE_New KODE_Painter(MSurface);
+    painter->uploadBitmap(0,0,MBitmap);
   }
 
   virtual ~KODE_SAHeaderWidget() {
+    KODE_Delete MPainter;
+    KODE_Delete MSurface;
+    KODE_Delete MBitmap;
   }
 
 //------------------------------
 public:
 //------------------------------
 
-  void load_png() {
-    MImage = KODE_New KODE_Image(
-  }
-
-//------------------------------
-public:
-//------------------------------
-
-  void on_widget_paint(KODE_IPainter* APainter, KODE_FRect ARect, uint32_t AMode) final {
+  void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) final {
     fillBackground(APainter);
+    APainter->drawBitmap( MRect.x,      MRect.y,      MSurface );
+    APainter->drawText(   MRect.x + 50, MRect.y + 17, MName, MNameColor );
+    APainter->drawText(   MRect.x + 50, MRect.y + 31, MVersion, MVersionColor );
     drawBorder(APainter);
   }
 
 //------------------------------
 public:
-//------------------------------
-
-//  void do_widget_update(KODE_Widget* ASender) final {
-//    if (MParent) MParent->do_widget_update(ASender);
-//  }
-//
-//  void do_widget_redraw(KODE_Widget* ASender, KODE_FRect ARect, uint32_t AMode) final {
-//    if (MParent) MParent->do_widget_redraw(ASender,ARect,AMode);
-//  }
-//
-//  void do_widget_grabMouse(KODE_Widget* ASender) final {
-//    if (MParent) MParent->do_widget_grabMouse(ASender);
-//  }
-//
-//  void do_widget_grabKeyboard(KODE_Widget* ASender) final {
-//    if (MParent) MParent->do_widget_grabKeyboard(ASender);
-//  }
-//
-//  void do_widget_grabModal(KODE_Widget* ASender) final {
-//    if (MParent) MParent->do_widget_grabModal(ASender);
-//  }
-//
-//  void do_widget_setMouseCursor(KODE_Widget* ASender, uint32_t ACursor) final {
-//    if (MParent) MParent->do_widget_setMouseCursor(ASender,ACursor);
-//  }
-//
-//  void do_widget_setMousePos(KODE_Widget* ASender, float AXpos, float AYpos) final {
-//    if (MParent) MParent->do_widget_setMousePos(ASender,AXpos,AYpos);
-//  }
-//
-//  void do_widget_setHint(KODE_Widget* ASender, const char* AHint) final {
-//    if (MParent) MParent->do_widget_setHint(ASender,AHint);
-//  }
-//
-//  void do_widget_notify(KODE_Widget* AWidget, uint32_t AValue=0) final {
-//    if (MParent) MParent->do_widget_notify(AWidget,AValue);
-//  }
-
 //------------------------------
 
 };

@@ -347,7 +347,7 @@ namespace KODE_Vst3PlugType {
 
 //#define strncpy8 strncpy
 
-char* strncpy8(char* destination, const char* source, size_t maxnum) {
+char* kode_strncpy8(char* destination, const char* source, size_t maxnum) {
   //KODE_Memset(destination,0,maxnum);
   destination[maxnum-1] = 0;
   strncpy(destination,source,maxnum-1);
@@ -455,8 +455,8 @@ struct KODE_Vst3PClassInfo {
 //  KODE_Vst3PClassInfo(const KODE_Vst3Id _cid, int32_t _cardinality, const char* _category, const char* _name) {
 //    KODE_Memset(this,0,sizeof(KODE_Vst3PClassInfo));
 //    KODE_Memcpy(cid,_cid,sizeof(KODE_Vst3Id));
-//    if (_category) strncpy8(category,_category,kode_vst3_CategorySize);
-//    if (_name) strncpy8(name,_name,kode_vst3_NameSize);
+//    if (_category) kode_strncpy8(category,_category,kode_vst3_CategorySize);
+//    if (_name) kode_strncpy8(name,_name,kode_vst3_NameSize);
 //    cardinality = _cardinality;
 //  }
 //  //#if SMTG_CPP11
@@ -487,13 +487,13 @@ struct KODE_Vst3PClassInfo2 {
 //      KODE_Memset (this, 0, sizeof (KODE_Vst3PClassInfo2));
 //      KODE_Memcpy (cid, _cid, sizeof (KODE_Vst3Id));
 //      cardinality = _cardinality;
-//      if (_category) strncpy8 (category, _category, KODE_Vst3PClassInfo::kode_vst3_CategorySize);
-//      if (_name) strncpy8 (name, _name, KODE_Vst3PClassInfo::kode_vst3_NameSize);
+//      if (_category) kode_strncpy8 (category, _category, KODE_Vst3PClassInfo::kode_vst3_CategorySize);
+//      if (_name) kode_strncpy8 (name, _name, KODE_Vst3PClassInfo::kode_vst3_NameSize);
 //      classFlags = static_cast<uint32_t> (_classFlags);
-//      if (_subCategories) strncpy8 (subCategories, _subCategories, kode_vst3_SubCategoriesSize);
-//      if (_vendor) strncpy8 (vendor, _vendor, kode_vst3_VendorSize);
-//      if (_version) strncpy8 (version, _version, kode_vst3_VersionSize);
-//      if (_sdkVersion) strncpy8 (sdkVersion, _sdkVersion, kode_vst3_VersionSize);
+//      if (_subCategories) kode_strncpy8 (subCategories, _subCategories, kode_vst3_SubCategoriesSize);
+//      if (_vendor) kode_strncpy8 (vendor, _vendor, kode_vst3_VendorSize);
+//      if (_version) kode_strncpy8 (version, _version, kode_vst3_VersionSize);
+//      if (_sdkVersion) kode_strncpy8 (sdkVersion, _sdkVersion, kode_vst3_VersionSize);
 //    }
 //  //#if SMTG_CPP11
 //	constexpr KODE_Vst3PClassInfo2()
@@ -522,10 +522,10 @@ struct KODE_Vst3PClassInfoW {
     KODE_Memset (this, 0, sizeof (PClassInfoW));
     KODE_Memcpy (cid, _cid, sizeof (KODE_Vst3Id));
     cardinality = _cardinality;
-    if (_category) strncpy8 (category, _category, PClassInfo::kode_vst3_CategorySize);
+    if (_category) kode_strncpy8 (category, _category, PClassInfo::kode_vst3_CategorySize);
     if (_name) strncpy16 (name, _name, PClassInfo::kode_vst3_NameSize);
     classFlags = static_cast<uint32> (_classFlags);
-    if (_subCategories) strncpy8 (subCategories, _subCategories, kode_vst3_SubCategoriesSize);
+    if (_subCategories) kode_strncpy8 (subCategories, _subCategories, kode_vst3_SubCategoriesSize);
     if (_vendor) strncpy16 (vendor, _vendor, kode_vst3_VendorSize);
     if (_version) strncpy16 (version, _version, kode_vst3_VersionSize);
     if (_sdkVersion) strncpy16 (sdkVersion, _sdkVersion, kode_vst3_VersionSize);
@@ -549,10 +549,10 @@ struct KODE_Vst3PClassInfoW {
   void fromAscii (const PClassInfo2& ci2) {
     //KODE_Memcpy (cid, ci2.cid, sizeof (KODE_Vst3Id));
     //cardinality = ci2.cardinality;
-    //strncpy8 (category, ci2.category, PClassInfo::kode_vst3_CategorySize);
+    //kode_strncpy8 (category, ci2.category, PClassInfo::kode_vst3_CategorySize);
     //str8ToStr16 (name, ci2.name, PClassInfo::kode_vst3_NameSize);
     //classFlags = ci2.classFlags;
-    //strncpy8 (subCategories, ci2.subCategories, kode_vst3_SubCategoriesSize);
+    //kode_strncpy8 (subCategories, ci2.subCategories, kode_vst3_SubCategoriesSize);
     //str8ToStr16(vendor, ci2.vendor, kode_vst3_VendorSize);
     //str8ToStr16(version, ci2.version, kode_vst3_VersionSize);
     //str8ToStr16(sdkVersion, ci2.sdkVersion, kode_vst3_VersionSize);
@@ -582,9 +582,9 @@ struct KODE_Vst3PFactoryInfo {
   char    email[kode_vst3_EmailSize];
   int32_t flags;
 //  KODE_Vst3PFactoryInfo(const char* _vendor, const char* _url, const char* _email, int32_t _flags) {
-//    strncpy8(vendor,_vendor,kode_vst3_NameSize);
-//    strncpy8(url,_url,kode_vst3_URLSize);
-//    strncpy8(email,_email,kode_vst3_EmailSize);
+//    kode_strncpy8(vendor,_vendor,kode_vst3_NameSize);
+//    kode_strncpy8(url,_url,kode_vst3_URLSize);
+//    kode_strncpy8(email,_email,kode_vst3_EmailSize);
 //    flags = _flags;
 //    //#ifdef UNICODE
 //    //  flags |= kode_vst3_Unicode;
