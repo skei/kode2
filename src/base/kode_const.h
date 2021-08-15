@@ -31,59 +31,59 @@ const char    KODE_CSYMBOLS[]     = "___________________________________________
 //
 //----------------------------------------------------------------------
 
-#define KODE_ALIGNMENT_SIMD             16
-#define KODE_ALIGNMENT_CACHE            64
+#define KODE_ALIGNMENT_SIMD           16
+#define KODE_ALIGNMENT_CACHE          64
 
-#define KODE_AUDIO_MAX_EVENTS           256
-#define KODE_AUDIO_MAX_MIDI_EVENTS      256
-#define KODE_AUDIO_MAX_NODES            256
-#define KODE_AUDIO_TICKSIZE             16
-#define KODE_AUDIO_NUM_TICK_BUFFERS     16
+#define KODE_AUDIO_MAX_EVENTS         256
+#define KODE_AUDIO_MAX_MIDI_EVENTS    256
+#define KODE_AUDIO_MAX_NODES          256
+#define KODE_AUDIO_TICKSIZE           16
+#define KODE_AUDIO_NUM_TICK_BUFFERS   16
 
-#define KODE_BITMAP_RASTER_MAX_HEIGHT   2048
+#define KODE_BITMAP_RASTER_MAX_HEIGHT 2048
 
-#define KODE_GUI_DBLCLICK_MS            200
+#define KODE_GUI_DBLCLICK_MS          200
 
-#define KODE_MAX_PATH_LENGTH            512
-#define KODE_MAX_STRING_LENGTH          256
+#define KODE_MAX_PATH_LENGTH          512
+#define KODE_MAX_STRING_LENGTH        256
 
 //----------------------------------------------------------------------
 // midi
 //----------------------------------------------------------------------
 
-#define KODE_MIDI_NOTE_OFF              0x80
-#define KODE_MIDI_NOTE_ON               0x90
-#define KODE_MIDI_POLY_AFTERTOUCH       0xA0
-#define KODE_MIDI_CONTROL_CHANGE        0xB0
-#define KODE_MIDI_PROGRAM_CHANGE        0xC0
-#define KODE_MIDI_CHANNEL_AFTERTOUCH    0xD0
-#define KODE_MIDI_PITCHBEND             0xE0
-#define KODE_MIDI_SYS                   0xF0
+#define KODE_MIDI_NOTE_OFF            0x80
+#define KODE_MIDI_NOTE_ON             0x90
+#define KODE_MIDI_POLY_AFTERTOUCH     0xA0
+#define KODE_MIDI_CONTROL_CHANGE      0xB0
+#define KODE_MIDI_PROGRAM_CHANGE      0xC0
+#define KODE_MIDI_CHANNEL_AFTERTOUCH  0xD0
+#define KODE_MIDI_PITCHBEND           0xE0
+#define KODE_MIDI_SYS                 0xF0
 
 //----------------------------------------------------------------------
 // math
 //----------------------------------------------------------------------
 
-#define KODE_PI                 3.1415926535
-#define KODE_PI2                (KODE_PI * 2.0)
-#define KODE_PI05               (KODE_PI * 0.5)
-#define KODE_INVPI              (1.0 / KODE_PI)
-#define KODE_INVPI2             (1.0 / KODE_PI2)
-#define KODE_INVPI05            (1.0 / KODE_PI05)
+#define KODE_PI             3.1415926535
+#define KODE_PI2            (KODE_PI * 2.0)
+#define KODE_PI05           (KODE_PI * 0.5)
+#define KODE_INVPI          (1.0 / KODE_PI)
+#define KODE_INVPI2         (1.0 / KODE_PI2)
+#define KODE_INVPI05        (1.0 / KODE_PI05)
 
-#define KODE_TINY               (0.001)
-#define KODE_VERY_TINY          (0.00001)
+#define KODE_TINY           (0.001)
+#define KODE_VERY_TINY      (0.00001)
 
-#define KODE_INV360F            (1.0 / 360.0)
-#define KODE_INV12F             (1.0 / 12.0)
-#define KODE_INV16F             (1.0 / 16.0)
-#define KODE_INV32F             (1.0 / 32.0)
-#define KODE_INV127F            (1.0 / 127.0)
-#define KODE_INV255F            (1.0 / 255.0)
-#define KODE_INV256F            (1.0 / 256.0)
-#define KODE_INV8192F           (1.0 / 8192.0)
+#define KODE_INV360F        (1.0 / 360.0)
+#define KODE_INV12F         (1.0 / 12.0)
+#define KODE_INV16F         (1.0 / 16.0)
+#define KODE_INV32F         (1.0 / 32.0)
+#define KODE_INV127F        (1.0 / 127.0)
+#define KODE_INV255F        (1.0 / 255.0)
+#define KODE_INV256F        (1.0 / 256.0)
+#define KODE_INV8192F       (1.0 / 8192.0)
 
-#define KODE_SQRT2              sqrtf(2.0f)
+#define KODE_SQRT2          sqrtf(2.0f)
 
 //----------------------------------------------------------------------
 // type sizes

@@ -79,7 +79,7 @@ public:
     KODE_Parameter* parameter = MDescriptor->getParameter(AParamIndex);
     if (parameter) {
       MParameterToWidget[AParamIndex] = AWidget;
-      AWidget->setText( parameter->getName() );
+//      AWidget->setText( parameter->getName() );
       AWidget->MParameter = parameter;
       AWidget->MParameters[ASubIndex] = parameter;
       AWidget->on_widget_connect(parameter,ASubIndex);

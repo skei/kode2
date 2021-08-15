@@ -70,15 +70,15 @@ private:
   bool                          MIsProcessing           = false;
   char                          MHostName[129]          = {0};
   KODE_Descriptor*              MDescriptor             = KODE_NULL;
+
   #ifndef KODE_NO_GUI
   KODE_Editor*                  MEditor                 = KODE_NULL;
   #endif
 
-  float*                        MParameterValues        = KODE_NULL;
-  //float*                        MEditorParameterValues  = KODE_NULL;
-  float*                        MHostParameterValues    = KODE_NULL;
-
   KODE_Vst3UpdateQueue          MHostParameterQueue;
+  float*                        MHostParameterValues    = KODE_NULL;
+  float*                        MParameterValues        = KODE_NULL;
+//float*                        MEditorParameterValues  = KODE_NULL;
 
 //------------------------------
 public:
@@ -257,6 +257,12 @@ private:
     return a ptr to the same buffer each time..
     (re-check this, as i think i remember i saw something about this in a
     recent reaper update log)
+
+    numsteps
+    0 = continuous
+    1 = toggle
+    2.. = max value
+    so, steps-1, or 0 if cont..
   */
 
   void createParameterInfo() {
@@ -269,7 +275,9 @@ private:
         KODE_CharToUtf16(param->getName(),&MParamInfos[i].title);
         KODE_CharToUtf16(param->getShortName(),&MParamInfos[i].shortTitle);
         KODE_CharToUtf16(param->getLabel(),&MParamInfos[i].units);
-        MParamInfos[i].stepCount = param->getNumSteps();
+        uint32_t numsteps = param->getNumSteps();
+        if (numsteps > 1) numsteps -= 1;
+        MParamInfos[i].stepCount = numsteps;
         MParamInfos[i].defaultNormalizedValue = param->getDefValue();
         MParamInfos[i].unitId = kode_vst3_RootUnitId; //-1;
         int32_t flags = 0;

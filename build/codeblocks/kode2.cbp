@@ -205,15 +205,111 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="../../plugins/ports/sa_compciter.cpp">
+		<Unit filename="../../plugins/effect_template2.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="../../plugins/ports/sa_event_horizon.cpp">
+		<Unit filename="../../plugins/ports/jesusonic/sap_compciter.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="../../plugins/ports/sa_sonic_maximizer.cpp">
+		<Unit filename="../../plugins/ports/jesusonic/sap_event_horizon.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/jesusonic/sap_exciter.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/jesusonic/sap_exciter2.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/jesusonic/sap_hall_reverb.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/jesusonic/sap_large_room_reverb.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/jesusonic/sap_limiter.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/jesusonic/sap_reverseness.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/jesusonic/sap_saturation.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/jesusonic/sap_simpverb.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/jesusonic/sap_small_room_reverb.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/jesusonic/sap_sonic_enhancer.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/jesusonic/sap_sonic_maximizer.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/jesusonic/sap_transient_killer.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/jesusonic/sap_tube_harmonics_amp.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/ladspa/sap_cabinet.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/ladspa/sap_vocoder.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/other/sap_combo.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/other/sap_dynamic.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/other/sap_filter_ms20.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/other/sap_hrtf.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/other/sap_schroeder_reverb.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/other/sap_tilteq.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/ports/other/sap_transient.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa_brickwall.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa_curve_shaper.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
@@ -278,7 +374,6 @@
 		<Unit filename="../../src/base/utils/kode_math.h" />
 		<Unit filename="../../src/base/utils/kode_modular.h" />
 		<Unit filename="../../src/base/utils/kode_random.h" />
-		<Unit filename="../../src/base/utils/kode_resource.h" />
 		<Unit filename="../../src/base/utils/kode_sort.h" />
 		<Unit filename="../../src/base/utils/kode_strutils.h" />
 		<Unit filename="../../src/base/utils/kode_tcc.h" />

@@ -59,9 +59,9 @@ public:
   myDescriptor()
   : KODE_Descriptor() {
     #ifdef KODE_DEBUG
-      setName("sa_sonic_maximizer_debug");
+      setName("sap_sonic_maximizer_debug");
     #else
-      setName("sa_sonic_maximizer");
+      setName("sap_sonic_maximizer");
     #endif
     setAuthor("skei.audio");
     setVersion(0x00000001);

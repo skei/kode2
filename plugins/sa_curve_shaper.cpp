@@ -9,6 +9,7 @@
 
 #include "kode.h"
 #include "plugin/kode_plugin.h"
+#include "plugin/kode_parameters.h"
 
 //----------------------------------------------------------------------
 //
@@ -26,11 +27,11 @@ public:
   myDescriptor() {
 
     #ifdef KODE_DEBUG
-      setName("plugin_debug");
+      setName("sa_curve_shaper_debug");
     #else
-      setName("plugin");
+      setName("sa_curve_shaper");
     #endif
-    setAuthor("author");
+    setAuthor("skei.audio");
     setVersion(0x00000001);
 
     appendInput(  KODE_New KODE_PluginPort("input1")  );
@@ -38,12 +39,7 @@ public:
     appendOutput( KODE_New KODE_PluginPort("output1") );
     appendOutput( KODE_New KODE_PluginPort("output2") );
 
-    //KODE_Parameter* parameter;
-    //parameter = appendParameter( KODE_New KODE_Parameter("param1",0.2f) );
-    //parameter = appendParameter( KODE_New KODE_Parameter("param2",0.7f) );
-    //parameter->setLabel("db");
-    //parameter = appendParameter( KODE_New KODE_Parameter("param3",0.4f) );
-    //parameter->setLabel("%");
+    appendParameter( KODE_New KODE_FloatParameter( "curve", 0.5f ) );
 
   }
 };
@@ -62,6 +58,7 @@ private:
 //------------------------------
 
   //bool MNeedRecalc = false;
+  float MCurve = 0.5f;
 
 //------------------------------
 public:
@@ -121,6 +118,7 @@ public:
   //----------
 
   void on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) final {
+    if (AIndex == 0) MCurve = AValue;
     //MNeedRecalc = true;
   }
 
@@ -139,7 +137,8 @@ public:
     for (uint32_t i=0; i<len; i++) {
       float spl0 = *in0++;
       float spl1 = *in1++;
-      //processSample(AContext,spl0,spl1);
+      spl0 = KODE_Curve( fabs(spl0), MCurve ) * KODE_Sign(spl0);
+      spl1 = KODE_Curve( fabs(spl1), MCurve ) * KODE_Sign(spl1);
       *out0++ = spl0;
       *out1++ = spl1;
     }
@@ -156,3 +155,4 @@ public:
 //----------------------------------------------------------------------
 
 KODE_PLUGIN_ENTRYPOINT(myDescriptor,myInstance);
+

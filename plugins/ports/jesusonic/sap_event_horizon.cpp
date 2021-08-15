@@ -1,4 +1,6 @@
 
+#define KODE_NO_GUI
+
 #include "kode.h"
 #include "plugin/kode_descriptor.h"
 #include "plugin/kode_instance.h"
@@ -28,7 +30,7 @@ public:
 
     //KODE_TRACE;
 
-    MName       = "fx_event_horizon";
+    MName       = "sap_event_horizon";
     MAuthor     = "skei.audio";
     MVersion    = 0x00000001;
 

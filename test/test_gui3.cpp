@@ -18,13 +18,19 @@ public:
   : KODE_Window(AWidth,AHeight,ATitle,AParent) {
     setFillBackground();
 
-    KODE_ButtonWidget* button1 = KODE_New KODE_ButtonWidget( KODE_FRect(10,10,100,17) );
+    KODE_SAHeaderWidget* header1 = KODE_New KODE_SAHeaderWidget( KODE_FRect(10,10,128,64), "test_gui3", "v0.0.0", this );
+    appendWidget(header1);
+
+    KODE_ButtonWidget* button1 = KODE_New KODE_ButtonWidget( KODE_FRect(10,64,128,16) );
     button1->setIsToggle(true);
     appendWidget(button1);
 
-    KODE_ButtonWidget* button2 = KODE_New KODE_ButtonWidget( KODE_FRect(10,30,100,17) );
+    KODE_ButtonWidget* button2 = KODE_New KODE_ButtonWidget( KODE_FRect(10,84,128,16) );
     button2->setIsToggle(false);
     appendWidget(button2);
+
+    KODE_SliderWidget* slider1 = KODE_New KODE_SliderWidget( KODE_FRect(10,104,128,16) );
+    appendWidget(slider1);
 
   }
 

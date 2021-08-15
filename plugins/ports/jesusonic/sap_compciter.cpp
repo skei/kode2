@@ -46,7 +46,7 @@ public:
   myDescriptor()
   : KODE_Descriptor() {
 
-    MName = "fx_compciter";
+    MName = "sap_compciter";
     MAuthor = "skei.audio";
     MVersion = 0x00000001;
 

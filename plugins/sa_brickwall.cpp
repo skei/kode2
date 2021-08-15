@@ -26,11 +26,11 @@ public:
   myDescriptor() {
 
     #ifdef KODE_DEBUG
-      setName("plugin_debug");
+      setName("sa_brickwall_debug");
     #else
-      setName("plugin");
+      setName("sa_brickwall");
     #endif
-    setAuthor("author");
+    setAuthor("skei.audio");
     setVersion(0x00000001);
 
     appendInput(  KODE_New KODE_PluginPort("input1")  );
@@ -38,12 +38,7 @@ public:
     appendOutput( KODE_New KODE_PluginPort("output1") );
     appendOutput( KODE_New KODE_PluginPort("output2") );
 
-    //KODE_Parameter* parameter;
-    //parameter = appendParameter( KODE_New KODE_Parameter("param1",0.2f) );
-    //parameter = appendParameter( KODE_New KODE_Parameter("param2",0.7f) );
-    //parameter->setLabel("db");
-    //parameter = appendParameter( KODE_New KODE_Parameter("param3",0.4f) );
-    //parameter->setLabel("%");
+    appendParameter( KODE_New KODE_Parameter( "level", 1.0f ) );
 
   }
 };
@@ -62,6 +57,8 @@ private:
 //------------------------------
 
   //bool MNeedRecalc = false;
+  float MLimit  = 1.0f;
+  float MGain   = 1.0f;
 
 //------------------------------
 public:
@@ -121,16 +118,17 @@ public:
   //----------
 
   void on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) final {
-    //MNeedRecalc = true;
+    if (AIndex == 0) {
+      float v = AValue;
+      MLimit = v * v * v;
+      if (v < 0.00001f) v = 0.00001f;
+      MGain = 1.0f / v;
+    }
   }
 
   //----------
 
   void on_plugin_process(KODE_ProcessContext* AContext) final {
-    //if (MNeedRecalc) {
-    //  MNeedRecalc = false;
-    //  //recalc(AContext);
-    //}
     uint32_t len = AContext->numsamples;
     float* in0 = AContext->inputs[0];
     float* in1 = AContext->inputs[1];
@@ -139,7 +137,10 @@ public:
     for (uint32_t i=0; i<len; i++) {
       float spl0 = *in0++;
       float spl1 = *in1++;
-      //processSample(AContext,spl0,spl1);
+
+      spl0 = KODE_Clamp(spl0, -MLimit, MLimit) * MGain;
+      spl1 = KODE_Clamp(spl1, -MLimit, MLimit) * MGain;
+
       *out0++ = spl0;
       *out1++ = spl1;
     }

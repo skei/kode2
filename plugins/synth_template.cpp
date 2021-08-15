@@ -1,4 +1,5 @@
 
+//#define KODE_NO_GUI
 #define KODE_GUI_XCB
 //#define KODE_DEBUG_PRINT_TIME
 //#define KODE_DEBUG_PRINT_THREAD
@@ -36,13 +37,13 @@ public:
   myDescriptor() {
 
     #ifdef KODE_DEBUG
-      setName("plugin_debug");
+      setName("synth_template_debug");
     #else
-      setName("plugin");
+      setName("synth_template");
     #endif
 
-    setAuthor("author");
-    setVersion(0x0101001);
+    setAuthor("skei.audio");
+    setVersion(0x00000001);
     setIsSynth(true);
 
     appendInput(  KODE_New KODE_PluginPort("input1")  );
