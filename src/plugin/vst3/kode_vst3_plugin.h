@@ -196,8 +196,21 @@ public: // IPluginFactory3
 //
 //----------------------------------------------------------------------
 
-#define VST3_MAIN_SYMBOL  asm ("GetPluginFactory");
-KODE_Vst3IPluginFactory* KODE_VST3_PLUGIN_API vst3_entrypoint() VST3_MAIN_SYMBOL
+
+//----------------------------------------------------------------------
+//
+//----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+
+#define VST3_MAIN_SYMBOL asm ("GetPluginFactory");
+KODE_Vst3IPluginFactory* KODE_VST3_PLUGIN_API vst3_entrypoint() VST3_MAIN_SYMBOL;
+
+#define VST3_MODULE_ENTRY_SYMBOL asm ("ModuleEntry");
+bool vst3_module_entry(void* sharedLibraryHandle) VST3_MODULE_ENTRY_SYMBOL;
+
+#define VST3_MODULE_EXIT_SYMBOL asm ("ModuleExit");
+bool vst3_module_exit(void) VST3_MODULE_EXIT_SYMBOL;
 
 //----------
 
@@ -207,6 +220,30 @@ KODE_Vst3IPluginFactory* KODE_VST3_PLUGIN_API vst3_entrypoint() VST3_MAIN_SYMBOL
   KODE_Vst3IPluginFactory* KODE_VST3_PLUGIN_API vst3_entrypoint() {   \
     /*VST3_PRINT;*/                                                   \
     return KODE_New KODE_VST3Plugin<DESC,INST>();                     \
+  }                                                                   \
+                                                                      \
+  void* moduleHandle = 0;                                             \
+  /*int counter = 0;*/                                                \
+  static int counter {0};                                             \
+                                                                      \
+  __KODE_DLLEXPORT                                                    \
+  bool vst3_module_entry(void* sharedLibraryHandle) {                 \
+    if (++counter == 1) {                                             \
+      moduleHandle = sharedLibraryHandle;                             \
+      /* init plugin */                                               \
+      return true;                                                    \
+    }                                                                 \
+    return true;                                                      \
+  }                                                                   \
+                                                                      \
+  __KODE_DLLEXPORT                                                    \
+  bool vst3_module_exit(void) {                                       \
+    if (--counter == 0) {                                             \
+      moduleHandle = nullptr;                                         \
+      /* cleanup plugin */                                            \
+      return true;                                                    \
+    }                                                                 \
+    return true;                                                      \
   }
 
 //----------------------------------------------------------------------
