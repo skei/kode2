@@ -23,6 +23,7 @@ public:
 
   KODE_ImageWidget(KODE_FRect ARect)
   : KODE_PanelWidget(ARect) {
+    MName = "KODE_ImageWidget";
     MFillBackground = false;
     MDrawBorder = false;
   }

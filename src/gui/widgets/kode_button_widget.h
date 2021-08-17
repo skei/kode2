@@ -35,7 +35,7 @@ public:
 
   KODE_ButtonWidget(KODE_FRect ARect)
   : KODE_Widget(ARect) {
-    //MDrawBorder = false;
+    MName = "KODE_ButtonWidget";
   }
 
   virtual ~KODE_ButtonWidget() {
@@ -74,8 +74,7 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
-    //KODE_ColorWidget::on_widget_paint(APainter,ARect,AMode);
-    if (MValue >= 0.5f) { // on
+    if (getValue() >= 0.5f) { // on
       APainter->fillRect(MRect,MOnBackgroundColor);
       KODE_FRect rect = MRect;
       rect.shrink(MOnTextOffset);
@@ -96,10 +95,10 @@ public:
   void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
     if (AButton == KODE_BUTTON_LEFT) {
       if (MIsToggle) {
-        MValue = 1.0f - MValue;
+        setValue(1.0f - getValue());
       }
       else {
-        MValue = 1.0f;
+        setValue(1.0f);
       }
       update();
       redraw();
@@ -111,7 +110,7 @@ public:
   void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
     if (AButton == KODE_BUTTON_LEFT) {
       if (!MIsToggle) {
-        MValue = 0.0f;
+        setValue(0.0f);
         update();
         redraw();
       }
@@ -122,6 +121,16 @@ public:
 
   void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState, uint32_t ATimeStamp=0) final {
   }
+
+  void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom, uint32_t ATimeStamp=0) final {
+    do_widget_setMouseCursor(this,KODE_CURSOR_FINGER);
+  }
+
+  //void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo, uint32_t ATimeStamp=0) final {
+  //  do_widget_setMouseCursor(this,KODE_CURSOR_DEFAULT);
+  //}
+
+
 
 //------------------------------
 

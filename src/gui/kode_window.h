@@ -217,10 +217,10 @@ public:
         hover->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);
         //if (hover->MOptions.autoMouseCursor) setMouseCursor(hover->MMouseCursor);
       }
-      //else {
+      else {
       //  //KODE_DPrint("default\n");
-      //  setMouseCursor(KODE_CURSOR_DEFAULT);
-      //}
+        setMouseCursor(KODE_CURSOR_DEFAULT);
+      }
       MHoverWidget = hover;
     }
   }

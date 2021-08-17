@@ -25,6 +25,7 @@ public:
 
   KODE_CachedWidget(KODE_FRect ARect)
   : KODE_Widget(ARect) {
+    MName = "KODE_CachedWidget";
   }
 
   virtual ~KODE_CachedWidget() {

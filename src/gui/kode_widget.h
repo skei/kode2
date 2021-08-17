@@ -3,11 +3,6 @@
 //----------------------------------------------------------------------
 
 #include "kode.h"
-//#include "gui/kode_gui_base.h"
-//#include "gui/base/kode_base_image.h"
-//#include "gui/base/kode_base_surface.h"
-//#include "gui/base/kode_base_painter.h"
-//#include "gui/base/kode_base_window.h"
 #include "gui/kode_painter.h"
 #include "plugin/kode_parameter.h"
 
@@ -15,13 +10,13 @@
 
 #define KODE_WIDGET_MAX_PARAMETERS 16
 
-struct KODE_WidgetOptions {
-//bool autoMouseCapture = false;
-//bool autoMouseHide    = false;
-//bool autoMouseCursor  = true;
-//bool autoClip         = true;
-//bool autoHint         = false;
-};
+//struct KODE_WidgetOptions {
+//  bool autoMouseCapture = false;
+//  bool autoMouseHide    = false;
+//  bool autoMouseCursor  = true;
+//  bool autoClip         = true;
+//  bool autoHint         = false;
+//};
 
 struct KODE_WidgetStates {
   bool active       = true;
@@ -50,25 +45,26 @@ class KODE_Widget {
   friend class KODE_Editor;
 
 //------------------------------
-protected:
+private:
 //------------------------------
 
   float               MValue        = 0.0f;
-  //const char*         MText         = "KODE_Widget";
+  float               MDefaultValue = 0.0f;
 
+//------------------------------
+protected:
+//------------------------------
+
+  const char*         MName         = "KODE_Widget";
   int32_t             MMouseCursor  = KODE_CURSOR_DEFAULT;
-
   KODE_WidgetLayout   MLayout;
-  KODE_WidgetOptions  MOptions;
+  //KODE_WidgetOptions  MOptions;
   KODE_WidgetStates   MStates;
-
   KODE_Widget*        MParent       = KODE_NULL;
   KODE_Widgets        MChildren;
-
   KODE_FRect          MRect         = KODE_FRect(0);
   KODE_FRect          MInitialRect  = KODE_FRect(0);
   KODE_FRect          MContentRect  = KODE_FRect(0);
-
   KODE_Parameter*     MParameter                              = KODE_NULL;
   uint32_t            MSelectedParameter                      = 0;
   KODE_Parameter*     MParameters[KODE_WIDGET_MAX_PARAMETERS] = {0};
@@ -93,63 +89,33 @@ public:
 public: // set
 //------------------------------
 
-  void setValue(float AValue) {
-    MValue = AValue;
-  }
-
-  //----------
-
-  //void setText(const char* AText) {
-  //  MText = AText;
-  //}
-
-  //----------
-
-  void setParameter(KODE_Parameter* p) {
-    MParameter = p;
-  }
-
-  //----------
-
-  void selectParameter(uint32_t AIndex) {
-    MParameter = MParameters[AIndex];
-  }
+  virtual void setValue(float AValue)           { MValue = AValue; }
+  virtual void setDefaultValue(float AValue)    { MDefaultValue = AValue; }
+  virtual void setParameter(KODE_Parameter* p)  { MParameter = p; }
+  virtual void selectParameter(uint32_t AIndex) { MParameter = MParameters[AIndex]; }
 
 //------------------------------
 public: // get
 //------------------------------
 
-  float getValue() {
-    return MValue;
-  }
-
-  //----------
-
-  //const char* getText() {
-  //  return MText;
-  //}
-
-  //----------
-
-  KODE_Parameter* getParameter() {
-    return MParameter;
-  }
-
-  KODE_WidgetLayout*   getLayout() { return &MLayout; }
-  KODE_WidgetOptions*  getOptions() { return &MOptions; }
-  KODE_WidgetStates*   getStates() { return &MStates; }
+  float               getValue()        { return MValue; }
+  float               getDefaultValue() { return MDefaultValue; }
+  KODE_Parameter*     getParameter()    { return MParameter; }
+  KODE_WidgetLayout*  getLayout()       { return &MLayout; }
+  //KODE_WidgetOptions* getOptions()      { return &MOptions; }
+  KODE_WidgetStates*  getStates()       { return &MStates; }
 
 //------------------------------
 public:
 //------------------------------
 
-  void update() {
+  virtual void update() {
     do_widget_update(this);
   }
 
   //----------
 
-  void redraw() {
+  virtual void redraw() {
     do_widget_redraw(this,MRect,0);
   }
 
@@ -157,7 +123,7 @@ public:
 public:
 //------------------------------
 
-  KODE_Widget* appendWidget(KODE_Widget* AWidget) {
+  virtual KODE_Widget* appendWidget(KODE_Widget* AWidget) {
     AWidget->MParent = this;
     MChildren.append(AWidget);
     return AWidget;
@@ -165,7 +131,7 @@ public:
 
   //----------
 
-  void deleteChildren() {
+  virtual void deleteChildren() {
     for (uint32_t i=0; i<MChildren.size(); i++) {
       KODE_Delete MChildren[i];
       MChildren[i] = KODE_NULL;
@@ -174,7 +140,7 @@ public:
 
   //----------
 
-  KODE_Widget* findChild(float AXpos, float AYpos) {
+  virtual KODE_Widget* findChild(float AXpos, float AYpos) {
     int32_t num = MChildren.size();
     if (num > 0) {
       for (int32_t i=(num-1); i>=0; i--) {
@@ -192,14 +158,14 @@ public:
 
   //----------
 
-  KODE_Widget* getOwner() {
+  virtual KODE_Widget* getOwner() {
     if (MParent) return MParent->getOwner();
     else return this;
   }
 
   //----------
 
-  void paintChildren(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
+  virtual void paintChildren(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
     for (uint32_t i=0; i<MChildren.size(); i++) {
       KODE_Widget* widget = MChildren[i];
       KODE_FRect rect = widget->MRect;
@@ -226,7 +192,7 @@ public:
     ???
   */
 
-  void alignChildren() {
+  virtual void alignChildren() {
     //KODE_FRect parent = MRect;
     KODE_FRect client = MRect;
     client.shrink(MLayout.innerBorder);
@@ -323,7 +289,7 @@ public:
           rect.x += client.x2() - rect.w;
           break;
 
-        case KODE_WIDGET_ALIGN_RIGHT_TOP:        //case KODE_WIDGET_ALIGN_LEFT_CENTER:
+        case KODE_WIDGET_ALIGN_RIGHT_TOP:
         //  break;
 
 
@@ -483,8 +449,6 @@ public:
   }
 
 };
-
-
 
 //----------------------------------------------------------------------
 #endif

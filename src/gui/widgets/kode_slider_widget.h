@@ -2,12 +2,12 @@
 #define kode_slider_widget_included
 //----------------------------------------------------------------------
 
-#include "gui/widgets/kode_value_widget.h"
+#include "gui/widgets/kode_drag_value_widget.h"
 
 //----------------------------------------------------------------------
 
 class KODE_SliderWidget
-: public KODE_ValueWidget {
+: public KODE_DragValueWidget {
 
 //------------------------------
 protected:
@@ -23,8 +23,9 @@ public:
 //------------------------------
 
   KODE_SliderWidget(KODE_FRect ARect)
-  : KODE_ValueWidget(ARect) {
-    MDrawBorder = true;
+  : KODE_DragValueWidget(ARect) {
+    MName             = "KODE_SliderWidget";
+    MDrawBorder       = true;
     MBackgroundColor  = KODE_Color( 0.7,  0.7,  0.7 );
     MTextColor        = KODE_Color( 0,    0,    0   );
     MValueTextColor   = KODE_Color( 0,    0,    0   );
@@ -56,7 +57,7 @@ public:
   virtual void drawValueBar(KODE_BasePainter* APainter) {
     if (MDrawValueBar) {
       KODE_FRect  rect  = MRect;
-      float       value = MValue;
+      float       value = getValue();
       rect.shrink(MValueBarOffset);
       float w = rect.w * value;
       float h = rect.h * value;

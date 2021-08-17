@@ -14,7 +14,7 @@ protected:
 //------------------------------
 
   bool        MDrawText       = true;
-  const char* MText           = "text";
+  const char* MText           = "";
   KODE_Color  MTextColor      = KODE_Color(0.1f);
   uint32_t    MTextAlignment  = KODE_TEXT_ALIGN_LEFT;
   KODE_FRect  MTextOffset     = KODE_FRect(2);
@@ -25,6 +25,7 @@ public:
 
   KODE_TextWidget(KODE_FRect ARect)
   : KODE_PanelWidget(ARect) {
+    MName = "KODE_SliderWidget";
     MDrawBorder = false;
   }
 
@@ -64,8 +65,6 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
-    //KODE_ColorWidget::on_widget_paint(APainter,ARect,AMode);
-    //drawBorder(APainter);
     fillBackground(APainter);
     paintChildren(APainter,ARect,AMode);
     drawText(APainter);

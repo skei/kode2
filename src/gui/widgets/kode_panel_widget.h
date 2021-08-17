@@ -2,26 +2,30 @@
 #define kode_panel_widget_included
 //----------------------------------------------------------------------
 
-#include "gui/widgets/kode_color_widget.h"
+#include "gui/kode_widget.h"
 
 //----------------------------------------------------------------------
 
 class KODE_PanelWidget
-: public KODE_ColorWidget {
+: public KODE_Widget {
 
 //------------------------------
 protected:
 //------------------------------
 
-  bool MDrawBorder = true;
-  KODE_Color MBorderColor = KODE_Color(0.3f);
+  bool MFillBackground        = true;
+  KODE_Color MBackgroundColor = KODE_Color(0.6f);
+
+  bool MDrawBorder            = true;
+  KODE_Color MBorderColor     = KODE_Color(0.3f);
 
 //------------------------------
 public:
 //------------------------------
 
   KODE_PanelWidget(KODE_FRect ARect)
-  : KODE_ColorWidget(ARect) {
+  : KODE_Widget(ARect) {
+    MName = "KODE_PanelWidget";
   }
 
   virtual ~KODE_PanelWidget() {
@@ -39,9 +43,25 @@ public:
     MBorderColor = AColor;
   }
 
+  virtual void setFillBackground(bool AFill) {
+    MFillBackground = AFill;
+  }
+
+  virtual void setBackgroundColor(KODE_Color AColor) {
+    MBackgroundColor = AColor;
+  }
+
+  //----------
+
   virtual void drawBorder(KODE_BasePainter* APainter) {
     if (MDrawBorder) {
       APainter->drawRect(MRect,MBorderColor);
+    }
+  }
+
+  virtual void fillBackground(KODE_BasePainter* APainter) {
+    if (MFillBackground) {
+      APainter->fillRect(MRect,MBackgroundColor);
     }
   }
 
@@ -50,13 +70,12 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
-    //KODE_ColorWidget::on_widget_paint(APainter,ARect,AMode);
     fillBackground(APainter);
     paintChildren(APainter,ARect,AMode);
     drawBorder(APainter);
   }
 
-//------------------------------
+  //----------
 
 };
 

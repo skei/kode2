@@ -13,6 +13,7 @@ public:
 
   KODE_TemplateWidget(KODE_FRect ARect)
   : KODE_Widget(ARect) {
+    MName = "KODE_TemplateWidget";
   }
 
   virtual ~KODE_TemplateWidget() {
