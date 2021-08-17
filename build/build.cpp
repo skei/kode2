@@ -1,5 +1,7 @@
 
-
+#define KODE_DEBUG_PRINT_SOCKET
+#define KODE_DEBUG_PRINT_THREAD
+#define KODE_DEBUG_PRINT_TIME
 
 
 //----------------------------------------------------------------------
@@ -31,7 +33,7 @@
 
 //#include "../plugins/effect_template.cpp"
 //#include "../plugins/effect_template2.cpp"
-#include "../plugins/synth_template.cpp"
+//#include "../plugins/synth_template.cpp"
 
 //------------------------------
 
@@ -55,7 +57,7 @@
 //#include "../plugins/ports/jesusonic/sap_simpverb.cpp"
 //#include "../plugins/ports/jesusonic/sap_small_room_reverb.cpp"
 //#include "../plugins/ports/jesusonic/sap_sonic_enhancer.cpp"
-//#include "../plugins/ports/jesusonic/sap_sonic_maximizer.cpp"
+#include "../plugins/ports/jesusonic/sap_sonic_maximizer.cpp"
 //#include "../plugins/ports/jesusonic/sap_transient_killer.cpp"
 //#include "../plugins/ports/jesusonic/sap_tube_harmonics_amp.cpp"
 
