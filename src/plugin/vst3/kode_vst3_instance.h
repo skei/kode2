@@ -632,7 +632,9 @@ public: // IPluginBase
     return kode_vst3_ResultOk;
   }
 
-  //----------
+//------------------------------
+public: // IComponent
+//------------------------------
 
   /*
     Called before initializing the component to get information about the
@@ -676,18 +678,24 @@ public: // IPluginBase
   */
 
   int32_t KODE_VST3_PLUGIN_API getBusCount(int32_t type, int32_t dir) final {
-    if (type == kode_vst3_Audio) {
-      if ((dir == kode_vst3_Output) && (MDescriptor->getNumOutputs() > 0)) { return 1; }
-      if ((dir == kode_vst3_Input)  && (MDescriptor->getNumInputs()  > 0)) { return 1; };
-    }
-    if (type == kode_vst3_Event) {
-      //if (dir==kode_vst3_Output) return 1;
-      //else
-      if (MDescriptor->canReceiveMidi() || MDescriptor->isSynth()) {
-        if (dir == kode_vst3_Input) {
-          return 1;
+    switch (type) {
+      case kode_vst3_Audio:
+        switch (dir) {
+          case kode_vst3_Input:
+            if (MDescriptor->getNumInputs() > 0) return 1;
+            else return 0;
+          case kode_vst3_Output:
+            if (MDescriptor->getNumOutputs() > 0) return 1;
+            else return 0;
         }
-      }
+      case kode_vst3_Event:
+        switch (dir) {
+          case kode_vst3_Input:
+            if (MDescriptor->canReceiveMidi() || MDescriptor->isSynth()) return 16;
+            else return 0;
+          case kode_vst3_Output:
+            return 0;
+        }
     }
     return 0;
   }
@@ -700,31 +708,52 @@ public: // IPluginBase
   */
 
   int32_t KODE_VST3_PLUGIN_API getBusInfo(int32_t type, int32_t dir, int32_t index, KODE_Vst3BusInfo& bus) final {
-    if (type == kode_vst3_Audio) {
-      bus.mediaType = kode_vst3_Audio;
-      if (dir == kode_vst3_Input) {
-        bus.direction = kode_vst3_Input;
-        bus.channelCount = MDescriptor->getNumInputs();
-        KODE_CharToUtf16("Audio In",&bus.name);
-      }
-      else {
-        bus.direction = kode_vst3_Output;
-        bus.channelCount = MDescriptor->getNumOutputs();
-        KODE_CharToUtf16("Audio Out",&bus.name);
-      }
-      bus.flags = 0;//kode_vst3_DefaultActive;
-      return kode_vst3_ResultOk;
-    }
-    else if (type == kode_vst3_Event) {
-      bus.mediaType = kode_vst3_Event;
-      if (dir == kode_vst3_Input) {
-        bus.direction = kode_vst3_Input;
-        bus.channelCount = 1;
-        KODE_CharToUtf16("Midi In",&bus.name);
-      }
-      bus.flags = 0;//kode_vst3_DefaultActive;
-      return kode_vst3_ResultOk;
-    }
+
+    switch (type) {
+
+      case kode_vst3_Audio:
+        switch (dir) {
+          case kode_vst3_Input:
+            bus.mediaType = kode_vst3_Audio;
+            bus.direction = kode_vst3_Input;
+            bus.channelCount = MDescriptor->getNumInputs();
+            KODE_CharToUtf16("Audio In",&bus.name);
+            //bus.flags = 0;//kode_vst3_DefaultActive;
+            return kode_vst3_ResultOk;
+            //break;
+          case kode_vst3_Output:
+            bus.mediaType = kode_vst3_Audio;
+            bus.direction = kode_vst3_Output;
+            bus.channelCount = MDescriptor->getNumOutputs();
+            KODE_CharToUtf16("Audio Out",&bus.name);
+            //bus.flags = 0;//kode_vst3_DefaultActive;
+            return kode_vst3_ResultOk;
+            //break;
+        } // switch (dir)
+        //break;
+
+      case kode_vst3_Event:
+        switch (dir) {
+          case kode_vst3_Input:
+            bus.mediaType = kode_vst3_Event;
+            bus.direction = kode_vst3_Input;
+            bus.channelCount = 16;
+            KODE_CharToUtf16("Midi In",&bus.name);
+            //bus.flags = 0;//kode_vst3_DefaultActive;
+            return kode_vst3_ResultOk;
+            //break;
+          case kode_vst3_Output:
+            //bus.mediaType = kode_vst3_Event;
+            ////bus.flags = 0;//kode_vst3_DefaultActive;
+            //bus.direction = kode_vst3_Input;
+            //bus.channelCount = 16;
+            //KODE_CharToUtf16("Midi In",&bus.name);
+            return kode_vst3_ResultFalse; // kode_vst3_ResultOk;
+            //break;
+        } // switch (dir)
+        //break;
+
+    } // switch (type)
 
     return kode_vst3_ResultFalse;
   }
@@ -904,11 +933,22 @@ public: // IAudioProcessor
     buses arrangements and return kResultFalse.
   */
 
+  //const uint64_t  kode_vst3_SpeakerL                      = 1 << 0;
+  //const uint64_t  kode_vst3_SpeakerR                      = 1 << 1;
   // const SpeakerArrangement kStereo = kSpeakerL | kSpeakerR;
 
+
   int32_t KODE_VST3_PLUGIN_API setBusArrangements(uint64_t* inputs, int32_t numIns, uint64_t* outputs, int32_t numOuts) final {
-    //todo
-    return kode_vst3_ResultTrue;
+    bool in_ok = true;
+    bool out_ok = true;
+    if ((numIns == 1) && (MDescriptor->getNumInputs() > 0)) {
+      if (*inputs != kode_vst3_Stereo) in_ok = false;
+    }
+    if ((numOuts == 1) && (MDescriptor->getNumOutputs() > 0)) {
+      if (*outputs != kode_vst3_Stereo) out_ok = false;
+    }
+    if (in_ok && out_ok) return kode_vst3_ResultTrue;
+    else return kode_vst3_ResultFalse;
   }
 
   //----------
@@ -920,9 +960,15 @@ public: // IAudioProcessor
   */
 
   int32_t KODE_VST3_PLUGIN_API getBusArrangement(int32_t dir, int32_t index, uint64_t& arr) final {
-    if ((dir==kode_vst3_Output) && (index==0)) {
-      arr = kode_vst3_SpeakerL | kode_vst3_SpeakerR;
-      return kode_vst3_ResultOk;
+    if (index == 0) {
+      if ((dir == kode_vst3_Input) && (MDescriptor->getNumInputs() > 0)) {
+        arr = kode_vst3_Stereo;
+        return kode_vst3_ResultOk;
+      }
+      else if ((dir == kode_vst3_Output) && (MDescriptor->getNumOutputs() > 0)) {
+        arr = kode_vst3_Stereo;
+        return kode_vst3_ResultOk;
+      }
     }
     return kode_vst3_ResultFalse;
   }

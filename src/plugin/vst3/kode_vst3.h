@@ -289,8 +289,15 @@ const char*     kode_vst3_PlatformTypeNSView            = "NSView";
 const char*     kode_vst3_PlatformTypeUIView            = "UIView";
 const char*     kode_vst3_PlatformTypeX11EmbedWindowID  = "X11EmbedWindowID";
 
+const uint64_t  kode_vst3_Empty                         = 0;
 const uint64_t  kode_vst3_SpeakerL                      = 1 << 0;
 const uint64_t  kode_vst3_SpeakerR                      = 1 << 1;
+const uint64_t  kode_vst3_SpeakerM                      = 1 << 19;
+
+
+const uint64_t  kode_vst3_Mono                          = kode_vst3_SpeakerM;
+const uint64_t  kode_vst3_Stereo                        = (kode_vst3_SpeakerL | kode_vst3_SpeakerR);
+
 
 /*static*/
 const int32_t   kode_vst3_NoParentUnitId                = -1;
