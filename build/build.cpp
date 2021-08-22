@@ -1,4 +1,6 @@
 
+// nc -U -l -k /tmp/kode.socket
+
 #define KODE_DEBUG_PRINT_SOCKET
 #define KODE_DEBUG_PRINT_THREAD
 #define KODE_DEBUG_PRINT_TIME

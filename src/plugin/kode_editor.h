@@ -58,7 +58,7 @@ public:
 //------------------------------
 
   void do_widget_update(KODE_Widget* AWidget) override {
-    KODE_Parameter* parameter = AWidget->getParameter();
+    KODE_Parameter* parameter = AWidget->getParameterPtr();
     if (parameter) {
       int32_t index = parameter->getIndex();
       float value = AWidget->getValue();
@@ -80,7 +80,7 @@ public:
     if (parameter) {
       MParameterToWidget[AParamIndex] = AWidget;
 //      AWidget->setText( parameter->getName() );
-      AWidget->MParameter = parameter;
+      AWidget->setParameterPtr(parameter);
       AWidget->MParameters[ASubIndex] = parameter;
       AWidget->on_widget_connect(parameter,ASubIndex);
     }

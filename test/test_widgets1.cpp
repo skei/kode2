@@ -24,7 +24,7 @@ public:
     setFillBackground();
     //KODE_PRINT;
 
-    appendWidget( KODE_New KODE_ColorWidget( KODE_FRect(10,10,100,20) ));
+    appendWidget( KODE_New KODE_PanelWidget( KODE_FRect(10,10,100,20) ));
 
     appendWidget( KODE_New KODE_PanelWidget( KODE_FRect(10,35,100,20) ));
 
