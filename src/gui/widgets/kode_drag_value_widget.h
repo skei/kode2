@@ -52,7 +52,7 @@ public:
 
   KODE_DragValueWidget(KODE_FRect ARect)
   : KODE_ValueWidget(ARect) {
-    MName = "KODE_DragValueWidget";
+    setName("KODE_DragValueWidget");
   }
 
   virtual ~KODE_DragValueWidget() {
@@ -129,7 +129,7 @@ public:
 
       if (MDblClickReset) {
         if ((ATimeStamp - MPrevClickTime) < KODE_GUI_DBLCLICK_MS) {
-          if (MParameter) setValue( MParameter->getDefValue() );
+          if (getParameterPtr()) setValue( getParameterPtr()->getDefValue() );
           else setValue( getDefaultValue() );
           update();
           redraw();

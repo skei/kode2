@@ -31,13 +31,13 @@ public:
 
   KODE_SAHeaderWidget(KODE_FRect ARect, const char* AName, const char* AVersion, KODE_Drawable* ATarget)
   : KODE_PanelWidget(ARect) {
-    MName = "KODE_SAHeaderWidget";
+    setName("KODE_SAHeaderWidget");
     MFillBackground = false;
     MDrawBorder = false;
     MBackgroundColor = KODE_Color(0.5f);
     MPluginName = AName;
     MPluginVersion = AVersion;
-    MLayout.alignment = KODE_WIDGET_ALIGN_TOP;
+    getLayout()->alignment = KODE_WIDGET_ALIGN_TOP;
     MBitmap = KODE_New KODE_Bitmap(sa_logo_40_trans_black,sa_logo_40_trans_black_size);
     MBitmap->premultAlpha( MBackgroundColor );
     MSurface = KODE_New KODE_Surface(ATarget,MBitmap->getWidth(),MBitmap->getHeight());
@@ -57,9 +57,9 @@ public:
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) final {
     fillBackground(APainter);
-    APainter->drawBitmap( MRect.x,      MRect.y,      MSurface );
-    APainter->drawText(   MRect.x + 50, MRect.y + 17, MPluginName, MNameColor );
-    APainter->drawText(   MRect.x + 50, MRect.y + 31, MPluginVersion, MVersionColor );
+    APainter->drawBitmap( getRect().x,      getRect().y,      MSurface );
+    APainter->drawText(   getRect().x + 50, getRect().y + 17, MPluginName, MNameColor );
+    APainter->drawText(   getRect().x + 50, getRect().y + 31, MPluginVersion, MVersionColor );
     drawBorder(APainter);
   }
 

@@ -70,18 +70,18 @@ public:
   virtual void drawKnob(KODE_Painter* APainter, KODE_FRect ARect) {
     if (MDrawKnob) {
       float     value           = getValue();
-      float     S               = (float)MRect.w;
+      float     S               = (float)getRect().w;
       int32_t   arc_thickness   = S * MArcThickness;
       float     step_start      = S/2 - arc_thickness;
       float     step_end        = S/2 + 1;
       float     needle_length   = S * MNeedleLength; ///4;
 
-      KODE_FRect r = MRect;
+      KODE_FRect r = getRect();
       //r.shrink(0.5f + MKnobSize * 0.5f);
       r.shrink((arc_thickness / 2.0f) + 1.0f);
 
-      float x = MRect.x + ((float)MRect.w * 0.5f);
-      float y = MRect.y + ((float)MRect.h * 0.5f);
+      float x = getRect().x + ((float)getRect().w * 0.5f);
+      float y = getRect().y + ((float)getRect().h * 0.5f);
 
       float a1;// = -0.4f;
       float a2;// = value * 0.8f;

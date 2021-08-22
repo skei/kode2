@@ -25,7 +25,7 @@ public:
 
   KODE_CachedWidget(KODE_FRect ARect)
   : KODE_Widget(ARect) {
-    MName = "KODE_CachedWidget";
+    setName("KODE_CachedWidget");
   }
 
   virtual ~KODE_CachedWidget() {
@@ -74,7 +74,8 @@ public:
 
   void do_widget_redraw(KODE_Widget* ASender, KODE_FRect ARect, uint32_t AMode) final {
     MSurfaceDirty = true;
-    if (MParent) MParent->do_widget_redraw(ASender,ARect,AMode);
+    //if (MParent) MParent->do_widget_redraw(ASender,ARect,AMode);
+    KODE_Widget::do_widget_redraw(ASender,ARect,AMode);
   }
 
 };

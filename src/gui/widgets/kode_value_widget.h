@@ -39,7 +39,7 @@ public:
 
   KODE_ValueWidget(KODE_FRect ARect)
   : KODE_TextWidget(ARect) {
-    MName = "KODE_ValueWidget";
+    setName("KODE_ValueWidget");
   }
 
   virtual ~KODE_ValueWidget() {
@@ -79,13 +79,13 @@ public:
 
   virtual void drawValueText(KODE_BasePainter* APainter) {
     if (MDrawValueText) {
-      KODE_FRect  value_rect  = MRect;
-      KODE_FRect  label_rect  = MRect;
+      KODE_FRect  value_rect  = getRect();
+      KODE_FRect  label_rect  = getRect();
       float       value       = getValue();
       const char* label       = MLabel;
-      if (MParameter) {
-        value = MParameter->from01(value);
-        label = MParameter->getLabel();
+      if (getParameterPtr()) {
+        value = getParameterPtr()->from01(value);
+        label = getParameterPtr()->getLabel();
       }
       value_rect.shrink(MValueTextOffset);
       label_rect.shrink(MValueTextOffset);

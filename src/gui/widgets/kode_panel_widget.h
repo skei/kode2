@@ -25,7 +25,7 @@ public:
 
   KODE_PanelWidget(KODE_FRect ARect)
   : KODE_Widget(ARect) {
-    MName = "KODE_PanelWidget";
+    setName("KODE_PanelWidget");
   }
 
   virtual ~KODE_PanelWidget() {
@@ -55,13 +55,13 @@ public:
 
   virtual void drawBorder(KODE_BasePainter* APainter) {
     if (MDrawBorder) {
-      APainter->drawRect(MRect,MBorderColor);
+      APainter->drawRect(getRect(),MBorderColor);
     }
   }
 
   virtual void fillBackground(KODE_BasePainter* APainter) {
     if (MFillBackground) {
-      APainter->fillRect(MRect,MBackgroundColor);
+      APainter->fillRect(getRect(),MBackgroundColor);
     }
   }
 

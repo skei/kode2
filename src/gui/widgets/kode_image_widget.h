@@ -23,7 +23,7 @@ public:
 
   KODE_ImageWidget(KODE_FRect ARect)
   : KODE_PanelWidget(ARect) {
-    MName = "KODE_ImageWidget";
+    setName("KODE_ImageWidget");
     MFillBackground = false;
     MDrawBorder = false;
   }
@@ -69,10 +69,10 @@ public:
   virtual void drawImage(KODE_BasePainter* APainter) {
     if (MDrawImage) {
       if (MDrawable) {
-        APainter->drawBitmap(MRect.x,MRect.y,MDrawable,MImageRect);
+        APainter->drawBitmap(getRect().x,getRect().y,MDrawable,MImageRect);
       }
       else if (MBitmap) {
-        APainter->uploadBitmap(MRect.x,MRect.y,MBitmap);
+        APainter->uploadBitmap(getRect().x,getRect().y,MBitmap);
       }
     }
   }

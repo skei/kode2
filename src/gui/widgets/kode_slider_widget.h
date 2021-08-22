@@ -24,7 +24,7 @@ public:
 
   KODE_SliderWidget(KODE_FRect ARect)
   : KODE_DragValueWidget(ARect) {
-    MName             = "KODE_SliderWidget";
+    setName("KODE_SliderWidget");
     MDrawBorder       = true;
     MBackgroundColor  = KODE_Color( 0.7,  0.7,  0.7 );
     MTextColor        = KODE_Color( 0,    0,    0   );
@@ -56,7 +56,7 @@ public:
 
   virtual void drawValueBar(KODE_BasePainter* APainter) {
     if (MDrawValueBar) {
-      KODE_FRect  rect  = MRect;
+      KODE_FRect  rect  = getRect();
       float       value = getValue();
       rect.shrink(MValueBarOffset);
       float w = rect.w * value;

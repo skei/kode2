@@ -35,7 +35,7 @@ public:
 
   KODE_ButtonWidget(KODE_FRect ARect)
   : KODE_Widget(ARect) {
-    MName = "KODE_ButtonWidget";
+    setName("KODE_ButtonWidget");
   }
 
   virtual ~KODE_ButtonWidget() {
@@ -75,18 +75,18 @@ public:
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     if (getValue() >= 0.5f) { // on
-      APainter->fillRect(MRect,MOnBackgroundColor);
-      KODE_FRect rect = MRect;
+      APainter->fillRect(getRect(),MOnBackgroundColor);
+      KODE_FRect rect = getRect();
       rect.shrink(MOnTextOffset);
       APainter->drawText(rect,MOnText,MOnTextAlignment,MOnTextColor);
-      APainter->drawRect(MRect,MOnBorderColor);
+      APainter->drawRect(getRect(),MOnBorderColor);
     }
     else { // off
-      APainter->fillRect(MRect,MOffBackgroundColor);
-      KODE_FRect rect = MRect;
+      APainter->fillRect(getRect(),MOffBackgroundColor);
+      KODE_FRect rect = getRect();
       rect.shrink(MOffTextOffset);
       APainter->drawText(rect,MOffText,MOffTextAlignment,MOffTextColor);
-      APainter->drawRect(MRect,MOffBorderColor);
+      APainter->drawRect(getRect(),MOffBorderColor);
     }
   }
 

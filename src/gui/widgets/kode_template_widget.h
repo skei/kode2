@@ -13,7 +13,7 @@ public:
 
   KODE_TemplateWidget(KODE_FRect ARect)
   : KODE_Widget(ARect) {
-    MName = "KODE_TemplateWidget";
+    setName("KODE_TemplateWidget");
   }
 
   virtual ~KODE_TemplateWidget() {
@@ -61,39 +61,48 @@ public:
 //------------------------------
 
   void do_widget_update(KODE_Widget* ASender) final {
-    if (MParent) MParent->do_widget_update(ASender);
+    //if (MParent) MParent->do_widget_update(ASender);
+    KODE_Widget::do_widget_update(ASender);
   }
 
   void do_widget_redraw(KODE_Widget* ASender, KODE_FRect ARect, uint32_t AMode) final {
-    if (MParent) MParent->do_widget_redraw(ASender,ARect,AMode);
+    //if (MParent) MParent->do_widget_redraw(ASender,ARect,AMode);
+    KODE_Widget::do_widget_redraw(ASender,ARect,AMode);
   }
 
   void do_widget_grabMouseCursor(KODE_Widget* ASender) final {
-    if (MParent) MParent->do_widget_grabMouseCursor(ASender);
+    //if (MParent) MParent->do_widget_grabMouseCursor(ASender);
+    KODE_Widget::do_widget_grabMouseCursor(ASender);
   }
 
   void do_widget_grabKeyboard(KODE_Widget* ASender) final {
-    if (MParent) MParent->do_widget_grabKeyboard(ASender);
+    //if (MParent) MParent->do_widget_grabKeyboard(ASender);
+    KODE_Widget::do_widget_grabKeyboard(ASender);
   }
 
   void do_widget_grabModal(KODE_Widget* ASender) final {
-    if (MParent) MParent->do_widget_grabModal(ASender);
+    //if (MParent) MParent->do_widget_grabModal(ASender);
+    KODE_Widget::do_widget_grabModal(ASender);
   }
 
   void do_widget_setMouseCursor(KODE_Widget* ASender, int32_t ACursor) final {
-    if (MParent) MParent->do_widget_setMouseCursor(ASender,ACursor);
+    //if (MParent) MParent->do_widget_setMouseCursor(ASender,ACursor);
+    KODE_Widget::do_widget_setMouseCursor(ASender,ACursor);
   }
 
   void do_widget_setMouseCursorPos(KODE_Widget* ASender, float AXpos, float AYpos) final {
-    if (MParent) MParent->do_widget_setMouseCursorPos(ASender,AXpos,AYpos);
+    //if (MParent) MParent->do_widget_setMouseCursorPos(ASender,AXpos,AYpos);
+    KODE_Widget::do_widget_setMouseCursorPos(ASender,AXpos,AYpos);
   }
 
   void do_widget_setHint(KODE_Widget* ASender, const char* AHint) final {
-    if (MParent) MParent->do_widget_setHint(ASender,AHint);
+    //if (MParent) MParent->do_widget_setHint(ASender,AHint);
+    KODE_Widget::do_widget_setHint(ASender,AHint);
   }
 
   void do_widget_notify(KODE_Widget* AWidget, uint32_t AValue=0) final {
-    if (MParent) MParent->do_widget_notify(AWidget,AValue);
+    //if (MParent) MParent->do_widget_notify(AWidget,AValue);
+    KODE_Widget::do_widget_notify(AWidget,AValue);
   }
 
 //------------------------------

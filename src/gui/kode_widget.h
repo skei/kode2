@@ -10,26 +10,31 @@
 
 #define KODE_WIDGET_MAX_PARAMETERS 16
 
-//struct KODE_WidgetOptions {
-//  bool autoMouseCapture = false;
-//  bool autoMouseHide    = false;
-//  bool autoMouseCursor  = true;
-//  bool autoClip         = true;
-//  bool autoHint         = false;
-//};
+struct KODE_WidgetOptions {
+  bool autoMouseCapture     = false;
+  bool autoMouseHide        = false;
+  bool autoMouseCursor      = false;
+  bool autoClip             = false;
+  bool autoHint             = false;
+//bool canDrag              = false;
+//bool canDrop              = false;
+  bool  rectPrecentages     = false;
+};
 
 struct KODE_WidgetStates {
-  bool active       = true;
-  bool visible      = true;
-  bool interactive  = false;
-  bool hovering     = false;
-  //bool clicked      = true;
+  bool active               = false;
+  bool visible              = false;
+  bool interactive          = false;
+  bool hovering             = false;
+  bool clicked              = false;
+//bool dragging             = false;
 };
 
 struct KODE_WidgetLayout {
   uint32_t    alignment     = KODE_WIDGET_ALIGN_PARENT;
   KODE_FRect  innerBorder   = KODE_FRect(0);
-  KODE_FPoint widgetSpacing = KODE_FPoint(0);
+//KODE_FRect  outerBorder   = KODE_FRect(0);
+  KODE_FPoint spacing       = KODE_FPoint(0); // widgetSpacing
 };
 
 class KODE_Widget;
@@ -48,25 +53,20 @@ class KODE_Widget {
 private:
 //------------------------------
 
-  float               MValue        = 0.0f;
-  float               MDefaultValue = 0.0f;
-
-//------------------------------
-protected:
-//------------------------------
-
-  const char*         MName         = "KODE_Widget";
-  int32_t             MMouseCursor  = KODE_CURSOR_DEFAULT;
+  float               MValue              = 0.0f;
+  float               MDefaultValue       = 0.0f;
+  KODE_WidgetOptions  MOptions;
   KODE_WidgetLayout   MLayout;
-  //KODE_WidgetOptions  MOptions;
   KODE_WidgetStates   MStates;
-  KODE_Widget*        MParent       = KODE_NULL;
   KODE_Widgets        MChildren;
-  KODE_FRect          MRect         = KODE_FRect(0);
-  KODE_FRect          MInitialRect  = KODE_FRect(0);
-  KODE_FRect          MContentRect  = KODE_FRect(0);
-  KODE_Parameter*     MParameter                              = KODE_NULL;
-  uint32_t            MSelectedParameter                      = 0;
+  KODE_Widget*        MParent             = KODE_NULL;
+  const char*         MName               = "KODE_Widget";
+  KODE_FRect          MRect               = KODE_FRect(0);
+  KODE_FRect          MInitialRect        = KODE_FRect(0);
+  KODE_FRect          MContentRect        = KODE_FRect(0);
+  int32_t             MCursor             = KODE_CURSOR_DEFAULT;  // ps: MouseCursor clashes with KODE_Window::setMouseCursor
+  uint32_t            MSelectedParameter  = 0;
+  KODE_Parameter*     MParameterPtr       = KODE_NULL;
   KODE_Parameter*     MParameters[KODE_WIDGET_MAX_PARAMETERS] = {0};
 
 //------------------------------
@@ -74,9 +74,9 @@ public:
 //------------------------------
 
   KODE_Widget(KODE_FRect ARect) {
-    MRect        = ARect;
-    MInitialRect = ARect;
-    MContentRect = KODE_FRect(0);
+    setRect(ARect);
+    setInitialRect(ARect);
+    setContentRect(KODE_FRect(0));
   }
 
   virtual ~KODE_Widget() {
@@ -89,21 +89,36 @@ public:
 public: // set
 //------------------------------
 
-  virtual void setValue(float AValue)           { MValue = AValue; }
-  virtual void setDefaultValue(float AValue)    { MDefaultValue = AValue; }
-  virtual void setParameter(KODE_Parameter* p)  { MParameter = p; }
-  virtual void selectParameter(uint32_t AIndex) { MParameter = MParameters[AIndex]; }
+  virtual void setName(const char* AName)               { MName = AName; }
+  virtual void setValue(float AValue)                   { MValue = AValue; }
+  virtual void setDefaultValue(float AValue)            { MDefaultValue = AValue; }
+  virtual void setRect(KODE_FRect ARect)                { MRect = ARect; }
+  virtual void setInitialRect(KODE_FRect ARect)         { MInitialRect = ARect; }
+  virtual void setContentRect(KODE_FRect ARect)         { MContentRect = ARect; }
+  virtual void setCursor(int32_t ACursor)               { MCursor = ACursor; }
+//virtual void setParameterIndex(uint32_t AIndex)       { MParameterPtr = MParameters[AIndex]; }
+  virtual void setParameterPtr(KODE_Parameter* p)       { MParameterPtr = p; }
+  virtual void setSelectedParameter(uint32_t AIndex)    { MSelectedParameter = AIndex; }
+  virtual void setParameterPtr(uint32_t AIndex, KODE_Parameter* AParameter) { MParameters[AIndex] = AParameter; }
+
+  virtual void setparent(KODE_Widget* AParent) { MParent = AParent; }
 
 //------------------------------
 public: // get
 //------------------------------
 
-  float               getValue()        { return MValue; }
-  float               getDefaultValue() { return MDefaultValue; }
-  KODE_Parameter*     getParameter()    { return MParameter; }
-  KODE_WidgetLayout*  getLayout()       { return &MLayout; }
-  //KODE_WidgetOptions* getOptions()      { return &MOptions; }
-  KODE_WidgetStates*  getStates()       { return &MStates; }
+  virtual float               getValue()                    { return MValue; }
+  virtual float               getDefaultValue()             { return MDefaultValue; }
+  virtual KODE_Parameter*     getParameterPtr()             { return MParameterPtr; }
+  virtual KODE_WidgetLayout*  getLayout()                   { return &MLayout; }
+  virtual KODE_WidgetOptions* getOptions()                  { return &MOptions; }
+  virtual KODE_WidgetStates*  getStates()                   { return &MStates; }
+  virtual KODE_FRect          getRect()                     { return MRect; }
+  virtual KODE_FRect          getInitialRect()              { return MInitialRect; }
+  virtual KODE_FRect          getContainerRect()            { return MContentRect; }
+  virtual int32_t             getCursor()                   { return MCursor; }
+  virtual uint32_t            getSelectedParameter()        { return MSelectedParameter; }
+  virtual KODE_Parameter*     getParameter(uint32_t AIndex) { return MParameters[AIndex]; }
 
 //------------------------------
 public:
@@ -116,7 +131,7 @@ public:
   //----------
 
   virtual void redraw() {
-    do_widget_redraw(this,MRect,0);
+    do_widget_redraw(this,getRect(),0);
   }
 
 //------------------------------
@@ -144,14 +159,13 @@ public:
     int32_t num = MChildren.size();
     if (num > 0) {
       for (int32_t i=(num-1); i>=0; i--) {
-        //for (uint32_t i=0; i<num; i++) {
         KODE_Widget* widget = MChildren[i];
-        if ( widget->MRect.contains(AXpos,AYpos) ) {
+        if ( widget->getRect().contains(AXpos,AYpos) ) {
           KODE_Widget* child = widget->findChild(AXpos,AYpos);
           if (child) return child;
           return widget;
         }
-      } // for
+      }
     }
     return KODE_NULL;
   }
@@ -168,7 +182,7 @@ public:
   virtual void paintChildren(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
     for (uint32_t i=0; i<MChildren.size(); i++) {
       KODE_Widget* widget = MChildren[i];
-      KODE_FRect rect = widget->MRect;
+      KODE_FRect rect = widget->getRect();
       rect.intersect(ARect);
       if (rect.isNotEmpty()) {
         widget->on_widget_paint(APainter,/*rect*/ARect,AMode);
@@ -181,21 +195,23 @@ public:
   /*
     the widgets are aligned from their MInitialRect, set up when the
     widget is created.. so, if we resize the widget, it will be lost next
-    time the widgets are being 'realigned.. :-/
+    time the widgets are being 'realigned
+    maybe:
+      a) have a MInitialDelta rect? difference from MInitialRect? in case
+         of runtime moving, resizing,.
+      b) modify the MInitialRect directly when needed (resize widget, etc)
+      c) pre/post for scrollboxes, to find size of child widgets, etc..
+      d) take scroll/offset position into account while realigning
+      e) like prev lib, un_scroll, realign, re_scroll
 
-    todo: have a MInitialDelta rect? difference from MInitialRect? in case
-    of runtime moving, resizing, etc.. ???
-    or modify the MInitialRect directly when needed (resizing the widget,
-    etc)..
-
-    todo: pre/post for scrollboxes, to find size of child widgets, etc..
-    ???
+    todo:
+    - relative positions
+    - percentages
   */
 
-  virtual void alignChildren() {
-    //KODE_FRect parent = MRect;
-    KODE_FRect client = MRect;
-    client.shrink(MLayout.innerBorder);
+  virtual void alignChildren(float AXOffset=0.0f, float AYOffset=0.0f) {
+    KODE_FRect client = getRect();
+    client.shrink(getLayout()->innerBorder);
     uint32_t num = MChildren.size();
     for (uint32_t i=0; i<num; i++) {
       KODE_Widget* widget = MChildren[i];
@@ -207,8 +223,8 @@ public:
         example, the initial rect, we could just subtract it)..
       */
 
-      KODE_FRect rect = widget->MInitialRect;
-      switch (widget->MLayout.alignment) {
+      KODE_FRect rect = widget->getInitialRect();
+      switch (widget->getLayout()->alignment) {
 
         case KODE_WIDGET_ALIGN_NONE:
           break;
@@ -240,32 +256,32 @@ public:
           rect.x = client.x;
           rect.y = client.y;
           rect.h = client.h;
-          client.x += (rect.w + MLayout.widgetSpacing.x);
-          client.w -= (rect.w + MLayout.widgetSpacing.x);
+          client.x += (rect.w + getLayout()->spacing.x);
+          client.w -= (rect.w + getLayout()->spacing.x);
           break;
 
         case KODE_WIDGET_ALIGN_FILL_RIGHT:
           rect.x = client.x2() - rect.w;
           rect.y = client.y;
           rect.h = client.h;
-          //client.x += (rect.w + MWidgetSpacing.x);
-          client.w -= (rect.w + MLayout.widgetSpacing.x);
+          //client.x += (rect.w + getWidgetSpacing.x);
+          client.w -= (rect.w + getLayout()->spacing.x);
           break;
 
         case KODE_WIDGET_ALIGN_FILL_TOP:
           rect.x = client.x;
           rect.y = client.y;
           rect.w = client.w;
-          client.y += (rect.h + MLayout.widgetSpacing.y);
-          client.h -= (rect.h + MLayout.widgetSpacing.y);
+          client.y += (rect.h + getLayout()->spacing.y);
+          client.h -= (rect.h + getLayout()->spacing.y);
           break;
 
         case KODE_WIDGET_ALIGN_FILL_BOTTOM:
           rect.x = client.x;
           rect.y = client.y2() - rect.h;
           rect.w = client.w;
-          //client.y += (rect.h + MLayout.widgetSpacing.y);
-          client.h -= (rect.h + MLayout.widgetSpacing.y);
+          //client.y += (rect.h + getLayout()->spacing.y);
+          client.h -= (rect.h + getLayout()->spacing.y);
           break;
 
         case KODE_WIDGET_ALIGN_LEFT:
@@ -351,12 +367,12 @@ public:
 
       } // switch
 
-      widget->MRect = rect;
+      widget->setRect(rect);
       //widget->on_widget_setPos();
       //widget->on_widget_setSize();
 
       //widget->MParentRect = MRect;
-      widget->alignChildren();
+      widget->alignChildren(/*0,0*/);
     } // for
     //MAlignedRect = MRect;
   }
