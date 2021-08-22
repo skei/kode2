@@ -13,10 +13,16 @@
 
 //----------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+
 #ifdef KODE_DEBUG
-  #define KODE_Vst3Print KODE_Print
+  #define KODE_VST3PRINT
+  #define KODE_Vst3Print  KODE_Print
+  #define KODE_Vst3DPrint KODE_DPrint
 #else
-  #define KODE_Vst3Print KODE_NoPrint
+  #define KODE_VST3PRINT  KODE_PRINT
+  #define KODE_Vst3Print  KODE_NoPrint
+  #define KODE_Vst3DPrint KODE_NoPrint
 #endif
 
 //----------------------------------------------------------------------
@@ -42,14 +48,14 @@ public:
 //------------------------------
 
   KODE_VST3Plugin() {
-    //VST3_PRINT;
+    KODE_Vst3Print("\n");
     MRefCount = 1;
   }
 
   //----------
 
   virtual ~KODE_VST3Plugin() {
-    //VST3_PRINT;
+    KODE_Vst3Print("\n");
   }
 
 //------------------------------
@@ -57,18 +63,16 @@ public: // FUnknown
 //------------------------------
 
   uint32_t KODE_VST3_PLUGIN_API addRef() final {
-    //VST3_Print("");
     MRefCount++;
-    //VST3_DPrint("-> %i\n",MRefCount);
+    KODE_Vst3Print("-> %i\n",MRefCount);
     return MRefCount;
   }
 
   //----------
 
   uint32_t KODE_VST3_PLUGIN_API release() final {
-    //VST3_Print("");
     const uint32_t r = --MRefCount;
-    //VST3_DPrint("-> %i %s",r, (r==0) ? "(delete)\n" : "\n" );
+    KODE_Vst3Print("-> %i %s",r, (r==0) ? "(delete)\n" : "\n" );
     if (r == 0) KODE_Delete this;
     return r;
   }
@@ -76,21 +80,21 @@ public: // FUnknown
   //----------
 
   int32_t KODE_VST3_PLUGIN_API queryInterface(const KODE_Vst3Id _iid, void** obj) final {
-    //VST3_Print("_iid ");
-    //VST3_PrintIID(_iid);
+    KODE_Vst3Print("iid ");
+    KODE_Vst3PrintIID(_iid);
     if (KODE_iidEqual(KODE_Vst3IPluginFactory2_iid,_iid)) {
-      //VST3_DPrint(" (IPluginFactory2)\n");
+      KODE_Vst3DPrint(" (IPluginFactory2)\n");
       *obj = (KODE_Vst3IPluginFactory2*)this;
       addRef();
       return kode_vst3_ResultOk;
     }
     if (KODE_iidEqual(KODE_Vst3IPluginFactory3_iid,_iid)) {
-      //VST3_DPrint(" (IPluginFactory3)\n");
+      KODE_Vst3DPrint(" (IPluginFactory3)\n");
       *obj = (KODE_Vst3IPluginFactory3*)this;
       addRef();
       return kode_vst3_ResultOk;
     }
-    //VST3_DPrint(" (unknown)\n");
+      KODE_Vst3DPrint(" (unknown)\n");
     *obj = nullptr;
     return kode_vst3_NoInterface;
   }
@@ -104,7 +108,7 @@ public:
   //--------------------
 
   int32_t KODE_VST3_PLUGIN_API getFactoryInfo(KODE_Vst3PFactoryInfo* info) final {
-    //VST3_PRINT;
+    KODE_Vst3Print("\n");
     KODE_Strcpy(info->vendor,MDescriptor.getAuthor());
     KODE_Strcpy(info->url,MDescriptor.getUrl());
     KODE_Strcpy(info->email,MDescriptor.getEmail());
@@ -115,14 +119,14 @@ public:
   //----------
 
   int32_t KODE_VST3_PLUGIN_API countClasses() final {
-    //VST3_Print("-> 1\n");
+    KODE_Vst3Print(" -> 1\n");
     return 1;
   }
 
   //----------
 
   int32_t KODE_VST3_PLUGIN_API getClassInfo(int32_t index, KODE_Vst3PClassInfo* info) final {
-    //VST3_Print("index %i\n",index);
+    KODE_Vst3Print("index %i\n",index);
     switch (index) {
       case 0:
         KODE_Memcpy(info->cid,MDescriptor.getLongId(),16);
@@ -137,16 +141,19 @@ public:
   //----------
 
   int32_t KODE_VST3_PLUGIN_API createInstance(const char* cid, const char* _iid, void** obj) final {
-    //VST3_Print("cid ");
-    //VST3_PrintIID(cid);
+    KODE_Vst3Print("cid ");
+    KODE_Vst3DPrint(cid);
     if (KODE_iidEqual(MDescriptor.getLongId(),cid)) {
-      //VST3_DPrint(" (%s)\n",MDescriptor.getName());
+      KODE_Vst3DPrint(" (%s)\n",MDescriptor.getName());
       INST* instance = KODE_New INST(&MDescriptor);
       instance->on_plugin_open();
       instance->setDefaultParameterValues();
       instance->updateAllParameters();
       *obj = (KODE_Vst3IComponent*)instance;
       return kode_vst3_ResultOk;
+    }
+    else {
+      KODE_Vst3DPrint(" (unknown)\n");
     }
     *obj = nullptr;
     return kode_vst3_NotImplemented;
@@ -157,7 +164,7 @@ public: // IPluginFactory2
 //------------------------------
 
   int32_t KODE_VST3_PLUGIN_API getClassInfo2(int32_t index, KODE_Vst3PClassInfo2* info) final {
-    //VST3_Print("index %i\n",index);
+    KODE_Vst3Print("index %i\n",index);
     switch (index) {
       case 0:
         KODE_Memcpy(info->cid,MDescriptor.getLongId(),16);
@@ -184,14 +191,14 @@ public: // IPluginFactory3
 //------------------------------
 
   int32_t KODE_VST3_PLUGIN_API getClassInfoUnicode(int32_t index, KODE_Vst3PClassInfoW* info) final {
-    //VST3_Print("index %i\n",index);
+    KODE_Vst3Print("index %i\n",index);
     return kode_vst3_ResultFalse;
   }
 
   //----------
 
   int32_t KODE_VST3_PLUGIN_API setHostContext(KODE_Vst3FUnknown* context) final {
-    //VST3_Print("context %p\n",context);
+    KODE_Vst3Print("context %p\n",context);
     MHostContext = context;
     return kode_vst3_ResultOk;
   }
@@ -219,7 +226,7 @@ bool vst3_module_exit(void) VST3_MODULE_EXIT_SYMBOL;
                                                                       \
   __KODE_DLLEXPORT                                                    \
   KODE_Vst3IPluginFactory* KODE_VST3_PLUGIN_API vst3_entrypoint() {   \
-    /*VST3_PRINT;*/                                                   \
+    KODE_Vst3Print("\n");                                             \
     return KODE_New KODE_VST3Plugin<DESC,INST>();                     \
   }                                                                   \
                                                                       \
@@ -229,6 +236,7 @@ bool vst3_module_exit(void) VST3_MODULE_EXIT_SYMBOL;
                                                                       \
   __KODE_DLLEXPORT                                                    \
   bool vst3_module_entry(void* sharedLibraryHandle) {                 \
+    KODE_Vst3Print("\n");                                             \
     if (++counter == 1) {                                             \
       moduleHandle = sharedLibraryHandle;                             \
       /* init plugin */                                               \
@@ -239,6 +247,7 @@ bool vst3_module_exit(void) VST3_MODULE_EXIT_SYMBOL;
                                                                       \
   __KODE_DLLEXPORT                                                    \
   bool vst3_module_exit(void) {                                       \
+    KODE_Vst3Print("\n");                                             \
     if (--counter == 0) {                                             \
       moduleHandle = nullptr;                                         \
       /* cleanup plugin */                                            \

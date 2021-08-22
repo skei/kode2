@@ -80,6 +80,9 @@ private:
   float*                        MParameterValues        = KODE_NULL;
 //float*                        MEditorParameterValues  = KODE_NULL;
 
+  KODE_ProcessContext           MProcessContext         = {0};
+
+
 //------------------------------
 public:
 //------------------------------
@@ -1099,30 +1102,39 @@ public: // IAudioProcessor
   */
 
   int32_t KODE_VST3_PLUGIN_API process(KODE_Vst3ProcessData& data) final {
-    handleEventsInProcess(data);
-    handleParametersInProcess(data);
-    bool _flush = ( (data.numInputs == 0) && (data.numOutputs == 0) && (data.numSamples == 0) );
-    if (!_flush) {
-      KODE_ProcessContext context;// = {0};
-      uint32_t i;
-      for (i=0; i<MDescriptor->getNumInputs(); i++)   { context.inputs[i]  = data.inputs[0].channelBuffers32[i]; }
-      for (i=0; i<MDescriptor->getNumOutputs(); i++)  { context.outputs[i] = data.outputs[0].channelBuffers32[i]; }
-      context.numinputs    = MDescriptor->getNumInputs();
-      context.numoutputs   = MDescriptor->getNumOutputs();
-      context.numsamples   = data.numSamples;
-      //context.oversample    = 1;
-      context.samplerate   = data.processContext->sampleRate;
-      context.samplepos    = data.processContext->continousTimeSamples;
-      context.beatpos      = data.processContext->projectTimeMusic;
-      context.tempo        = data.processContext->tempo;
-      context.timesignum   = data.processContext->timeSigNumerator;
-      context.timesigdenom = data.processContext->timeSigDenominator;
-      context.playstate    = KODE_PLUGIN_PLAYSTATE_NONE;
-      if (data.processContext->state & KODE_Vst3ProcessContext::StatesAndFlags::kode_vst3_Playing)      context.playstate |= KODE_PLUGIN_PLAYSTATE_PLAYING;
-      if (data.processContext->state & KODE_Vst3ProcessContext::StatesAndFlags::kode_vst3_Recording)    context.playstate |= KODE_PLUGIN_PLAYSTATE_RECORDING;
-      if (data.processContext->state & KODE_Vst3ProcessContext::StatesAndFlags::kode_vst3_CycleActive)  context.playstate |= KODE_PLUGIN_PLAYSTATE_LOOPING;
-      on_plugin_process(&context);
-    }
+//    handleEventsInProcess(data);
+//    handleParametersInProcess(data);
+//    bool _flush = ( (data.numInputs == 0) && (data.numOutputs == 0) && (data.numSamples == 0) );
+//    if (!_flush) {
+//      uint32_t i;
+//      for (i=0; i<MDescriptor->getNumInputs(); i++) {
+//        MProcessContext.inputs[i]  = data.inputs[0].channelBuffers32[i];
+//      }
+//      for (i=0; i<MDescriptor->getNumOutputs(); i++) {
+//        MProcessContext.outputs[i] = data.outputs[0].channelBuffers32[i];
+//      }
+//      MProcessContext.numinputs    = MDescriptor->getNumInputs();
+//      MProcessContext.numoutputs   = MDescriptor->getNumOutputs();
+//      MProcessContext.numsamples   = data.numSamples;
+//      //MProcessContext.oversample    = 1;
+//      MProcessContext.samplerate   = data.processContext->sampleRate;
+//      MProcessContext.samplepos    = data.processContext->continousTimeSamples;
+//      MProcessContext.beatpos      = data.processContext->projectTimeMusic;
+//      MProcessContext.tempo        = data.processContext->tempo;
+//      MProcessContext.timesignum   = data.processContext->timeSigNumerator;
+//      MProcessContext.timesigdenom = data.processContext->timeSigDenominator;
+//      MProcessContext.playstate    = KODE_PLUGIN_PLAYSTATE_NONE;
+//      if (data.processContext->state & KODE_Vst3ProcessContext::StatesAndFlags::kode_vst3_Playing) {
+//        MProcessContext.playstate |= KODE_PLUGIN_PLAYSTATE_PLAYING;
+//      }
+//      if (data.processContext->state & KODE_Vst3ProcessContext::StatesAndFlags::kode_vst3_Recording) {
+//        MProcessContext.playstate |= KODE_PLUGIN_PLAYSTATE_RECORDING;
+//      }
+//      if (data.processContext->state & KODE_Vst3ProcessContext::StatesAndFlags::kode_vst3_CycleActive) {
+//        MProcessContext.playstate |= KODE_PLUGIN_PLAYSTATE_LOOPING;
+//      }
+//      on_plugin_process(&MProcessContext);
+//    }
     /*
       https://forum.juce.com/t/vst3-plugin-wrapper/12323/5
       I recall the Steinberg Validator complaining that process() should just

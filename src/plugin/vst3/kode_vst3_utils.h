@@ -69,7 +69,7 @@ bool KODE_iidEqual(const void* iid1, const void* iid2) {
 
 //----------
 
-void KODE_PrintVst3IID(const void* iid) {
+void KODE_Vst3PrintIID(const void* iid) {
   uint8_t* ptr = (uint8_t*)iid;
   for (uint32_t i=0; i<4; i++) {
     KODE_DPrint("%c",KODE_HEX_TABLE[ ptr[i] >> 4 ]);

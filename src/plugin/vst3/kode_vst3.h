@@ -280,8 +280,8 @@ enum KODE_Vst3SymbolicSampleSizes {
 //----------------------------------------------------------------------
 
 const char*     kode_vst3_Editor                        = "editor"; // not capitalized?
-const char*     kode_vst3_Fx					                  = "Fx";
-const char*     kode_vst3_Instrument			              = "Instrument";
+const char*     kode_vst3_Fx                            = "Fx";
+const char*     kode_vst3_Instrument                    = "Instrument";
 
 const char*     kode_vst3_PlatformTypeHWND              = "HWND";
 const char*     kode_vst3_PlatformTypeHIView            = "HIView";
@@ -312,15 +312,15 @@ namespace KODE_Vst3PlugType {
   const CString kode_vst3_FxDistortion            = "Fx|Distortion";
   const CString kode_vst3_FxDynamics              = "Fx|Dynamics";
   const CString kode_vst3_FxEQ                    = "Fx|EQ";
-  const CString kode_vst3_FxFilter				        = "Fx|Filter";
-  const CString kode_vst3_Fx					            = "Fx";
-  const CString kode_vst3_FxInstrument			      = "Fx|Instrument";
-  const CString kode_vst3_FxInstrumentExternal	  = "Fx|Instrument|External";
-  const CString kode_vst3_FxSpatial			          = "Fx|Spatial";
-  const CString kode_vst3_FxGenerator			        = "Fx|Generator";
-  const CString kode_vst3_FxMastering			        = "Fx|Mastering";
-  const CString kode_vst3_FxModulation			      = "Fx|Modulation";
-  const CString kode_vst3_FxPitchShift			      = "Fx|Pitch Shift";
+  const CString kode_vst3_FxFilter                = "Fx|Filter";
+  const CString kode_vst3_Fx                      = "Fx";
+  const CString kode_vst3_FxInstrument            = "Fx|Instrument";
+  const CString kode_vst3_FxInstrumentExternal    = "Fx|Instrument|External";
+  const CString kode_vst3_FxSpatial               = "Fx|Spatial";
+  const CString kode_vst3_FxGenerator             = "Fx|Generator";
+  const CString kode_vst3_FxMastering             = "Fx|Mastering";
+  const CString kode_vst3_FxModulation            = "Fx|Modulation";
+  const CString kode_vst3_FxPitchShift            = "Fx|Pitch Shift";
   const CString kode_vst3_FxRestoration           = "Fx|Restoration";
   const CString kode_vst3_FxReverb                = "Fx|Reverb";
   const CString kode_vst3_FxSurround              = "Fx|Surround";
