@@ -14,6 +14,8 @@
 #include <lv2/midi/midi.h>
 #include <lv2/urid/urid.h>
 
+#include <lv2/lv2plug.in/ns/extensions/ui/ui.h>
+
 //----------
 
 #define KODE_LV2_MAX_URI_LENGTH     256

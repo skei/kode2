@@ -36,11 +36,16 @@ class KODE_Lv2Plugin {
 private:
 //------------------------------
 
-  DESC            MDescriptor;
+  DESC              MDescriptor;
 
-  LV2_Descriptor  MLv2Descriptor                          = {0};
-  char            MLv2PluginUri[KODE_LV2_MAX_URI_LENGTH]  = {0};
-  char            MLv2EditorUri[KODE_LV2_MAX_URI_LENGTH]  = {0};
+  LV2_Descriptor    MLv2Descriptor                          = {0};
+  LV2UI_Descriptor  MLv2UIDescriptor                        = {0};
+
+  char              MLv2Uri[KODE_LV2_MAX_URI_LENGTH]  = {0};
+  char              MLv2UIUri[KODE_LV2_MAX_URI_LENGTH]  = {0};
+
+  static LV2UI_Idle_Interface _lv2_idle_interface;
+  static LV2UI_Resize         _lv2_resize;
 
 //------------------------------
 public:
@@ -48,11 +53,15 @@ public:
 
   KODE_Lv2Plugin() {
     KODE_LV2PRINT;
-    setup_plugin_uri();
-    #ifndef KODE_NO_GUI
-    setup_editor_uri();
-    #endif
+    setup_lv2_uri();
     setup_lv2_descriptor();
+    #ifndef KODE_NO_GUI
+    setup_lv2ui_uri();
+    setup_lv2ui_descriptor();
+    _lv2_idle_interface.idle = lv2_ext_idle;
+    _lv2_resize.handle = KODE_NULL;
+    _lv2_resize.ui_resize = lv2_ext_resize;
+    #endif
   }
 
   //----------
@@ -65,17 +74,29 @@ public:
 public:
 //------------------------------
 
-  const LV2_Descriptor* entrypoint(unsigned long Index) {
+  const LV2_Descriptor* lv2_entrypoint(unsigned long Index) {
     KODE_Lv2Print("Index %i\n",Index);
     if (Index > 0) return KODE_NULL;
     return &MLv2Descriptor;
   }
 
+  //----------
+
+  const LV2UI_Descriptor* lv2ui_entrypoint(uint32_t index) {
+    KODE_Lv2Print("index %i\n",index);
+    if (index > 0) return KODE_NULL;
+    return &MLv2UIDescriptor;
+  }
+
+  //----------
+
   KODE_Descriptor* getDescriptor() {
     return &MDescriptor;
   }
 
-  //----------
+//------------------------------
+public:
+//------------------------------
 
   void export_ttl(void) {
     KODE_LV2PRINT;
@@ -90,25 +111,25 @@ private:
 //------------------------------
 
   //void setup_lv2_uri() {
-  void setup_plugin_uri() {
+  void setup_lv2_uri() {
     KODE_LV2PRINT;
-    memset(MLv2PluginUri,0,KODE_LV2_MAX_URI_LENGTH+1);
-    strcpy(MLv2PluginUri,"urn:");
-    strcat(MLv2PluginUri,MDescriptor.getAuthor());
-    strcat(MLv2PluginUri,"/");
-    strcat(MLv2PluginUri,MDescriptor.getName());
+    memset(MLv2Uri,0,KODE_LV2_MAX_URI_LENGTH+1);
+    strcpy(MLv2Uri,"urn:");
+    strcat(MLv2Uri,MDescriptor.getAuthor());
+    strcat(MLv2Uri,"/");
+    strcat(MLv2Uri,MDescriptor.getName());
   }
 
   //----------
 
-  void setup_editor_uri() {
+  void setup_lv2ui_uri() {
     KODE_LV2PRINT;
-    memset(MLv2EditorUri,0,KODE_LV2_MAX_URI_LENGTH+1);
-    strcpy(MLv2EditorUri,"urn:");
-    strcat(MLv2EditorUri,MDescriptor.getAuthor());
-    strcat(MLv2EditorUri,"/");
-    strcat(MLv2EditorUri,MDescriptor.getName());
-    strcat(MLv2EditorUri,"_editor");
+    memset(MLv2UIUri,0,KODE_LV2_MAX_URI_LENGTH+1);
+    strcpy(MLv2UIUri,"urn:");
+    strcat(MLv2UIUri,MDescriptor.getAuthor());
+    strcat(MLv2UIUri,"/");
+    strcat(MLv2UIUri,MDescriptor.getName());
+    strcat(MLv2UIUri,"_ui");
   }
 
   //----------
@@ -116,7 +137,7 @@ private:
   void setup_lv2_descriptor() {
     KODE_LV2PRINT;
     memset(&MLv2Descriptor,0,sizeof(LV2_Descriptor));
-    MLv2Descriptor.URI             = MLv2PluginUri;
+    MLv2Descriptor.URI             = MLv2Uri;
     MLv2Descriptor.instantiate     = lv2_instantiate_callback;
     MLv2Descriptor.connect_port    = lv2_connect_port_callback;
     MLv2Descriptor.activate        = lv2_activate_callback;
@@ -127,6 +148,32 @@ private:
   }
 
   //----------
+
+  void setup_lv2ui_descriptor() {
+    KODE_LV2PRINT;
+    memset(&MLv2UIDescriptor,0,sizeof(LV2UI_Descriptor));
+    MLv2UIDescriptor.URI            = MLv2UIUri;
+    MLv2UIDescriptor.instantiate    = lv2ui_instantiate_callback;
+    MLv2UIDescriptor.cleanup        = lv2ui_cleanup_callback;
+    MLv2UIDescriptor.port_event     = lv2ui_port_event_callback;
+    MLv2UIDescriptor.extension_data = lv2ui_extension_data_callback;
+  }
+
+  //------------------------------
+  // extensions
+  //------------------------------
+
+  static int lv2_ext_idle(LV2UI_Handle handle) {
+    //StuckUI* self = (StuckUI*)handle;
+    //self->idle();
+    return 0;
+  }
+
+  static int lv2_ext_resize(LV2UI_Feature_Handle handle, int w, int h) {
+    //StuckUI* self = (StuckUI*)handle;
+    //self->ui->size(w,h);
+    return 0;
+  }
 
 //----------------------------------------------------------------------
 private: // lv2 callbacks
@@ -173,7 +220,6 @@ private: // lv2 callbacks
   */
 
   static
-  //LV2_Handle lv2_instantiate_callback(const struct _LV2_Descriptor* descriptor, double sample_rate, const char* bundle_path, const LV2_Feature* const* features) {
   LV2_Handle lv2_instantiate_callback(const LV2_Descriptor* descriptor, double sample_rate, const char* bundle_path, const LV2_Feature* const* features) {
     KODE_Lv2Print("sample_rate %.2f bundle_path '%s' features %p\n",sample_rate,bundle_path,features);
     KODE_Lv2PrintFeatures(features);
@@ -251,6 +297,102 @@ private: // lv2 callbacks
     return KODE_NULL;
   }
 
+//----------------------------------------------------------------------
+private: // ui callbacks
+//----------------------------------------------------------------------
+
+  static
+  LV2UI_Handle lv2ui_instantiate_callback(
+    const LV2UI_Descriptor*     descriptor,
+    const char*                 plugin_uri,
+    const char*                 bundle_path,
+    LV2UI_Write_Function        write_function,
+    LV2UI_Controller            controller,
+    LV2UI_Widget*               widget,
+    const LV2_Feature* const*   features) {
+    /* --- */
+//    if (KODE_Strcmp(plugin_uri, MLv2UIUri) != 0) {
+//      return KODE_NULL;
+//    }
+//    StuckUI* self = new StuckUI();
+//    if(!self) return 0;
+//    LV2UI_Resize* resize = NULL;
+//    /* --- */
+//    self->controller = controller;
+//    self->write_function = write_function;
+//    /* --- */
+//    void* parentXwindow = 0;
+//    for (int i = 0; features[i]; ++i) {
+//      if (!strcmp(features[i]->URI, LV2_UI__parent)) {
+//        parentXwindow = features[i]->data;
+//      }
+//      else if (!strcmp(features[i]->URI, LV2_UI__resize)) {
+//        resize = (LV2UI_Resize*)features[i]->data;
+//      }
+//    }
+//    /* --- */
+//    self->ui = self->show();
+//    fl_open_display();
+//    // set host to change size of the window
+//    if (resize) {
+//       resize->ui_resize(resize->handle, self->ui->w(), self->ui->h());
+//    }
+//    fl_embed( self->ui,(Window)parentXwindow);
+//    *widget = (LV2UI_Widget)fl_xid(self->ui);
+//    return (LV2UI_Handle)self;
+    return KODE_NULL;
+  }
+
+  //----------
+
+  static
+  void lv2ui_cleanup_callback(LV2UI_Handle ui) {
+//    StuckUI *self = (StuckUI*)ui;
+//    delete self;
+  }
+
+  //----------
+
+  static
+  void lv2ui_port_event_callback(LV2UI_Handle ui, uint32_t port_index, uint32_t buffer_size, uint32_t format, const void * buffer) {
+//    StuckUI *self = (StuckUI*)ui;
+//    if (!format) {
+//      float val = *(float*)buffer;
+//      switch(port_index) {
+//        case STICKIT:
+//          self->stickit->value((int)val);
+//          self->led->value((int)val);
+//          break;
+//        case DRONEGAIN:
+//          self->volume->value(val);
+//          break;
+//        case RELEASE:
+//          self->time->value(val);
+//          break;
+//      }
+//    }
+  }
+
+  //----------
+
+  static
+  const void* lv2ui_extension_data_callback(const char* uri) {
+    KODE_Lv2Print("uri %s\n",uri);
+    if (!strcmp(uri, LV2_UI__idleInterface)) return &_lv2_idle_interface;
+    if (!strcmp(uri, LV2_UI__resize)) return &_lv2_resize;
+    return KODE_NULL;
+  }
+
+
+  //----------
+
+
+
+
+
+
+
+
 };
 
 /*
@@ -290,6 +432,9 @@ private: // lv2 callbacks
 #define KODE_LV2_MAIN_SYMBOL asm ("lv2_descriptor");
 const LV2_Descriptor* kode_lv2_entrypoint(unsigned long Index) KODE_LV2_MAIN_SYMBOL
 
+#define KODE_LV2_UI_SYMBOL asm ("lv2ui_descriptor");
+const LV2UI_Descriptor* kode_lv2ui_entrypoint(uint32_t index) KODE_LV2_UI_SYMBOL
+
 #ifdef KODE_LV2_EXPORT_TTL
   #define KODE_LV2_EXPORT_TTL_SYMBOL asm ("lv2_export_ttl");
   void kode_lv2_export_ttl(void) KODE_LV2_EXPORT_TTL_SYMBOL
@@ -304,7 +449,13 @@ const LV2_Descriptor* kode_lv2_entrypoint(unsigned long Index) KODE_LV2_MAIN_SYM
   __KODE_DLLEXPORT                                                    \
   const LV2_Descriptor* kode_lv2_entrypoint(unsigned long Index) {    \
     KODE_Lv2Print("Index %i\n",Index);                                \
-    return _KODE_LV2_PLUGIN.entrypoint(Index);                        \
+    return _KODE_LV2_PLUGIN.lv2_entrypoint(Index);                    \
+  }                                                                   \
+                                                                      \
+  __KODE_DLLEXPORT                                                    \
+  const LV2UI_Descriptor* kode_lv2ui_entrypoint(uint32_t index) {     \
+    KODE_Lv2Print("index %i\n",index);                                \
+    return _KODE_LV2_PLUGIN.lv2ui_entrypoint(index);                  \
   }                                                                   \
                                                                       \
   __KODE_DLLEXPORT                                                    \
