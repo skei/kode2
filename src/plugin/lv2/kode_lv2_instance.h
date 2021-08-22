@@ -2,20 +2,20 @@
 #define kode_lv2_instance_included
 //----------------------------------------------------------------------
 
+#include "plugin/base/kode_base_instance.h"
+
 #ifndef KODE_NO_GUI
   #include "plugin/kode_editor.h"
 #endif
 
-//#include "plugin/kode_plugin_base.h"
-//#include "plugin/base/kode_base_editor.h"
-#include "plugin/base/kode_base_instance.h"
 #include "plugin/lv2/kode_lv2.h"
 #include "plugin/lv2/kode_lv2_utils.h"
 
+
 //----------------------------------------------------------------------
 
-#define KODE_LV2_QUEUE_SIZE 1024
-typedef KODE_Queue<uint32_t,KODE_LV2_QUEUE_SIZE> KODE_Lv2UpdateQueue;
+//#define KODE_LV2_QUEUE_SIZE 1024
+//typedef KODE_Queue<uint32_t,KODE_LV2_QUEUE_SIZE> KODE_Lv2UpdateQueue;
 
 //----------------------------------------------------------------------
 //
@@ -34,12 +34,9 @@ private:
   #ifndef KODE_NO_GUI
   KODE_Editor*              MEditor           = KODE_NULL;
   #endif
-
   LV2_URID                  MMidiInputUrid    = 0;
   const LV2_Atom_Sequence*  MAtomSequence     = KODE_NULL;
-
   float                     MSampleRate       = 0.0f;
-
   uint32_t                  MNumInputs        = 0;
   uint32_t                  MNumOutputs       = 0;
   uint32_t                  MNumParameters    = 0;
@@ -80,37 +77,32 @@ public:
 
   KODE_Lv2Instance(KODE_Descriptor* ADescriptor/*, float ASampleRate, const char* path, const LV2_Feature* const* features*/)
   : KODE_BaseInstance(ADescriptor) {
-
-//    //instance->on_open();
-//    MInstance->on_initialize(); // open?
-
+    //instance->on_open();
+    //MInstance->on_initialize(); // open?
     MDescriptor       = ADescriptor;
-//    MSampleRate       = ASampleRate;
+    //MSampleRate       = ASampleRate;
     MNumInputs        = MDescriptor->getNumInputs();
     MNumOutputs       = MDescriptor->getNumOutputs();
     MNumParameters    = MDescriptor->getNumParameters();
-
     MInputPtrs        = (float**)malloc(MNumInputs     * sizeof(float*));
     MOutputPtrs       = (float**)malloc(MNumOutputs    * sizeof(float*));
     MParameterPtrs    = (float**)malloc(MNumParameters * sizeof(float*));
     MParameterValues  = (float*) malloc(MNumParameters * sizeof(float ));
     MHostValues       = (float*) malloc(MNumParameters * sizeof(float ));
     MProcessValues    = (float*) malloc(MNumParameters * sizeof(float ));
-
-//    #ifdef KODE_DEBUG_LV2
-//      KODE_DPrint("lv2 bundle_path: %s",path);
-//      KODE_DPrint("lv2 features:");
-//      kode_lv2_dump_features(features);
-//    #endif
-//
-//    LV2_URID_Map* urid_map = (LV2_URID_Map*)kode_lv2_find_feature(LV2_URID__map,features);
-//
-//    if (urid_map) {
-//      if (MDescriptor->canReceiveMidi()) {
-//        MMidiInputUrid = kode_lv2_map_urid(LV2_MIDI__MidiEvent,urid_map);
-//      }
-//    }
-
+    //#ifdef KODE_DEBUG_LV2
+    //  KODE_DPrint("lv2 bundle_path: %s",path);
+    //  KODE_DPrint("lv2 features:");
+    //  kode_lv2_dump_features(features);
+    //#endif
+    //
+    //LV2_URID_Map* urid_map = (LV2_URID_Map*)kode_lv2_find_feature(LV2_URID__map,features);
+    //
+    //if (urid_map) {
+    //  if (MDescriptor->canReceiveMidi()) {
+    //    MMidiInputUrid = kode_lv2_map_urid(LV2_MIDI__MidiEvent,urid_map);
+    //  }
+    //}
   }
 
   //----------
@@ -200,10 +192,10 @@ public:
       kode_lv2_dump_features(features);
     #endif
     MSampleRate = ASampleRate;
-    LV2_URID_Map* urid_map = (LV2_URID_Map*)kode_lv2_find_feature(LV2_URID__map,features);
+    LV2_URID_Map* urid_map = (LV2_URID_Map*)KODE_Lv2FindFeature(LV2_URID__map,features);
     if (urid_map) {
       if (MDescriptor->canReceiveMidi()) {
-        MMidiInputUrid = kode_lv2_map_urid(LV2_MIDI__MidiEvent,urid_map);
+        MMidiInputUrid = KODE_Lv2MapUrid(LV2_MIDI__MidiEvent,urid_map);
       }
     }
 
@@ -245,6 +237,9 @@ public:
      used to read/write data when run() is called. Data present at the time
      of the connect_port() call MUST NOT be considered meaningful.
   */
+
+  // we assume the ports are in this order:
+  // inputs, outputs, parameters, midi_in
 
   void lv2_connect_port(uint32_t port, void* data_location) {
     //KODE_Print("lv2_connect_port: port %i data_location 0x%x\n",port,data_location);

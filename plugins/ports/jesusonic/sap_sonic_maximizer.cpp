@@ -1,7 +1,6 @@
 
 #define KODE_GUI_XCB
-#define KODE_PLUGIN_LV2_DUMPTTL
-#define KODE_DEBUG_PRINT_SOCKET
+//#define KODE_DEBUG_PRINT_SOCKET
 
 //----------
 
@@ -12,11 +11,11 @@
 #include "plugin/kode_plugin.h"
 #include "gui/kode_widgets.h"
 
-#include "../data/img/sa_logo_40_trans_black.h"
+//#include "../data/img/sa_logo_40_trans_black.h"
 
-#ifdef KODE_PLUGIN_LV2_DUMPTTL
-  #include "plugin/lv2/kode_lv2_utils.h"
-#endif
+//#ifdef KODE_PLUGIN_LV2_DUMPTTL
+//  #include "plugin/lv2/kode_lv2_utils.h"
+//#endif
 
 //----------------------------------------------------------------------
 
@@ -58,6 +57,7 @@ public:
 
   myDescriptor()
   : KODE_Descriptor() {
+    KODE_PRINT;
     #ifdef KODE_DEBUG
       setName("sap_sonic_maximizer_debug");
     #else
@@ -75,16 +75,17 @@ public:
     setHasEditor();
     setEditorSize(320,155);
 
-    #ifdef KODE_PLUGIN_LV2_DUMPTTL
-      KODE_WriteLv2Manifest(this);
-    #endif
+    //#ifdef KODE_PLUGIN_LV2_DUMPTTL
+    //  KODE_WriteLv2Manifest(this);
+    //#endif
 
   }
 
   //----------
 
-  //virtual ~myDescriptor() {
-  //}
+  virtual ~myDescriptor() {
+    KODE_PRINT;
+  }
 
 };
 
@@ -108,6 +109,9 @@ public:
 
   myEditor(KODE_BaseInstance* AInstance, void* AParent=KODE_NULL)
   : KODE_Editor(AInstance,AParent) {
+
+    KODE_PRINT;
+
     setFillBackground();
     setBackgroundColor(KODE_Color(0.6,0.6,0.6));
 
@@ -126,6 +130,9 @@ public:
     KODE_SliderWidget* slider1 = KODE_New KODE_SliderWidget( KODE_FRect( 10,64 + 10,300,20) );
     KODE_SliderWidget* slider2 = KODE_New KODE_SliderWidget( KODE_FRect( 10,64 + 35,300,20) );
     KODE_SliderWidget* slider3 = KODE_New KODE_SliderWidget( KODE_FRect( 10,64 + 60,300,20) );
+    slider1->setText("Low Cont");
+    slider2->setText("Process");
+    slider3->setText("Output");
 
     //appendWidget(header);
     appendWidget(slider1);
@@ -140,6 +147,7 @@ public:
   //----------
 
   virtual ~myEditor() {
+    KODE_PRINT;
     KODE_Delete MBitmap;
   }
 
@@ -189,12 +197,14 @@ public:
 
   myInstance(KODE_Descriptor* ADescriptor)
   : KODE_Instance(ADescriptor) {
+    KODE_PRINT;
   }
 
   //----------
 
-  //virtual ~myInstance() {
-  //}
+  virtual ~myInstance() {
+    KODE_PRINT;
+  }
 
 //------------------------------
 private:
@@ -270,6 +280,7 @@ public:
   #ifndef KODE_NO_GUI
 
   KODE_BaseEditor* on_plugin_openEditor(void* AParent) final {
+    KODE_PRINT;
     MEditor = KODE_New myEditor(this,AParent);
     return MEditor;
   }
@@ -277,6 +288,7 @@ public:
   //----------
 
   void on_plugin_closeEditor(KODE_BaseEditor* AEditor) final {
+    KODE_PRINT;
     //KODE_Delete (myEditor*)AEditor;
     KODE_Assert(AEditor == MEditor);
     if (MEditor) {

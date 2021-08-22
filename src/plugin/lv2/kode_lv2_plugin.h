@@ -6,11 +6,18 @@
 #include "plugin/lv2/kode_lv2_instance.h"
 #include "plugin/lv2/kode_lv2_utils.h"
 
-//#define KODE_PLUGIN_LV2_DUMPTTL
-#define KODE_PLUGIN_LV2_MAX_URI_LENGTH 256
-
 //----------------------------------------------------------------------
-//
+
+#ifdef KODE_DEBUG
+  #define KODE_LV2PRINT
+  #define KODE_Lv2Print  KODE_Print
+  #define KODE_Lv2DPrint KODE_DPrint
+#else
+  #define KODE_LV2PRINT  KODE_PRINT
+  #define KODE_Lv2Print  KODE_NoPrint
+  #define KODE_Lv2DPrint KODE_NoPrint
+#endif
+
 //----------------------------------------------------------------------
 
 KODE_Descriptor* kode_lv2_get_descriptor();
@@ -29,35 +36,29 @@ class KODE_Lv2Plugin {
 private:
 //------------------------------
 
-  /*
-    static because the lv2_instantiate_callback accesses it..
-  */
-
-  DESC MDescriptor;
-  //static DESC MDescriptor;
-
-
-//------------------------------
-private:
-//------------------------------
+  DESC            MDescriptor;
 
   LV2_Descriptor  MLv2Descriptor                          = {0};
-  char            MLv2Uri[KODE_PLUGIN_LV2_MAX_URI_LENGTH] = {0};
+  char            MLv2PluginUri[KODE_LV2_MAX_URI_LENGTH]  = {0};
+  char            MLv2EditorUri[KODE_LV2_MAX_URI_LENGTH]  = {0};
 
 //------------------------------
 public:
 //------------------------------
 
   KODE_Lv2Plugin() {
-    KODE_Print("\n");
-    setup_lv2_uri();
+    KODE_LV2PRINT;
+    setup_plugin_uri();
+    #ifndef KODE_NO_GUI
+    setup_editor_uri();
+    #endif
     setup_lv2_descriptor();
   }
 
   //----------
 
   virtual ~KODE_Lv2Plugin() {
-    KODE_Print("\n");
+    KODE_LV2PRINT;
   }
 
 //------------------------------
@@ -65,7 +66,7 @@ public:
 //------------------------------
 
   const LV2_Descriptor* entrypoint(unsigned long Index) {
-    KODE_Print("Index %i\n",Index);
+    KODE_Lv2Print("Index %i\n",Index);
     if (Index > 0) return KODE_NULL;
     return &MLv2Descriptor;
   }
@@ -76,32 +77,46 @@ public:
 
   //----------
 
-  //void dump_ttl(void) {
-  //  #ifdef KODE_PLUGIN_LV2_DUMPTTL
-  //  KODE_Descriptor* descriptor = &MDescriptor;
-  //  _kode_lv2_dump_ttl(descriptor);
-  //  #endif
-  //}
+  void export_ttl(void) {
+    KODE_LV2PRINT;
+    #ifdef KODE_LV2_EXPORT_TTL
+    KODE_Descriptor* descriptor = &MDescriptor;
+    KODE_Lv2WriteManifest(descriptor);
+    #endif
+  }
 
 //------------------------------
 private:
 //------------------------------
 
-  void setup_lv2_uri() {
-    KODE_Print("\n");
-    memset(MLv2Uri,0,KODE_PLUGIN_LV2_MAX_URI_LENGTH+1);
-    strcpy(MLv2Uri,"urn:");
-    strcat(MLv2Uri,MDescriptor.getAuthor());
-    strcat(MLv2Uri,"/");
-    strcat(MLv2Uri,MDescriptor.getName());
+  //void setup_lv2_uri() {
+  void setup_plugin_uri() {
+    KODE_LV2PRINT;
+    memset(MLv2PluginUri,0,KODE_LV2_MAX_URI_LENGTH+1);
+    strcpy(MLv2PluginUri,"urn:");
+    strcat(MLv2PluginUri,MDescriptor.getAuthor());
+    strcat(MLv2PluginUri,"/");
+    strcat(MLv2PluginUri,MDescriptor.getName());
+  }
+
+  //----------
+
+  void setup_editor_uri() {
+    KODE_LV2PRINT;
+    memset(MLv2EditorUri,0,KODE_LV2_MAX_URI_LENGTH+1);
+    strcpy(MLv2EditorUri,"urn:");
+    strcat(MLv2EditorUri,MDescriptor.getAuthor());
+    strcat(MLv2EditorUri,"/");
+    strcat(MLv2EditorUri,MDescriptor.getName());
+    strcat(MLv2EditorUri,"_editor");
   }
 
   //----------
 
   void setup_lv2_descriptor() {
-    KODE_Print("\n");
+    KODE_LV2PRINT;
     memset(&MLv2Descriptor,0,sizeof(LV2_Descriptor));
-    MLv2Descriptor.URI             = MLv2Uri;
+    MLv2Descriptor.URI             = MLv2PluginUri;
     MLv2Descriptor.instantiate     = lv2_instantiate_callback;
     MLv2Descriptor.connect_port    = lv2_connect_port_callback;
     MLv2Descriptor.activate        = lv2_activate_callback;
@@ -160,10 +175,8 @@ private: // lv2 callbacks
   static
   //LV2_Handle lv2_instantiate_callback(const struct _LV2_Descriptor* descriptor, double sample_rate, const char* bundle_path, const LV2_Feature* const* features) {
   LV2_Handle lv2_instantiate_callback(const LV2_Descriptor* descriptor, double sample_rate, const char* bundle_path, const LV2_Feature* const* features) {
-    KODE_Print("\n");
-    KODE_DPrint("  sample_rate %.2f\n  bundle_path '%s'\n  features %p\n",sample_rate,bundle_path,features);
-    KODE_Print("sample_rate %.2f bundle_path '%s' features %p\n",sample_rate,bundle_path,features);
-    kode_lv2_dump_features(features);
+    KODE_Lv2Print("sample_rate %.2f bundle_path '%s' features %p\n",sample_rate,bundle_path,features);
+    KODE_Lv2PrintFeatures(features);
     KODE_Descriptor* desc = kode_lv2_get_descriptor();
     KODE_Lv2Instance* lv2_instance = new KODE_Lv2Instance(desc);
     lv2_instance->lv2_setup(sample_rate,bundle_path,features);
@@ -174,7 +187,7 @@ private: // lv2 callbacks
 
   static
   void lv2_connect_port_callback(LV2_Handle instance, uint32_t port, void* data_location) {
-    KODE_Print("port %i data_location %p\n",port,data_location);
+    KODE_Lv2Print("port %i data_location %p\n",port,data_location);
     KODE_Lv2Instance* lv2_instance = (KODE_Lv2Instance*)instance;
     if (lv2_instance) lv2_instance->lv2_connect_port(port,data_location);
   }
@@ -183,8 +196,7 @@ private: // lv2 callbacks
 
   static
   void lv2_activate_callback(LV2_Handle instance) {
-    KODE_Print("\n");
-    //KODE_Print("lv2: lv2_activate_callback\n");
+    KODE_LV2PRINT;
     KODE_Lv2Instance* lv2_instance = (KODE_Lv2Instance*)instance;
     if (lv2_instance) lv2_instance->lv2_activate();
   }
@@ -193,8 +205,7 @@ private: // lv2 callbacks
 
   static
   void lv2_run_callback(LV2_Handle instance, uint32_t sample_count) {
-    KODE_Print("sample_count %i\n",sample_count);
-    //KODE_Print("lv2: lv2_run_callback\n");
+    KODE_Lv2Print("sample_count %i\n",sample_count);
     KODE_Lv2Instance* lv2_instance = (KODE_Lv2Instance*)instance;
     if (lv2_instance) lv2_instance->lv2_run(sample_count);
   }
@@ -203,8 +214,7 @@ private: // lv2 callbacks
 
   static
   void lv2_deactivate_callback(LV2_Handle instance) {
-    KODE_Print("\n");
-    //KODE_Print("lv2: lv2_deactivate_callback\n");
+    KODE_LV2PRINT;
     KODE_Lv2Instance* lv2_instance = (KODE_Lv2Instance*)instance;
     if (lv2_instance) lv2_instance->lv2_deactivate();
   }
@@ -213,8 +223,7 @@ private: // lv2 callbacks
 
   static
   void lv2_cleanup_callback(LV2_Handle instance) {
-    KODE_Print("\n");
-    //KODE_Print("lv2: lv2_cleanup_callback\n");
+    KODE_LV2PRINT;
     KODE_Lv2Instance* lv2_instance = (KODE_Lv2Instance*)instance;
     if (lv2_instance) lv2_instance->lv2_cleanup();
     delete lv2_instance;
@@ -238,8 +247,8 @@ private: // lv2 callbacks
 
   static
   const void* lv2_extension_data_callback(const char* uri) {
-    KODE_Print("uri %s\n",uri);
-    return nullptr;
+    KODE_Lv2Print("uri %s\n",uri);
+    return KODE_NULL;
   }
 
 };
@@ -281,9 +290,10 @@ private: // lv2 callbacks
 #define KODE_LV2_MAIN_SYMBOL asm ("lv2_descriptor");
 const LV2_Descriptor* kode_lv2_entrypoint(unsigned long Index) KODE_LV2_MAIN_SYMBOL
 
-//#ifdef KODE_PLUGIN_LV2_DUMPTTL
-//#define KODE_LV2_DUMPTTL_SYMBOL asm ("lv2_dumpttl");
-//void kode_lv2_dumpttl(void) KODE_LV2_DUMPTTL_SYMBOL
+#ifdef KODE_LV2_EXPORT_TTL
+  #define KODE_LV2_EXPORT_TTL_SYMBOL asm ("lv2_export_ttl");
+  void kode_lv2_export_ttl(void) KODE_LV2_EXPORT_TTL_SYMBOL
+#endif
 
 //----------
 
@@ -293,20 +303,21 @@ const LV2_Descriptor* kode_lv2_entrypoint(unsigned long Index) KODE_LV2_MAIN_SYM
                                                                       \
   __KODE_DLLEXPORT                                                    \
   const LV2_Descriptor* kode_lv2_entrypoint(unsigned long Index) {    \
-    KODE_Print("Index %i\n",Index);                                   \
+    KODE_Lv2Print("Index %i\n",Index);                                \
     return _KODE_LV2_PLUGIN.entrypoint(Index);                        \
   }                                                                   \
                                                                       \
-  KODE_Descriptor* kode_lv2_get_descriptor() {                        \
-    return _KODE_LV2_PLUGIN.getDescriptor();                          \
+  __KODE_DLLEXPORT                                                    \
+  void kode_lv2_export_ttl(void) {                                    \
+    KODE_LV2PRINT;                                                    \
+    _KODE_LV2_PLUGIN.export_ttl();                                    \
   }                                                                   \
-
-//__KODE_DLLEXPORT
-//void kode_lv2_dumpttl(void) {
-//  KODE_Print("");
-//  _KODE_LV2_PLUGIN.dump_ttl();
-//}
-
+                                                                      \
+  /* called from lv2_instantiate_callback*/                           \
+  KODE_Descriptor* kode_lv2_get_descriptor() {                        \
+    KODE_LV2PRINT;                                                    \
+    return _KODE_LV2_PLUGIN.getDescriptor();                          \
+  }
 
 //----------------------------------------------------------------------
 #endif

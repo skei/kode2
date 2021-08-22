@@ -1,0 +1,59 @@
+
+--------------------------------------------------
+
+--------------------------------------------------
+
+* sa_brickwall
+
+an extremwly simple "limiter".. it just chops off everything above a certain threshold, and increases the volume of the result to compensate.. no oversampling or antialiasing being done.. 
+
+* sa_curve_shaper
+
+another simplistic thing.. a waveshaper that "bends" the waveform.. you can control the shape of the curve.. again, no antialiasing or oversampling..
+
+--------------------------------------------------
+ported plugins
+--------------------------------------------------
+
+* filter/eq
+
+sap_filter_ms20
+sap_tilteq
+sap_vocoder
+
+* dynamics
+
+sap_dynamic
+sap_event_horizon
+sap_limiter
+sap_transient
+sap_transient_killer
+
+* space
+
+sap_hall_reverb
+sap_hrtf
+sap_large_room_reverb
+sap_schroeder_reverb
+sap_simpverb
+sap_small_room_reverb
+
+* enhance
+
+sap_compciter
+sap_exciter
+sap_exciter2
+sap_sonic_enhancer
+sap_sonic_maximizer
+
+* shape
+
+sap_cabinet
+(sap_combo)
+sap_saturation
+sap_tube_harmonics_amp
+
+* other
+
+sap_reverseness
+
