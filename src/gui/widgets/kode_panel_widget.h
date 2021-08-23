@@ -35,7 +35,7 @@ public:
 public:
 //------------------------------
 
-  virtual void setDrawBorder(bool ADraw) {
+  virtual void setDrawBorder(bool ADraw=true) {
     MDrawBorder = ADraw;
   }
 
@@ -43,7 +43,7 @@ public:
     MBorderColor = AColor;
   }
 
-  virtual void setFillBackground(bool AFill) {
+  virtual void setFillBackground(bool AFill=true) {
     MFillBackground = AFill;
   }
 
