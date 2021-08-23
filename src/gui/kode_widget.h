@@ -10,6 +10,8 @@
 
 #define KODE_WIDGET_MAX_PARAMETERS 16
 
+//
+
 struct KODE_WidgetOptions {
   bool autoMouseCapture = false;
   bool autoMouseHide    = false;
@@ -18,7 +20,7 @@ struct KODE_WidgetOptions {
   bool autoHint         = false;
 //bool canDrag          = false;
 //bool canDrop          = false;
-  bool  sizePrecent     = false;
+  bool  sizePercent     = false;
 };
 
 struct KODE_WidgetStates {
@@ -65,8 +67,8 @@ private:
   KODE_FRect          MContentRect        = KODE_FRect(0);
   int32_t             MCursor             = KODE_CURSOR_DEFAULT;  // ps: MouseCursor clashes with KODE_Window::setMouseCursor
   uint32_t            MSelectedParameter  = 0;
-  KODE_Parameter*     MParameterPtr       = KODE_NULL;
-  //KODE_Parameter*     MParameters[KODE_WIDGET_MAX_PARAMETERS] = {0};
+  //KODE_Parameter*     MParameterPtr       = KODE_NULL;
+  KODE_Parameter*     MParameterPtrs[KODE_WIDGET_MAX_PARAMETERS] = {0};
 
 //------------------------------
 public:
@@ -96,9 +98,9 @@ public: // set
   virtual void setContentRect(KODE_FRect ARect)         { MContentRect = ARect; }
   virtual void setCursor(int32_t ACursor)               { MCursor = ACursor; }
   virtual void setparent(KODE_Widget* AParent) { MParent = AParent; }
-  virtual void setParameterPtr(KODE_Parameter* p)       { MParameterPtr = p; }
   virtual void setSelectedParameter(uint32_t AIndex)    { MSelectedParameter = AIndex; }
-//virtual void setParameterPtr(uint32_t AIndex, KODE_Parameter* AParameter) { MParameters[AIndex] = AParameter; }
+  virtual void setParameterPtr(KODE_Parameter* AParameter, uint32_t AIndex=0) { MParameterPtrs[AIndex] = AParameter; }
+  //virtual void setParameterPtr(KODE_Parameter* p)       { MParameterPtr = p; }
 
 
 //------------------------------
@@ -114,7 +116,7 @@ public: // get
   virtual KODE_FRect          getInitialRect()              { return MInitialRect; }
   virtual KODE_FRect          getContainerRect()            { return MContentRect; }
   virtual int32_t             getCursor()                   { return MCursor; }
-  virtual KODE_Parameter*     getParameterPtr()             { return MParameterPtr; }
+  virtual KODE_Parameter*     getParameterPtr(uint32_t i=0) { return MParameterPtrs[i]; }
   virtual uint32_t            getSelectedParameter()        { return MSelectedParameter; }
 //virtual KODE_Parameter*     getParameter(uint32_t AIndex) { return MParameters[AIndex]; }
 
@@ -222,6 +224,14 @@ public:
       */
 
       KODE_FRect rect = widget->getInitialRect();
+
+      if (widget->getOptions()->sizePercent) {
+        //rect.x = client.x * (rect.x * 0.01f);
+        //rect.y = client.y * (rect.y * 0.01f);
+        rect.w = client.w * (rect.w * 0.01f);
+        rect.h = client.h * (rect.h * 0.01f);
+      }
+
       switch (widget->getLayout()->alignment) {
 
         case KODE_WIDGET_ALIGN_NONE:
@@ -232,16 +242,10 @@ public:
           //rect.y += parent.y;
           break;
 
-        //case KODE_WIDGET_ALIGN_PARENT_CENTER:
-        //  break;
-
         case KODE_WIDGET_ALIGN_CLIENT:
           rect.x += client.x;
           rect.y += client.y;
           break;
-
-        //case KODE_WIDGET_ALIGN_CLIENT_CENTER:
-        //  break;
 
         case KODE_WIDGET_ALIGN_FILL_CLIENT:
           rect.x = client.x;
@@ -280,6 +284,31 @@ public:
           rect.w = client.w;
           //client.y += (rect.h + getLayout()->spacing.y);
           client.h -= (rect.h + getLayout()->spacing.y);
+          break;
+
+        case KODE_WIDGET_ALIGN_CENTER:
+          rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
+          rect.y = client.y + (client.h * 0.5f) - (rect.h * 0.5f);
+          break;
+
+        case KODE_WIDGET_ALIGN_CENTER_LEFT:
+          rect.x += client.x;
+          rect.y += client.y + (client.h * 0.5f) - (rect.h * 0.5f);
+          break;
+
+        case KODE_WIDGET_ALIGN_CENTER_RIGHT:
+          rect.x += client.x2() - rect.w;
+          rect.y += client.y + (client.h * 0.5f) - (rect.h * 0.5f);
+          break;
+
+        case KODE_WIDGET_ALIGN_CENTER_TOP:
+          rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
+          rect.y += client.y;
+          break;
+
+        case KODE_WIDGET_ALIGN_CENTER_BOTTOM:
+          rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
+          rect.y += client.y2() - rect.h;
           break;
 
         case KODE_WIDGET_ALIGN_LEFT:
