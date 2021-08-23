@@ -84,16 +84,12 @@ void KODE_Lv2CreateManifest(KODE_Descriptor* descriptor, char* manifest_ttl, cha
     KODE_Strcat(manifest_ttl,"\n");
 
     #ifndef KODE_NO_GUI
-    //<http://infamousplugins.sourceforge.net/plugs.html#stuck_ui>
     sprintf(temp,"<urn:%s/%s_ui>\n",descriptor->getAuthor(),descriptor->getName()); //"urn:skei.audio/kode_debug_ui";
     KODE_Strcat(manifest_ttl,temp);
-    //  a ui:X11UI;
     KODE_Strcat(manifest_ttl,"  a ui:X11UI ;\n");
-    //  ui:binary <stuckui.so>
     sprintf(temp,"  ui:binary <%s.so>  ;\n",descriptor->getName());                     // TODO: this.filename?
     KODE_Strcat(manifest_ttl,temp);
-    //  lv2:extensionData ui:idle; .
-    KODE_Strcat(manifest_ttl,"  lv2:extensionData ui:idle; .\n");
+    //KODE_Strcat(manifest_ttl,"  lv2:extensionData ui:idle; .\n");
     KODE_Strcat(manifest_ttl,"\n");
     #endif
 
@@ -104,6 +100,7 @@ void KODE_Lv2CreateManifest(KODE_Descriptor* descriptor, char* manifest_ttl, cha
   //------------------------------
 
   if (plugin_ttl) {
+    plugin_ttl[0] = 0;
 
     KODE_Strcat(plugin_ttl,"@prefix doap:   <http://usefulinc.com/ns/doap#> .\n");
     KODE_Strcat(plugin_ttl,"@prefix lv2:    <http://lv2plug.in/ns/lv2core#> .\n");
@@ -111,9 +108,9 @@ void KODE_Lv2CreateManifest(KODE_Descriptor* descriptor, char* manifest_ttl, cha
     KODE_Strcat(plugin_ttl,"@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .\n");
     KODE_Strcat(plugin_ttl,"@prefix atom:   <http://lv2plug.in/ns/ext/atom#> .\n");
     KODE_Strcat(plugin_ttl,"@prefix midi:   <http://lv2plug.in/ns/ext/midi#> .\n");
-//    #ifndef KODE_NO_GUI
-//    KODE_Strcat(plugin_ttl,"@prefix ui:     <http://lv2plug.in/ns/extensions/ui#> .\n");
-//    #endif
+    #ifndef KODE_NO_GUI
+    KODE_Strcat(plugin_ttl,"@prefix ui:     <http://lv2plug.in/ns/extensions/ui#> .\n");
+    #endif
     KODE_Strcat(plugin_ttl,"@prefix urid:   <http://lv2plug.in/ns/ext/urid#> .\n");
     KODE_Strcat(plugin_ttl,"\n");
 
@@ -125,14 +122,9 @@ void KODE_Lv2CreateManifest(KODE_Descriptor* descriptor, char* manifest_ttl, cha
     KODE_Strcat(plugin_ttl,"  lv2:optionalFeature lv2:hardRTCapable ;\n");
     KODE_Strcat(plugin_ttl,"  lv2:requiredFeature urid:map ;\n");
 
-//    #ifndef KODE_NO_GUI
-//    sprintf(temp,"<urn:%s/%s_ui>\n",descriptor->getAuthor(),descriptor->getName()); // "urn:skei.audio/kode_debug_ui";
-//    KODE_Strcat(plugin_ttl,temp);
-//    //  ?  "	ui:ui <http://infamousplugins.sourceforge.net/plugs.html#stuck_ui> ;"
-//    //  ?  KODE_Strcat(plugin_ttl,"  a lv2:Plugin ;\n"); // , lv2:InstrumentPlugin ;\n");
-//    //  ?  sprintf(temp,"  doap:name           \"%s\" ;\n",descriptor->getName());
-//    //KODE_Strcat(plugin_ttl,temp);
-//    #endif
+    #ifndef KODE_NO_GUI
+    // editor?
+    #endif
 
     //----------
     // ports
