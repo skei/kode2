@@ -89,11 +89,82 @@ public:
 //
 //----------------------------------------------------------------------
 
-const KODE_Color KODE_COLOR_BLACK       = KODE_Color(0.0f);
-const KODE_Color KODE_COLOR_DARK_GRAY   = KODE_Color(0.25f);
-const KODE_Color KODE_COLOR_GRAY        = KODE_Color(0.5f);
-const KODE_Color KODE_COLOR_LIGHT_GRAY  = KODE_Color(0.75f);
-const KODE_Color KODE_COLOR_WHITE       = KODE_Color(1.0f);
+const KODE_Color KODE_COLOR_DARK_RED        = KODE_Color( 0.25, 0.00, 0.00 );
+const KODE_Color KODE_COLOR_RED             = KODE_Color( 0.50, 0.00, 0.00 );
+const KODE_Color KODE_COLOR_LIGHT_RED       = KODE_Color( 0.75, 0.00, 0.00 );
+const KODE_Color KODE_COLOR_BRIGHT_RED      = KODE_Color( 1.00, 0.00, 0.00 );
+
+const KODE_Color KODE_COLOR_DARK_ORANGE     = KODE_Color( 0.25, 0.12, 0.00 );
+const KODE_Color KODE_COLOR_ORANGE          = KODE_Color( 0.50, 0.25, 0.00 );
+const KODE_Color KODE_COLOR_LIGHT_ORANGE    = KODE_Color( 0.75, 0.37, 0.00 );
+const KODE_Color KODE_COLOR_BRIGHT_ORANGE   = KODE_Color( 1.00, 0.50, 0.00 );
+
+const KODE_Color KODE_COLOR_DARK_YELLOW     = KODE_Color( 0.25, 0.25, 0.00 );
+const KODE_Color KODE_COLOR_YELLOW          = KODE_Color( 0.50, 0.50, 0.00 );
+const KODE_Color KODE_COLOR_LIGHT_YELLOW    = KODE_Color( 0.75, 0.75, 0.00 );
+const KODE_Color KODE_COLOR_BRIGHT_YELLOW   = KODE_Color( 1.00, 1.00, 0.00 );
+
+const KODE_Color KODE_COLOR_DARK_LIME       = KODE_Color( 0.12, 0.25, 0.00 );
+const KODE_Color KODE_COLOR_LIME            = KODE_Color( 0.25, 0.50, 0.00 );
+const KODE_Color KODE_COLOR_LIGHT_LIME      = KODE_Color( 0.37, 0.75, 0.00 );
+const KODE_Color KODE_COLOR_BRIGHT_LIME     = KODE_Color( 0.50, 1.00, 0.00 );
+
+
+const KODE_Color KODE_COLOR_DARK_GREEN      = KODE_Color( 0.00, 0.25, 0.00 );
+const KODE_Color KODE_COLOR_GREEN           = KODE_Color( 0.00, 0.50, 0.00 );
+const KODE_Color KODE_COLOR_LIGHT_GREEN     = KODE_Color( 0.00, 0.75, 0.00 );
+const KODE_Color KODE_COLOR_BRIGHT_GREEN    = KODE_Color( 0.00, 1.00, 0.00 );
+
+const KODE_Color KODE_COLOR_DARK_GREEN2     = KODE_Color( 0.00, 0.25, 0.12 );
+const KODE_Color KODE_COLOR_GREEN2          = KODE_Color( 0.00, 0.50, 0.35 );
+const KODE_Color KODE_COLOR_LIGHT_GREEN2    = KODE_Color( 0.00, 0.75, 0.37 );
+const KODE_Color KODE_COLOR_BRIGHT_GREEN2   = KODE_Color( 0.00, 1.00, 0.50 );
+
+const KODE_Color KODE_COLOR_DARK_CYAN       = KODE_Color( 0.00, 0.25, 0.25 );
+const KODE_Color KODE_COLOR_CYAN            = KODE_Color( 0.00, 0.50, 0.50 );
+const KODE_Color KODE_COLOR_LIGHT_CYAN      = KODE_Color( 0.00, 0.75, 0.75 );
+const KODE_Color KODE_COLOR_BRIGHT_CYAN     = KODE_Color( 0.00, 1.00, 1.00 );
+
+const KODE_Color KODE_COLOR_DARK_CYAN2       = KODE_Color( 0.00, 0.18, 0.25 );
+const KODE_Color KODE_COLOR_CYAN2            = KODE_Color( 0.00, 0.37, 0.50 );
+const KODE_Color KODE_COLOR_LIGHT_CYAN2      = KODE_Color( 0.00, 0.50, 0.75 );
+const KODE_Color KODE_COLOR_BRIGHT_CYAN2     = KODE_Color( 0.00, 0.75, 1.00 );
+
+const KODE_Color KODE_COLOR_DARK_BLUE1      = KODE_Color( 0.00, 0.12, 0.25 );
+const KODE_Color KODE_COLOR_BLUE1           = KODE_Color( 0.00, 0.25, 0.50 );
+const KODE_Color KODE_COLOR_LIGHT_BLUE1     = KODE_Color( 0.00, 0.37, 0.75 );
+const KODE_Color KODE_COLOR_BRIGHT_BLUE1    = KODE_Color( 0.00, 0.50, 1.00 );
+
+const KODE_Color KODE_COLOR_DARK_BLUE       = KODE_Color( 0.00, 0.00, 0.25 );
+const KODE_Color KODE_COLOR_BLUE            = KODE_Color( 0.00, 0.00, 0.50 );
+const KODE_Color KODE_COLOR_LIGHT_BLUE      = KODE_Color( 0.00, 0.00, 0.75 );
+const KODE_Color KODE_COLOR_BRIGHT_BLUE     = KODE_Color( 0.00, 0.00, 1.00 );
+
+const KODE_Color KODE_COLOR_DARK_BLUE2      = KODE_Color( 0.12, 0.00, 0.25 );
+const KODE_Color KODE_COLOR_BLUE2           = KODE_Color( 0.25, 0.00, 0.50 );
+const KODE_Color KODE_COLOR_LIGHT_BLUE2     = KODE_Color( 0.37, 0.00, 0.75 );
+const KODE_Color KODE_COLOR_BRIGHT_BLUE2    = KODE_Color( 0.50, 0.00, 1.00 );
+
+const KODE_Color KODE_COLOR_DARK_MAGENTA    = KODE_Color( 0.25, 0.00, 0.25 );
+const KODE_Color KODE_COLOR_MAGENTA         = KODE_Color( 0.50, 0.00, 0.50 );
+const KODE_Color KODE_COLOR_LIGHT_MAGENTA   = KODE_Color( 0.75, 0.00, 0.75 );
+const KODE_Color KODE_COLOR_BRIGHT_MAGENTA  = KODE_Color( 1.00, 0.00, 1.00 );
+
+const KODE_Color KODE_COLOR_DARK_RED2       = KODE_Color( 0.25, 0.00, 0.12 );
+const KODE_Color KODE_COLOR_RED2            = KODE_Color( 0.50, 0.00, 0.25 );
+const KODE_Color KODE_COLOR_LIGHT_RED2      = KODE_Color( 0.75, 0.00, 0.37 );
+const KODE_Color KODE_COLOR_BRIGHT_RED2     = KODE_Color( 1.00, 0.00, 0.50 );
+
+
+/*
+const KODE_Color KODE_COLOR_                = KODE_Color( 0.00, 0.00, 0.00 );
+*/
+
+const KODE_Color KODE_COLOR_BLACK           = KODE_Color( 0.00 );
+const KODE_Color KODE_COLOR_DARK_GRAY       = KODE_Color( 0.25 );
+const KODE_Color KODE_COLOR_GRAY            = KODE_Color( 0.50 );
+const KODE_Color KODE_COLOR_LIGHT_GRAY      = KODE_Color( 0.75 );
+const KODE_Color KODE_COLOR_WHITE           = KODE_Color( 1.00 );
 
 //----------------------------------------------------------------------
 #endif
