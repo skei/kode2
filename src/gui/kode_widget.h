@@ -11,30 +11,29 @@
 #define KODE_WIDGET_MAX_PARAMETERS 16
 
 struct KODE_WidgetOptions {
-  bool autoMouseCapture     = false;
-  bool autoMouseHide        = false;
-  bool autoMouseCursor      = false;
-  bool autoClip             = false;
-  bool autoHint             = false;
-//bool canDrag              = false;
-//bool canDrop              = false;
-  bool  rectPrecentages     = false;
+  bool autoMouseCapture = false;
+  bool autoMouseHide    = false;
+  bool autoMouseCursor  = true;
+  bool autoClip         = false;
+  bool autoHint         = false;
+//bool canDrag          = false;
+//bool canDrop          = false;
+  bool  sizePrecent     = false;
 };
 
 struct KODE_WidgetStates {
-  bool active               = false;
-  bool visible              = false;
-  bool interactive          = false;
-  bool hovering             = false;
-  bool clicked              = false;
-//bool dragging             = false;
+  bool active           = false;
+  bool visible          = false;
+  bool interactive      = false;
+  bool hovering         = false;
+  bool clicked          = false;
+//bool dragging         = false;
 };
 
 struct KODE_WidgetLayout {
   uint32_t    alignment     = KODE_WIDGET_ALIGN_PARENT;
-  KODE_FRect  innerBorder   = KODE_FRect(0);
-//KODE_FRect  outerBorder   = KODE_FRect(0);
-  KODE_FPoint spacing       = KODE_FPoint(0); // widgetSpacing
+  KODE_FRect  innerBorder   = KODE_FRect(0);  // space between widgets and parent edges
+  KODE_FPoint spacing       = KODE_FPoint(0); // space inbetween widgets
 };
 
 class KODE_Widget;
@@ -53,12 +52,12 @@ class KODE_Widget {
 private:
 //------------------------------
 
-  float               MValue              = 0.0f;
-  float               MDefaultValue       = 0.0f;
   KODE_WidgetOptions  MOptions;
   KODE_WidgetLayout   MLayout;
   KODE_WidgetStates   MStates;
   KODE_Widgets        MChildren;
+  float               MValue              = 0.0f;
+  float               MDefaultValue       = 0.0f;
   KODE_Widget*        MParent             = KODE_NULL;
   const char*         MName               = "KODE_Widget";
   KODE_FRect          MRect               = KODE_FRect(0);
@@ -67,7 +66,7 @@ private:
   int32_t             MCursor             = KODE_CURSOR_DEFAULT;  // ps: MouseCursor clashes with KODE_Window::setMouseCursor
   uint32_t            MSelectedParameter  = 0;
   KODE_Parameter*     MParameterPtr       = KODE_NULL;
-  KODE_Parameter*     MParameters[KODE_WIDGET_MAX_PARAMETERS] = {0};
+  //KODE_Parameter*     MParameters[KODE_WIDGET_MAX_PARAMETERS] = {0};
 
 //------------------------------
 public:
@@ -96,12 +95,11 @@ public: // set
   virtual void setInitialRect(KODE_FRect ARect)         { MInitialRect = ARect; }
   virtual void setContentRect(KODE_FRect ARect)         { MContentRect = ARect; }
   virtual void setCursor(int32_t ACursor)               { MCursor = ACursor; }
-//virtual void setParameterIndex(uint32_t AIndex)       { MParameterPtr = MParameters[AIndex]; }
+  virtual void setparent(KODE_Widget* AParent) { MParent = AParent; }
   virtual void setParameterPtr(KODE_Parameter* p)       { MParameterPtr = p; }
   virtual void setSelectedParameter(uint32_t AIndex)    { MSelectedParameter = AIndex; }
-  virtual void setParameterPtr(uint32_t AIndex, KODE_Parameter* AParameter) { MParameters[AIndex] = AParameter; }
+//virtual void setParameterPtr(uint32_t AIndex, KODE_Parameter* AParameter) { MParameters[AIndex] = AParameter; }
 
-  virtual void setparent(KODE_Widget* AParent) { MParent = AParent; }
 
 //------------------------------
 public: // get
@@ -109,7 +107,6 @@ public: // get
 
   virtual float               getValue()                    { return MValue; }
   virtual float               getDefaultValue()             { return MDefaultValue; }
-  virtual KODE_Parameter*     getParameterPtr()             { return MParameterPtr; }
   virtual KODE_WidgetLayout*  getLayout()                   { return &MLayout; }
   virtual KODE_WidgetOptions* getOptions()                  { return &MOptions; }
   virtual KODE_WidgetStates*  getStates()                   { return &MStates; }
@@ -117,8 +114,9 @@ public: // get
   virtual KODE_FRect          getInitialRect()              { return MInitialRect; }
   virtual KODE_FRect          getContainerRect()            { return MContentRect; }
   virtual int32_t             getCursor()                   { return MCursor; }
+  virtual KODE_Parameter*     getParameterPtr()             { return MParameterPtr; }
   virtual uint32_t            getSelectedParameter()        { return MSelectedParameter; }
-  virtual KODE_Parameter*     getParameter(uint32_t AIndex) { return MParameters[AIndex]; }
+//virtual KODE_Parameter*     getParameter(uint32_t AIndex) { return MParameters[AIndex]; }
 
 //------------------------------
 public:

@@ -1,5 +1,6 @@
 
-#define KODE_NO_GUI
+#define KODE_GUI_XCB
+//#define KODE_NO_GUI
 
 #include "kode.h"
 //#include "base/utils/kode_random.h"
@@ -7,6 +8,8 @@
 #include "plugin/kode_instance.h"
 #include "plugin/kode_parameters.h"
 #include "plugin/kode_plugin.h"
+
+#include "plugin/kode_default_editor.h"
 
 //----------------------------------------------------------------------
 
@@ -32,9 +35,9 @@ public:
 
     //KODE_TRACE;
 
-    MName       = "sap_sonic_enhancer";
-    MAuthor     = "skei.audio";
-    MVersion = 0x00000001;
+    MName     = "sap_sonic_enhancer";
+    MAuthor   = "skei.audio";
+    MVersion  = 0x00000001;
 
     appendInput(  KODE_New KODE_PluginPort("input1")  );
     appendInput(  KODE_New KODE_PluginPort("input2")  );
@@ -44,12 +47,12 @@ public:
     //appendParameter( KODE_New KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
     //appendParameter( KODE_New KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
 
-      appendParameter( KODE_New KODE_FloatParameter("Input",       0, -12, 12 ) );
-      appendParameter( KODE_New KODE_FloatParameter("Low Contour", 0,  0,  10 ) );
-      appendParameter( KODE_New KODE_FloatParameter("Process",     0,  0,  10 ) );
-      appendParameter( KODE_New KODE_FloatParameter("CV",          2,  0,  10 ) );
-      appendParameter( KODE_New KODE_FloatParameter("Output",      0, -12, 12 ) );
-      appendParameter( KODE_New KODE_TextParameter( "Noise Floor", 0, 2, txt_noise ) );
+    appendParameter( KODE_New KODE_FloatParameter("Input",       0, -12, 12 ) );
+    appendParameter( KODE_New KODE_FloatParameter("Low Contour", 0,  0,  10 ) );
+    appendParameter( KODE_New KODE_FloatParameter("Process",     0,  0,  10 ) );
+    appendParameter( KODE_New KODE_FloatParameter("CV",          2,  0,  10 ) );
+    appendParameter( KODE_New KODE_FloatParameter("Output",      0, -12, 12 ) );
+    appendParameter( KODE_New KODE_TextParameter( "Noise Floor", 0, 2, txt_noise ) );
 
   }
 

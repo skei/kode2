@@ -201,6 +201,10 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="../../doc/doxygen.cfg" />
+		<Unit filename="../../doc/license.txt" />
+		<Unit filename="../../doc/makedocs.sh" />
+		<Unit filename="../../doc/readme.txt" />
 		<Unit filename="../../plugins/effect_template.cpp">
 			<Option compile="0" />
 			<Option link="0" />
@@ -527,6 +531,7 @@
 		<Unit filename="../../src/plugin/exe/kode_exe_instance.h" />
 		<Unit filename="../../src/plugin/exe/kode_exe_plugin.h" />
 		<Unit filename="../../src/plugin/exe/kode_exe_utils.h" />
+		<Unit filename="../../src/plugin/kode_default_editor.h" />
 		<Unit filename="../../src/plugin/kode_descriptor.h" />
 		<Unit filename="../../src/plugin/kode_editor.h" />
 		<Unit filename="../../src/plugin/kode_effect.h" />
@@ -572,6 +577,10 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="../../test/test_gui3.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../test/test_plugin1.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>

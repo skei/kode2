@@ -1,8 +1,12 @@
 
 #define KODE_GUI_XCB
-//#define KODE_DEBUG_PRINT_SOCKET
 
-//----------
+// nc -U -l -k /tmp/kode.socket
+#define KODE_DEBUG_PRINT_SOCKET
+#define KODE_DEBUG_PRINT_THREAD
+#define KODE_DEBUG_PRINT_TIME
+
+//----------------------------------------------------------------------
 
 #include "kode.h"
 #include "plugin/kode_descriptor.h"
@@ -12,10 +16,6 @@
 #include "gui/kode_widgets.h"
 
 //#include "../data/img/sa_logo_40_trans_black.h"
-
-//#ifdef KODE_PLUGIN_LV2_DUMPTTL
-//  #include "plugin/lv2/kode_lv2_utils.h"
-//#endif
 
 //----------------------------------------------------------------------
 
@@ -40,8 +40,8 @@
 #define c_ampdB   8.65617025
 #define freqHP    2243.2
 #define freqLP    224.32
-#define freqHP_p2 -KODE_PI2 * freqHP
-#define freqLP_p2 -KODE_PI2 * freqLP
+#define freqHP_p2 (-KODE_PI2 * freqHP)
+#define freqLP_p2 (-KODE_PI2 * freqLP)
 
 //----------------------------------------------------------------------
 //
@@ -57,7 +57,9 @@ public:
 
   myDescriptor()
   : KODE_Descriptor() {
-    KODE_PRINT;
+
+    //KODE_PRINT;
+
     #ifdef KODE_DEBUG
       setName("sap_sonic_maximizer_debug");
     #else
@@ -65,6 +67,8 @@ public:
     #endif
     setAuthor("skei.audio");
     setVersion(0x00000001);
+    setHasEditor();
+    setEditorSize(320,155);
     appendInput( KODE_New KODE_PluginPort("input1"));
     appendInput( KODE_New KODE_PluginPort("input2"));
     appendOutput( KODE_New KODE_PluginPort("output1"));
@@ -72,19 +76,12 @@ public:
     appendParameter( KODE_New KODE_FloatParameter("Low Cont",  1,  0,  10, 0.1 ) );
     appendParameter( KODE_New KODE_FloatParameter("Process",   1,  0,  10, 0.1 ) );
     appendParameter( KODE_New KODE_FloatParameter("Output",   -3, -30, 0,  0.1 ) );
-    setHasEditor();
-    setEditorSize(320,155);
-
-    //#ifdef KODE_PLUGIN_LV2_DUMPTTL
-    //  KODE_WriteLv2Manifest(this);
-    //#endif
-
   }
 
   //----------
 
   virtual ~myDescriptor() {
-    KODE_PRINT;
+    //KODE_PRINT;
   }
 
 };
@@ -110,7 +107,7 @@ public:
   myEditor(KODE_BaseInstance* AInstance, void* AParent=KODE_NULL)
   : KODE_Editor(AInstance,AParent) {
 
-    KODE_PRINT;
+    //KODE_PRINT;
 
     setFillBackground();
     setBackgroundColor(KODE_Color(0.6,0.6,0.6));
@@ -147,7 +144,7 @@ public:
   //----------
 
   virtual ~myEditor() {
-    KODE_PRINT;
+    //KODE_PRINT;
     KODE_Delete MBitmap;
   }
 
@@ -197,13 +194,13 @@ public:
 
   myInstance(KODE_Descriptor* ADescriptor)
   : KODE_Instance(ADescriptor) {
-    KODE_PRINT;
+    //KODE_PRINT;
   }
 
   //----------
 
   virtual ~myInstance() {
-    KODE_PRINT;
+    //KODE_PRINT;
   }
 
 //------------------------------
@@ -280,7 +277,7 @@ public:
   #ifndef KODE_NO_GUI
 
   KODE_BaseEditor* on_plugin_openEditor(void* AParent) final {
-    KODE_PRINT;
+    //KODE_PRINT;
     MEditor = KODE_New myEditor(this,AParent);
     return MEditor;
   }
@@ -288,7 +285,7 @@ public:
   //----------
 
   void on_plugin_closeEditor(KODE_BaseEditor* AEditor) final {
-    KODE_PRINT;
+    //KODE_PRINT;
     //KODE_Delete (myEditor*)AEditor;
     KODE_Assert(AEditor == MEditor);
     if (MEditor) {

@@ -1,6 +1,6 @@
 # depslib dependency file v1.0
-1629482456 source:/DISKS/sda2/code/git/kode2/build/build.cpp
-	"../plugins/ports/jesusonic/sap_sonic_maximizer.cpp"
+1629742161 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+	"../test/test_widgets2.cpp"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
 	"kode_config.h"
@@ -101,7 +101,7 @@
 	<stdlib.h>
 	"kode.h"
 
-1629137469 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
+1629742830 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"gui/kode_surface.h"
@@ -227,7 +227,7 @@
 	"kode.h"
 	"gui/kode_drawable.h"
 
-1629441398 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
+1629742861 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"plugin/kode_parameter.h"
@@ -402,7 +402,8 @@
 1628885101 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_color_widget.h
 	"gui/kode_widget.h"
 
-1629416663 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_image_widget.h
+1629745576 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_image_widget.h
+	"gui//kode_image.h"
 	"gui/widgets/kode_panel_widget.h"
 
 1611693219 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_sa_header_widget.h
@@ -848,13 +849,13 @@
 1613846789 /DISKS/sda2/code/git/kode2/src/3d/kode_mdl.h
 	"kode.h"
 
-1629482243 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_instance.h
-	"plugin/kode_editor.h"
+1629548147 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_instance.h
 	"plugin/base/kode_base_instance.h"
+	"plugin/kode_editor.h"
 	"plugin/lv2/kode_lv2.h"
 	"plugin/lv2/kode_lv2_utils.h"
 
-1619823874 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2.h
+1629625082 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2.h
 	"kode.h"
 	<lv2.h>
 	<lv2/atom/atom.h>
@@ -865,12 +866,13 @@
 	"lv2/log/logger.h"
 	<lv2/midi/midi.h>
 	<lv2/urid/urid.h>
+	<lv2/lv2plug.in/ns/extensions/ui/ui.h>
 
-1629482695 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_utils.h
+1629599080 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_utils.h
 	"kode.h"
 	"plugin/lv2/kode_lv2.h"
 
-1629540506 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_plugin.h
+1629627025 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_plugin.h
 	"plugin/lv2/kode_lv2.h"
 	"plugin/lv2/kode_lv2_instance.h"
 	"plugin/lv2/kode_lv2_utils.h"
@@ -906,10 +908,10 @@
 	"plugin/kode_plugin.h"
 	"plugin/vst3/kode_vst3_instance.h"
 
-1628882988 /DISKS/sda2/code/git/kode2/test/test_widgets2.cpp
+1629744536 /DISKS/sda2/code/git/kode2/test/test_widgets2.cpp
 	"kode.h"
-	"gui/kode_widgets.h"
 	"gui/kode_window.h"
+	"gui/kode_widgets.h"
 
 1628817801 /DISKS/sda2/code/git/kode2/src/gui//kode_image.h
 	"kode.h"
@@ -936,14 +938,13 @@
 	"gui/kode_widget.h"
 	"gui/widgets/kode_drag_value_widget.h"
 
-1629418138 /DISKS/sda2/code/git/kode2/plugins/ports/jesusonic/sap_sonic_maximizer.cpp
+1629547987 /DISKS/sda2/code/git/kode2/plugins/ports/jesusonic/sap_sonic_maximizer.cpp
 	"kode.h"
 	"plugin/kode_descriptor.h"
 	"plugin/kode_instance.h"
 	"plugin/kode_parameters.h"
 	"plugin/kode_plugin.h"
 	"gui/kode_widgets.h"
-	"plugin/lv2/kode_lv2_utils.h"
 
 1628976191 /DISKS/sda2/code/git/kode2/plugins/ports/jesusonic/sap_sonic_enhancer.cpp
 	"kode.h"

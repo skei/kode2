@@ -70,6 +70,20 @@ public:
   virtual ~KODE_Instance() {
   }
 
+//------------------------------
+public:
+//------------------------------
+
+  //KODE_BaseEditor* on_plugin_openEditor(void* AParent) override {
+  //  return KODE_NULL;
+  //}
+  //
+  //void on_plugin_closeEditor(KODE_BaseEditor* AEditor) override {
+  //}
+  //
+  //void on_plugin_updateEditor(KODE_BaseEditor* AEditor) override {
+  //}
+
 ////------------------------------
 //public:
 ////------------------------------

@@ -8,6 +8,7 @@
 
 #include "plugin/base/kode_base_editor.h"
 #include "plugin/base/kode_base_instance.h"
+#include "plugin/kode_instance.h"
 
 //----------------------------------------------------------------------
 
@@ -16,7 +17,7 @@ class KODE_Editor
 , public KODE_BaseEditor {
 
 //------------------------------
-private:
+protected:
 //------------------------------
 
   KODE_Descriptor*    MDescriptor         = KODE_NULL;
@@ -30,6 +31,8 @@ public:
   KODE_Editor(KODE_BaseInstance* AInstance, void* AParent=KODE_NULL)
   : KODE_Window(AInstance->getDescriptor()->getEditorWidth(),AInstance->getDescriptor()->getEditorHeight(),"",AParent)
   , KODE_BaseEditor(AInstance) {
+
+    //KODE_Print("AInstance %p AParent %p\n",AInstance,AParent);
     MDescriptor = AInstance->getDescriptor();
     MInstance = AInstance;
     uint32_t num = MDescriptor->getNumParameters();
@@ -41,6 +44,7 @@ public:
   //----------
 
   virtual ~KODE_Editor() {
+    //KODE_PRINT;
     if (MParameterToWidget) KODE_Free(MParameterToWidget);
   }
 
@@ -58,10 +62,12 @@ public:
 //------------------------------
 
   void do_widget_update(KODE_Widget* AWidget) override {
+    //KODE_Print("AWidget %p\n",AWidget);
     KODE_Parameter* parameter = AWidget->getParameterPtr();
     if (parameter) {
       int32_t index = parameter->getIndex();
       float value = AWidget->getValue();
+      //KODE_DPrint("  index %i value %.3f\n",index,value);
       //if (value != MParameterValues[index]) {
       //  MParameterValues[index] = value;
         MInstance->updateParameterFromEditor(index,value);
@@ -74,14 +80,15 @@ public:
 //------------------------------
 
   void connectParameter(KODE_Widget* AWidget, uint32_t AParamIndex, uint32_t ASubIndex=0) override {
+    //KODE_Print("AWidget %p AParamIndex %i ASubIndex %i\n",AWidget,AParamIndex,ASubIndex);
     //if (!AWidget) return;
     KODE_Assert(AWidget);
     KODE_Parameter* parameter = MDescriptor->getParameter(AParamIndex);
     if (parameter) {
       MParameterToWidget[AParamIndex] = AWidget;
-//      AWidget->setText( parameter->getName() );
+      //AWidget->setText( parameter->getName() );
       AWidget->setParameterPtr(parameter);
-      AWidget->MParameters[ASubIndex] = parameter;
+      //AWidget->MParameters[ASubIndex] = parameter;
       AWidget->on_widget_connect(parameter,ASubIndex);
     }
   }
@@ -89,7 +96,7 @@ public:
   //----------
 
   void updateParameterFromHost(uint32_t AIndex, float AValue, bool ARedraw=true) override {
-    //KODE_PRINT;
+    //KODE_Print("AIndex %i AValue %.3f ARedraw %i\n",AIndex,AValue,ARedraw);
     KODE_Widget* widget= MParameterToWidget[AIndex];
     if (widget) {
       //KODE_Parameter* parameter = MDescriptor->getParameter(AIndex);

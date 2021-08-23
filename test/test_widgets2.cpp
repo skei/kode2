@@ -4,10 +4,8 @@
 //----------------------------------------------------------------------
 
 #include "kode.h"
-#include "gui/kode_widgets.h"
 #include "gui/kode_window.h"
-//#include "plugin/kode_plugin.h"
-//#include "plugin/vst3/kode_vst3_instance.h"
+#include "gui/kode_widgets.h"
 
 //----------------------------------------------------------------------
 
@@ -18,10 +16,6 @@ class myWindow
 private:
 //------------------------------
 
-  KODE_SAHeaderWidget*  MHeader   = KODE_NULL;
-  KODE_SliderWidget*    MSlider1  = KODE_NULL;
-
-
 //------------------------------
 public:
 //------------------------------
@@ -30,11 +24,25 @@ public:
   : KODE_Window(AWidth,AHeight,ATitle,AParent) {
     setFillBackground();
 
-    MHeader = KODE_New KODE_SAHeaderWidget( KODE_FRect(10,10,300,64), "test_widgets2", "v0.0.1 [exe]", this);
-    appendWidget(MHeader);
+    KODE_PanelWidget* panel1 = KODE_New KODE_PanelWidget(KODE_FRect(  10, 10,  30, 30 ));
+    KODE_PanelWidget* panel2 = KODE_New KODE_PanelWidget(KODE_FRect(  50, 10,  30, 30 ));
+    KODE_PanelWidget* panel3 = KODE_New KODE_PanelWidget(KODE_FRect(  10, 50,  30, 30 ));
+    KODE_PanelWidget* panel4 = KODE_New KODE_PanelWidget(KODE_FRect(  50, 50,  30, 30 ));
 
-    MSlider1 = KODE_New KODE_SliderWidget( KODE_FRect(10,64,300,20) );
-    appendWidget(MSlider1);
+    KODE_ImageWidget* image1 = KODE_New KODE_ImageWidget(KODE_FRect(  90, 10, 100,100 ));
+
+    panel1->setCursor(KODE_CURSOR_FINGER);
+    panel2->setCursor(KODE_CURSOR_MOVE);
+    panel3->setCursor(KODE_CURSOR_PENCIL);
+    panel4->setCursor(KODE_CURSOR_WAIT);
+
+    appendWidget(panel1);
+    appendWidget(panel2);
+    appendWidget(panel3);
+    appendWidget(panel4);
+
+    appendWidget(image1);
+
 
   }
 
@@ -44,16 +52,11 @@ public:
 };
 
 //----------------------------------------------------------------------
-
-KODE_Window* create_window() {
-  myWindow* window = new myWindow(800,600,"KODE_Window");
-  return window;
-}
-
+//
 //----------------------------------------------------------------------
 
 int main(void) {
-  KODE_Window* window = create_window();
+  myWindow* window = new myWindow(800,600,"KODE_Window");
   window->open();
   window->eventLoop();
   window->close();

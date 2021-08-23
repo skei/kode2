@@ -1,9 +1,9 @@
 
 // nc -U -l -k /tmp/kode.socket
+//#define KODE_DEBUG_PRINT_SOCKET
 
-#define KODE_DEBUG_PRINT_SOCKET
-#define KODE_DEBUG_PRINT_THREAD
-#define KODE_DEBUG_PRINT_TIME
+//#define KODE_DEBUG_PRINT_THREAD
+//#define KODE_DEBUG_PRINT_TIME
 
 
 //----------------------------------------------------------------------
@@ -16,8 +16,9 @@
 //#include "../test/test_gui1.cpp"
 //#include "../test/test_gui2.cpp"
 //#include "../test/test_gui3.cpp"
+//#include "../test/test_plugin1.cpp"
 //#include "../test/test_widgets1.cpp"
-//#include "../test/test_widgets2.cpp"
+#include "../test/test_widgets2.cpp"
 
 //----------------------------------------------------------------------
 //
@@ -59,7 +60,7 @@
 //#include "../plugins/ports/jesusonic/sap_simpverb.cpp"
 //#include "../plugins/ports/jesusonic/sap_small_room_reverb.cpp"
 //#include "../plugins/ports/jesusonic/sap_sonic_enhancer.cpp"
-#include "../plugins/ports/jesusonic/sap_sonic_maximizer.cpp"
+//#include "../plugins/ports/jesusonic/sap_sonic_maximizer.cpp"
 //#include "../plugins/ports/jesusonic/sap_transient_killer.cpp"
 //#include "../plugins/ports/jesusonic/sap_tube_harmonics_amp.cpp"
 

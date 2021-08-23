@@ -215,7 +215,9 @@ public:
       if (hover) {
         hover->MStates.hovering = true;
         hover->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);
-        //if (hover->MOptions.autoMouseCursor) setMouseCursor(hover->MMouseCursor);
+        if (hover->MOptions.autoMouseCursor) {
+          setMouseCursor(hover->MCursor);
+        }
       }
       else {
       //  //KODE_DPrint("default\n");
