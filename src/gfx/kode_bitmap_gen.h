@@ -19,11 +19,11 @@ public:
       ptr += ALayer;
       for (uint32_t x=0; x<MWidth; x++) {
         uint8_t n = KODE_RandomRangeInt(0,255);
-        KODE_DPrint("%i, ",n);
+        //KODE_DPrint("%i, ",n);
         *ptr = n;
         ptr += 4;
       }
-      KODE_DPrint("\n");
+      //KODE_DPrint("\n");
     }
   }
 

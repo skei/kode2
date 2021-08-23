@@ -98,10 +98,8 @@ public:
 
   #ifndef KODE_NO_BITMAP_PNG
   KODE_Bitmap(const uint8_t* buffer, uint32_t length) {
-
     int x,y,n;
     unsigned char* data = stbi_load_from_memory(buffer,length,&x,&y,&n,4 /*0*/ );
-
     MWidth      = x;
     MHeight     = y;
     MStride     = MWidth  * 4; //n;
@@ -121,10 +119,8 @@ public:
 
   #ifndef KODE_NO_BITMAP_PNG_FILE
   KODE_Bitmap(const char* AFilename) {
-
     int x,y,n;
     unsigned char *data = stbi_load(AFilename, &x, &y, &n, 4 /*0*/); // 4 0 we want 32-bit
-
     MWidth  = x;
     MHeight = y;
     // returned n is bytes per pixel in image

@@ -126,7 +126,6 @@ public: // window
 //------------------------------
 
   void open() override {
-    //KODE_PRINT;
     alignChildren();
     KODE_ImplementedWindow::open();
     //#ifndef KODE_PLUGIN_EXE
