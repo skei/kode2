@@ -7,6 +7,19 @@
 //
 //----------------------------------------------------------------------
 
+
+#ifdef KODE_DEBUG
+  #define KODE_VST3PRINT  KODE_PRINT
+  #define KODE_Vst3Print  KODE_Print
+  #define KODE_Vst3DPrint KODE_DPrint
+#else
+  #define KODE_VST3PRINT
+  #define KODE_Vst3Print  KODE_NoPrint
+  #define KODE_Vst3DPrint KODE_NoPrint
+#endif
+
+//----------------------------------------------------------------------
+
 #ifdef KODE_LINUX
   #define KODE_VST3_COM_COMPATIBLE 0
   #define KODE_VST3_PLUGIN_API
