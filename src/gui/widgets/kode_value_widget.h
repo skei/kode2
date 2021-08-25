@@ -61,6 +61,10 @@ public:
     MValueTextColor = AColor;
   }
 
+  virtual void setValueTextOffset(KODE_FRect AOffset) {
+    MValueTextOffset = AOffset;
+  }
+
   virtual void setDrawLabel(bool ADraw=true) {
     MDrawLabel = ADraw;
   }

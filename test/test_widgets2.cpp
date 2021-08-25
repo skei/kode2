@@ -119,29 +119,78 @@ public:
     add_squares( 10, 450, KODE_COLOR_DARK_MAGENTA, KODE_COLOR_MAGENTA, KODE_COLOR_LIGHT_MAGENTA, KODE_COLOR_BRIGHT_MAGENTA );
     add_squares( 10, 490, KODE_COLOR_DARK_RED2,    KODE_COLOR_RED2,    KODE_COLOR_LIGHT_RED2,    KODE_COLOR_BRIGHT_RED2    );
     add_squares( 10, 530, KODE_COLOR_DARK_GRAY,    KODE_COLOR_GRAY,    KODE_COLOR_LIGHT_GRAY,    KODE_COLOR_WHITE          );
+    //black
+    KODE_PanelWidget* black_panel = KODE_New KODE_PanelWidget(KODE_FRect(  10, 570, 30,30 ));
+    black_panel->setBackgroundColor(KODE_COLOR_BLACK);
+    black_panel->setCursor(KODE_CURSOR_FINGER);
+    appendWidget(black_panel);
 
     // image
 
-    KODE_ImageWidget* image1 = KODE_New KODE_ImageWidget(KODE_FRect(  170, 10, 256,256 ));
-    image1->setDrawBorder();
-    image1->setCursor(KODE_CURSOR_QUESTION);
-    KODE_Bitmap* bitmap = KODE_New KODE_Bitmap(128,128);
+    KODE_ImageWidget* image = KODE_New KODE_ImageWidget(KODE_FRect(  170, 10, 256,256 ));
+    image->setDrawBorder();
+    image->setCursor(KODE_CURSOR_QUESTION);
+    KODE_Bitmap* bitmap = KODE_New KODE_Bitmap(256,256);
     bitmap->genFractalCloud();
-    //image1->setBitmap(bitmap);
-    image1->setImage(this,bitmap);
-    //image1->setImage(this,"/home/skei/Pictures/skei_256.png");
+    //image->setBitmap(bitmap);
+    image->setImage(this,bitmap);
+    //image->setImage(this,"/home/skei/Pictures/skei_256.png");
     KODE_Delete bitmap;
-    appendWidget(image1);
+    appendWidget(image);
+
+    // sliders
+
+    KODE_SliderWidget* slider1 = KODE_New KODE_SliderWidget( KODE_FRect( 170, 280, 256, 20 ) );
+    slider1->setText("Slider 1");
+    slider1->setDrawLabel();
+    slider1->setLabel("db");
+    slider1->setLabelColor(KODE_COLOR_LIGHT_RED);
+    slider1->setAutoHideCursor(false);
+    slider1->setAutoGrabCursor(false);
+    appendWidget(slider1);
+
+    KODE_SliderWidget* slider2 = KODE_New KODE_SliderWidget( KODE_FRect( 170, 305, 256, 20 ) );
+    slider2->setText("Slider Two");
+    slider2->setBackgroundColor(KODE_COLOR_DARK_RED);
+    slider2->setValueBarColor(KODE_COLOR_RED);
+    slider2->setTextColor(KODE_COLOR_WHITE);
+    slider2->setValueTextColor(KODE_COLOR_BRIGHT_YELLOW);
+    slider2->setAutoHideCursor(false);
+    slider2->setAutoGrabCursor(true);
+    appendWidget(slider2);
+
+    KODE_SliderWidget* slider3 = KODE_New KODE_SliderWidget( KODE_FRect( 170, 330, 256, 20 ) );
+    slider3->setText("Slider 3");
+    slider3->setAutoHideCursor(true);
+    slider3->setAutoGrabCursor(true);
+    appendWidget(slider3);
+
+    // knob
+
+    KODE_KnobWidget* knob1 = KODE_New KODE_KnobWidget( KODE_FRect( 170, 360, 50,50 ) );
+    knob1->setValue(0.3);
+    appendWidget(knob1);
+
+    // buttons
+
+    KODE_ButtonWidget* button1 = KODE_New KODE_ButtonWidget( KODE_FRect( 230, 360, 50,20 ) );
+    appendWidget(button1);
+
+    KODE_ButtonWidget* button2 = KODE_New KODE_ButtonWidget( KODE_FRect( 230, 390, 50,20 ) );
+    button2->setIsToggle();
+    appendWidget(button2);
 
     //
 
-    KODE_PanelWidget* panel = KODE_New KODE_PanelWidget( KODE_FRect(-20,-30, 50,25 ) );
+    KODE_PanelWidget* panel = KODE_New KODE_PanelWidget( KODE_FRect(0,-10,50,25) );
     panel->setCursor(KODE_CURSOR_PLUS);
     panel->setFillBackground(false);
     panel->setBorderColor(KODE_COLOR_WHITE);
     panel->options.sizePercent = true;
-    panel->layout.alignment = KODE_WIDGET_ALIGN_BOTTOM_RIGHT;
+    panel->layout.alignment = KODE_WIDGET_ALIGN_BOTTOM_CENTER;
     appendWidget(panel);
+
+    //
 
   }
 

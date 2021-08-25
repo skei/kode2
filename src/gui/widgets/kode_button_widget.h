@@ -36,6 +36,7 @@ public:
   KODE_ButtonWidget(KODE_FRect ARect)
   : KODE_Widget(ARect) {
     setName("KODE_ButtonWidget");
+    setCursor(KODE_CURSOR_FINGER);
   }
 
   virtual ~KODE_ButtonWidget() {
@@ -119,18 +120,15 @@ public:
 
   //----------
 
-  void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState, uint32_t ATimeStamp=0) final {
-  }
-
-  void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom, uint32_t ATimeStamp=0) final {
-    do_widget_setMouseCursor(this,KODE_CURSOR_FINGER);
-  }
+  //void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom, uint32_t ATimeStamp=0) final {
+  //  if (options.autoMouseCursor) {
+  //    do_widget_setMouseCursor(this,KODE_CURSOR_FINGER);
+  //  }
+  //}
 
   //void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo, uint32_t ATimeStamp=0) final {
   //  do_widget_setMouseCursor(this,KODE_CURSOR_DEFAULT);
   //}
-
-
 
 //------------------------------
 

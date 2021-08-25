@@ -123,9 +123,10 @@ enum KODE_EWidgetAlignment {
   KODE_WIDGET_ALIGN_NONE          = 0,  // relative to window
   KODE_WIDGET_ALIGN_PARENT        = 1,  // relative to parent
   KODE_WIDGET_ALIGN_CLIENT        = 2,  // relative to current client area
+
   KODE_WIDGET_ALIGN_CENTER        = 3,
-  //KODE_WIDGET_ALIGN_CENTER_HORIZ  = 4,
-  //KODE_WIDGET_ALIGN_CENTER_VERT   = 5,
+  KODE_WIDGET_ALIGN_CENTER_HORIZ  = 4,
+  KODE_WIDGET_ALIGN_CENTER_VERT   = 5,
 
   KODE_WIDGET_ALIGN_FILL_CLIENT   = 6,
   KODE_WIDGET_ALIGN_FILL_LEFT     = 7,
@@ -165,12 +166,11 @@ enum KODE_EWidgetAlignment {
 //  KODE_WIDGET_ANCHOR_BOTTOM       = 8
 //};
 
-
-enum KODE_EWidgetTypes {
-  KODE_WIDGET_TYPE_NONE           = 0,
-  KODE_WIDGET_TYPE_WIDGET         = 1,
-  KODE_WIDGET_TYPE_WINDOW         = 2
-};
+//enum KODE_EWidgetTypes {
+//  KODE_WIDGET_TYPE_NONE           = 0,
+//  KODE_WIDGET_TYPE_WIDGET         = 1,
+//  KODE_WIDGET_TYPE_WINDOW         = 2
+//};
 
 //----------------------------------------------------------------------
 //

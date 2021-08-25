@@ -15,7 +15,7 @@ protected:
 
   bool        MDrawText       = true;
   const char* MText           = "";
-  KODE_Color  MTextColor      = KODE_Color(0.1f);
+  KODE_Color  MTextColor      = KODE_Color(1.0f);
   uint32_t    MTextAlignment  = KODE_TEXT_ALIGN_LEFT;
   KODE_FRect  MTextOffset     = KODE_FRect(2);
 

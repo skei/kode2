@@ -69,12 +69,13 @@ public:
 
   virtual void drawKnob(KODE_Painter* APainter, KODE_FRect ARect) {
     if (MDrawKnob) {
-      float     value           = getValue();
-      float     S               = (float)getRect().w;
-      int32_t   arc_thickness   = S * MArcThickness;
-      float     step_start      = S/2 - arc_thickness;
-      float     step_end        = S/2 + 1;
-      float     needle_length   = S * MNeedleLength; ///4;
+      float     value             = getValue();
+      float     S                 = (float)getRect().w;
+      int32_t   arc_thickness     = S * MArcThickness;
+      float     step_start        = S / 2.0f - arc_thickness;
+      float     step_end          = S / 2.0f + 1.0f;
+      float     needle_length     = S * MNeedleLength; // / 4;
+      float     needle_thickness  = arc_thickness * 0.33f;
 
       KODE_FRect r = getRect();
       //r.shrink(0.5f + MKnobSize * 0.5f);
@@ -90,7 +91,7 @@ public:
       //APainter->setDrawColor(MKnobBack);
       //APainter->drawArc(r,-0.4f,0.8f);
 
-      APainter->drawPie(r,-0.4f,0.8f,MKnobBack);
+      APainter->drawPie(r,-0.4f,0.8f,MKnobBack,arc_thickness);
 
       if (MBipolar) {
         float v = (value * 2.0f) - 1.0f;
@@ -113,7 +114,7 @@ public:
       //APainter->drawArc(r,a1,a2);
 
       //r.shrink(2.0f);
-      APainter->drawPie(r,a1,a2,MKnobColor);
+      APainter->drawPie(r,a1,a2,MKnobColor,arc_thickness);
 
       // steps
 
@@ -158,7 +159,7 @@ public:
       //APainter->setDrawColor(MNeedleColor);
       //APainter->setPenSize(arc_thickness/2);
       //APainter->drawLine(x1,y1,x2,y2);
-      APainter->drawLine(x1,y1,x2,y2,MNeedleColor);
+      APainter->drawLine(x1,y1,x2,y2,MNeedleColor,needle_thickness);
 
       //
 

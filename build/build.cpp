@@ -19,7 +19,7 @@
 //#include "../test/test_plugin1.cpp"
 //#include "../test/test_widgets1.cpp"
 
-//#include "../test/test_widgets2.cpp"        // !!!!!
+#include "../test/test_widgets2.cpp"        // !!!!!
 
 //----------------------------------------------------------------------
 //
@@ -43,7 +43,7 @@
 
 //#include "../plugins/sa_brickwall.cpp"
 //#include "../plugins/sa_curve_shaper.cpp"
-#include "../plugins/sa_frac_delay.cpp"
+//#include "../plugins/sa_frac_delay.cpp"
 
 
 //------------------------------

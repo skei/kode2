@@ -32,6 +32,9 @@ private:
   uint32_t    MQuantizeSteps  = 0;
   uint32_t    MQuantizeMode   = 1;
 
+  bool        MGrabCursor = false;
+  bool        MHideCursor = false;
+
 //------------------------------
 protected:
 //------------------------------
@@ -53,6 +56,9 @@ public:
   KODE_DragValueWidget(KODE_FRect ARect)
   : KODE_ValueWidget(ARect) {
     setName("KODE_DragValueWidget");
+    //options.autoMouseCursor   = false; // we handle it ourselves (on_enter)
+    //options.autoMouseHide     = false;
+    //options.autoMouseCapture  = false;
   }
 
   virtual ~KODE_DragValueWidget() {
@@ -75,6 +81,9 @@ public:
   virtual void      setQuantize(bool AQuantize=true)      { MQuantize = AQuantize; }
   virtual void      setQuantizeSteps(uint32_t ASteps)     { MQuantizeSteps = ASteps; }
   virtual void      setQuantizeMode(uint32_t AMode)       { MQuantizeMode = AMode; }
+
+  virtual void      setAutoHideCursor(bool AHide=true)    { MHideCursor = AHide; }
+  virtual void      setAutoGrabCursor(bool AGrab=true)    { MGrabCursor = AGrab; }
 
   //----------
 
@@ -138,8 +147,8 @@ public:
       MPrevClickTime = ATimeStamp;
 
       if (MCanDragValue) {
-        do_widget_setMouseCursor(this,KODE_CURSOR_GRAB);
-        do_widget_setMouseCursor(this,KODE_CURSOR_HIDE);
+        if (MGrabCursor) do_widget_setMouseCursor(this,KODE_CURSOR_GRAB);
+        if (MHideCursor) do_widget_setMouseCursor(this,KODE_CURSOR_HIDE);
         MPrevXpos = AXpos;
         MPrevYpos = AYpos;
         MIsDragging = true;
@@ -151,8 +160,8 @@ public:
   void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
     if (MCanDragValue) {
       if (AButton == KODE_BUTTON_LEFT) {
-        do_widget_setMouseCursor(this,KODE_CURSOR_SHOW);
-        do_widget_setMouseCursor(this,KODE_CURSOR_RELEASE);
+        if (MHideCursor) do_widget_setMouseCursor(this,KODE_CURSOR_SHOW);
+        if (MGrabCursor) do_widget_setMouseCursor(this,KODE_CURSOR_RELEASE);
         MIsDragging = false;
       }
     }

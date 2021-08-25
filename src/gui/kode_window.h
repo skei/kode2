@@ -41,8 +41,10 @@ protected:
   KODE_Surface* MBufferSurface          = KODE_NULL;
   #endif
 
+  KODE_Widget*  MEnteredWidget = KODE_NULL;
   KODE_Widget*  MHoverWidget            = KODE_NULL;
   KODE_Widget*  MModalWidget            = KODE_NULL;
+
   KODE_Widget*  MMouseClickedWidget     = KODE_NULL;
   KODE_Widget*  MMouseCapturedWidget    = KODE_NULL;
   KODE_Widget*  MKeyCapturedWidget      = KODE_NULL;
@@ -126,7 +128,7 @@ public: // window
 //------------------------------
 
   void open() override {
-    alignChildren();
+    alignChildren(this);
     KODE_ImplementedWindow::open();
     //#ifndef KODE_PLUGIN_EXE
     //  //on_window_paint(0,0,MWindowWidth,MWindowHeight);
@@ -192,37 +194,51 @@ public:
     MWindowHeight = AHeight;
     MRect.w = AWidth;
     MRect.h = AHeight;
-    alignChildren();
+    alignChildren(this);
     //if (MWindowPainter) MWindowPainter->resize(AWidth,AHeight);
   }
 
   //----------
 
   /*
-    ALeave: true if leaving window
+    AMode:
+    0 - NORMAL normal
+    1 - UPDATE unknown 'from', force updat
+    2 - LEAVE  leaving window
+
   */
 
-  void updateHoverWidget(uint32_t AXpos, uint32_t AYpos, uint32_t ATimeStamp=0, bool ALeave=false) {
+  void updateHoverWidget(uint32_t AXpos, uint32_t AYpos, uint32_t ATimeStamp=0) {
     KODE_Widget* hover = KODE_NULL;
-    if (!ALeave) hover = findChild(AXpos,AYpos);
-    if (hover != MHoverWidget) {
+    hover = findChild(AXpos,AYpos);
+    if (hover) {
+      if (hover != MHoverWidget) {
+        if (MHoverWidget) MHoverWidget->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
+        MHoverWidget = hover;
+        MHoverWidget->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);
+      }
+    }
+    else {
       if (MHoverWidget) {
-        MHoverWidget->states.hovering = false;
         MHoverWidget->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
-        //if (MHoverWidget->MOptions.autoMouseCursor) setMouseCursor(MHoverWidget->MMouseCursor);
+        MHoverWidget = KODE_NULL;
       }
-      if (hover) {
-        hover->states.hovering = true;
-        hover->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);
-        if (hover->options.autoMouseCursor) {
-          setMouseCursor(hover->MCursor);
-        }
-      }
-      else {
-      //  //KODE_DPrint("default\n");
-        setMouseCursor(KODE_CURSOR_DEFAULT);
-      }
+    }
+  }
+
+  //----------
+
+  void releaseHoverWidget(KODE_Widget* AClicked, uint32_t AXpos, uint32_t AYpos, uint32_t ATimeStamp=0) {
+    KODE_Widget* hover = findChild(AXpos,AYpos);
+    if (hover != AClicked) {
+      AClicked->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
+    }
+    if (hover) {
+      hover->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);
       MHoverWidget = hover;
+    }
+    else {
+      MHoverWidget = KODE_NULL;
     }
   }
 
@@ -276,13 +292,6 @@ public: // base window
     if (MHoverWidget) {
       grabMouseCursor();
       MMouseClickedWidget = MHoverWidget;
-      //if (MMouseClickedWidget->MOptions.autoMouseHide) {
-      //  hideMouseCursor();
-      //}
-      //if (MMouseClickedWidget->MOptions.autoMouseCapture) {
-      //  MMouseCapturedWidget = MMouseClickedWidget;
-      //}
-      //MMouseClickedWidget->MStates.clicked = true;
       MMouseClickedWidget->on_widget_mouseClick(AXpos,AYpos,AButton,AState,ATimeStamp);
     }
   }
@@ -291,18 +300,10 @@ public: // base window
 
   void on_window_mouseRelease(int32_t AXpos, int32_t AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp) override {
     if (MMouseClickedWidget) {
-      releaseMouseCursor();
-      //MMouseClickedWidget->MStates.clicked = false;
       MMouseClickedWidget->on_widget_mouseRelease(AXpos,AYpos,AButton,AState,ATimeStamp);
-      //if (MMouseClickedWidget->MOptions.autoMouseHide) {
-      //  showMouseCursor();
-      //}
-      //if (MMouseClickedWidget->MOptions.autoMouseCapture) {
-      //}
-      MMouseCapturedWidget = KODE_NULL;
-      MMouseClickedWidget = KODE_NULL;
-      MHoverWidget = KODE_NULL;
-      updateHoverWidget(AXpos,AYpos,ATimeStamp);
+      releaseMouseCursor();
+      releaseHoverWidget(MMouseClickedWidget,AXpos,AYpos,ATimeStamp);
+      MMouseClickedWidget = KODE_NULL; // must be after releaseHoverWidget
     }
     //else {
     //  on_widget_mouseRelease(AXpos,AYpos,AButton,AState);
@@ -327,11 +328,14 @@ public: // base window
         setMouseCursorPos(MMouseClickedX,MMouseClickedY);
       }
       else {
+        // no captured widgets
         MMouseClickedWidget->on_widget_mouseMove(AXpos,AYpos,AState,ATimeStamp);
       }
     }
     else {
+      // no widget clicked
       updateHoverWidget(AXpos,AYpos,ATimeStamp);
+
     }
     MMousePrevX = AXpos;
     MMousePrevY = AYpos;
@@ -341,8 +345,10 @@ public: // base window
 
   void on_window_enter(int32_t AXpos, int32_t AYpos, uint32_t ATimeStamp) override {
     if (!MMouseClickedWidget) {
+
       MHoverWidget = KODE_NULL;
       updateHoverWidget(AXpos,AYpos,ATimeStamp);
+
       //on_widget_enter(AXpos,AYpos,KODE_NULL);
     }
   }
@@ -353,8 +359,10 @@ public: // base window
 
   void on_window_leave(int32_t AXpos, int32_t AYpos, uint32_t ATimeStamp) override {
     if (!MMouseClickedWidget) {
+
       //MHoverWidget = KODE_NULL;
-      updateHoverWidget(AXpos,AYpos,ATimeStamp,true);
+      updateHoverWidget(AXpos,AYpos,ATimeStamp);
+
       //on_widget_leave(AXpos,AYpos,KODE_NULL);
     }
   }
