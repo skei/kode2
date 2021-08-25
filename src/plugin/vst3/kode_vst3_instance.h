@@ -643,7 +643,7 @@ public: // IPluginBase
       KODE_Vst3String u;
       MHostApp->getName(u);
       KODE_Utf16ToChar(&u,MHostName);
-      KODE_Vst3DPrint(" (hostname: '%s' hostapp.getname: '%s')",MHostName,u);
+      KODE_Vst3DPrint(" (hostname: '%s')",MHostName);
     }
     else {
     }
@@ -754,8 +754,8 @@ public: // IComponent
         switch (dir) {
           case kode_vst3_Input:
             if (MDescriptor->canReceiveMidi() || MDescriptor->isSynth()) {
-              KODE_Vst3DPrint(" -> 16\n");
-              return 16;
+              KODE_Vst3DPrint(" -> 1\n");
+              return 1;
             }
             else {
               KODE_Vst3DPrint(" -> 0\n");
@@ -790,6 +790,7 @@ public: // IComponent
             bus.channelCount = MDescriptor->getNumInputs();
             KODE_CharToUtf16("Audio In",&bus.name);
             //bus.flags = 0;//kode_vst3_DefaultActive;
+              KODE_Vst3DPrint(" -> Ok\n");
               KODE_Vst3DPrint(". type: %i (Audio)\n",bus.mediaType);
               KODE_Vst3DPrint(". dir: %i (Input)\n",bus.direction);
               KODE_Vst3DPrint(". chn.count: %i\n",bus.channelCount);
@@ -803,11 +804,11 @@ public: // IComponent
             bus.channelCount = MDescriptor->getNumOutputs();
             KODE_CharToUtf16("Audio Out",&bus.name);
             //bus.flags = 0;//kode_vst3_DefaultActive;
+              KODE_Vst3DPrint(" -> Ok\n");
               KODE_Vst3DPrint(". type: %i (Audio)\n",bus.mediaType);
               KODE_Vst3DPrint(". dir: %i (Output)\n",bus.direction);
               KODE_Vst3DPrint(". chn.count: %i\n",bus.channelCount);
               KODE_Vst3DPrint(". name: '%s'\n","Audio Out");
-              //KODE_Vst3DPrint(" -> Ok\n");
             return kode_vst3_ResultOk;
             //break;
         } // switch (dir)
@@ -821,11 +822,11 @@ public: // IComponent
             bus.channelCount = 16;
             KODE_CharToUtf16("Midi In",&bus.name);
             //bus.flags = 0;//kode_vst3_DefaultActive;
+              KODE_Vst3DPrint(" -> Ok\n");
               KODE_Vst3DPrint(". type: %i (Event)\n",bus.mediaType);
               KODE_Vst3DPrint(". dir: %i (Input)\n",bus.direction);
               KODE_Vst3DPrint(". chn.count: %i\n",bus.channelCount);
-              KODE_Vst3DPrint(". name: '%s'\n",bus.name);
-              //KODE_Vst3DPrint(" -> Ok\n");
+              KODE_Vst3DPrint(". name: '%s'\n","Midi In");
             return kode_vst3_ResultOk;
             //break;
           case kode_vst3_Output:
@@ -834,7 +835,7 @@ public: // IComponent
             //bus.direction = kode_vst3_Input;
             //bus.channelCount = 16;
             //KODE_CharToUtf16("Midi In",&bus.name);
-            //KODE_Vst3DPrint(" -> False\n");
+            KODE_Vst3DPrint(" -> False\n");
             return kode_vst3_ResultFalse; // kode_vst3_ResultOk;
             //break;
         } // switch (dir)
@@ -842,7 +843,7 @@ public: // IComponent
 
     } // switch (type)
 
-    //KODE_Vst3DPrint(" -> False\n");
+    KODE_Vst3DPrint(" -> False\n");
     return kode_vst3_ResultFalse;
   }
 

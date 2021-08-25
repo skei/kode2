@@ -5,6 +5,8 @@
 #define KODE_DEBUG_PRINT_THREAD
 #define KODE_DEBUG_PRINT_SOCKET
 
+#define KODE_DEBUG_VST3
+
 //----------
 
 #include "kode.h"
