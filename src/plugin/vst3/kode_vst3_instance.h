@@ -11,8 +11,6 @@
   #include "plugin/kode_editor.h"
 #endif
 
-//#include "plugin/kode_plugin_base.h"
-//#include "plugin/base/kode_base_editor.h"
 #include "plugin/base/kode_base_instance.h"
 #include "plugin/vst3/kode_vst3.h"
 #include "plugin/vst3/kode_vst3_utils.h"
@@ -268,7 +266,7 @@ private:
   /*
     reaper asks for this all the time, so we create (and cache) it, and
     return a ptr to the same buffer each time..
-    (re-check this, as i think i remember i saw something about this in a
+    (re-check, as i think i remember i saw something about this in a
     recent reaper update log)
 
     numsteps
@@ -683,10 +681,8 @@ public: // IComponent
   */
 
   int32_t KODE_VST3_PLUGIN_API getControllerClassId(KODE_Vst3Id classId) final {
-
     KODE_Vst3Print("classId: ");
     KODE_Vst3PrintIID(classId);
-
     if (MDescriptor->hasEditor()) {
       KODE_Memcpy(classId,MDescriptor->getLongEditorId(),16);
       KODE_Vst3DPrint("-> ");
@@ -779,9 +775,7 @@ public: // IComponent
 
   int32_t KODE_VST3_PLUGIN_API getBusInfo(int32_t type, int32_t dir, int32_t index, KODE_Vst3BusInfo& bus) final {
     KODE_Vst3Print("type: %s dir: %s index: %i",type?"1/event":"0/audio",dir?"1/output":"0/input",index);
-
     switch (type) {
-
       case kode_vst3_Audio:
         switch (dir) {
           case kode_vst3_Input:
@@ -791,15 +785,13 @@ public: // IComponent
             KODE_CharToUtf16("Audio In",&bus.name);
             bus.busType = kode_vst3_Main;         // Aux
             bus.flags = KODE_Vst3BusInfo::kode_vst3_DefaultActive;  // 0
-
-              KODE_Vst3DPrint(" -> Ok\n");
-              KODE_Vst3DPrint(". type: %i (Audio)\n",bus.mediaType);
-              KODE_Vst3DPrint(". dir: %i (Input)\n",bus.direction);
-              KODE_Vst3DPrint(". chn.count: %i\n",bus.channelCount);
-              KODE_Vst3DPrint(". name: '%s'\n","Audio In");
-              KODE_Vst3DPrint(". busType: %i (Main)\n",bus.busType);
-              KODE_Vst3DPrint(". flags: %i (DefaultActive)\n",bus.flags);
-
+            KODE_Vst3DPrint(" -> Ok\n");
+            KODE_Vst3DPrint(". type: %i (Audio)\n",bus.mediaType);
+            KODE_Vst3DPrint(". dir: %i (Input)\n",bus.direction);
+            KODE_Vst3DPrint(". chn.count: %i\n",bus.channelCount);
+            KODE_Vst3DPrint(". name: '%s'\n","Audio In");
+            KODE_Vst3DPrint(". busType: %i (Main)\n",bus.busType);
+            KODE_Vst3DPrint(". flags: %i (DefaultActive)\n",bus.flags);
             return kode_vst3_ResultOk;
           case kode_vst3_Output:
             bus.mediaType = kode_vst3_Audio;
@@ -808,18 +800,15 @@ public: // IComponent
             KODE_CharToUtf16("Audio Out",&bus.name);
             bus.busType = kode_vst3_Main;         // Aux
             bus.flags = KODE_Vst3BusInfo::kode_vst3_DefaultActive;  // 0
-
-              KODE_Vst3DPrint(" -> Ok\n");
-              KODE_Vst3DPrint(". type: %i (Audio)\n",bus.mediaType);
-              KODE_Vst3DPrint(". dir: %i (Output)\n",bus.direction);
-              KODE_Vst3DPrint(". chn.count: %i\n",bus.channelCount);
-              KODE_Vst3DPrint(". name: '%s'\n","Audio Out");
-              KODE_Vst3DPrint(". busType: %i (Main)\n",bus.busType);
-              KODE_Vst3DPrint(". flags: %i (DefaultActive)\n",bus.flags);
-
+            KODE_Vst3DPrint(" -> Ok\n");
+            KODE_Vst3DPrint(". type: %i (Audio)\n",bus.mediaType);
+            KODE_Vst3DPrint(". dir: %i (Output)\n",bus.direction);
+            KODE_Vst3DPrint(". chn.count: %i\n",bus.channelCount);
+            KODE_Vst3DPrint(". name: '%s'\n","Audio Out");
+            KODE_Vst3DPrint(". busType: %i (Main)\n",bus.busType);
+            KODE_Vst3DPrint(". flags: %i (DefaultActive)\n",bus.flags);
             return kode_vst3_ResultOk;
         } // switch (dir)
-
       case kode_vst3_Event:
         switch (dir) {
           case kode_vst3_Input:
@@ -829,15 +818,13 @@ public: // IComponent
             KODE_CharToUtf16("Midi In",&bus.name);
             bus.busType = kode_vst3_Main;         // Aux
             bus.flags = KODE_Vst3BusInfo::kode_vst3_DefaultActive;  // 0
-
-              KODE_Vst3DPrint(" -> Ok\n");
-              KODE_Vst3DPrint(". type: %i (Event)\n",bus.mediaType);
-              KODE_Vst3DPrint(". dir: %i (Input)\n",bus.direction);
-              KODE_Vst3DPrint(". chn.count: %i\n",bus.channelCount);
-              KODE_Vst3DPrint(". name: '%s'\n","Midi In");
-              KODE_Vst3DPrint(". busType: %i (Main)\n",bus.busType);
-              KODE_Vst3DPrint(". flags: %i (DefaultActive)\n",bus.flags);
-
+            KODE_Vst3DPrint(" -> Ok\n");
+            KODE_Vst3DPrint(". type: %i (Event)\n",bus.mediaType);
+            KODE_Vst3DPrint(". dir: %i (Input)\n",bus.direction);
+            KODE_Vst3DPrint(". chn.count: %i\n",bus.channelCount);
+            KODE_Vst3DPrint(". name: '%s'\n","Midi In");
+            KODE_Vst3DPrint(". busType: %i (Main)\n",bus.busType);
+            KODE_Vst3DPrint(". flags: %i (DefaultActive)\n",bus.flags);
             return kode_vst3_ResultOk;
           case kode_vst3_Output:
             //bus.mediaType = kode_vst3_Event;
@@ -849,9 +836,7 @@ public: // IComponent
             return kode_vst3_ResultFalse; // kode_vst3_ResultOk;
             //break;
         } // switch (dir)
-
     } // switch (type)
-
     KODE_Vst3DPrint(" -> False\n");
     return kode_vst3_ResultFalse;
   }
@@ -871,13 +856,13 @@ public: // IComponent
     outInfo.mediaType = inInfo.mediaType; // MediaTypes::kode_vst3_Audio;
     outInfo.busIndex  = inInfo.busIndex;  // 0;
     outInfo.channel   = -1;
-      KODE_Vst3DPrint(". inInfo.mediaType: \n",inInfo.mediaType);
-      KODE_Vst3DPrint(". inInfo.busIndex: \n",inInfo.busIndex);
-      KODE_Vst3DPrint(". inInfo.channel: \n",inInfo.channel);
-      KODE_Vst3DPrint(". outInfo.mediaType: \n",outInfo.mediaType);
-      KODE_Vst3DPrint(". outInfo.busIndex: \n",outInfo.busIndex);
-      KODE_Vst3DPrint(". outInfo.channel: \n",outInfo.channel);
-      KODE_Vst3Print("-> Ok\n");
+    KODE_Vst3DPrint(". inInfo.mediaType: \n",inInfo.mediaType);
+    KODE_Vst3DPrint(". inInfo.busIndex: \n",inInfo.busIndex);
+    KODE_Vst3DPrint(". inInfo.channel: \n",inInfo.channel);
+    KODE_Vst3DPrint(". outInfo.mediaType: \n",outInfo.mediaType);
+    KODE_Vst3DPrint(". outInfo.busIndex: \n",outInfo.busIndex);
+    KODE_Vst3DPrint(". outInfo.channel: \n",outInfo.channel);
+    KODE_Vst3Print("-> Ok\n");
     return kode_vst3_ResultOk;
   }
 
@@ -903,7 +888,6 @@ public: // IComponent
   */
 
   int32_t KODE_VST3_PLUGIN_API setActive(uint8_t state) final {
-    //KODE_VST3PRINT;
     if (state) on_plugin_activate();
     else on_plugin_deactivate();
     KODE_Vst3Print("state: %i -> Ok\n",state);
@@ -1052,12 +1036,10 @@ public: // IAudioProcessor
 
   int32_t KODE_VST3_PLUGIN_API setBusArrangements(uint64_t* inputs, int32_t numIns, uint64_t* outputs, int32_t numOuts) final {
     KODE_Vst3Print("numIns %i numOuts %i",numIns,numOuts);
-
     bool inputs_ok = false;
     bool outputs_ok = false;
     uint32_t num_inputs = MDescriptor->getNumInputs();
     uint32_t num_outputs = MDescriptor->getNumOutputs();
-
     if (numIns == 1) {
       if ((*inputs == kode_vst3_Mono) && (num_inputs == 1)) {
         KODE_Vst3DPrint(" {m_in}");
@@ -1068,7 +1050,6 @@ public: // IAudioProcessor
         inputs_ok = true;
       }
     }
-
     if (numOuts == 1) {
       if ((*outputs == kode_vst3_Mono) && (num_outputs == 1)) {
         KODE_Vst3DPrint(" {m_out}");
@@ -1079,7 +1060,6 @@ public: // IAudioProcessor
         outputs_ok = true;
       }
     }
-
     if (inputs_ok && outputs_ok) {
       KODE_Vst3DPrint(" -> True\n");
       return kode_vst3_ResultTrue;
@@ -1088,7 +1068,6 @@ public: // IAudioProcessor
       KODE_Vst3DPrint(" -> False\n");
       return kode_vst3_ResultFalse;
     }
-
   }
 
   //----------
@@ -1101,11 +1080,8 @@ public: // IAudioProcessor
 
   int32_t KODE_VST3_PLUGIN_API getBusArrangement(int32_t dir, int32_t index, uint64_t& arr) final {
     KODE_Vst3Print("dir: %s index: %i",dir?"1/output":"0/input",index);
-
     if (index == 0) {
-
       switch (dir) {
-
         case kode_vst3_Input:
           switch (MDescriptor->getNumInputs()) {
             case 0:
@@ -1122,7 +1098,6 @@ public: // IAudioProcessor
               return kode_vst3_ResultOk;
           }
           break;
-
         case kode_vst3_Output:
           switch (MDescriptor->getNumOutputs()) {
             case 0:
@@ -1139,11 +1114,8 @@ public: // IAudioProcessor
               return kode_vst3_ResultOk;
           }
           break;
-
       } // switch dir
-
     } // index 0
-
     arr = kode_vst3_Empty;
     KODE_Vst3DPrint(" -> (Empty) -> False\n");
     return kode_vst3_ResultFalse;
@@ -1192,7 +1164,6 @@ public: // IAudioProcessor
   */
 
   int32_t KODE_VST3_PLUGIN_API setupProcessing(KODE_Vst3ProcessSetup& setup) final {
-    //KODE_VST3PRINT;
     MProcessMode  = setup.processMode;        // kode_vst3_Realtime, kode_vst3_Prefetch, kode_vst3_Offline
     MSampleSize   = setup.symbolicSampleSize; // kode_vst3_Sample32, kode_vst3_Sample64
     MBlockSize    = setup.maxSamplesPerBlock;
@@ -1215,7 +1186,6 @@ public: // IAudioProcessor
   */
 
   int32_t KODE_VST3_PLUGIN_API setProcessing(uint8_t state) final {
-    //KODE_VST3PRINT;
     MIsProcessing = state;
     //if (MIsProcessing) on_plugin_prepare(MSampleRate,MBlockSize);
     KODE_Vst3Print("state: %i -> Ok\n",state);
@@ -1287,6 +1257,7 @@ public: // IAudioProcessor
     //KODE_DPrint("data: %p in %i out %i spl %i\n",&data,data.numInputs,data.numOutputs,data.numSamples);
     handleEventsInProcess(data);
     handleParametersInProcess(data);
+    //TODO: better error checking (num channels, ..)
     if ((data.numInputs == 0) && (data.numOutputs == 0)) {
       // no inpouts/outputs ???
       // something is wrong with the bus/channel stuff??
@@ -1295,7 +1266,6 @@ public: // IAudioProcessor
       bool not_flush = (data.numSamples != 0);
       if (not_flush) {
         uint32_t i;
-
         for (i=0; i<MDescriptor->getNumInputs(); i++) {
           MProcessContext.inputs[i]  = data.inputs[0].channelBuffers32[i];
         }
@@ -1329,13 +1299,11 @@ public: // IAudioProcessor
       //  // already possibly done in handleEventsInProcess()
       //}
     } // in/out != 0
-
     /*
       https://forum.juce.com/t/vst3-plugin-wrapper/12323/5
       I recall the Steinberg Validator complaining that process() should just
       return kResultTrue...
     */
-
     return kode_vst3_ResultOk;
   }
 
@@ -1885,10 +1853,8 @@ public: // IEditController
   double KODE_VST3_PLUGIN_API getParamNormalized(uint32_t id) final {
     //KODE_VST3PRINT;
     if (id < MDescriptor->getNumParameters()) {
-
-//      float v = MEditorParameterValues[id];
+      //float v = MEditorParameterValues[id];
       float v = MParameterValues[id];
-
       return v;
     }
     else {
@@ -1918,8 +1884,6 @@ public: // IEditController
     }
     //MEditorParameterValues[id] = value;
     MParameterValues[id] = value;
-
-
     #ifndef KODE_NO_GUI
     if (MEditor) {
       MEditor->updateParameterFromHost(id,value);

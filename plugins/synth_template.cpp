@@ -1,6 +1,7 @@
 
 //#define KODE_NO_GUI
 #define KODE_GUI_XCB
+
 //#define KODE_DEBUG_PRINT_TIME
 //#define KODE_DEBUG_PRINT_THREAD
 //#define KODE_DEBUG_PRINT_SOCKET

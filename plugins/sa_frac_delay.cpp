@@ -1,11 +1,9 @@
 
 #define KODE_NO_GUI
-
 #define KODE_DEBUG_PRINT_TIME
 #define KODE_DEBUG_PRINT_THREAD
 #define KODE_DEBUG_PRINT_SOCKET
-
-#define KODE_DEBUG_VST3
+//#define KODE_DEBUG_VST3
 
 //----------
 

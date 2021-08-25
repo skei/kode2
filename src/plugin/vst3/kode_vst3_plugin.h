@@ -18,7 +18,7 @@
 //----------------------------------------------------------------------
 
 template <class DESC, class INST>
-class KODE_VST3Plugin
+class KODE_Vst3Plugin
 : public KODE_Vst3IPluginFactory3 {
 
 //------------------------------
@@ -33,14 +33,14 @@ private:
 public:
 //------------------------------
 
-  KODE_VST3Plugin() {
+  KODE_Vst3Plugin() {
     KODE_Vst3Print("1\n");
     MRefCount = 1;
   }
 
   //----------
 
-  virtual ~KODE_VST3Plugin() {
+  virtual ~KODE_Vst3Plugin() {
     KODE_VST3PRINT;
   }
 
@@ -177,12 +177,12 @@ public: // IPluginFactory2
         KODE_Strcpy(info->version,MDescriptor.getVersionText());
         KODE_Strcpy(info->sdkVersion,kode_vst3_VstVersionString);
         KODE_Vst3DPrint(" -> Ok\n");
-          KODE_Vst3DPrint(". cid: ");   KODE_Vst3PrintIID(info->cid);   KODE_Vst3DPrint("\n");
-          KODE_Vst3DPrint(". cardinality: %i (%s)\n",info->cardinality,info->cardinality?"ManyInstances":"");
-          KODE_Vst3DPrint(". category: '%s'\n",info->category);
-          KODE_Vst3DPrint(". name: '%s'\n",info->name);
-          KODE_Vst3DPrint(". classFlags: %i\n",info->classFlags);
-          KODE_Vst3DPrint(". subCategories: '%s'\n",info->subCategories);
+        KODE_Vst3DPrint(". cid: ");   KODE_Vst3PrintIID(info->cid);   KODE_Vst3DPrint("\n");
+        KODE_Vst3DPrint(". cardinality: %i (%s)\n",info->cardinality,info->cardinality?"ManyInstances":"");
+        KODE_Vst3DPrint(". category: '%s'\n",info->category);
+        KODE_Vst3DPrint(". name: '%s'\n",info->name);
+        KODE_Vst3DPrint(". classFlags: %i\n",info->classFlags);
+        KODE_Vst3DPrint(". subCategories: '%s'\n",info->subCategories);
         return kode_vst3_ResultOk;
     }
     KODE_Vst3DPrint(" -> False\n");
@@ -230,7 +230,7 @@ bool vst3_module_exit(void) VST3_MODULE_EXIT_SYMBOL;
   __KODE_DLLEXPORT                                                    \
   KODE_Vst3IPluginFactory* KODE_VST3_PLUGIN_API vst3_entrypoint() {   \
     KODE_Vst3Print("\n");                                             \
-    return KODE_New KODE_VST3Plugin<DESC,INST>();                     \
+    return KODE_New KODE_Vst3Plugin<DESC,INST>();                     \
   }                                                                   \
                                                                       \
   void* moduleHandle = 0;                                             \
