@@ -123,6 +123,13 @@ private:
     xcb_change_gc(MConnection, MGC, mask, values);
   }
 
+  void set_line_width(uint32_t AWidth) {
+    uint32_t mask = XCB_GC_LINE_WIDTH;
+    uint32_t values[1];
+    values[0] = AWidth;
+    xcb_change_gc(MConnection, MGC, mask, values);
+  }
+
   //----------
 
   void measure_string(const char *string) {
@@ -209,8 +216,9 @@ public:
 public:
 //------------------------------
 
-  void drawLine(float AXpos1, float AYpos1, float AXpos2, float AYpos2, KODE_Color AColor) final {
+  void drawLine(float AXpos1, float AYpos1, float AXpos2, float AYpos2, KODE_Color AColor, uint32_t AWidth=1) final {
     set_color(AColor);
+    set_line_width(AWidth);
     xcb_point_t polyline[] =  {
       (int16_t)AXpos1, (int16_t)AYpos1,
       (int16_t)AXpos2, (int16_t)AYpos2,
@@ -220,8 +228,9 @@ public:
 
   //----------
 
-  void drawRect(KODE_FRect ARect, KODE_Color AColor) final {
+  void drawRect(KODE_FRect ARect, KODE_Color AColor, uint32_t AWidth=1) final {
     set_color(AColor);
+    set_line_width(AWidth);
     xcb_rectangle_t rectangles[] = {{
       (int16_t)ARect.x,
       (int16_t)ARect.y,
@@ -251,8 +260,9 @@ public:
     angle 2 = 'distance' 0..1, counter-clockwise
   */
 
-  void drawPie(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor) final {
+  void drawPie(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor, uint32_t AWidth=1) final {
     set_color(AColor);
+    set_line_width(AWidth);
     // start angle = 12 o'clock
     float a1 = -AAngle1 + 0.25f;
     // positive = clockwise, negative = counter-clockwise

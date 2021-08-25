@@ -1,20 +1,70 @@
 
-
-
-todo, maybe, ideas, ..
+TODO
+MAYBE
+IDEAD
+THOUGHTS
 
 ----------------------------------------------------------------------
-editor
+plugin
 ----------------------------------------------------------------------
 
-* default editor
+* sample-accurate automation
 
-  if gui type is defined, but on_plugin_openEditor returns NULL, we
-  create a default editor based on the descriptor..
+  currently, the automation uses the last value received per block
+  todo: ramp/interpolate
+  a) split block at parameter changes, interpolate parameter values
+     between those
+  b) give plugins the (sorted) list of parameter changes for the
+     current block
+  c) keep track of interpolated parameter values, add function to
+     calc value for current sample in block..
 
-* widget alignment
+----------
 
-  - client_center, left_center, etc..
-  - sizes as percentages (of client area)
-  - icon view
+* data-transfer
+
+  safe, thread-safe, lock/wait-free way to transfer data to/from processing
+  and/or gui parts?
+
+  samples for ffft analysis, to paint output uv/waveforms, image to audio,..
+
+----------
+
+* parameter dezipping
+
+----------
+
+* tick-processing
+
+  cache lines = 16 floats
+  simd = 4 floats (or 8 for avx?)
+  4 simd operations per cache line
+  - unrolling loops
+  - const propagation
+  split processing block into 16-samples chunks
+  hardcode as much as posssible, even destination addressed
+  (calc to hardcoded 16-samples buffer, so that all low-level processing
+  functions are loop-unrolled, fixed number of iterations, etc..
+
+  16 samples = 0.3ms at 48khz..
+
+----------------------------------------------------------------------
+gui
+----------------------------------------------------------------------
+
+* scrollbox
+
+  widget rects are current_pos, so we don't know how much we have already
+  scrolled when we scroll some more..
+  we either need a unscroll, recalc, rescroll, or keep track of current
+  scroll amount
+
+----------
+
+* resizer
+
+  when realigning widgets, we start from initial_rect.. when resizing, we need
+  to keep track of how much this has chaned, or perhaps modify this initial
+  rect directly.. but this will be lost when we close the plugin, won't it?
+  ...
 

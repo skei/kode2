@@ -21,6 +21,7 @@ struct KODE_WidgetOptions {
 //bool canDrag          = false;
 //bool canDrop          = false;
   bool  sizePercent     = false;
+  bool  posPercent      = false;
 };
 
 struct KODE_WidgetStates {
@@ -54,21 +55,33 @@ class KODE_Widget {
 private:
 //------------------------------
 
-  KODE_WidgetOptions  MOptions;
-  KODE_WidgetLayout   MLayout;
-  KODE_WidgetStates   MStates;
-  KODE_Widgets        MChildren;
   float               MValue              = 0.0f;
   float               MDefaultValue       = 0.0f;
-  KODE_Widget*        MParent             = KODE_NULL;
-  const char*         MName               = "KODE_Widget";
+
   KODE_FRect          MRect               = KODE_FRect(0);
   KODE_FRect          MInitialRect        = KODE_FRect(0);
   KODE_FRect          MContentRect        = KODE_FRect(0);
-  int32_t             MCursor             = KODE_CURSOR_DEFAULT;  // ps: MouseCursor clashes with KODE_Window::setMouseCursor
-  uint32_t            MSelectedParameter  = 0;
-  //KODE_Parameter*     MParameterPtr       = KODE_NULL;
+
+  KODE_Widget*        MParent             = KODE_NULL;
+  KODE_Widgets        MChildren;
   KODE_Parameter*     MParameterPtrs[KODE_WIDGET_MAX_PARAMETERS] = {0};
+  uint32_t            MSelectedParameter  = 0;
+
+  const char*         MName               = "KODE_Widget";
+  int32_t             MCursor             = KODE_CURSOR_DEFAULT;
+
+//------------------------------
+protected:
+//------------------------------
+
+
+//------------------------------
+public:
+//------------------------------
+
+  KODE_WidgetOptions  options;
+  KODE_WidgetLayout   layout;
+  KODE_WidgetStates   states;
 
 //------------------------------
 public:
@@ -109,9 +122,9 @@ public: // get
 
   virtual float               getValue()                    { return MValue; }
   virtual float               getDefaultValue()             { return MDefaultValue; }
-  virtual KODE_WidgetLayout*  getLayout()                   { return &MLayout; }
-  virtual KODE_WidgetOptions* getOptions()                  { return &MOptions; }
-  virtual KODE_WidgetStates*  getStates()                   { return &MStates; }
+  //virtual KODE_WidgetLayout*  getLayout()                   { return &MLayout; }
+  //virtual KODE_WidgetOptions* getOptions()                  { return &MOptions; }
+  //virtual KODE_WidgetStates*  getStates()                   { return &MStates; }
   virtual KODE_FRect          getRect()                     { return MRect; }
   virtual KODE_FRect          getInitialRect()              { return MInitialRect; }
   virtual KODE_FRect          getContainerRect()            { return MContentRect; }
@@ -211,7 +224,7 @@ public:
 
   virtual void alignChildren(float AXOffset=0.0f, float AYOffset=0.0f) {
     KODE_FRect client = getRect();
-    client.shrink(getLayout()->innerBorder);
+    client.shrink(layout.innerBorder);
     uint32_t num = MChildren.size();
     for (uint32_t i=0; i<num; i++) {
       KODE_Widget* widget = MChildren[i];
@@ -225,14 +238,17 @@ public:
 
       KODE_FRect rect = widget->getInitialRect();
 
-      if (widget->getOptions()->sizePercent) {
-        //rect.x = client.x * (rect.x * 0.01f);
-        //rect.y = client.y * (rect.y * 0.01f);
+      if (widget->options.sizePercent) {
         rect.w = client.w * (rect.w * 0.01f);
         rect.h = client.h * (rect.h * 0.01f);
       }
 
-      switch (widget->getLayout()->alignment) {
+      if (widget->options.posPercent) {
+        rect.x = client.w * (rect.x * 0.01f);
+        rect.y = client.w * (rect.y * 0.01f);
+      }
+
+      switch (widget->layout.alignment) {
 
         case KODE_WIDGET_ALIGN_NONE:
           break;
@@ -247,6 +263,21 @@ public:
           rect.y += client.y;
           break;
 
+        case KODE_WIDGET_ALIGN_CENTER:
+          rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
+          rect.y = client.y + (client.h * 0.5f) - (rect.h * 0.5f);
+          break;
+
+        //case KODE_WIDGET_ALIGN_CENTER_HORIZ:
+        //  rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
+        //  break;
+
+        //case KODE_WIDGET_ALIGN_CENTER_VERT:
+        //  rect.y += client.y + (client.h * 0.5f) - (rect.h * 0.5f);
+        //  break;
+
+        //-----
+
         case KODE_WIDGET_ALIGN_FILL_CLIENT:
           rect.x = client.x;
           rect.y = client.y;
@@ -258,8 +289,8 @@ public:
           rect.x = client.x;
           rect.y = client.y;
           rect.h = client.h;
-          client.x += (rect.w + getLayout()->spacing.x);
-          client.w -= (rect.w + getLayout()->spacing.x);
+          client.x += (rect.w + layout.spacing.x);
+          client.w -= (rect.w + layout.spacing.x);
           break;
 
         case KODE_WIDGET_ALIGN_FILL_RIGHT:
@@ -267,49 +298,26 @@ public:
           rect.y = client.y;
           rect.h = client.h;
           //client.x += (rect.w + getWidgetSpacing.x);
-          client.w -= (rect.w + getLayout()->spacing.x);
+          client.w -= (rect.w + layout.spacing.x);
           break;
 
         case KODE_WIDGET_ALIGN_FILL_TOP:
           rect.x = client.x;
           rect.y = client.y;
           rect.w = client.w;
-          client.y += (rect.h + getLayout()->spacing.y);
-          client.h -= (rect.h + getLayout()->spacing.y);
+          client.y += (rect.h + layout.spacing.y);
+          client.h -= (rect.h + layout.spacing.y);
           break;
 
         case KODE_WIDGET_ALIGN_FILL_BOTTOM:
           rect.x = client.x;
           rect.y = client.y2() - rect.h;
           rect.w = client.w;
-          //client.y += (rect.h + getLayout()->spacing.y);
-          client.h -= (rect.h + getLayout()->spacing.y);
+          //client.y += (rect.h + layout.spacing.y);
+          client.h -= (rect.h + layout.spacing.y);
           break;
 
-        case KODE_WIDGET_ALIGN_CENTER:
-          rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
-          rect.y = client.y + (client.h * 0.5f) - (rect.h * 0.5f);
-          break;
-
-        case KODE_WIDGET_ALIGN_CENTER_LEFT:
-          rect.x += client.x;
-          rect.y += client.y + (client.h * 0.5f) - (rect.h * 0.5f);
-          break;
-
-        case KODE_WIDGET_ALIGN_CENTER_RIGHT:
-          rect.x += client.x2() - rect.w;
-          rect.y += client.y + (client.h * 0.5f) - (rect.h * 0.5f);
-          break;
-
-        case KODE_WIDGET_ALIGN_CENTER_TOP:
-          rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
-          rect.y += client.y;
-          break;
-
-        case KODE_WIDGET_ALIGN_CENTER_BOTTOM:
-          rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
-          rect.y += client.y2() - rect.h;
-          break;
+        //-----
 
         case KODE_WIDGET_ALIGN_LEFT:
           rect.x += client.x;
@@ -320,33 +328,40 @@ public:
           rect.y += client.y;
           break;
 
-        //case KODE_WIDGET_ALIGN_LEFT_CENTER:
-        //  break;
+        case KODE_WIDGET_ALIGN_LEFT_CENTER:
+          rect.x += client.x;
+          rect.y += client.y + (client.h * 0.5f) - (rect.h * 0.5f);
+          break;
 
         case KODE_WIDGET_ALIGN_LEFT_BOTTOM:
           rect.x += client.x;
           rect.y += client.y2() - rect.h;
           break;
 
+        //-----
+
         case KODE_WIDGET_ALIGN_RIGHT:
           rect.x += client.x2() - rect.w;
           break;
 
+        //-----
+
         case KODE_WIDGET_ALIGN_RIGHT_TOP:
-        //  break;
-
-
           rect.x += client.x2() - rect.w;
           rect.y += client.y;
           break;
 
-        //case KODE_WIDGET_ALIGN_RIGHT_CENTER:
-        //  break;
+        case KODE_WIDGET_ALIGN_RIGHT_CENTER:
+          rect.x += client.x2() - rect.w;
+          rect.y += client.y + (client.h * 0.5f) - (rect.h * 0.5f);
+          break;
 
         case KODE_WIDGET_ALIGN_RIGHT_BOTTOM:
           rect.x += client.x2() - rect.w;
           rect.y += client.y2() - rect.h;
           break;
+
+        //-----
 
         case KODE_WIDGET_ALIGN_TOP:
           rect.y += client.y;
@@ -357,16 +372,18 @@ public:
           rect.y += client.y;
           break;
 
-        //case KODE_WIDGET_ALIGN_TOP_CENTER:
-        //  break;
-        //case KODE_WIDGET_ALIGN_LEFT_CENTER:
-        //  break;
-
+        case KODE_WIDGET_ALIGN_TOP_CENTER:
+          rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
+          rect.y += client.y;
+          break;
 
         case KODE_WIDGET_ALIGN_TOP_RIGHT:
           rect.x += client.x2() - rect.w;
           rect.y += client.y;
           break;
+
+        //-----
+
 
         case KODE_WIDGET_ALIGN_BOTTOM:
           rect.y += client.y2() - rect.h;
@@ -377,13 +394,17 @@ public:
           rect.y += client.y2() - rect.h;
           break;
 
-        //case KODE_WIDGET_ALIGN_BOTTOM_CENTER:
-        //  break;
+        case KODE_WIDGET_ALIGN_BOTTOM_CENTER:
+          rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
+          rect.y += client.y2() - rect.h;
+          break;
 
         case KODE_WIDGET_ALIGN_BOTTOM_RIGHT:
           rect.x += client.x2() - rect.w;
           rect.y += client.y2() - rect.h;
           break;
+
+        //-----
 
         //case KODE_WIDGET_STACK_HORIZ:
         //  break;

@@ -4,7 +4,7 @@
 #include "kode.h"
 #include "gui/kode_window.h"
 #include "gui/kode_surface.h"
-#include "gui/kode_image.h"
+//#include "gui/kode_image.h"
 #include "gui/kode_painter.h"
 
 //----------------------------------------------------------------------
@@ -15,7 +15,7 @@ private:
 
   KODE_Bitmap*  MBitmap   = KODE_NULL;
   KODE_Bitmap*  MBitmap2  = KODE_NULL;
-  KODE_Image*   MImage    = KODE_NULL;
+  //KODE_Image*   MImage    = KODE_NULL;
   KODE_Surface* MSurface  = KODE_NULL;
 
 public:
@@ -55,7 +55,7 @@ public:
   virtual ~myWindow() {
     if (MBitmap)  KODE_Delete MBitmap;
     if (MBitmap2) KODE_Delete MBitmap2;
-    if (MImage)   KODE_Delete MImage;
+    //if (MImage)   KODE_Delete MImage;
     if (MSurface) KODE_Delete MSurface;
   }
 

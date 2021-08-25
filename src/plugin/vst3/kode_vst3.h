@@ -7,11 +7,18 @@
 //
 //----------------------------------------------------------------------
 
+//#define KODE_DEBUG_VST3
 
 #ifdef KODE_DEBUG
-  #define KODE_VST3PRINT  KODE_PRINT
-  #define KODE_Vst3Print  KODE_Print
-  #define KODE_Vst3DPrint KODE_DPrint
+  #ifdef KODE_DEBUG_VST3
+    #define KODE_VST3PRINT  KODE_PRINT
+    #define KODE_Vst3Print  KODE_Print
+    #define KODE_Vst3DPrint KODE_DPrint
+  #else
+    #define KODE_VST3PRINT
+    #define KODE_Vst3Print  KODE_NoPrint
+    #define KODE_Vst3DPrint KODE_NoPrint
+  #endif
 #else
   #define KODE_VST3PRINT
   #define KODE_Vst3Print  KODE_NoPrint
@@ -284,6 +291,12 @@ enum KODE_Vst3MediaTypes {
 enum KODE_Vst3SymbolicSampleSizes {
   kode_vst3_Sample32,
   kode_vst3_Sample64
+};
+
+enum KODE_Vst3IoModes {
+  kode_vst3_Simple = 0,
+  kode_vst3_Advanced,
+  kode_vst3_OfflineProcessing
 };
 
 //----------------------------------------------------------------------

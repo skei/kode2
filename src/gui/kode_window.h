@@ -207,14 +207,14 @@ public:
     if (!ALeave) hover = findChild(AXpos,AYpos);
     if (hover != MHoverWidget) {
       if (MHoverWidget) {
-        MHoverWidget->MStates.hovering = false;
+        MHoverWidget->states.hovering = false;
         MHoverWidget->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
         //if (MHoverWidget->MOptions.autoMouseCursor) setMouseCursor(MHoverWidget->MMouseCursor);
       }
       if (hover) {
-        hover->MStates.hovering = true;
+        hover->states.hovering = true;
         hover->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);
-        if (hover->MOptions.autoMouseCursor) {
+        if (hover->options.autoMouseCursor) {
           setMouseCursor(hover->MCursor);
         }
       }

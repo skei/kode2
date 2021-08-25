@@ -135,12 +135,12 @@ public:
 
     //
 
-    KODE_PanelWidget* panel = KODE_New KODE_PanelWidget( KODE_FRect(0,-10, 50,25 ) );
+    KODE_PanelWidget* panel = KODE_New KODE_PanelWidget( KODE_FRect(-20,-30, 50,25 ) );
     panel->setCursor(KODE_CURSOR_PLUS);
     panel->setFillBackground(false);
     panel->setBorderColor(KODE_COLOR_WHITE);
-    panel->getOptions()->sizePercent = true;
-    panel->getLayout()->alignment = KODE_WIDGET_ALIGN_CENTER_BOTTOM;
+    panel->options.sizePercent = true;
+    panel->layout.alignment = KODE_WIDGET_ALIGN_BOTTOM_RIGHT;
     appendWidget(panel);
 
   }

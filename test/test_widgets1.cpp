@@ -39,7 +39,7 @@ public:
 
     KODE_ImageWidget* i;
     i = (KODE_ImageWidget*)appendWidget( KODE_New KODE_ImageWidget( KODE_FRect(10,85,100,100) ));
-    i->setImage(MBitmap);
+    i->setBitmap(MBitmap);
 
     //
 

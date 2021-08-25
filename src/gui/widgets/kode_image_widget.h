@@ -6,7 +6,7 @@
 #define KODE_IMAGE_WIDGET_DRAW_SURFACE  1
 #define KODE_IMAGE_WIDGET_DRAW_BITMAP   2
 
-#include "gui//kode_image.h"
+//#include "gui//kode_image.h"
 #include "gui/widgets/kode_panel_widget.h"
 
 class KODE_ImageWidget
@@ -77,15 +77,15 @@ public:
   }
 
 
-  virtual void setImage(KODE_Drawable* ATarget, KODE_Image* AImage) {
-    MDrawMode = KODE_IMAGE_WIDGET_DRAW_SURFACE;
-    MSurface = KODE_New KODE_Surface(ATarget,AImage->getWidth(),AImage->getHeight());
-    MSurfaceAllocated = true;
-    KODE_Painter* painter = KODE_New KODE_Painter(MSurface);
-    painter->drawBitmap(0,0,AImage);
-    //painter->flush();
-    KODE_Delete painter;
-  }
+  //virtual void setImage(KODE_Drawable* ATarget, KODE_Image* AImage) {
+  //  MDrawMode = KODE_IMAGE_WIDGET_DRAW_SURFACE;
+  //  MSurface = KODE_New KODE_Surface(ATarget,AImage->getWidth(),AImage->getHeight());
+  //  MSurfaceAllocated = true;
+  //  KODE_Painter* painter = KODE_New KODE_Painter(MSurface);
+  //  painter->drawBitmap(0,0,AImage);
+  //  //painter->flush();
+  //  KODE_Delete painter;
+  //}
 
   //----------
 

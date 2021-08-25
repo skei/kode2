@@ -2,7 +2,7 @@
 #define kode_saheader_widget_included
 //----------------------------------------------------------------------
 
-#include "gui//kode_image.h"
+//#include "gui//kode_image.h"
 #include "gui/widgets/kode_panel_widget.h"
 
 #include "../data/img/sa_logo_40_trans_black.h"
@@ -37,7 +37,7 @@ public:
     MBackgroundColor = KODE_Color(0.5f);
     MPluginName = AName;
     MPluginVersion = AVersion;
-    getLayout()->alignment = KODE_WIDGET_ALIGN_TOP;
+    layout.alignment = KODE_WIDGET_ALIGN_TOP;
     MBitmap = KODE_New KODE_Bitmap(sa_logo_40_trans_black,sa_logo_40_trans_black_size);
     MBitmap->premultAlpha( MBackgroundColor );
     MSurface = KODE_New KODE_Surface(ATarget,MBitmap->getWidth(),MBitmap->getHeight());

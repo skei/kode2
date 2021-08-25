@@ -26,10 +26,10 @@ public:
   virtual void  resetClip() {}
   virtual float getTextWidth(const char* AText) { return 0; }
   virtual float getTextHeight(const char* AText) { return 0; }
-  virtual void  drawLine(float AXpos1, float AYpos1, float AXpos2, float AYpos2, KODE_Color AColor) {}
-  virtual void  drawRect(KODE_FRect ARect, KODE_Color AColor) {}
+  virtual void  drawLine(float AXpos1, float AYpos1, float AXpos2, float AYpos2, KODE_Color AColor, uint32_t AWidth=1) {}
+  virtual void  drawRect(KODE_FRect ARect, KODE_Color AColor, uint32_t AWidth=1) {}
   virtual void  fillRect(KODE_FRect ARect, KODE_Color AColor) {}
-  virtual void  drawPie(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor) {}
+  virtual void  drawPie(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor, uint32_t AWidth=1) {}
   virtual void  fillPie(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor) {}
   virtual void  drawText(float AXpos, float AYpos, const char* AText, KODE_Color AColor) {}
   virtual void  drawText(KODE_FRect ARect, const char* AText, uint32_t AAlignment, KODE_Color AColor) {}

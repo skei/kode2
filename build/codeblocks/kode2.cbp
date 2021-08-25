@@ -317,6 +317,10 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="../../plugins/sa_frac_delay.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
 		<Unit filename="../../plugins/synth_template.cpp">
 			<Option compile="0" />
 			<Option link="0" />
@@ -485,7 +489,6 @@
 		<Unit filename="../../src/gfx/kode_bitmap_font.h" />
 		<Unit filename="../../src/gfx/kode_bitmap_gen.h" />
 		<Unit filename="../../src/gfx/kode_bitmap_proc.h" />
-		<Unit filename="../../src/gui/base/kode_base_image.h" />
 		<Unit filename="../../src/gui/base/kode_base_painter.h" />
 		<Unit filename="../../src/gui/base/kode_base_surface.h" />
 		<Unit filename="../../src/gui/base/kode_base_window.h" />
@@ -496,7 +499,6 @@
 		<Unit filename="../../src/gui/ctx/kode_ctx_painter.h" />
 		<Unit filename="../../src/gui/ctx/kode_ctx_utils.h" />
 		<Unit filename="../../src/gui/kode_drawable.h" />
-		<Unit filename="../../src/gui/kode_image.h" />
 		<Unit filename="../../src/gui/kode_painter.h" />
 		<Unit filename="../../src/gui/kode_surface.h" />
 		<Unit filename="../../src/gui/kode_widget.h" />
@@ -514,7 +516,6 @@
 		<Unit filename="../../src/gui/widgets/kode_text_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_value_widget.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb.h" />
-		<Unit filename="../../src/gui/xcb/kode_xcb_image.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_painter.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_surface.h" />
 		<Unit filename="../../src/gui/xcb/kode_xcb_utils.h" />

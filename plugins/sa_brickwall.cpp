@@ -1,9 +1,9 @@
 
 #define KODE_NO_GUI
 
-//#define KODE_DEBUG_PRINT_TIME
-//#define KODE_DEBUG_PRINT_THREAD
-//#define KODE_DEBUG_PRINT_SOCKET
+#define KODE_DEBUG_PRINT_TIME
+#define KODE_DEBUG_PRINT_THREAD
+#define KODE_DEBUG_PRINT_SOCKET
 
 //----------
 
@@ -56,7 +56,6 @@ class myInstance
 private:
 //------------------------------
 
-  //bool MNeedRecalc = false;
   float MLimit  = 1.0f;
   float MGain   = 1.0f;
 
@@ -68,54 +67,9 @@ public:
   : KODE_Instance(ADescriptor) {
   }
 
-  //----------
-
-  //virtual ~myInstance() {
-  //}
-
 //------------------------------
 public:
 //------------------------------
-
-  //void on_plugin_open() final {
-  //}
-
-  //----------
-
-  //void on_plugin_close() final {
-  //}
-
-  //----------
-
-  //void on_plugin_initialize() final {
-  //}
-
-  //----------
-
-  //void on_plugin_terminate() final {
-  //}
-
-  //----------
-
-  //void on_plugin_activate() final {
-  //}
-
-  //----------
-
-  //void on_plugin_deactivate() final {
-  //}
-
-  //----------
-
-  //void on_plugin_prepare(float ASamplerate, uint32_t ABlocksize) final {
-  //}
-
-  //----------
-
-  //void on_plugin_midi(uint32_t AOffset, uint8_t AMsg1, uint8_t AMsg2, uint8_t AMsg3, uint32_t AMode=0) final {
-  //}
-
-  //----------
 
   void on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) final {
     if (AIndex == 0) {
@@ -145,8 +99,6 @@ public:
       *out1++ = spl1;
     }
   }
-
-  //----------
 
 };
 
