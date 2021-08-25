@@ -1,6 +1,6 @@
 # depslib dependency file v1.0
-1629852751 source:/DISKS/sda2/code/git/kode2/build/build.cpp
-	"../test/test_widgets2.cpp"
+1629852810 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+	"../plugins/sa_frac_delay.cpp"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
 	"kode_config.h"
@@ -295,7 +295,7 @@
 
 1628640198 /DISKS/sda2/code/git/kode2/src/plugin/exe/kode_exe.h
 
-1629851739 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_instance.h
+1629854023 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_instance.h
 	"plugin/kode_editor.h"
 	"plugin/base/kode_base_instance.h"
 	"plugin/vst3/kode_vst3.h"
@@ -961,7 +961,7 @@
 	"plugin/kode_plugin.h"
 	"plugin/kode_parameters.h"
 
-1629831554 /DISKS/sda2/code/git/kode2/plugins/sa_frac_delay.cpp
+1629852989 /DISKS/sda2/code/git/kode2/plugins/sa_frac_delay.cpp
 	"kode.h"
 	"plugin/kode_plugin.h"
 	"plugin/kode_parameters.h"
