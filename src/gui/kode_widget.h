@@ -12,7 +12,7 @@
 
 //
 
-struct KODE_WidgetOptions {
+struct KODE_WidgetFlags {
 //bool active           = false;
 //bool visible          = false;
 //bool interacting      = false;
@@ -73,7 +73,7 @@ protected:
 public:
 //------------------------------
 
-  KODE_WidgetOptions  options;
+  KODE_WidgetFlags    flags;
   KODE_WidgetLayout   layout;
 
 //------------------------------
@@ -229,11 +229,11 @@ public:
     for (uint32_t i=0; i<num; i++) {
       KODE_Widget* child = MChildren[i];
       KODE_FRect rect = child->getInitialRect();
-      if (child->options.sizePercent) {
+      if (child->flags.sizePercent) {
         rect.w = client.w * (rect.w * 0.01f);
         rect.h = client.h * (rect.h * 0.01f);
       }
-      if (child->options.posPercent) {
+      if (child->flags.posPercent) {
         rect.x = client.w * (rect.x * 0.01f);
         rect.y = client.w * (rect.y * 0.01f);
       }

@@ -510,7 +510,9 @@
 		<Unit filename="../../src/gui/widgets/kode_image_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_knob_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_panel_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_range_slider_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_saheader_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_scroll_bar_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_slider_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_template_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_text_widget.h" />

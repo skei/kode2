@@ -335,7 +335,7 @@ public: // base window
     else {
       // no widget clicked
       updateHoverWidget(AXpos,AYpos,ATimeStamp);
-
+      if (MHoverWidget) MHoverWidget->on_widget_mouseMove(AXpos,AYpos,AState,ATimeStamp);
     }
     MMousePrevX = AXpos;
     MMousePrevY = AYpos;

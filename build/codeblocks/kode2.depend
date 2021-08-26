@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1629915810 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+1629977746 source:/DISKS/sda2/code/git/kode2/build/build.cpp
 	"../test/test_widgets2.cpp"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
@@ -101,7 +101,7 @@
 	<stdlib.h>
 	"kode.h"
 
-1629932124 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
+1630005958 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"gui/kode_surface.h"
@@ -227,7 +227,7 @@
 	"kode.h"
 	"gui/kode_drawable.h"
 
-1629932739 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
+1629977623 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"plugin/kode_parameter.h"
@@ -252,7 +252,7 @@
 1629755190 /DISKS/sda2/code/git/kode2/src/gui/base/kode_base_window.h
 	"kode.h"
 
-1628641077 /DISKS/sda2/code/git/kode2/src/plugin/kode_descriptor.h
+1630013686 /DISKS/sda2/code/git/kode2/src/plugin/kode_descriptor.h
 	"plugin/kode_parameter.h"
 	"plugin/kode_program.h"
 
@@ -334,7 +334,7 @@
 	"plugin/kode_plugin.h"
 	"plugin/kode_process_context.h"
 
-1629418031 /DISKS/sda2/code/git/kode2/src/gui/kode_widgets.h
+1630003656 /DISKS/sda2/code/git/kode2/src/gui/kode_widgets.h
 	"gui/widgets/kode_template_widget.h"
 	"gui/widgets/kode_button_widget.h"
 	"gui/widgets/kode_cached_widget.h"
@@ -342,7 +342,8 @@
 	"gui/widgets/kode_image_widget.h"
 	"gui/widgets/kode_knob_widget.h"
 	"gui/widgets/kode_panel_widget.h"
-	"gui/widgets/kode_saheader_widget.h"
+	"gui/widgets/kode_range_slider_widget.h"
+	"gui/widgets/kode_scroll_bar_widget.h"
 	"gui/widgets/kode_slider_widget.h"
 	"gui/widgets/kode_text_widget.h"
 	"gui/widgets/kode_value_widget.h"
@@ -906,7 +907,7 @@
 	"plugin/kode_plugin.h"
 	"plugin/vst3/kode_vst3_instance.h"
 
-1629932489 /DISKS/sda2/code/git/kode2/test/test_widgets2.cpp
+1630004995 /DISKS/sda2/code/git/kode2/test/test_widgets2.cpp
 	"kode.h"
 	"plugin/kode_plugin.h"
 	"gui/kode_widgets.h"
@@ -969,4 +970,10 @@
 1629834064 /DISKS/sda2/code/git/kode2/plugins/sa_brickwall.cpp
 	"kode.h"
 	"plugin/kode_plugin.h"
+
+1629999707 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_scroll_bar_widget.h
+	"gui/kode_widget.h"
+
+1630006782 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_range_slider_widget.h
+	"gui/kode_widget.h"
 

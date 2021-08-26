@@ -101,6 +101,8 @@ public:
   myEditor(KODE_BaseInstance* AInstance, void* AParent=KODE_NULL)
   : KODE_Editor(AInstance,AParent) {
 
+    setTitle("test_widgets2");
+
     setFillBackground();
 
     // colors
@@ -141,6 +143,7 @@ public:
     // sliders
 
     KODE_SliderWidget* slider1 = KODE_New KODE_SliderWidget( KODE_FRect( 170, 280, 256, 20 ) );
+    slider1->setValue(0.2);
     slider1->setText("Slider 1");
     slider1->setDrawLabel();
     slider1->setLabel("db");
@@ -150,6 +153,7 @@ public:
     appendWidget(slider1);
 
     KODE_SliderWidget* slider2 = KODE_New KODE_SliderWidget( KODE_FRect( 170, 305, 256, 20 ) );
+    slider2->setValue(0.7);
     slider2->setText("Slider Two");
     slider2->setBackgroundColor(KODE_COLOR_DARK_RED);
     slider2->setValueBarColor(KODE_COLOR_RED);
@@ -160,6 +164,7 @@ public:
     appendWidget(slider2);
 
     KODE_SliderWidget* slider3 = KODE_New KODE_SliderWidget( KODE_FRect( 170, 330, 256, 20 ) );
+    slider3->setValue(0.4);
     slider3->setText("Slider 3");
     slider3->setAutoHideCursor(true);
     slider3->setAutoGrabCursor(true);
@@ -180,15 +185,39 @@ public:
     button2->setIsToggle();
     appendWidget(button2);
 
+    // scrollbar
+
+    KODE_ScrollBarWidget* scrollbar1 = KODE_New KODE_ScrollBarWidget( KODE_FRect( 470, 10, 220, 20 ) );
+    appendWidget(scrollbar1);
+
+    KODE_ScrollBarWidget* scrollbar2 = KODE_New KODE_ScrollBarWidget( KODE_FRect( 440, 40, 20,220 ) );
+    scrollbar2->setDirection(KODE_VERTICAL);
+    appendWidget(scrollbar2);
+
+    // range sloder
+
+    KODE_RangeSliderWidget* rangeslider1 = KODE_New KODE_RangeSliderWidget( KODE_FRect( 470, 40, 220, 20 ) );
+    rangeslider1->setValue(0.25);
+    rangeslider1->setValue2(0.75);
+    appendWidget(rangeslider1);
+
     //
 
-    KODE_PanelWidget* panel = KODE_New KODE_PanelWidget( KODE_FRect(0,-10,50,25) );
-    panel->setCursor(KODE_CURSOR_PLUS);
-    panel->setFillBackground(false);
-    panel->setBorderColor(KODE_COLOR_WHITE);
-    panel->options.sizePercent = true;
-    panel->layout.alignment = KODE_WIDGET_ALIGN_BOTTOM_CENTER;
-    appendWidget(panel);
+    KODE_PanelWidget* panel1 = KODE_New KODE_PanelWidget( KODE_FRect(0,-10,50,25) );
+    panel1->setCursor(KODE_CURSOR_PLUS);
+    panel1->setFillBackground(false);
+    panel1->setBorderColor(KODE_COLOR_WHITE);
+    panel1->flags.sizePercent = true;
+    panel1->layout.alignment = KODE_WIDGET_ALIGN_BOTTOM_CENTER;
+    appendWidget(panel1);
+
+    KODE_PanelWidget* panel2 = KODE_New KODE_PanelWidget( KODE_FRect(-10,10,50,25) );
+    panel2->setCursor(KODE_CURSOR_ARROWDIAGLEFT);
+    panel2->setFillBackground(true);
+    panel2->setBackgroundColor(KODE_COLOR_DARK_GREEN);
+    panel2->flags.sizePercent = true;
+    panel2->layout.alignment = KODE_WIDGET_ALIGN_TOP_RIGHT;
+    panel1->appendWidget(panel2);
 
     //
 

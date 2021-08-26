@@ -143,7 +143,7 @@ public:
 
   //----------
 
-  KODE_PluginPort* appendInput(KODE_PluginPort* AInput) {
+  KODE_PluginPort* appendInput(KODE_PluginPort* AInput, uint32_t ABus=0) {
     AInput->isInput = true;
     MInputs.append(AInput);
     return AInput;
@@ -151,7 +151,7 @@ public:
 
   //----------
 
-  KODE_PluginPort* appendOutput(KODE_PluginPort* AOutput) {
+  KODE_PluginPort* appendOutput(KODE_PluginPort* AOutput, uint32_t ABus=0) {
     AOutput->isInput = false;
     MOutputs.append(AOutput);
     return AOutput;
