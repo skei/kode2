@@ -1,11 +1,10 @@
 
 #define KODE_GUI_XCB
-
 #define KODE_DEBUG_PRINT_TIME
 #define KODE_DEBUG_PRINT_THREAD
 
 //nc -U -l -k /tmp/kode.socket
-//#define KODE_DEBUG_PRINT_SOCKET
+#define KODE_DEBUG_PRINT_SOCKET
 
 //----------
 
@@ -200,6 +199,12 @@ public:
     rangeslider1->setValue(0.25);
     rangeslider1->setValue2(0.75);
     appendWidget(rangeslider1);
+
+    // grid
+
+    KODE_GridWidget* grid1 = KODE_New KODE_GridWidget( KODE_FRect( 470, 70, 220, 200 ) );
+    appendWidget(grid1);
+
 
     //
 
