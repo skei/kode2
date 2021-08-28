@@ -96,10 +96,11 @@
 	"base/kode_const.h"
 	"base/utils/kode_math.h"
 
-1612057072 /DISKS/sda2/code/git/kode2/src/base/utils/kode_math.h
+1630106552 /DISKS/sda2/code/git/kode2/src/base/utils/kode_math.h
 	<math.h>
 	<stdlib.h>
 	"kode.h"
+	"base/utils/kode_math.h"
 
 1630005958 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
 	"kode.h"
@@ -334,11 +335,12 @@
 	"plugin/kode_plugin.h"
 	"plugin/kode_process_context.h"
 
-1630003656 /DISKS/sda2/code/git/kode2/src/gui/kode_widgets.h
+1630068239 /DISKS/sda2/code/git/kode2/src/gui/kode_widgets.h
 	"gui/widgets/kode_template_widget.h"
 	"gui/widgets/kode_button_widget.h"
 	"gui/widgets/kode_cached_widget.h"
 	"gui/widgets/kode_drag_value_widget.h"
+	"gui/widgets/kode_grid_widget.h"
 	"gui/widgets/kode_image_widget.h"
 	"gui/widgets/kode_knob_widget.h"
 	"gui/widgets/kode_panel_widget.h"
@@ -907,7 +909,7 @@
 	"plugin/kode_plugin.h"
 	"plugin/vst3/kode_vst3_instance.h"
 
-1630004995 /DISKS/sda2/code/git/kode2/test/test_widgets2.cpp
+1630069238 /DISKS/sda2/code/git/kode2/test/test_widgets2.cpp
 	"kode.h"
 	"plugin/kode_plugin.h"
 	"gui/kode_widgets.h"
@@ -975,5 +977,9 @@
 	"gui/kode_widget.h"
 
 1630006782 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_range_slider_widget.h
+	"gui/kode_widget.h"
+
+1630109715 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_grid_widget.h
+	"base/utils/kode_math.h"
 	"gui/kode_widget.h"
 

@@ -507,6 +507,7 @@
 		<Unit filename="../../src/gui/widgets/kode_button_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_cached_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_drag_value_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_grid_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_image_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_knob_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_panel_widget.h" />
