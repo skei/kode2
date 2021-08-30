@@ -56,6 +56,7 @@ public:
   KODE_DragValueWidget(KODE_FRect ARect)
   : KODE_ValueWidget(ARect) {
     setName("KODE_DragValueWidget");
+    setHint("dragvalue");
     //options.autoMouseCursor   = false; // we handle it ourselves (on_enter)
     //options.autoMouseHide     = false;
     //options.autoMouseCapture  = false;
@@ -210,10 +211,12 @@ public:
           break;
       }
     }
+    if (flags.autoHint) do_widget_setHint(this,getHint());
   }
 
   //void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo, uint32_t ATimeStamp=0) final {
   //  do_widget_setMouseCursor(this,KODE_CURSOR_DEFAULT);
+  //  do_widget_setHint(this,"");
   //}
 
 //------------------------------

@@ -39,7 +39,7 @@ protected:
   int32_t     MHoverEdge        = -1;
   bool        MIsDragging1      = false;
   bool        MIsDragging2      = false;
-  uint32_t    MEdgeDistance     = 3;
+  int32_t     MEdgeDistance     = 3;
 
 //------------------------------
 public:
@@ -48,6 +48,7 @@ public:
   KODE_RangeSliderWidget(KODE_FRect ARect)
   : KODE_Widget(ARect) {
     setName("KODE_RangeSliderWidget");
+    setHint("rangeslider");
   }
 
 //------------------------------
@@ -64,28 +65,47 @@ public:
   virtual void findHoverEdge(float AXpos) {
     KODE_FRect mrect = getRect();
     float v = (AXpos - mrect.x) / mrect.w;
-    float d1 = fabs(getValue() - v);
-    float d2 = fabs(getValue2() - v);
-    float d;
+    float d1 = v - getValue();
+    float d2 = v - getValue2();
+    int32_t d = 0;
     int32_t prev = MHoverEdge;
-    if (d1 <= d2) {
+    MHoverEdge = -1;
+    //const char* hint = "";
+    if (fabs(d1) <= fabs(d2)) {
       d = d1 * mrect.w;
-      if (d <= MEdgeDistance) MHoverEdge = 0;
-      else MHoverEdge = -1;
+      if (d <= -MEdgeDistance) {
+        //hint = "PgDn";
+      }
+      else if (d >=  MEdgeDistance) {
+        //hint = "left thumb";
+      }
+      else {
+        MHoverEdge = 0;
+        //hint = "left";
+      }
     }
     else {
       d = d2 * mrect.w;
-      if (d <= MEdgeDistance) MHoverEdge = 1;
-      else MHoverEdge = -1;
+      if (d <= -MEdgeDistance) {
+        //hint = "right thumb";
+      }
+      else if (d >=  MEdgeDistance) {
+        //hint = "PgUp";
+      }
+      else {
+        MHoverEdge = 1;
+        //hint = "right";
+      }
     }
+
     if (MHoverEdge != prev) {
+      //do_widget_setHint(this,hint);
       do_widget_redraw(this,mrect,0);
       if (MHoverEdge >= 0) {
         do_widget_setMouseCursor(this,KODE_CURSOR_ARROWLEFTRIGHT);
       }
       else {
         do_widget_setMouseCursor(this,KODE_CURSOR_DEFAULT);
-        //MHoverEdge = -1;
       }
     }
   }
@@ -191,6 +211,7 @@ public:
 
   void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom, uint32_t ATimeStamp=0) final {
     findHoverEdge(AXpos);
+    if (flags.autoHint) do_widget_setHint(this,getHint());
   }
 
   //----------
@@ -201,6 +222,7 @@ public:
       do_widget_redraw(this,getRect(),0);
       do_widget_setMouseCursor(this,KODE_CURSOR_DEFAULT);
     }
+    if (flags.autoHint) do_widget_setHint(this,"");
   }
 
 };

@@ -23,7 +23,7 @@ public:
 
 public:
 
-  virtual char* getDisplayText(float AValue, char* buffer) {
+  virtual char* getDisplayString(float AValue, char* buffer) override {
     int32_t i = floorf(from01(AValue));
     KODE_Strcpy(buffer,MStrings[i]);
     return buffer;

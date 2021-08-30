@@ -25,6 +25,7 @@ public:
   KODE_SliderWidget(KODE_FRect ARect)
   : KODE_DragValueWidget(ARect) {
     setName("KODE_SliderWidget");
+    setHint("slider");
     MDrawBorder       = true;
     MBackgroundColor  = KODE_Color( 0.7,  0.7,  0.7 );
     MTextColor        = KODE_Color( 0,    0,    0   );

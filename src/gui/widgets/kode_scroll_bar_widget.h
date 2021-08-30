@@ -33,7 +33,7 @@ public:
   KODE_ScrollBarWidget(KODE_FRect ARect)
   : KODE_Widget(ARect) {
     setName("KODE_ScrollBarWidget");
-    //setHint("Scrollbar");
+    setHint("scrollbar");
     //if (AVertical) setFlag(KODE_WIDGET_VERTICAL);
   }
 
@@ -227,20 +227,20 @@ public:
     }
   }
 
-  void on_widget_keyPress(uint32_t AKey, char AChar, uint32_t AState, uint32_t ATimeStamp=0) final {
-  }
-
-  void on_widget_keyRelease(uint32_t AKey, char AChar, uint32_t AState, uint32_t ATimeStamp=0) final {
-  }
-
-  void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom, uint32_t ATimeStamp=0) final {
-  }
-
-  void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo, uint32_t ATimeStamp=0) final {
-  }
-
-  void on_widget_connect(KODE_Parameter* AParameter, uint32_t ASubIndex) final {
-  }
+//  void on_widget_keyPress(uint32_t AKey, char AChar, uint32_t AState, uint32_t ATimeStamp=0) final {
+//  }
+//
+//  void on_widget_keyRelease(uint32_t AKey, char AChar, uint32_t AState, uint32_t ATimeStamp=0) final {
+//  }
+//
+//  void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom, uint32_t ATimeStamp=0) final {
+//  }
+//
+//  void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo, uint32_t ATimeStamp=0) final {
+//  }
+//
+//  void on_widget_connect(KODE_Parameter* AParameter, uint32_t ASubIndex) final {
+//  }
 
 };
 

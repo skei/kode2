@@ -20,6 +20,7 @@ public:
   // AValue = 0..1
 
   char* getDisplayString(float AValue, char* buffer) override {
+    KODE_PRINT;
     sprintf(buffer,"%i",(int)from01(AValue));
     return buffer;
   }

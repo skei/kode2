@@ -201,6 +201,15 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="../../demo/demo_gui.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../demo/demo_gui/bottom_panel.h" />
+		<Unit filename="../../demo/demo_gui/left_panel.h" />
+		<Unit filename="../../demo/demo_gui/main_panel.h" />
+		<Unit filename="../../demo/demo_gui/right_panel.h" />
+		<Unit filename="../../demo/demo_gui/top_panel.h" />
 		<Unit filename="../../doc/doxygen.cfg" />
 		<Unit filename="../../doc/license.txt" />
 		<Unit filename="../../doc/makedocs.sh" />
@@ -508,12 +517,18 @@
 		<Unit filename="../../src/gui/widgets/kode_cached_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_drag_value_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_grid_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_group_box_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_image_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_keyboard_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_knob_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_menu_item_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_menu_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_panel_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_range_slider_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_saheader_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_scroll_bar_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_selector_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_sizer_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_slider_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_template_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_text_widget.h" />

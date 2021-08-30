@@ -1,10 +1,16 @@
 
 // nc -U -l -k /tmp/kode.socket
 //#define KODE_DEBUG_PRINT_SOCKET
-
 //#define KODE_DEBUG_PRINT_THREAD
 //#define KODE_DEBUG_PRINT_TIME
 
+//----------------------------------------------------------------------
+//
+// demo
+//
+//----------------------------------------------------------------------
+
+#include "../demo/demo_gui.cpp"
 
 //----------------------------------------------------------------------
 //
@@ -18,8 +24,7 @@
 //#include "../test/test_gui3.cpp"
 //#include "../test/test_plugin1.cpp"
 //#include "../test/test_widgets1.cpp"
-
-#include "../test/test_widgets2.cpp"        // !!!!!
+//#include "../test/test_widgets2.cpp"
 
 //----------------------------------------------------------------------
 //

@@ -40,6 +40,7 @@ public:
   KODE_ValueWidget(KODE_FRect ARect)
   : KODE_TextWidget(ARect) {
     setName("KODE_ValueWidget");
+    setHint("value");
   }
 
   virtual ~KODE_ValueWidget() {
@@ -82,24 +83,36 @@ public:
 //------------------------------
 
   virtual void drawValueText(KODE_BasePainter* APainter) {
+
     if (MDrawValueText) {
-      KODE_FRect  value_rect  = getRect();
-      KODE_FRect  label_rect  = getRect();
-      float       value       = getValue();
-      const char* label       = MLabel;
-      if (getParameterPtr()) {
-        value = getParameterPtr()->from01(value);
-        label = getParameterPtr()->getLabel();
+
+      float value = getValue();
+      const char*     label = "";
+
+      KODE_Parameter* param = getParameterPtr();
+
+      if (param) {
+        label = param->getLabel();
+        param->getDisplayString(value,MValueText);
       }
+      else {
+        label = MLabel;
+        KODE_FloatToString(MValueText,value);
+      }
+
+      KODE_FRect value_rect = getRect();
+      KODE_FRect label_rect = getRect();
+
       value_rect.shrink(MValueTextOffset);
       label_rect.shrink(MValueTextOffset);
+
       if (MDrawLabel) {
         float width = APainter->getTextWidth(label);
         label_rect.x = value_rect.x2() - width;
         label_rect.w = width;
         value_rect.w -= (width + KODE_VALUE_WIDGET_LABEL_SPACE);
       }
-      KODE_FloatToString(MValueText,value);
+
       if (MDrawValueText) {
         APainter->drawText(value_rect,MValueText,MValueTextAlignment,MValueTextColor);
       }

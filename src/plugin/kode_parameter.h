@@ -92,6 +92,7 @@ public:
   //----------
 
   virtual char* getDisplayString(float AValue, char* ABuffer) {
+    //KODE_PRINT;
     float value = from01(AValue);
     KODE_FloatToString(ABuffer,value);
     return ABuffer;

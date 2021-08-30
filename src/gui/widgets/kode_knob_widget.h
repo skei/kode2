@@ -39,6 +39,8 @@ public:
 
   KODE_KnobWidget(KODE_FRect ARect)
   : KODE_DragValueWidget(ARect) {
+    setName("KODE_KnobWidget");
+    setHint("knob");
     setFillBackground(false);
     setDrawBorder(false);
     //MKnobSize = ARect.w * 0.2f;

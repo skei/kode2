@@ -25,7 +25,8 @@ public:
 
   KODE_TextWidget(KODE_FRect ARect)
   : KODE_PanelWidget(ARect) {
-    setName("KODE_SliderWidget");
+    setName("KODE_TextWidget");
+    setHint("text");
     MDrawBorder = false;
   }
 
@@ -56,7 +57,15 @@ public:
     KODE_FRect rect = getRect();
     rect.shrink(MTextOffset);
     if (MDrawText) {
-      APainter->drawText(rect,MText,MTextAlignment,MTextColor);
+
+      KODE_Parameter* param = getParameterPtr();
+      if (param) {
+        APainter->drawText(rect,param->getName(),MTextAlignment,MTextColor);
+      }
+      else {
+        APainter->drawText(rect,MText,MTextAlignment,MTextColor);
+      }
+
     }
   }
 

@@ -34,6 +34,7 @@ public:
   KODE_ImageWidget(KODE_FRect ARect)
   : KODE_PanelWidget(ARect) {
     setName("KODE_ImageWidget");
+    setHint("image");
     MFillBackground = false;
     MDrawBorder = false;
   }
@@ -101,10 +102,10 @@ public:
 
   //----------
 
-  virtual void setImage(KODE_Drawable* ATarget, uint8_t* ABuffer, uint32_t ASize) {
+  virtual void setImage(KODE_Drawable* ATarget, uint8_t* ABuffer, uint32_t ASize, KODE_Color ABackground) {
     MDrawMode = KODE_IMAGE_WIDGET_DRAW_SURFACE;
     KODE_Bitmap* bitmap = KODE_New KODE_Bitmap(ABuffer,ASize);
-    bitmap->premultAlpha();
+    bitmap->premultAlpha( (uint32_t)ABackground );
     setImage(ATarget,bitmap);
     KODE_Delete bitmap;
   }

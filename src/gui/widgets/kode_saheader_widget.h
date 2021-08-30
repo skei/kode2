@@ -2,10 +2,7 @@
 #define kode_saheader_widget_included
 //----------------------------------------------------------------------
 
-//#include "gui//kode_image.h"
 #include "gui/widgets/kode_panel_widget.h"
-
-#include "../data/img/sa_logo_40_trans_black.h"
 
 //----------
 
@@ -16,52 +13,71 @@ class KODE_SAHeaderWidget
 private:
 //------------------------------
 
-  const char* MPluginName = "";
-  const char* MPluginVersion = "";
-  KODE_Color  MNameColor = KODE_COLOR_BLACK;
-  KODE_Color  MVersionColor = KODE_COLOR_DARK_GRAY;
-
-  KODE_Bitmap*  MBitmap   = KODE_NULL;
-  KODE_Surface* MSurface  = KODE_NULL;
-  KODE_Painter* MPainter  = KODE_NULL;
+  KODE_ImageWidget* MLogoImage      = KODE_NULL;
+  KODE_TextWidget*  MPluginName     = KODE_NULL;
+  KODE_TextWidget*  MPluginVersion  = KODE_NULL;
 
 //------------------------------
 public:
 //------------------------------
 
-  KODE_SAHeaderWidget(KODE_FRect ARect, const char* AName, const char* AVersion, KODE_Drawable* ATarget)
+  KODE_SAHeaderWidget(KODE_FRect ARect/*, const char* AName, const char* AVersion, KODE_Drawable* ATarget*/)
   : KODE_PanelWidget(ARect) {
+
     setName("KODE_SAHeaderWidget");
-    MFillBackground = false;
-    MDrawBorder = false;
-    MBackgroundColor = KODE_Color(0.5f);
-    MPluginName = AName;
-    MPluginVersion = AVersion;
-    layout.alignment = KODE_WIDGET_ALIGN_TOP;
-    MBitmap = KODE_New KODE_Bitmap(sa_logo_40_trans_black,sa_logo_40_trans_black_size);
-    MBitmap->premultAlpha( MBackgroundColor );
-    MSurface = KODE_New KODE_Surface(ATarget,MBitmap->getWidth(),MBitmap->getHeight());
-    KODE_Painter* painter = KODE_New KODE_Painter(MSurface);
-    painter->uploadBitmap(0,0,MBitmap);
+    setHint("saheader");
+    layout.innerBorder = 10;
+    layout.spacing = KODE_FPoint(10,0);
+
+    MLogoImage = KODE_New KODE_ImageWidget( KODE_FRect(40,40) );
+    MLogoImage->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    appendWidget(MLogoImage);
+
+    MPluginName = KODE_New KODE_TextWidget( KODE_FRect(200,16) );
+    MPluginName->layout.alignment = KODE_WIDGET_ALIGN_TOP_LEFT;
+    MPluginName->setText("plugin");
+    MPluginName->setTextColor(KODE_COLOR_BLACK);
+    MPluginName->setFillBackground(false);
+    appendWidget(MPluginName);
+
+    MPluginVersion  = KODE_New KODE_TextWidget( KODE_FRect(200,16) );
+    MPluginVersion->layout.alignment = KODE_WIDGET_ALIGN_TOP_LEFT;
+    MPluginVersion->setText("v0.0.1");
+    MPluginVersion->setTextColor(KODE_COLOR_DARK_GRAY);
+    MPluginVersion->setFillBackground(false);
+    appendWidget(MPluginVersion);
+
   }
 
-  virtual ~KODE_SAHeaderWidget() {
-    KODE_Delete MPainter;
-    KODE_Delete MSurface;
-    KODE_Delete MBitmap;
-  }
+//  virtual ~KODE_SAHeaderWidget() {
+//  }
 
 //------------------------------
 public:
 //------------------------------
 
-  void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) final {
-    fillBackground(APainter);
-    APainter->drawBitmap( getRect().x,      getRect().y,      MSurface );
-    APainter->drawText(   getRect().x + 50, getRect().y + 17, MPluginName, MNameColor );
-    APainter->drawText(   getRect().x + 50, getRect().y + 31, MPluginVersion, MVersionColor );
-    drawBorder(APainter);
+  virtual void setImage(KODE_Drawable* ATarget, uint8_t* ABuffer, uint32_t ASize,KODE_Color ABackground) {
+    MLogoImage->setImage(ATarget,ABuffer,ASize,ABackground);
   }
+
+  virtual void setPluginName(const char* AText) {
+    MPluginName->setText(AText);
+  }
+
+  virtual void setPluginNameColor(KODE_Color AColor) {
+    MPluginName->setTextColor(AColor);
+  }
+
+  virtual void setPluginVersion(const char* AText) {
+    MPluginVersion->setText(AText);
+  }
+
+  virtual void setPluginVersionColor(KODE_Color AColor) {
+    MPluginVersion->setTextColor(AColor);
+  }
+
+//  void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) final {
+//  }
 
 //------------------------------
 public:

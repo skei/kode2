@@ -16,10 +16,12 @@
 */
 
 #include "base/utils/kode_math.h"
-#include "gui/kode_widget.h"
+//#include "gui/kode_widget.h"
+#include "gui/widgets/kode_panel_widget.h"
 
 class KODE_GridWidget
-: public KODE_Widget {
+//: public KODE_Widget {
+: public KODE_PanelWidget {
 
 //------------------------------
 private:
@@ -44,22 +46,25 @@ protected:
   bool        MSelectCell           = true;
   bool        MSelectMultipleCells  = true;
 
-  bool        MFillBackground       = false;
   bool        MDrawCells            = true;
   bool        MDrawHorizontalLines  = true;
   bool        MDrawVerticalLines    = true;
 
-  KODE_Color  MBackgroundColor      = KODE_COLOR_GRAY;
   KODE_Color  MGridColor            = KODE_COLOR_DARK_GRAY;
+
+  //bool        MFillBackground       = false;
+  //KODE_Color  MBackgroundColor      = KODE_COLOR_GRAY;
 
 //------------------------------
 public:
 //------------------------------
 
   KODE_GridWidget(KODE_FRect ARect)
-  : KODE_Widget(ARect) {
+  //: KODE_Widget(ARect) {
+  : KODE_PanelWidget(ARect) {
+
     setName("KODE_GridWidget");
-    setName("KODE_GridWidget");
+    setHint("grid");
     setNumCells(8,8);
   }
 
@@ -144,11 +149,15 @@ public:
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) final {
     KODE_FRect mrect = getRect();
+
+    // background
+    //if (MFillBackground) APainter->fillRect(getRect(),MBackgroundColor);
+    fillBackground(APainter);
+
     if ((MNumColumns > 0) && (MNumRows > 0)) {
       float xcell = ( mrect.w / (float)MNumColumns );
       float ycell = ( mrect.h / (float)MNumRows );
-      // background
-      if (MFillBackground) APainter->fillRect(getRect(),MBackgroundColor);
+
       // cells
       if (MDrawCells) {
         for (int32_t xx=0; xx<MNumColumns; xx++) {
@@ -163,6 +172,7 @@ public:
           }
         }
       }
+
       // grid-lines
       float x = mrect.x + xcell - 1;
       float y = mrect.y + ycell - 1;
@@ -182,6 +192,7 @@ public:
           }
         }
       }
+
       // selected cell(s)
       if ((MSelectedX >= 0) && (MSelectedY >= 0)) {
         x = xcell * MSelectedX;
@@ -194,7 +205,13 @@ public:
         y  += mrect.y;
         APainter->drawRect( KODE_FRect(x,y,ww,hh), KODE_COLOR_WHITE );
       }
+
     }
+
+    // border
+    //if (MDrawBorder) APainter->drawRect(getRect(),MBorderColor);
+    drawBorder(APainter);
+
   }
 
   //----------

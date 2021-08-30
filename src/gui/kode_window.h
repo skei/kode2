@@ -26,6 +26,9 @@ class KODE_Window
 protected:
 //------------------------------
 
+  bool          MFillBackground         = false;
+  KODE_Color    MBackgroundColor        = KODE_Color(0.5f);
+
   // painted
 
   uint32_t      MWindowWidth            = 0;  // overrides xcbWindow
@@ -41,7 +44,8 @@ protected:
   KODE_Surface* MBufferSurface          = KODE_NULL;
   #endif
 
-  KODE_Widget*  MEnteredWidget = KODE_NULL;
+  // status
+
   KODE_Widget*  MHoverWidget            = KODE_NULL;
   KODE_Widget*  MModalWidget            = KODE_NULL;
 
@@ -49,6 +53,8 @@ protected:
   KODE_Widget*  MMouseCapturedWidget    = KODE_NULL;
   KODE_Widget*  MKeyCapturedWidget      = KODE_NULL;
 
+  int32_t       MMouseX                 = 0;
+  int32_t       MMouseY                 = 0;
   int32_t       MMousePrevX             = 0;
   int32_t       MMousePrevY             = 0;
   int32_t       MMouseClickedX          = 0;
@@ -58,13 +64,6 @@ protected:
   int32_t       MMouseDragX             = 0;
   int32_t       MMouseDragY             = 0;
   uint32_t      MPrevClickTime          = 0;
-
-  bool          MFillBackground         = false;
-  KODE_Color    MBackgroundColor        = KODE_Color(0.5f);
-
-//------------------------------
-protected:
-//------------------------------
 
 //------------------------------
 public:
@@ -128,7 +127,7 @@ public: // window
 //------------------------------
 
   void open() override {
-    alignChildren(this);
+    alignChildren(/*this*/);
     KODE_ImplementedWindow::open();
     //#ifndef KODE_PLUGIN_EXE
     //  //on_window_paint(0,0,MWindowWidth,MWindowHeight);
@@ -194,28 +193,26 @@ public:
     MWindowHeight = AHeight;
     MRect.w = AWidth;
     MRect.h = AHeight;
-    alignChildren(this);
+    alignChildren(/*this*/);
     //if (MWindowPainter) MWindowPainter->resize(AWidth,AHeight);
   }
 
   //----------
 
-  /*
-    AMode:
-    0 - NORMAL normal
-    1 - UPDATE unknown 'from', force updat
-    2 - LEAVE  leaving window
-
-  */
-
   void updateHoverWidget(uint32_t AXpos, uint32_t AYpos, uint32_t ATimeStamp=0) {
+
     KODE_Widget* hover = KODE_NULL;
-    hover = findChild(AXpos,AYpos);
+
+    if (MModalWidget) hover = MModalWidget->findChild(AXpos,AYpos);
+    else hover = findChild(AXpos,AYpos);
+
     if (hover) {
       if (hover != MHoverWidget) {
         if (MHoverWidget) MHoverWidget->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
-        MHoverWidget = hover;
-        MHoverWidget->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);
+        if (hover->flags.active) {
+          MHoverWidget = hover;
+          MHoverWidget->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);
+        }
       }
     }
     else {
@@ -229,13 +226,20 @@ public:
   //----------
 
   void releaseHoverWidget(KODE_Widget* AClicked, uint32_t AXpos, uint32_t AYpos, uint32_t ATimeStamp=0) {
-    KODE_Widget* hover = findChild(AXpos,AYpos);
+
+    KODE_Widget* hover = KODE_NULL;
+
+    if (MModalWidget) hover = MModalWidget->findChild(AXpos,AYpos);
+    else hover = findChild(AXpos,AYpos);
+
     if (hover != AClicked) {
       AClicked->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
     }
     if (hover) {
-      hover->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);
-      MHoverWidget = hover;
+      if (hover->flags.active) {
+        hover->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);
+        MHoverWidget = hover;
+      }
     }
     else {
       MHoverWidget = KODE_NULL;
@@ -290,9 +294,11 @@ public: // base window
     MMouseDragX     = AXpos;
     MMouseDragY     = AYpos;
     if (MHoverWidget) {
-      grabMouseCursor();
-      MMouseClickedWidget = MHoverWidget;
-      MMouseClickedWidget->on_widget_mouseClick(AXpos,AYpos,AButton,AState,ATimeStamp);
+      if (MHoverWidget->flags.active) {
+        grabMouseCursor();
+        MMouseClickedWidget = MHoverWidget;
+        MMouseClickedWidget->on_widget_mouseClick(AXpos,AYpos,AButton,AState,ATimeStamp);
+      }
     }
   }
 
@@ -313,7 +319,12 @@ public: // base window
   //----------
 
   void on_window_mouseMove(int32_t AXpos, int32_t AYpos, uint32_t AState, uint32_t ATimeStamp) override {
+
+    MMouseX = AXpos;
+    MMouseY = AYpos;
+
     if (MMouseClickedWidget) {
+
       if (MMouseCapturedWidget) {
         if ((AXpos == MMouseClickedX) && (AYpos == MMouseClickedY)) {
           MMousePrevX = AXpos;
@@ -327,16 +338,18 @@ public: // base window
         MMouseClickedWidget->on_widget_mouseMove(MMouseDragX,MMouseDragY,AState,ATimeStamp);
         setMouseCursorPos(MMouseClickedX,MMouseClickedY);
       }
-      else {
-        // no captured widgets
+
+      else { // no captured widgets
         MMouseClickedWidget->on_widget_mouseMove(AXpos,AYpos,AState,ATimeStamp);
       }
+
     }
-    else {
-      // no widget clicked
+
+    else { // no widget clicked
       updateHoverWidget(AXpos,AYpos,ATimeStamp);
       if (MHoverWidget) MHoverWidget->on_widget_mouseMove(AXpos,AYpos,AState,ATimeStamp);
     }
+
     MMousePrevX = AXpos;
     MMousePrevY = AYpos;
   }
@@ -345,10 +358,8 @@ public: // base window
 
   void on_window_enter(int32_t AXpos, int32_t AYpos, uint32_t ATimeStamp) override {
     if (!MMouseClickedWidget) {
-
       MHoverWidget = KODE_NULL;
       updateHoverWidget(AXpos,AYpos,ATimeStamp);
-
       //on_widget_enter(AXpos,AYpos,KODE_NULL);
     }
   }
@@ -359,10 +370,8 @@ public: // base window
 
   void on_window_leave(int32_t AXpos, int32_t AYpos, uint32_t ATimeStamp) override {
     if (!MMouseClickedWidget) {
-
       //MHoverWidget = KODE_NULL;
       updateHoverWidget(AXpos,AYpos,ATimeStamp);
-
       //on_widget_leave(AXpos,AYpos,KODE_NULL);
     }
   }
@@ -386,29 +395,6 @@ public: // base window
 public: // "widget listener"
 //------------------------------
 
-  //void do_widget_moved(KODE_Widget* AWidget, uint32_t AXdelta, uint32_t AYdelta) override {
-  //}
-
-  //----------
-
-  /*
-    widget has been resized
-    notify parent of widget, and realign/redraw
-  */
-
-  //void do_resized(KODE_Widget* ASender, float AWidth, float AHeight) override {
-  //  KODE_Widget* parent = ASender->getParent();
-  //  if (parent) {
-  //    parent->on_realign(); // realignChildren();
-  //    do_redraw(parent,parent->getRect());
-  //  }
-  //}
-
-  //void do_widget_resized(KODE_Widget* AWidget, uint32_t AXdelta, uint32_t AYdelta) override {
-  //}
-
-//------------------------------
-
   void do_widget_update(KODE_Widget* AWidget) override {
   }
 
@@ -426,6 +412,30 @@ public: // "widget listener"
 
   //----------
 
+  void do_widget_moved(KODE_Widget* ASender, float ADeltaX=0.0f, float ADeltaY=0.0f) override {
+  }
+
+  //----------
+
+  /*
+    widget has been resized
+    notify parent of widget, and realign/redraw
+  */
+
+  //void do_resized(KODE_Widget* ASender, float AWidth, float AHeight) override {
+  //}
+
+  void do_widget_resized(KODE_Widget* ASender, float ADeltaX=0.0f, float ADeltaY=0.0f) override {
+    //KODE_Widget* parent = ASender->getParent();
+    //if (parent) {
+    //  parent->alignChildren();
+    //  do_widget_redraw(parent,parent->getRect(),0);
+    //}
+    alignChildren();
+    redraw();
+  }
+
+  //----------
   void do_widget_grabMouseCursor(KODE_Widget* ASender) override {
     //if (ASender) grabMouseCursor();
     //else releaseMouseCursor();
@@ -442,6 +452,7 @@ public: // "widget listener"
 
   void do_widget_grabModal(KODE_Widget* AWidget) override {
     MModalWidget = AWidget;
+    updateHoverWidget(MMouseX,MMouseY);
   }
 
   //----------
