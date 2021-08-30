@@ -27,7 +27,7 @@ public:
   : KODE_Widget(ARect) {
     setName("KODE_GroupBoxWidget");
     setHint("groupbox");
-    setCursor(KODE_CURSOR_ARROWUP);
+    //setCursor(KODE_CURSOR_);
 
     MTitleBar = KODE_New KODE_ButtonWidget( KODE_FRect(20) );
     MTitleBar->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
@@ -37,7 +37,7 @@ public:
 
     MContainer = KODE_New KODE_PanelWidget(KODE_FRect(0));
     MContainer->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
-    MContainer->setCursor(KODE_CURSOR_ARROWDOWN);
+    MContainer->setCursor(KODE_CURSOR_CROSS);
 
     KODE_Widget::appendWidget( MTitleBar );
     KODE_Widget::appendWidget( MContainer );

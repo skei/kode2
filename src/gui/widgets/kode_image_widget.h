@@ -41,6 +41,61 @@ public:
 
   //----------
 
+  KODE_ImageWidget(KODE_FRect ARect, KODE_Bitmap* ABitmap)
+  : KODE_PanelWidget(ARect) {
+    setName("KODE_ImageWidget");
+    setHint("image");
+    MFillBackground = false;
+    MDrawBorder = false;
+    setBitmap(ABitmap);
+  }
+
+  //----------
+
+  KODE_ImageWidget(KODE_FRect ARect,KODE_Drawable* ATarget, KODE_Surface* ASurface)
+  : KODE_PanelWidget(ARect) {
+    setName("KODE_ImageWidget");
+    setHint("image");
+    MFillBackground = false;
+    MDrawBorder = false;
+    setImage(ATarget,ASurface);
+  }
+
+  //----------
+
+  KODE_ImageWidget(KODE_FRect ARect,KODE_Drawable* ATarget, KODE_Bitmap* ABitmap)
+  : KODE_PanelWidget(ARect) {
+    setName("KODE_ImageWidget");
+    setHint("image");
+    MFillBackground = false;
+    MDrawBorder = false;
+    setImage(ATarget,ABitmap);
+  }
+
+  //----------
+
+  KODE_ImageWidget(KODE_FRect ARect,KODE_Drawable* ATarget, uint8_t* ABuffer, uint32_t ASize, KODE_Color ABackground)
+  : KODE_PanelWidget(ARect) {
+    setName("KODE_ImageWidget");
+    setHint("image");
+    MFillBackground = false;
+    MDrawBorder = false;
+    setImage(ATarget,ABuffer,ASize,ABackground);
+  }
+
+  //----------
+
+  KODE_ImageWidget(KODE_FRect ARect,KODE_Drawable* ATarget, const char* AFilename)
+  : KODE_PanelWidget(ARect) {
+    setName("KODE_ImageWidget");
+    setHint("image");
+    MFillBackground = false;
+    MDrawBorder = false;
+    setImage(ATarget,AFilename,KODE_COLOR_GRAY);
+  }
+
+  //----------
+
   virtual ~KODE_ImageWidget() {
     if (MBitmapAllocated && MBitmap) KODE_Delete MBitmap;
     if (MSurfaceAllocated && MSurface) KODE_Delete MSurface;
@@ -112,15 +167,17 @@ public:
 
   //----------
 
-  virtual void setImage(KODE_Drawable* ATarget, const char* AFilename) {
+  virtual void setImage(KODE_Drawable* ATarget, const char* AFilename, KODE_Color ABackground) {
     MDrawMode = KODE_IMAGE_WIDGET_DRAW_SURFACE;
     KODE_Bitmap* bitmap = KODE_New KODE_Bitmap(AFilename);
-    bitmap->premultAlpha();
+    bitmap->premultAlpha( (uint32_t)ABackground );
     setImage(ATarget,bitmap);
     KODE_Delete bitmap;
   }
 
-  //----------
+//------------------------------
+public:
+//------------------------------
 
   virtual void drawImage(KODE_BasePainter* APainter) {
     switch (MDrawMode) {

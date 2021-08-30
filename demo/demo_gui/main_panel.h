@@ -1,4 +1,7 @@
 
+
+#include "../data/img/knob4_60x60_131.h"
+
 class KODE_main_panel
 : public KODE_PanelWidget {
 
@@ -44,12 +47,42 @@ public:
     keyboard1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     appendWidget(keyboard1);
 
+    // sliderbank
+
+    KODE_SliderBankWidget* sliderbank1 = KODE_New KODE_SliderBankWidget(KODE_FRect(60),32);
+    sliderbank1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+    appendWidget(sliderbank1);
+
     // knob
 
     KODE_KnobWidget* knob1 = KODE_New KODE_KnobWidget(KODE_FRect(50,50));
     knob1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
     knob1->setValue(0.3);
     appendWidget(knob1);
+
+    // curves
+
+    KODE_CurveWidget* curve1 = KODE_New KODE_CurveWidget(KODE_FRect(50,50),false);
+    curve1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    curve1->setValue(0.3);
+    appendWidget(curve1);
+
+    KODE_CurveWidget* curve2 = KODE_New KODE_CurveWidget(KODE_FRect(50,50),true);
+    curve2->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    curve2->setValue(0.8);
+    appendWidget(curve2);
+
+    // image strip
+
+    KODE_ImageStripWidget* imagestrip1 = KODE_New KODE_ImageStripWidget(KODE_FRect(60,60));
+    imagestrip1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+
+    imagestrip1->setImage(ATarget,knob4_60x60_131,knob4_60x60_131_size,KODE_COLOR_GRAY);
+    imagestrip1->setupTiles(1,131);
+
+
+    knob1->setValue(0.3);
+    appendWidget(imagestrip1);
 
   }
 

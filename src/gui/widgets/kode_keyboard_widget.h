@@ -76,8 +76,9 @@ public:
   : KODE_Widget(ARect) {
     setName("KODE_KeyboardWidget");
     setHint("keyboard");
-    MDist = 2;
-    MRatio = 0.6;
+    setCursor(KODE_CURSOR_FINGER);
+    MDist             = 2;
+    MRatio            = 0.6;
     MWhiteColor       = KODE_COLOR_LIGHT_GRAY;
     MWhiteActiveColor = KODE_COLOR_WHITE;
     MBlackColor       = KODE_COLOR_DARK_GRAY;

@@ -134,7 +134,7 @@ protected:
 public:
 //------------------------------
 
-  void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
+  void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) override {
     if (AButton == KODE_BUTTON_LEFT) {
 
       if (MDblClickReset) {
@@ -158,7 +158,7 @@ public:
     }
   }
 
-  void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
+  void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) override {
     if (MCanDragValue) {
       if (AButton == KODE_BUTTON_LEFT) {
         if (MHideCursor) do_widget_setMouseCursor(this,KODE_CURSOR_SHOW);
@@ -168,7 +168,7 @@ public:
     }
   }
 
-  void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState, uint32_t ATimeStamp=0) final {
+  void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState, uint32_t ATimeStamp=0) override {
     if (MCanDragValue) {
       if (MIsDragging) {
         float deltax = AXpos - MPrevXpos; // right is increasing
@@ -198,7 +198,7 @@ public:
     }
   }
 
-  void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom, uint32_t ATimeStamp=0) final {
+  void on_widget_enter(float AXpos, float AYpos, KODE_Widget* AFrom, uint32_t ATimeStamp=0) override {
     if (MCanDragValue) {
       switch (MDragDirection) {
         case KODE_LEFT:
@@ -214,7 +214,7 @@ public:
     if (flags.autoHint) do_widget_setHint(this,getHint());
   }
 
-  //void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo, uint32_t ATimeStamp=0) final {
+  //void on_widget_leave(float AXpos, float AYpos, KODE_Widget* ATo, uint32_t ATimeStamp=0) override {
   //  do_widget_setMouseCursor(this,KODE_CURSOR_DEFAULT);
   //  do_widget_setHint(this,"");
   //}

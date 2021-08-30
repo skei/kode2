@@ -67,10 +67,19 @@ private:
   const char*         MHint               = "widget";
   int32_t             MCursor             = KODE_CURSOR_DEFAULT;
 
+
 //------------------------------
 protected:
 //------------------------------
 
+  KODE_Surface*       MWidgetSurface          = KODE_NULL;
+  bool                MWidgetSurfaceAllocated = false;
+
+  uint32_t            MTileCount    = 0;
+  uint32_t            MTileXcount   = 0;
+  uint32_t            MTileYcount   = 0;
+  uint32_t            MTileWidth    = 0;
+  uint32_t            MTileHeight   = 0;
 
 //------------------------------
 public:
@@ -93,6 +102,7 @@ public:
     #ifndef KODE_NO_AUTODELETE
     deleteChildren();
     #endif
+    if (MWidgetSurface && MWidgetSurfaceAllocated) KODE_Delete MWidgetSurface;
   }
 
 //------------------------------
@@ -158,6 +168,54 @@ public:
 
   virtual void redraw() {
     do_widget_redraw(this,getRect(),0);
+  }
+
+  //----------
+
+  virtual void setImage(KODE_Drawable* ATarget, KODE_Surface* ASurface) {
+    MWidgetSurface = ASurface;
+    MWidgetSurfaceAllocated = false;
+  }
+
+  virtual void setImage(KODE_Drawable* ATarget, KODE_Bitmap* ABitmap) {
+    MWidgetSurface = KODE_New KODE_Surface(ATarget,ABitmap->getWidth(),ABitmap->getHeight());
+    MWidgetSurfaceAllocated = true;
+    KODE_Painter* painter = KODE_New KODE_Painter(MWidgetSurface);
+    painter->uploadBitmap(0,0,ABitmap);
+    //painter->flush();
+    KODE_Delete painter;
+  }
+
+  virtual void setImage(KODE_Drawable* ATarget, uint8_t* ABuffer, uint32_t ASize, KODE_Color ABackground) {
+    KODE_Bitmap* bitmap = KODE_New KODE_Bitmap(ABuffer,ASize);
+    bitmap->premultAlpha( (uint32_t)ABackground );
+    setImage(ATarget,bitmap);
+    KODE_Delete bitmap;
+  }
+
+  virtual void setImage(KODE_Drawable* ATarget, const char* AFilename, KODE_Color ABackground) {
+    KODE_Bitmap* bitmap = KODE_New KODE_Bitmap(AFilename);
+    bitmap->premultAlpha( (uint32_t)ABackground );
+    setImage(ATarget,bitmap);
+    KODE_Delete bitmap;
+  }
+
+  //----------
+
+  virtual void setupTiles(uint32_t AXcount, uint32_t AYcount) {
+    MTileXcount = AXcount;
+    MTileYcount = AYcount;
+    MTileWidth  = MWidgetSurface->getWidth() / AXcount;
+    MTileHeight = MWidgetSurface->getHeight() / AYcount;
+  }
+
+  KODE_FRect getTileRect(uint32_t AIndex) {
+    float x = /*getRect().x +*/ (floorf(AIndex % MTileXcount) * MTileWidth);
+    float y = /*getRect().y +*/ (floorf(AIndex / MTileXcount) * MTileHeight);
+    float w = (MTileWidth - 1);
+    float h = (MTileHeight - 1);
+    //KODE_Print("%.1f, %.1f, %.1f, %.1f\n",x,y,w,h);
+    return KODE_FRect(x,y,w,h);
   }
 
 //------------------------------

@@ -49,6 +49,7 @@ protected:
   bool        MDrawCells            = true;
   bool        MDrawHorizontalLines  = true;
   bool        MDrawVerticalLines    = true;
+  bool        MDrawSelectedCells    = true;
 
   KODE_Color  MGridColor            = KODE_COLOR_DARK_GRAY;
 
@@ -59,13 +60,14 @@ protected:
 public:
 //------------------------------
 
-  KODE_GridWidget(KODE_FRect ARect)
+  KODE_GridWidget(KODE_FRect ARect,uint32_t AColumns=8, uint32_t ARows=8)
   //: KODE_Widget(ARect) {
   : KODE_PanelWidget(ARect) {
 
     setName("KODE_GridWidget");
     setHint("grid");
-    setNumCells(8,8);
+    setCursor(KODE_CURSOR_FINGER);
+    setNumCells(AColumns,ARows);
   }
 
   //----------
@@ -90,6 +92,7 @@ public:
   void        setDrawCells(bool ADraw=true)             { MDrawCells = ADraw; }
   void        setDrawHorizontalLines(bool ADraw=true)   { MDrawHorizontalLines = ADraw; }
   void        setDrawVerticalLines(bool ADraw=true)     { MDrawVerticalLines = ADraw; }
+  void        setDrawSelectedCells(bool ADraw=true)     { MDrawSelectedCells = ADraw; }
   void        setBackgroundColor(KODE_Color AColor)     { MBackgroundColor = AColor; }
   void        setGridColor(KODE_Color AColor)           { MGridColor = AColor; }
 
@@ -147,7 +150,7 @@ public:
     - cells intersecting with update-rect
   */
 
-  void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) final {
+  void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     KODE_FRect mrect = getRect();
 
     // background
@@ -194,16 +197,18 @@ public:
       }
 
       // selected cell(s)
-      if ((MSelectedX >= 0) && (MSelectedY >= 0)) {
-        x = xcell * MSelectedX;
-        y = ycell * MSelectedY;
-        float xn = xcell * MSelectedXcount;
-        float yn = ycell * MSelectedYcount;
-        float ww = xn - 1;
-        float hh = yn - 1;
-        x  += mrect.x;
-        y  += mrect.y;
-        APainter->drawRect( KODE_FRect(x,y,ww,hh), KODE_COLOR_WHITE );
+      if (MDrawSelectedCells) {
+        if ((MSelectedX >= 0) && (MSelectedY >= 0)) {
+          x = xcell * MSelectedX;
+          y = ycell * MSelectedY;
+          float xn = xcell * MSelectedXcount;
+          float yn = ycell * MSelectedYcount;
+          float ww = xn - 1;
+          float hh = yn - 1;
+          x  += mrect.x;
+          y  += mrect.y;
+          APainter->drawRect( KODE_FRect(x,y,ww,hh), KODE_COLOR_WHITE );
+        }
       }
 
     }
@@ -221,7 +226,7 @@ public:
     - has selection -> move
   */
 
-  void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
+  void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) override {
     KODE_FRect mrect = getRect();
     float xcell = ( mrect.w / (float)MNumColumns );
     float ycell = ( mrect.h / (float)MNumRows );
@@ -244,13 +249,13 @@ public:
 
   //----------
 
-  void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
+  void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) override {
     MIsDragging = false;
   }
 
   //----------
 
-  void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState, uint32_t ATimeStamp=0) final {
+  void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState, uint32_t ATimeStamp=0) override {
     KODE_FRect mrect = getRect();
     float xcell = ( mrect.w / (float)MNumColumns );
     float ycell = ( mrect.h / (float)MNumRows );

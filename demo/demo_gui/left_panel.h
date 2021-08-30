@@ -3,6 +3,19 @@ class KODE_left_panel
 : public KODE_PanelWidget {
 
 //------------------------------
+private:
+//------------------------------
+
+const char* buttonrow_txt[5] = {
+  "A",
+  "B",
+  "C",
+  "D",
+  "eee"
+};
+
+
+//------------------------------
 public:
 //------------------------------
 
@@ -123,9 +136,19 @@ public:
 
     // grid
 
-    KODE_GridWidget* grid1 = KODE_New KODE_GridWidget(KODE_FRect(150));
+    KODE_GridWidget* grid1 = KODE_New KODE_GridWidget(KODE_FRect(100));
     grid1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     appendWidget(grid1);
+
+    // buttonrows
+
+    KODE_ButtonRowWidget* buttonrow1 = KODE_New KODE_ButtonRowWidget(KODE_FRect(20),5,buttonrow_txt,KODE_BUTTON_ROW_SINGLE);
+    buttonrow1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+    appendWidget(buttonrow1);
+
+    KODE_ButtonRowWidget* buttonrow2 = KODE_New KODE_ButtonRowWidget(KODE_FRect(20),5,buttonrow_txt,KODE_BUTTON_ROW_MULTI);
+    buttonrow2->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+    appendWidget(buttonrow2);
 
   }
 
