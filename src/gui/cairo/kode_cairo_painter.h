@@ -482,21 +482,21 @@ public: // draw
 
   //----------
 
-  void drawEllipse(KODE_FRect ARect) override {
+  void drawEllipse(KODE_FRect ARect, KODE_Color AColor, uint32_t AWidth=1) override {
     ellipse(ARect);
     strokePath();
   }
 
   //----------
 
-  void drawTriangle(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3) override {
+  void drawTriangle(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3, KODE_Color AColor, uint32_t AWidth=1) override {
     triangle(AX1,AY1,AX2,AY2,AX3,AY3);
     strokePath();
   }
 
   //----------
 
-  void drawCurve(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3, float AX4, float AY4) override {
+  void drawCurve(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3, float AX4, float AY4, KODE_Color AColor, uint32_t AWidth=1) override {
     moveTo(AX1,AY1);
     curveTo(AX2,AY2,AX3,AY3,AX4,AY4);
     strokePath();
@@ -505,7 +505,7 @@ public: // draw
   //----------
 
   //void drawRoundedRectangle(float AX1, float AY1, float AX2, float AY2, float AR, uint32_t AC) override {
-  void drawRoundedRectangle(KODE_FRect ARect, float ARadius, uint32_t ACorners) {
+  void drawRoundedRectangle(KODE_FRect ARect, float ARadius, uint32_t ACorners, KODE_Color AColor, uint32_t AWidth=1) {
     //roundedRectangle(AX1,AY1,AX2,AY2,AR,AC);
     roundedRectangle(ARect,ARadius,ACorners);
     strokePath();
@@ -534,28 +534,28 @@ public: // fill
 
   //----------
 
-  void fillRoundedRectangle(KODE_FRect ARect, float ARadius, uint32_t ACorners) override {
+  void fillRoundedRectangle(KODE_FRect ARect, float ARadius, uint32_t ACorners, KODE_Color AColor) override {
     roundedRectangle(ARect,ARadius,ACorners);
     fillPath();
   }
 
   //----------
 
-  void fillEllipse(KODE_FRect ARect) override {
+  void fillEllipse(KODE_FRect ARect, KODE_Color AColor) override {
     ellipse(ARect);
     fillPath();
   }
 
   //----------
 
-  void fillTriangle(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3) override {
+  void fillTriangle(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3, KODE_Color AColor) override {
     triangle(AX1,AY1,AX2,AY2,AX3,AY3);
     fillPath();
   }
 
   //----------
 
-  //void fillPolygon(int32 ANum, float* ACoords) override {
+  //void fillPolygon(int32 ANum, float* ACoords, KODE_Color AColor) override {
   //  if (ANum > 0) {
   //    _moveTo(ACoords[0],ACoords[1]);
   //    for (int32 i=1; i<ANum; i++) {
