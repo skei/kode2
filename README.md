@@ -2,7 +2,7 @@
 
 v0.0.1
 
-https://github.com/skei/kode2/blob/master/screenshots/screenshot_31aug2021.png
+![screenshot_31aug2021.png](https://github.com/skei/kode2/blob/master/screenshots/screenshot_31aug2021.png)
 
 demo gui 30aug2021:
 https://www.youtube.com/watch?v=VLrzyw6_X2w
