@@ -204,7 +204,7 @@ public:
     MRect.w = AWidth;
     MRect.h = AHeight;
     alignChildren(/*this*/);
-    //if (MWindowPainter) MWindowPainter->resize(AWidth,AHeight);
+    if (MWindowPainter) MWindowPainter->resize(AWidth,AHeight);
   }
 
   //----------
