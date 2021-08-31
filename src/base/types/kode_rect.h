@@ -120,6 +120,34 @@ public:
     h -= (R.y + R.h);
   }
 
+  void add(T AValue) {
+    x += AValue;
+    y += AValue;
+    w += AValue;
+    h += AValue;
+  }
+
+  void sub(T AValue) {
+    x -= AValue;
+    y -= AValue;
+    w -= AValue;
+    h -= AValue;
+  }
+
+  void grow(T AValue) {
+    x -= AValue;
+    y -= AValue;
+    w += (AValue + AValue);
+    h += (AValue + AValue);
+  }
+
+  void shrink(T AValue) {
+    x += AValue;
+    y += AValue;
+    w -= (AValue + AValue);
+    h -= (AValue + AValue);
+  }
+
   void addLeft(T ASize)    { x -= ASize; w += ASize; }
   void addRight(T ASize)   { w += ASize; }
   void addTop(T ASize)     { y -= ASize; h += ASize; }
