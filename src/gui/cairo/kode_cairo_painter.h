@@ -436,7 +436,8 @@ public:
 public: // draw
 //------------------------------
 
-  void drawPoint(float AX, float AY) override {
+  void drawPoint(float AX, float AY, KODE_Color AColor) override {
+    setColor(AColor);
     ellipse(KODE_FRect(AX-0.5f,AY-0.5f,AX+0.5f,AY+0.5f));
     //_rectangle(AX,AY,AX+1,AY+1);
     fillPath();
@@ -445,10 +446,10 @@ public: // draw
   //----------
 
   void drawLine(float AXpos1, float AYpos1, float AXpos2, float AYpos2, KODE_Color AColor, uint32_t AWidth=1) override {
-    moveTo(AXpos1,AYpos1);
-    lineTo(AXpos2,AYpos2);
     setColor(AColor);
     setLineWidth(AWidth);
+    moveTo(AXpos1,AYpos1);
+    lineTo(AXpos2,AYpos2);
     strokePath();
   }
 
@@ -465,24 +466,26 @@ public: // draw
   //----------
 
   void drawRectangle(KODE_FRect ARect, KODE_Color AColor, uint32_t AWidth=1) override {
-    rectangle(ARect);
     setColor(AColor);
     setLineWidth(AWidth);
+    rectangle(ARect);
     strokePath();
   }
 
   //----------
 
   void drawArc(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor, uint32_t AWidth=1) override {
-    arc(ARect.x,ARect.y,ARect.x2(),ARect.y2(),AAngle1,AAngle2);
     setColor(AColor);
     setLineWidth(AWidth);
+    arc(ARect.x,ARect.y,ARect.x2(),ARect.y2(),AAngle1,AAngle2);
     strokePath();
   }
 
   //----------
 
   void drawEllipse(KODE_FRect ARect, KODE_Color AColor, uint32_t AWidth=1) override {
+    setColor(AColor);
+    setLineWidth(AWidth);
     ellipse(ARect);
     strokePath();
   }
@@ -490,6 +493,8 @@ public: // draw
   //----------
 
   void drawTriangle(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3, KODE_Color AColor, uint32_t AWidth=1) override {
+    setColor(AColor);
+    setLineWidth(AWidth);
     triangle(AX1,AY1,AX2,AY2,AX3,AY3);
     strokePath();
   }
@@ -497,6 +502,8 @@ public: // draw
   //----------
 
   void drawCurve(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3, float AX4, float AY4, KODE_Color AColor, uint32_t AWidth=1) override {
+    setColor(AColor);
+    setLineWidth(AWidth);
     moveTo(AX1,AY1);
     curveTo(AX2,AY2,AX3,AY3,AX4,AY4);
     strokePath();
@@ -506,6 +513,8 @@ public: // draw
 
   //void drawRoundedRectangle(float AX1, float AY1, float AX2, float AY2, float AR, uint32_t AC) override {
   void drawRoundedRectangle(KODE_FRect ARect, float ARadius, uint32_t ACorners, KODE_Color AColor, uint32_t AWidth=1) {
+    setColor(AColor);
+    setLineWidth(AWidth);
     //roundedRectangle(AX1,AY1,AX2,AY2,AR,AC);
     roundedRectangle(ARect,ARadius,ACorners);
     strokePath();
@@ -516,25 +525,26 @@ public: // fill
 //------------------------------
 
   void fillRectangle(KODE_FRect ARect, KODE_Color AColor) override {
-    rectangle(ARect);
     setColor(AColor);
+    rectangle(ARect);
     fillPath();
   }
 
   //----------
 
   void fillArc(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor) override {
+    setColor(AColor);
     //float x = AX1 + ((AX2-AX1)*0.5f);
     //float y = AY1 + ((AY2-AY1)*0.5f);
     //_moveTo(x,y);
     arc(ARect.x,ARect.y,ARect.x2(),ARect.y2(),AAngle1,AAngle2);
-    setColor(AColor);
     fillPath();
   }
 
   //----------
 
   void fillRoundedRectangle(KODE_FRect ARect, float ARadius, uint32_t ACorners, KODE_Color AColor) override {
+    setColor(AColor);
     roundedRectangle(ARect,ARadius,ACorners);
     fillPath();
   }
@@ -542,6 +552,7 @@ public: // fill
   //----------
 
   void fillEllipse(KODE_FRect ARect, KODE_Color AColor) override {
+    setColor(AColor);
     ellipse(ARect);
     fillPath();
   }
@@ -549,6 +560,7 @@ public: // fill
   //----------
 
   void fillTriangle(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3, KODE_Color AColor) override {
+    setColor(AColor);
     triangle(AX1,AY1,AX2,AY2,AX3,AY3);
     fillPath();
   }
@@ -592,14 +604,15 @@ public: // text
 //------------------------------
 
   void drawText(float AXpos, float AYpos, const char* AText, KODE_Color AColor) override {
-    cairo_move_to(MCairo,AXpos,AYpos);
     setColor(AColor);
+    cairo_move_to(MCairo,AXpos,AYpos);
     cairo_show_text(MCairo,AText);
   }
 
   //----------
 
   void drawText(KODE_FRect ARect, const char* AText, uint32_t AAlignment, KODE_Color AColor) override {
+    setColor(AColor);
     //KODE_Assert(AText);
     cairo_text_extents_t e;
     float xx,yy;
@@ -634,7 +647,6 @@ public: // text
         yy = ARect.y;
     }
     cairo_move_to(MCairo,xx,yy);
-    setColor(AColor);
     cairo_show_text(MCairo,AText);
   }
 

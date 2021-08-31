@@ -56,7 +56,7 @@ public:
   virtual void            arc(float AX1, float AY1, float AX2, float AY2, float AAngle1, float AAngle2) {}
   virtual void            triangle(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3) {}
 
-  virtual void            drawPoint(float AX, float AY) {}
+  virtual void            drawPoint(float AX, float AY, KODE_Color AColor) {}
   virtual void            drawLine(float AXpos1, float AYpos1, float AXpos2, float AYpos2, KODE_Color AColor, uint32_t AWidth=1) {}
 //virtual void            drawLines(int32 ANum, float* ACoords) override {}
   virtual void            drawRectangle(KODE_FRect ARect, KODE_Color AColor, uint32_t AWidth=1) {}
