@@ -40,18 +40,18 @@ public:
     setVersion(0x00000001);
     setCanReceiveMidi();
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
     KODE_Parameter* par;
-    par = appendParameter( KODE_New KODE_FloatParameter( "delay",     100, 0, KODE_MAX_SAMPLES ));
+    par = appendParameter( new KODE_FloatParameter( "delay",     100, 0, KODE_MAX_SAMPLES ));
     par->setLabel("spl");
-    par = appendParameter( KODE_New KODE_FloatParameter( "feedback",  0.9, 0, 0.99 ));
-    par = appendParameter( KODE_New KODE_FloatParameter( "wet",      -6, -60, 0 ));
+    par = appendParameter( new KODE_FloatParameter( "feedback",  0.9, 0, 0.99 ));
+    par = appendParameter( new KODE_FloatParameter( "wet",      -6, -60, 0 ));
     par->setLabel("db");
-    par = appendParameter( KODE_New KODE_FloatParameter( "dry",      -6, -60, 0 ));
+    par = appendParameter( new KODE_FloatParameter( "dry",      -6, -60, 0 ));
     par->setLabel("db");
 
   }

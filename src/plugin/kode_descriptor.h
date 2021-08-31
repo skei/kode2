@@ -162,7 +162,7 @@ public:
   void deleteParameters() {
     for (uint32_t i=0; i<MParameters.size(); i++) {
       if (MParameters[i]) {
-        KODE_Delete MParameters[i];
+        delete MParameters[i];
         MParameters[i] = KODE_NULL;
       }
     }
@@ -173,7 +173,7 @@ public:
   void deletePrograms() {
     for (uint32_t i=0; i<MPrograms.size(); i++) {
       if (MPrograms[i]) {
-        KODE_Delete MPrograms[i];
+        delete MPrograms[i];
         MPrograms[i] = KODE_NULL;
       }
     }
@@ -184,7 +184,7 @@ public:
   void deleteInputs() {
     for (uint32_t i=0; i<MInputs.size(); i++) {
       if (MInputs[i]) {
-        KODE_Delete MInputs[i];
+        delete MInputs[i];
         MInputs[i] = KODE_NULL;
       }
     }
@@ -195,7 +195,7 @@ public:
   void deleteOutputs() {
     for (uint32_t i=0; i<MOutputs.size(); i++) {
       if (MOutputs[i]) {
-        KODE_Delete MOutputs[i];
+        delete MOutputs[i];
         MOutputs[i] = KODE_NULL;
       }
     }
@@ -235,13 +235,13 @@ public:
     uint32_t minor = MVersion & 0x00ff0000;
     uint32_t build = MVersion & 0x0000ffff;
     KODE_IntToString(temp,major);
-    KODE_Strcpy(MVersionText,temp);
-    KODE_Strcat(MVersionText,".");
+    strcpy(MVersionText,temp);
+    strcat(MVersionText,".");
     KODE_IntToString(temp,minor);
-    KODE_Strcat(MVersionText,temp);
-    KODE_Strcat(MVersionText,".");
+    strcat(MVersionText,temp);
+    strcat(MVersionText,".");
     KODE_IntToString(temp,build);
-    KODE_Strcat(MVersionText,temp);
+    strcat(MVersionText,temp);
     return MVersionText;
   }
 

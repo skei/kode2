@@ -29,18 +29,18 @@ public:
     layout.innerBorder = 10;
     layout.spacing = KODE_FPoint(10,0);
 
-    MLogoImage = KODE_New KODE_ImageWidget( KODE_FRect(40,40) );
+    MLogoImage = new KODE_ImageWidget( KODE_FRect(40,40) );
     MLogoImage->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
     appendWidget(MLogoImage);
 
-    MPluginName = KODE_New KODE_TextWidget( KODE_FRect(200,16) );
+    MPluginName = new KODE_TextWidget( KODE_FRect(200,16) );
     MPluginName->layout.alignment = KODE_WIDGET_ALIGN_TOP_LEFT;
     MPluginName->setText("plugin");
     MPluginName->setTextColor(KODE_COLOR_BLACK);
     MPluginName->setFillBackground(false);
     appendWidget(MPluginName);
 
-    MPluginVersion  = KODE_New KODE_TextWidget( KODE_FRect(200,16) );
+    MPluginVersion  = new KODE_TextWidget( KODE_FRect(200,16) );
     MPluginVersion->layout.alignment = KODE_WIDGET_ALIGN_TOP_LEFT;
     MPluginVersion->setText("v0.0.1");
     MPluginVersion->setTextColor(KODE_COLOR_DARK_GRAY);

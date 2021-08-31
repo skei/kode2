@@ -77,18 +77,18 @@ public:
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     if (getValue() >= 0.5f) { // on
-      APainter->fillRect(getRect(),MOnBackgroundColor);
+      APainter->fillRectangle(getRect(),MOnBackgroundColor);
       KODE_FRect rect = getRect();
       rect.shrink(MOnTextOffset);
       APainter->drawText(rect,MOnText,MOnTextAlignment,MOnTextColor);
-      APainter->drawRect(getRect(),MOnBorderColor);
+      APainter->drawRectangle(getRect(),MOnBorderColor);
     }
     else { // off
-      APainter->fillRect(getRect(),MOffBackgroundColor);
+      APainter->fillRectangle(getRect(),MOffBackgroundColor);
       KODE_FRect rect = getRect();
       rect.shrink(MOffTextOffset);
       APainter->drawText(rect,MOffText,MOffTextAlignment,MOffTextColor);
-      APainter->drawRect(getRect(),MOffBorderColor);
+      APainter->drawRectangle(getRect(),MOffBorderColor);
     }
   }
 

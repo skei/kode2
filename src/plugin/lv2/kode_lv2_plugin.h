@@ -315,7 +315,7 @@ private: // ui callbacks
     const LV2_Feature* const*   features) {
     /* --- */
     KODE_Lv2Print("\n");
-//    if (KODE_Strcmp(plugin_uri, MLv2UIUri) != 0) {
+//    if (strcmp(plugin_uri, MLv2UIUri) != 0) {
 //      return KODE_NULL;
 //    }
 //    StuckUI* self = new StuckUI();

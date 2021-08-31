@@ -40,7 +40,7 @@ public:
 //------------------------------
 
   KODE_Queue() {
-    MBuffer     = (_T*)KODE_Malloc(SIZE*sizeof(_T));
+    MBuffer     = (_T*)malloc(SIZE*sizeof(_T));
     MBufferSize = SIZE;
     MBufferMask = SIZE - 1;
     MReadPos    = 0;
@@ -50,7 +50,7 @@ public:
   //----------
 
   ~KODE_Queue() {
-    KODE_Free(MBuffer);
+    free(MBuffer);
   }
 
 //------------------------------
@@ -170,7 +170,7 @@ class KODE_BufferQueue {
   */
 
   KODE_BufferQueue() {
-    KODE_Memset(MData,0,SIZE*(sizeof(_T)));
+    memset(MData,0,SIZE*(sizeof(_T)));
     MWritePos = 0;
     MReadPos = 0;
   }
@@ -190,7 +190,7 @@ class KODE_BufferQueue {
     int count = 0;
     int writepos = MWritePos;
     if (MReadPos > writepos) {
-      KODE_Memcpy(
+      memcpy(
         (char*)&ABuffer[count],
         (char*)&MData[MReadPos],
         (SIZE - MReadPos) * sizeof(_T)
@@ -198,7 +198,7 @@ class KODE_BufferQueue {
       count = SIZE - MReadPos;
       MReadPos = 0;
     }
-    KODE_Memcpy(
+    memcpy(
       (char*)&ABuffer[count],
       (char*)&MData[MReadPos],
       (writepos - MReadPos) * sizeof(_T)

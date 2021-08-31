@@ -66,8 +66,8 @@ public:
 public:
 //------------------------------
 
-  void setX1(T _x1) { w -= (_x1 - x); x = _x1; }
-  void setY1(T _y1) { h -= (_y1 - y); y = _y1; }
+  void setX1(T _x1) { w -= (_x1 - x);   x = _x1; }
+  void setY1(T _y1) { h -= (_y1 - y);   y = _y1; }
   void setX2(T _x2) { w += (_x2 - x - w); }
   void setY2(T _y2) { h += (_y2 - y - h); }
 
@@ -135,20 +135,36 @@ public:
 //------------------------------
 
   bool isEmpty() {
-    if (w <= 0) return true;
-    if (h <= 0) return true;
+    if (w <= 0.0f) return true;
+    if (h <= 0.0f) return true;
     return false;
   }
 
   //----------
 
   bool isNotEmpty() {
-    if (w > 0) return true;
-    if (h > 0) return true;
+    if ((w > 0.0f) && (h > 0.0f)) return true;
     return false;
   }
 
   //----------
+
+  /*
+   _____
+  |   _ |__
+  |  |  |  |
+  |__|__|  |
+     |_____|
+
+
+         _____
+      _ |__   |
+     |  |  |  |
+     |  |__|__|
+     |_____|
+
+
+  */
 
   //----------
 
@@ -156,12 +172,19 @@ public:
   // largest x
   // smallest x2
 
-  void intersect(KODE_Rect<T> R) {
+  void overlap(KODE_Rect<T> R) {
     if ( R.x1() > x1() ) setX1( R.x1() );
     if ( R.x2() < x2() ) setX2( R.x2() );
     if ( R.y1() > y1() ) setY1( R.y1() );
     if ( R.y2() < y2() ) setY2( R.y2() );
   }
+
+//  void overlap(KODE_Rect<T> R) {
+//    if ( R.x1() > x1() ) setX1( R.x1() );
+//    if ( R.y1() > y1() ) setY1( R.y1() );
+//    if ( R.x2() < x2() ) setX2( R.x2() );
+//    if ( R.y2() < y2() ) setX2( R.y2() );
+//  }
 
   //----------
 
@@ -176,11 +199,19 @@ public:
   // x > r.x2
   // x2 < r.x
 
+//  bool touches(KODE_Rect<T> R) {
+//    if ( x    > R.x2() ) return false;
+//    if ( x2() < R.x    ) return false;
+//    if ( y    > R.y2() ) return false;
+//    if ( y2() < R.y    ) return false;
+//    return true;
+//  }
+
   bool touches(KODE_Rect<T> R) {
-    if ( x    > R.x2() ) return false;
-    if ( x2() < R.x    ) return false;
-    if ( y    > R.y2() ) return false;
-    if ( y2() < R.y    ) return false;
+    if (R.x1() > x2() ) return false; // too far right
+    if (R.y1() > y2() ) return false; // too far down
+    if (R.x2() < x1() ) return false; // too far left
+    if (R.y2() < y1() ) return false; // too far up
     return true;
   }
 
@@ -218,10 +249,12 @@ public:
   // parent.combine(child)
 
   void combine(KODE_Rect<T> R) {
+    //printf("combine %.0f,%.0f,%.0f,%.0f R %.0f,%.0f,%.0f,%.0f -> ",x,y,w,h,R.x,R.y,R.w,R.h);
     if ( R.x1() < x1() ) setX1( R.x1() );
     if ( R.x2() > x2() ) setX2( R.x2() );
     if ( R.y1() < y1() ) setY1( R.y1() );
-    if ( R.y2() < y2() ) setY2( R.y2() );
+    if ( R.y2() > y2() ) setY2( R.y2() );
+    //printf("%.0f,%.0f,%.0f,%.0f\n",x,y,w,h);
   }
 
   //----------

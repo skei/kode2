@@ -115,11 +115,12 @@
     #define KODE_USE_XCB
   #endif
 
-  //#ifdef KODE_GUI_CAIRO
-  //  #define KODE_GUI_DEFINED
-  //  #define KODE_USE_XCB
-  //  #define KODE_USE_CAIRO
-  //#endif
+  #ifdef KODE_GUI_CAIRO
+    #define KODE_GUI_DEFINED
+    #undef  KODE_GUI_XCB
+    #define KODE_USE_XCB
+    #define KODE_USE_CAIRO
+  #endif
 
 #ifndef KODE_GUI_DEFINED
   #warning no gui type defined!

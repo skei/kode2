@@ -56,13 +56,13 @@ public:
 
   virtual void drawBorder(KODE_BasePainter* APainter) {
     if (MDrawBorder) {
-      APainter->drawRect(getRect(),MBorderColor);
+      APainter->drawRectangle(getRect(),MBorderColor);
     }
   }
 
   virtual void fillBackground(KODE_BasePainter* APainter) {
     if (MFillBackground) {
-      APainter->fillRect(getRect(),MBackgroundColor);
+      APainter->fillRectangle(getRect(),MBackgroundColor);
     }
   }
 
@@ -71,9 +71,17 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+
+//    KODE_FRect mrect = getRect();
+//    //APainter->resetClip();
+//    APainter->setClip(mrect);
+
     fillBackground(APainter);
-    paintChildren(APainter,ARect,AMode);
+    paintChildren(APainter,getRect(),AMode);
     drawBorder(APainter);
+
+//    APainter->resetClip();
+
   }
 
   //----------

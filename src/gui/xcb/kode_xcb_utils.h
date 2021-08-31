@@ -27,7 +27,7 @@ struct KODE_XcbPolyText8 {
 //----------------------------------------------------------------------
 
 xcb_atom_t kode_xcb_get_intern_atom(xcb_connection_t *conn, const char *name) {
-  xcb_intern_atom_cookie_t cookie = xcb_intern_atom(conn ,0, KODE_Strlen(name), name);
+  xcb_intern_atom_cookie_t cookie = xcb_intern_atom(conn ,0, strlen(name), name);
   xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(conn, cookie, NULL);
   //return !reply ? XCB_ATOM_STRING : reply->atom;
   return reply->atom;
@@ -40,7 +40,7 @@ xcb_atom_t kode_xcb_get_intern_atom(xcb_connection_t *conn, const char *name) {
 xcb_cursor_t kode_xcb_create_font_cursor(xcb_connection_t *conn, uint16_t glyph) {
   static xcb_font_t cursor_font;
   cursor_font = xcb_generate_id (conn);
-  xcb_open_font(conn, cursor_font, KODE_Strlen("cursor"), "cursor");
+  xcb_open_font(conn, cursor_font, strlen("cursor"), "cursor");
   xcb_cursor_t cursor = xcb_generate_id (conn);
   xcb_create_glyph_cursor(
     conn,
@@ -98,7 +98,7 @@ xcb_visualtype_t* kode_xcb_find_visual(xcb_connection_t* c, xcb_visualid_t visua
 //----------
 
 void kode_xcb_add_string_text8(KODE_XcbPolyText8* pt, char const* s) {
-  size_t len = KODE_Strlen(s);
+  size_t len = strlen(s);
   // Each element can only contain up to 254 characters, so we have to
   // split the string.
   size_t chunks = (len + 253) / 254;
@@ -113,7 +113,7 @@ void kode_xcb_add_string_text8(KODE_XcbPolyText8* pt, char const* s) {
     size_t n = (len < 255) ? len : 254;
     pt->data[pt->used] = n;
     pt->data[pt->used + 1] = 0;
-    KODE_Memcpy( pt->data+2, s, n);
+    memcpy( pt->data+2, s, n);
     pt->used += n+2;
     s += n;
     len -= n;

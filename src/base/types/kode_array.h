@@ -32,17 +32,17 @@ public:
   //----------
 
   KODE_Array(const KODE_Array& AArray) {
-    MBuffer = (_T*)KODE_Malloc(MTypeSize*AArray.MBufferSize);
+    MBuffer = (_T*)malloc(MTypeSize*AArray.MBufferSize);
     MBufferSize = AArray.MBufferSize;
     MSize = AArray.MSize;
-    KODE_Memcpy(MBuffer, AArray.MBuffer, MTypeSize*AArray.MBufferSize);
+    memcpy(MBuffer, AArray.MBuffer, MTypeSize*AArray.MBufferSize);
   }
 
   //----------
 
   ~KODE_Array() {
     if (MBuffer) {
-      KODE_Free(MBuffer);
+      free(MBuffer);
     }
   }
 
@@ -69,7 +69,7 @@ public:
     if (this == &AArray) return *this;
 //      if (AArray.MSize == 0) clear();
 //      setSize(AArray.MSize);
-    KODE_Memcpy(MBuffer, AArray.MBuffer, MTypeSize*AArray.MSize);
+    memcpy(MBuffer, AArray.MBuffer, MTypeSize*AArray.MSize);
     return *this;
   }
 
@@ -78,14 +78,14 @@ private:
 //------------------------------
 
   void deleteItems(void) {
-    for (uint32_t i=0; i<MSize; i++) KODE_Delete MBuffer[i];
+    for (uint32_t i=0; i<MSize; i++) delete MBuffer[i];
   }
 
   //----------
 
   void clearBuffer(bool AErase=false) {
     if (AErase) {
-      if (MBuffer) KODE_Free(MBuffer);
+      if (MBuffer) free(MBuffer);
       MBuffer = KODE_NULL;
       MBufferSize = 0;
     }
@@ -97,7 +97,7 @@ private:
   void resizeBuffer(const uint32_t ABufferSize) {
     uint32_t size = KODE_NextPowerOfTwo(ABufferSize);
     if (size != MBufferSize) {
-      MBuffer = (_T*)KODE_Realloc(MBuffer, MTypeSize*size);
+      MBuffer = (_T*)realloc(MBuffer, MTypeSize*size);
       MBufferSize = size;
       //MSize = size;
       //if (MSize > MBufferSize) MSize = MBufferSize;
@@ -130,7 +130,7 @@ public:
 
   void insert(const _T& AItem, uint32_t APos) {
     growBuffer(1);
-    KODE_Memmove( &MBuffer[APos+1], &MBuffer[APos], (MSize-APos) * MTypeSize);
+    memmove( &MBuffer[APos+1], &MBuffer[APos], (MSize-APos) * MTypeSize);
     MBuffer[APos] = AItem;
     MSize++;
   }
@@ -140,8 +140,8 @@ public:
   void insert(KODE_Array<_T>& AArray, uint32_t APos) {
     uint32_t num = AArray.size();
     growBuffer(num);
-    KODE_Memmove( &MBuffer[APos+num], &MBuffer[APos], (MSize-APos) * MTypeSize);
-    KODE_Memcpy( &MBuffer[APos], AArray.buffer(), num * MTypeSize );
+    memmove( &MBuffer[APos+num], &MBuffer[APos], (MSize-APos) * MTypeSize);
+    memcpy( &MBuffer[APos], AArray.buffer(), num * MTypeSize );
     MSize += num;
   }
 
@@ -162,7 +162,7 @@ public:
   //------------------------------
 
   void remove(const uint32_t APos) {
-    KODE_Memmove( &MBuffer[APos], &MBuffer[APos+1], (MSize-APos-1) * MTypeSize);
+    memmove( &MBuffer[APos], &MBuffer[APos+1], (MSize-APos-1) * MTypeSize);
     shrinkBuffer(1);
     MSize--;
   }
@@ -171,7 +171,7 @@ public:
 
   void remove(const uint32_t APos, uint32_t ANum) {
     //moveBufferItems(APos+ANum,APos,ANum);
-    KODE_Memmove( &MBuffer[APos], &MBuffer[APos+ANum], (MSize-APos-ANum) * MTypeSize);
+    memmove( &MBuffer[APos], &MBuffer[APos+ANum], (MSize-APos-ANum) * MTypeSize);
     shrinkBuffer(ANum);
     MSize -= ANum;
   }

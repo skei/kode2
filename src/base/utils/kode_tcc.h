@@ -92,7 +92,7 @@ public:
     //  fseek(file, 0, SEEK_END);
     //  size_t end = ftell(file);
     //  fseek(file, 0, SEEK_SET);
-    //  source_buffer = (char*)KODE_Malloc(end);
+    //  source_buffer = (char*)malloc(end);
     //  source_allocated = true;
     //  unsigned int r = fread(source_buffer, sizeof(char), end, file);
     //  fclose(file);
@@ -113,7 +113,7 @@ public:
   //----------
 
   void unload() {
-    //if (source_allocated && source_buffer) KODE_Free(source_buffer);
+    //if (source_allocated && source_buffer) free(source_buffer);
     //source_buffer = NULL;
     //source_allocated = false;
   }
@@ -298,8 +298,8 @@ public: // linking
   */
 
   int relocate(void *ptr) {
-    //if (relocated_buffer) KODE_Free(relocated_buffer);
-    //relocated_buffer = KODE_Malloc(tcc_relocate(state,NULL));
+    //if (relocated_buffer) free(relocated_buffer);
+    //relocated_buffer = malloc(tcc_relocate(state,NULL));
     //tcc_relocate(state,relocated_buffer);
     return tcc_relocate(MState,ptr);
   }

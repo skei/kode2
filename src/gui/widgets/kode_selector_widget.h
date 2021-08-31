@@ -137,8 +137,10 @@ public:
 
   void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
     //KODE_TextWidget::on_widget_mouseClick(AXpos,AYpos,AButton,AState,ATimeStamp); // Release ??
-    if (MMenu) {
-      MMenu->open(this,AXpos,AYpos);
+    if (AButton == KODE_BUTTON_LEFT) {
+      if (MMenu) {
+        MMenu->open(this,AXpos,AYpos);
+      }
     }
   }
 

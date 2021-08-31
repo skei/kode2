@@ -70,7 +70,7 @@ bool _kode_str_scan(char*& wildcards, char*& str) {
 
 /*
 void KODE_AppendString(char* buffer, const char* str) {
-  KODE_Strcat(buffer,str);
+  strcat(buffer,str);
 }
 */
 
@@ -87,7 +87,7 @@ void KODE_CreateUniqueString(char* buffer, const char* APrefix, void* APtr) {
   const char hex_table[17] = "0123456789ABCDEF";  // +'\0' = 17
   const uint32_t hex_size  = sizeof(void*) * 2;
   const uint32_t rand_size = sizeof(int32_t) * 2;
-  //_resize_buffer( KODE_Strlen(APrefix) + hex_size + 1 + rand_size );
+  //_resize_buffer( strlen(APrefix) + hex_size + 1 + rand_size );
   char* buf = buffer;//temp;
   while (*APrefix != '\0') *buf++ = *APrefix++;   // memset + update ptrs
   *buf++ = ':';
@@ -113,7 +113,7 @@ void KODE_CreateUniqueString(char* buffer, const char* APrefix, void* APtr) {
 // or NULL if not found
 
 char* KODE_FindString(char* buffer, char* str) {
-  return KODE_Strstr(buffer,str);
+  return strstr(buffer,str);
 }
 
 //----------
@@ -144,7 +144,7 @@ void KODE_LowerCase(char* buffer) {
 //----------
 
 void KODE_MakeValidSymbol(char* buffer) {
-  for (uint32_t i=0; i<KODE_Strlen(buffer); i++) {
+  for (uint32_t i=0; i<strlen(buffer); i++) {
     unsigned char c = buffer[i];
     if ((c<32) || (c>127)) buffer[i] = '_';
     else buffer[i] = KODE_CSYMBOLS[c];
@@ -171,19 +171,19 @@ void KODE_ReplaceFileExt(const char* ext) {
 void KODE_ReplaceString(char* buffer, const char* str1, const char* str2) {
   //_grow_buffer(1024);
   char temp[1024];
-  uint32_t length = KODE_Strlen(buffer);
-  KODE_Memcpy(temp,buffer,length+1);
+  uint32_t length = strlen(buffer);
+  memcpy(temp,buffer,length+1);
   char *pos;
-  int clen1 = KODE_Strlen(str1);
-  int clen2 = KODE_Strlen(str2);
-  while ((pos = KODE_Strstr(temp,str1))) {
+  int clen1 = strlen(str1);
+  int clen2 = strlen(str2);
+  while ((pos = strstr(temp,str1))) {
     //char* bufpos = pos - temp + MBuffer;
-    KODE_Memmove(pos + clen2, pos + clen1, KODE_Strlen(pos) - clen1 + 1);
-    KODE_Memcpy(pos, str2, clen2);
-    //KODE_Memset(pos , 1, clen1);
+    memmove(pos + clen2, pos + clen1, strlen(pos) - clen1 + 1);
+    memcpy(pos, str2, clen2);
+    //memset(pos , 1, clen1);
   }
-  //_resize_buffer( KODE_Strlen(MBuffer) );
-  KODE_Strcpy(buffer,temp);
+  //_resize_buffer( strlen(MBuffer) );
+  strcpy(buffer,temp);
 }
 
 //----------
@@ -192,7 +192,7 @@ void KODE_ReplaceString(char* buffer, const char* str1, const char* str2) {
 
 void KODE_ReplaceChars(char* buffer, const char c1, const char c2) {
   char *pos;
-  while ((pos = KODE_Strchr(buffer,c1))) {
+  while ((pos = strchr(buffer,c1))) {
     *pos = c2;
   }
 }
@@ -201,7 +201,7 @@ void KODE_ReplaceChars(char* buffer, const char c1, const char c2) {
 
 void KODE_ReverseString(char* buffer) {
   int i;
-  int len = KODE_Strlen(buffer) - 1;
+  int len = strlen(buffer) - 1;
   int mid = (len % 2) ? (len / 2) : ((len + 1) / 2);
   for (i=0; i<=mid; ++i) {
     char buf = buffer[i];
@@ -228,7 +228,7 @@ bool KODE_SearchWildcards(char* buffer, const char* wildcards) {
 /*
 void KODE_stripFileExt(void) {
   char *dot;
-  dot = KODE_Strrchr(MBuffer,'.');
+  dot = strrchr(MBuffer,'.');
   if (dot) {
     int32_t len = dot - MBuffer;
     _resize_buffer(len);
@@ -243,8 +243,8 @@ void KODE_stripFileExt(void) {
 /*
 void KODE_StripPath(char* buffer) {
   const char *slash, *backslash;
-  slash     = KODE_Strrchr(buffer,'/');
-  backslash = KODE_Strrchr(buffer,'\\');//+1;
+  slash     = strrchr(buffer,'/');
+  backslash = strrchr(buffer,'\\');//+1;
   if (slash) {
     _copy_buffer(slash + 1);
   }

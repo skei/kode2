@@ -12,6 +12,10 @@
   #include "gui/xcb/kode_xcb_window.h"
 #endif
 
+#ifdef KODE_GUI_CAIRO
+  typedef KODE_XcbWindow KODE_ImplementedWindow;
+#endif
+
 #ifdef KODE_GUI_XCB
   typedef KODE_XcbWindow KODE_ImplementedWindow;
 #endif
@@ -76,7 +80,7 @@ public:
     MRect = KODE_FRect(AWidth,AHeight);
     MWindowWidth = AWidth;
     MWindowHeight = AHeight;
-    MWindowPainter = KODE_New KODE_Painter(this);
+    MWindowPainter = new KODE_Painter(this);
     #ifndef KODE_NO_WINDOW_BUFFERING
       createBuffer(AWidth,AHeight);
     #endif
@@ -85,7 +89,7 @@ public:
   //----------
 
   virtual ~KODE_Window() {
-    if (MWindowPainter) KODE_Delete MWindowPainter;
+    if (MWindowPainter) delete MWindowPainter;
     #ifndef KODE_NO_WINDOW_BUFFERING
       destroyBuffer();
     #endif
@@ -116,9 +120,9 @@ public: // painted
 
   void fillBackground(KODE_FRect ARect) {
     #ifdef KODE_NO_WINDOW_BUFFERING
-      MWindowPainter->fillRect(ARect,MBackgroundColor);
+      MWindowPainter->fillRectangle(ARect,MBackgroundColor);
     #else
-      MBufferPainter->fillRect(ARect,MBackgroundColor);
+      MBufferPainter->fillRectangle(ARect,MBackgroundColor);
     #endif
   }
 
@@ -142,8 +146,8 @@ private: // buffer
   #ifndef KODE_NO_WINDOW_BUFFERING
 
   void createBuffer(uint32_t AWidth, uint32_t AHeight) {
-    MBufferSurface = KODE_New KODE_Surface(this,AWidth,AHeight);
-    MBufferPainter = KODE_New KODE_Painter(MBufferSurface);
+    MBufferSurface = new KODE_Surface(this,AWidth,AHeight);
+    MBufferPainter = new KODE_Painter(MBufferSurface);
     MBufferWidth = AWidth;
     MBufferHeight = AHeight;
   }
@@ -151,8 +155,8 @@ private: // buffer
   //----------
 
   void destroyBuffer() {
-    if (MBufferPainter) KODE_Delete MBufferPainter;
-    if (MBufferSurface) KODE_Delete MBufferSurface;
+    if (MBufferPainter) delete MBufferPainter;
+    if (MBufferSurface) delete MBufferSurface;
     MBufferPainter = KODE_NULL;
     MBufferSurface = KODE_NULL;
   }
@@ -176,9 +180,15 @@ public:
 
   void paintWidget(KODE_Widget* AWidget, KODE_FRect ARect, uint32_t AMode=0) {
     #ifdef KODE_NO_WINDOW_BUFFERING
+      //MWindowPainter->resetClip();
+      //MWindowPainter->setClip(ARect);
       AWidget->on_widget_paint(MWindowPainter,ARect,AMode);
+      //AWidget->paintChildren(MWindowPainter,ARect);
     #else
+      //MBufferPainter->resetClip();
+      //MBufferPainter->setClip(ARect);
       AWidget->on_widget_paint(MBufferPainter,ARect,AMode);
+      //AWidget->paintChildren(MBufferPainter,ARect,AMode);
       MWindowPainter->drawBitmap(ARect.x,ARect.y,MBufferSurface,ARect);
     #endif
   }
@@ -203,12 +213,18 @@ public:
 
     KODE_Widget* hover = KODE_NULL;
 
-    if (MModalWidget) hover = MModalWidget->findChild(AXpos,AYpos);
-    else hover = findChild(AXpos,AYpos);
+    if (MModalWidget) {
+      hover = MModalWidget->findChild(AXpos,AYpos);
+    }
+    else {
+      hover = findChild(AXpos,AYpos);
+    }
 
     if (hover) {
       if (hover != MHoverWidget) {
-        if (MHoverWidget) MHoverWidget->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
+        if (MHoverWidget) {
+          MHoverWidget->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
+        }
         if (hover->flags.active) {
           MHoverWidget = hover;
           MHoverWidget->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);

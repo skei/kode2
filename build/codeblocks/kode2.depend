@@ -23,7 +23,7 @@
 
 1628554993 /DISKS/sda2/code/git/kode2/src/base/kode_config.h
 
-1620151222 /DISKS/sda2/code/git/kode2/src/base/kode_defines.h
+1630379695 /DISKS/sda2/code/git/kode2/src/base/kode_defines.h
 
 1612057072 /DISKS/sda2/code/git/kode2/src/base/kode_attributes.h
 
@@ -32,9 +32,9 @@
 
 1628957271 /DISKS/sda2/code/git/kode2/src/base/kode_const.h
 
-1630118016 /DISKS/sda2/code/git/kode2/src/base/kode_enums.h
+1630382931 /DISKS/sda2/code/git/kode2/src/base/kode_enums.h
 
-1612057072 /DISKS/sda2/code/git/kode2/src/base/kode_stdlib.h
+1630363906 /DISKS/sda2/code/git/kode2/src/base/kode_stdlib.h
 	<inttypes.h>
 	<memory.h>
 	<stdio.h>
@@ -47,7 +47,7 @@
 	"base/debug/kode_debug_crash_handler.h"
 	"base/debug/kode_debug_memory.h"
 
-1612234524 /DISKS/sda2/code/git/kode2/src/base/debug/kode_debug_print.h
+1630363768 /DISKS/sda2/code/git/kode2/src/base/debug/kode_debug_print.h
 	<stdarg.h>
 	"base/kode_stdlib.h"
 	<sys/time.h>
@@ -60,7 +60,7 @@
 1612057072 /DISKS/sda2/code/git/kode2/src/base/debug/kode_debug_assert.h
 	<assert.h>
 
-1613236063 /DISKS/sda2/code/git/kode2/src/base/debug/kode_debug_callstack.h
+1630363812 /DISKS/sda2/code/git/kode2/src/base/debug/kode_debug_callstack.h
 	<stdio.h>
 	<sys/unistd.h>
 	<cxxabi.h>
@@ -80,7 +80,7 @@
 	"plugin/lv2/kode_lv2_plugin.h"
 	"plugin/vst3/kode_vst3_plugin.h"
 
-1628644465 /DISKS/sda2/code/git/kode2/src/plugin/exe/kode_exe_plugin.h
+1630363269 /DISKS/sda2/code/git/kode2/src/plugin/exe/kode_exe_plugin.h
 	"plugin/exe/kode_exe.h"
 
 1610852002 /DISKS/sda2/code/git/kode2/src/audio/io/kode_portaudio.h
@@ -101,21 +101,24 @@
 	<stdlib.h>
 	"kode.h"
 
-1630263441 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
+1630379885 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"gui/kode_surface.h"
 	"gui/kode_widget.h"
 	"gui/xcb/kode_xcb_window.h"
 
-1613064625 /DISKS/sda2/code/git/kode2/src/gui/kode_painter.h
+1630374569 /DISKS/sda2/code/git/kode2/src/gui/kode_painter.h
 	"kode.h"
+	"base/types/kode_stack.h"
+	"gui/cairo/kode_cairo_painter.h"
 	"gui/xcb/kode_xcb_painter.h"
 
-1613064690 /DISKS/sda2/code/git/kode2/src/gui/kode_drawable.h
+1630380257 /DISKS/sda2/code/git/kode2/src/gui/kode_drawable.h
 	"gui/xcb/kode_xcb.h"
+	"gui/cairo/kode_cairo.h"
 
-1629747458 /DISKS/sda2/code/git/kode2/src/gfx/kode_bitmap.h
+1630363540 /DISKS/sda2/code/git/kode2/src/gfx/kode_bitmap.h
 	"kode.h"
 	"base/utils/kode_bgra.h"
 	"base/utils/kode_integer_math.h"
@@ -182,7 +185,7 @@
 	"gui/base/kode_base_painter.h"
 	"gui/ctx/kode_ctx.h"
 
-1629807470 /DISKS/sda2/code/git/kode2/src/gui/base/kode_base_painter.h
+1630383424 /DISKS/sda2/code/git/kode2/src/gui/base/kode_base_painter.h
 	"kode.h"
 	"gfx/kode_bitmap.h"
 	"gui/kode_drawable.h"
@@ -205,20 +208,20 @@
 	<stdio.h>
 	<unistd.h>
 
-1629807541 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_painter.h
+1630378043 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_painter.h
 	"gui/base/kode_base_painter.h"
 	"gui/xcb/kode_xcb_utils.h"
 	"gui/cairo/kode_cairo.h"
 
-1612057073 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_utils.h
+1630363812 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_utils.h
 	"kode.h"
 	"gui/xcb/kode_xcb.h"
 
-1628817955 /DISKS/sda2/code/git/kode2/src/gui/kode_surface.h
+1630379866 /DISKS/sda2/code/git/kode2/src/gui/kode_surface.h
 	"kode.h"
 	"gui/xcb/kode_xcb_surface.h"
 
-1628640601 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_surface.h
+1630374955 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_surface.h
 	"gui/kode_drawable.h"
 	"gui/base/kode_base_surface.h"
 	"gui/cairo/kode_cairo.h"
@@ -227,21 +230,21 @@
 	"kode.h"
 	"gui/kode_drawable.h"
 
-1630332849 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
+1630363269 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"plugin/kode_parameter.h"
 
-1612111471 /DISKS/sda2/code/git/kode2/src/base/types/kode_array.h
+1630363597 /DISKS/sda2/code/git/kode2/src/base/types/kode_array.h
 	"base/utils/kode_integer_math.h"
 	"base/kode_stdlib.h"
 
 1612057072 /DISKS/sda2/code/git/kode2/src/base/types/kode_point.h
 
-1612057072 /DISKS/sda2/code/git/kode2/src/base/types/kode_rect.h
+1630355879 /DISKS/sda2/code/git/kode2/src/base/types/kode_rect.h
 	"kode.h"
 
-1628723263 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_window.h
+1630374867 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_window.h
 	"kode.h"
 	"gui/kode_drawable.h"
 	"gui/base/kode_base_window.h"
@@ -252,7 +255,7 @@
 1629755190 /DISKS/sda2/code/git/kode2/src/gui/base/kode_base_window.h
 	"kode.h"
 
-1630013686 /DISKS/sda2/code/git/kode2/src/plugin/kode_descriptor.h
+1630363739 /DISKS/sda2/code/git/kode2/src/plugin/kode_descriptor.h
 	"plugin/kode_parameter.h"
 	"plugin/kode_program.h"
 
@@ -272,7 +275,7 @@
 	"plugin/vst2/kode_vst2_instance.h"
 	"plugin/vst3/kode_vst3_instance.h"
 
-1629732670 /DISKS/sda2/code/git/kode2/src/plugin/kode_editor.h
+1630363500 /DISKS/sda2/code/git/kode2/src/plugin/kode_editor.h
 	"gui/kode_window.h"
 	"plugin/base/kode_base_editor.h"
 	"plugin/base/kode_base_instance.h"
@@ -289,22 +292,22 @@
 	"plugin/kode_descriptor.h"
 	"plugin/kode_process_context.h"
 
-1628893208 /DISKS/sda2/code/git/kode2/src/plugin/exe/kode_exe_instance.h
+1630363500 /DISKS/sda2/code/git/kode2/src/plugin/exe/kode_exe_instance.h
 	"plugin/base/kode_base_editor.h"
 	"plugin/base/kode_base_instance.h"
 
 1628640198 /DISKS/sda2/code/git/kode2/src/plugin/exe/kode_exe.h
 
-1629915511 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_instance.h
+1630363540 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_instance.h
 	"plugin/kode_editor.h"
 	"plugin/base/kode_base_instance.h"
 	"plugin/vst3/kode_vst3.h"
 	"plugin/vst3/kode_vst3_utils.h"
 
-1612057072 /DISKS/sda2/code/git/kode2/src/base/types/kode_queue.h
+1630363540 /DISKS/sda2/code/git/kode2/src/base/types/kode_queue.h
 	"kode.h"
 
-1629851773 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3.h
+1630363540 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3.h
 
 1610879184 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_api.h
 	<string>
@@ -314,13 +317,13 @@
 	<locale>
 	<codecvt>
 
-1629851868 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_utils.h
+1630363739 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_utils.h
 	"plugin/vst3/kode_vst3.h"
 	<string>
 	<locale>
 	<codecvt>
 
-1629915142 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_plugin.h
+1630363843 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_plugin.h
 	"plugin/vst3/kode_vst3.h"
 	"plugin/vst3/kode_vst3_instance.h"
 	"plugin/vst3/kode_vst3_utils.h"
@@ -334,11 +337,12 @@
 	"plugin/kode_plugin.h"
 	"plugin/kode_process_context.h"
 
-1630295100 /DISKS/sda2/code/git/kode2/src/gui/kode_widgets.h
+1630378512 /DISKS/sda2/code/git/kode2/src/gui/kode_widgets.h
 	"gui/widgets/kode_template_widget.h"
 	"gui/widgets/kode_button_widget.h"
 	"gui/widgets/kode_button_row_widget.h"
 	"gui/widgets/kode_cached_widget.h"
+	"gui/widgets/kode_cairo_widget.h"
 	"gui/widgets/kode_curve_widget.h"
 	"gui/widgets/kode_drag_value_widget.h"
 	"gui/widgets/kode_grid_widget.h"
@@ -349,16 +353,32 @@
 	"gui/widgets/kode_knob_widget.h"
 	"gui/widgets/kode_menu_widget.h"
 	"gui/widgets/kode_menu_item_widget.h"
+	"gui/widgets/kode_pages_widget.h"
 	"gui/widgets/kode_panel_widget.h"
 	"gui/widgets/kode_range_slider_widget.h"
 	"gui/widgets/kode_saheader_widget.h"
 	"gui/widgets/kode_scroll_bar_widget.h"
+	"gui/widgets/kode_scroll_box_widget.h"
 	"gui/widgets/kode_selector_widget.h"
 	"gui/widgets/kode_sizer_widget.h"
 	"gui/widgets/kode_slider_widget.h"
 	"gui/widgets/kode_slider_bank_widget.h"
+	"gui/widgets/kode_tabs_widget.h"
 	"gui/widgets/kode_text_widget.h"
 	"gui/widgets/kode_value_widget.h"
+	"gui/widgets/kode_circular_waveform_widget.h"
+	"gui/widgets/kode_graph_widget.h"
+	"gui/widgets/kode_knob2_widget.h"
+	"gui/widgets/kode_knob3_widget.h"
+	"gui/widgets/kode_knob4_widget.h"
+	"gui/widgets/kode_modmatrix_widget.h"
+	"gui/widgets/kode_plot_widget.h"
+	"gui/widgets/kode_symbol_widget.h"
+	"gui/widgets/kode_text_box_widget.h"
+	"gui/widgets/kode_text_edit_widget.h"
+	"gui/widgets/kode_timeline_widget.h"
+	"gui/widgets/kode_value_graph_widget.h"
+	"gui/widgets/kode_waveform_widget.h"
 
 1610375732 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_widget_template.h
 	"base/kode.h"
@@ -366,7 +386,7 @@
 	"gui/kode_painter.h"
 	"gui/kode_widget.h"
 
-1630275450 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_value_widget.h
+1630346775 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_value_widget.h
 	"gui/widgets/kode_text_widget.h"
 
 1610847314 /DISKS/sda2/code/git/kode2/test/test_plugin.h
@@ -385,7 +405,7 @@
 	"gui/kode_widgets.h"
 	"plugin/kode_editor.h"
 
-1630270567 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_panel_widget.h
+1630376042 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_panel_widget.h
 	"gui/kode_widget.h"
 
 1611534004 /DISKS/sda2/code/git/kode2/test/test_gui.h
@@ -395,28 +415,37 @@
 	"gui/kode_widgets.h"
 	"plugin/kode_parameter.h"
 
-1612057073 /DISKS/sda2/code/git/kode2/src/gui/cairo/kode_cairo_painter.h
+1630383823 /DISKS/sda2/code/git/kode2/src/gui/cairo/kode_cairo_painter.h
+	"kode.h"
+	"gfx/kode_bitmap.h"
+	"gui/kode_drawable.h"
+	"gui/kode_window.h"
+	"gui/cairo/kode_cairo.h"
+	"gui/xcb/kode_xcb_painter.h"
 
-1612057073 /DISKS/sda2/code/git/kode2/src/gui/cairo/kode_cairo.h
+1630362708 /DISKS/sda2/code/git/kode2/src/gui/cairo/kode_cairo.h
+	"kode.h"
+	<cairo/cairo.h>
+	<cairo/cairo-xcb.h>
 
 1610995892 /DISKS/sda2/code/git/kode2/src/gui/kode_skin.h
 	"base/kode.h"
 	"gui/kode_painter.h"
 
-1630270633 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_widget.h
+1630376042 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_widget.h
 	"gui/widgets/kode_drag_value_widget.h"
 
 1613243418 /DISKS/sda2/code/git/kode2/src/plugin/vst2/kode_vst2_instance.h
 
 1611187753 /DISKS/sda2/code/git/kode2/src/plugin/vst2/kode_vst2_plugin.h
 
-1629753353 /DISKS/sda2/code/git/kode2/src/base/types/kode_color.h
+1630363708 /DISKS/sda2/code/git/kode2/src/base/types/kode_color.h
 	"kode.h"
 
 1628885101 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_color_widget.h
 	"gui/kode_widget.h"
 
-1630297199 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_image_widget.h
+1630341613 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_image_widget.h
 	"gui/widgets/kode_panel_widget.h"
 
 1611693219 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_sa_header_widget.h
@@ -462,7 +491,7 @@
 	"gui/kode_painter.h"
 	"gui/kode_widget.h"
 
-1630275959 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_text_widget.h
+1630346762 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_text_widget.h
 	"gui/widgets/kode_panel_widget.h"
 
 1611680466 /DISKS/sda2/code/git/kode2/test/test_gui.cpp
@@ -481,7 +510,7 @@
 	"gui/kode_widgets.h"
 	"plugin/kode_editor.h"
 
-1628962481 /DISKS/sda2/code/git/kode2/src/base/utils/kode_strutils.h
+1630363874 /DISKS/sda2/code/git/kode2/src/base/utils/kode_strutils.h
 	"kode.h"
 	"base/utils/kode_random.h"
 
@@ -574,7 +603,7 @@
 	"gfx/kode_bitmap.h"
 	"gui/kode_drawable.h"
 
-1612111478 /DISKS/sda2/code/git/kode2/src/base/types/kode_buffer.h
+1630363739 /DISKS/sda2/code/git/kode2/src/base/types/kode_buffer.h
 	"kode.h"
 	"base/utils/kode_integer_math.h"
 
@@ -582,7 +611,7 @@
 
 1612057072 /DISKS/sda2/code/git/kode2/src/base/types/kode_list.h
 
-1612057072 /DISKS/sda2/code/git/kode2/src/base/types/kode_stack.h
+1630366530 /DISKS/sda2/code/git/kode2/src/base/types/kode_stack.h
 
 1612057072 /DISKS/sda2/code/git/kode2/src/base/types/kode_tree.h
 
@@ -590,7 +619,7 @@
 
 1612057072 /DISKS/sda2/code/git/kode2/src/base/types/kode_quaternion.h
 
-1612234851 /DISKS/sda2/code/git/kode2/src/base/types/kode_string.h
+1630363887 /DISKS/sda2/code/git/kode2/src/base/types/kode_string.h
 	"kode.h"
 	"base/types/kode_buffer.h"
 	"base/utils/kode_strutils.h"
@@ -616,7 +645,7 @@
 	"kode.h"
 	<pthread.h>
 
-1612057072 /DISKS/sda2/code/git/kode2/src/base/system/kode_memory.h
+1630363500 /DISKS/sda2/code/git/kode2/src/base/system/kode_memory.h
 	"kode.h"
 
 1612057072 /DISKS/sda2/code/git/kode2/src/base/system/kode_simd.h
@@ -672,7 +701,7 @@
 	<math.h>
 	"kode.h"
 
-1630287066 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_template_widget.h
+1630377246 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_template_widget.h
 	"gui/kode_widget.h"
 
 1613090852 /DISKS/sda2/code/git/kode2/plugins/template.cpp
@@ -743,17 +772,17 @@
 	"plugin/kode_parameter.h"
 	"plugin/parameters/kode_float_parameter.h"
 
-1613309789 /DISKS/sda2/code/git/kode2/src/plugin/parameters/kode_pow_parameter.h
+1630363190 /DISKS/sda2/code/git/kode2/src/plugin/parameters/kode_pow_parameter.h
 	"kode.h"
 	"plugin/kode_parameter.h"
 	"plugin/parameters/kode_float_parameter.h"
 
-1613309782 /DISKS/sda2/code/git/kode2/src/plugin/parameters/kode_pow2_parameter.h
+1630363190 /DISKS/sda2/code/git/kode2/src/plugin/parameters/kode_pow2_parameter.h
 	"kode.h"
 	"plugin/kode_parameter.h"
 	"plugin/parameters/kode_float_parameter.h"
 
-1630273967 /DISKS/sda2/code/git/kode2/src/plugin/parameters/kode_text_parameter.h
+1630363739 /DISKS/sda2/code/git/kode2/src/plugin/parameters/kode_text_parameter.h
 	"kode.h"
 	"plugin/kode_parameter.h"
 	"plugin/parameters/kode_int_parameter.h"
@@ -880,11 +909,11 @@
 	<lv2/urid/urid.h>
 	<lv2/lv2plug.in/ns/extensions/ui/ui.h>
 
-1629663673 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_utils.h
+1630363626 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_utils.h
 	"kode.h"
 	"plugin/lv2/kode_lv2.h"
 
-1629663174 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_plugin.h
+1630363708 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_plugin.h
 	"plugin/lv2/kode_lv2.h"
 	"plugin/lv2/kode_lv2_instance.h"
 	"plugin/lv2/kode_lv2_utils.h"
@@ -901,7 +930,7 @@
 
 1585572916 /DISKS/sda2/code/git/kode2/data/img/sa_logo_40_trans_black.h
 
-1630270589 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_saheader_widget.h
+1630363190 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_saheader_widget.h
 	"gui/widgets/kode_panel_widget.h"
 
 1629732557 /DISKS/sda2/code/git/kode2/src/plugin/base/kode_base_editor.h
@@ -937,13 +966,13 @@
 1628900636 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_switch_widget.h
 	"gui/widgets/kode_text_widget.h"
 
-1630271264 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_button_widget.h
+1630376042 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_button_widget.h
 	"gui/widgets/kode_text_widget.h"
 
 1630287091 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_drag_value_widget.h
 	"gui/widgets/kode_value_widget.h"
 
-1630270528 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_knob_widget.h
+1630362604 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_knob_widget.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"gui/kode_widget.h"
@@ -983,39 +1012,39 @@
 	"kode.h"
 	"plugin/kode_plugin.h"
 
-1630271440 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_scroll_bar_widget.h
+1630376042 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_scroll_bar_widget.h
 	"gui/kode_widget.h"
 
-1630271966 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_range_slider_widget.h
+1630376042 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_range_slider_widget.h
 	"gui/kode_widget.h"
 
-1630291285 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_grid_widget.h
+1630376042 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_grid_widget.h
 	"base/utils/kode_math.h"
 	"gui/widgets/kode_panel_widget.h"
 
 1591225097 /DISKS/sda2/code/git/kode2/data/img/sa_logo_40_white_trans.h
 
-1630291371 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_group_box_widget.h
+1630363190 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_group_box_widget.h
 	"gui/kode_widgets.h"
 
-1630270620 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_sizer_widget.h
+1630376042 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_sizer_widget.h
 	"gui/kode_widget.h"
 
-1630291592 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_keyboard_widget.h
+1630376042 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_keyboard_widget.h
 	"gui/kode_widget.h"
 
-1630282159 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_menu_widget.h
+1630363190 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_menu_widget.h
 	"gui/widgets/kode_menu_item_widget.h"
 	"gui/widgets/kode_panel_widget.h"
 
 1630281693 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_menu_item_widget.h
 	"gui/widgets/kode_text_widget.h"
 
-1630278457 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_selector_widget.h
+1630342176 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_selector_widget.h
 	"gui/widgets/kode_menu_widget.h"
 	"gui/widgets/kode_text_widget.h"
 
-1630285169 /DISKS/sda2/code/git/kode2/demo/demo_gui.cpp
+1630383465 /DISKS/sda2/code/git/kode2/demo/demo_gui.cpp
 	"kode.h"
 	"plugin/kode_parameters.h"
 	"plugin/kode_plugin.h"
@@ -1027,27 +1056,27 @@
 	"demo_gui/bottom_panel.h"
 	"demo_gui/main_panel.h"
 
-1630287604 /DISKS/sda2/code/git/kode2/demo/demo_gui/left_panel.h
+1630363190 /DISKS/sda2/code/git/kode2/demo/demo_gui/left_panel.h
 
-1630265652 /DISKS/sda2/code/git/kode2/demo/demo_gui/right_panel.h
+1630363190 /DISKS/sda2/code/git/kode2/demo/demo_gui/right_panel.h
 
-1630267017 /DISKS/sda2/code/git/kode2/demo/demo_gui/top_panel.h
+1630382801 /DISKS/sda2/code/git/kode2/demo/demo_gui/top_panel.h
 
-1630267556 /DISKS/sda2/code/git/kode2/demo/demo_gui/bottom_panel.h
+1630363190 /DISKS/sda2/code/git/kode2/demo/demo_gui/bottom_panel.h
 
-1630332635 /DISKS/sda2/code/git/kode2/demo/demo_gui/main_panel.h
+1630383588 /DISKS/sda2/code/git/kode2/demo/demo_gui/main_panel.h
 	"../data/img/knob4_60x60_131.h"
 
-1630286188 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_button_row_widget.h
+1630376042 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_button_row_widget.h
 	"gui/widgets/kode_grid_widget.h"
 
-1630287707 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_curve_widget.h
+1630376042 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_curve_widget.h
 	"gui/widgets/kode_drag_value_widget.h"
 
-1630291572 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_bank_widget.h
+1630376042 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_bank_widget.h
 	"gui/kode_widget.h"
 
-1630332709 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_image_strip_widget.h
+1630346656 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_image_strip_widget.h
 	"gui/widgets/kode_drag_value_widget.h"
 
 1630295623 /DISKS/sda2/code/git/kode2/src/gui/kode_tilemap.h
@@ -1056,4 +1085,77 @@
 1586459264 /DISKS/sda2/code/git/kode2/data/img/knob3_60x60_131.h
 
 1630326703 /DISKS/sda2/code/git/kode2/data/img/knob4_60x60_131.h
+
+1630339344 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_pages_widget.h
+	"gui/kode_widget.h"
+
+1630363190 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_tabs_widget.h
+	"gui/widgets/kode_button_row_widget.h"
+	"gui/widgets/kode_pages_widget.h"
+
+1630363190 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_scroll_box_widget.h
+	"gui/kode_widget.h"
+	"gui/widgets/kode_panel_widget.h"
+	"gui/widgets/kode_scroll_bar_widget.h"
+
+1630362254 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_circular_waveform_widget.h
+	"gui/kode_widget.h"
+	"gui/kode_widget.h"
+
+1630375996 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_graph_widget.h
+	"base/kode_list.h"
+	"gui/widgets/kode_border_widget.h"
+
+1630363190 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_knob2_widget.h
+	"base/kode.h"
+	"gui/kode_widget.h"
+	"gui/kode_widgets.h"
+	"plugin/kode_parameter.h"
+
+1630363190 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_knob3_widget.h
+	"base/kode.h"
+	"gui/kode_widget.h"
+	"gui/kode_widgets.h"
+	"plugin/kode_parameter.h"
+
+1630363190 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_knob4_widget.h
+	"base/kode.h"
+	"gui/kode_widget.h"
+	"gui/kode_widgets.h"
+	"plugin/kode_parameter.h"
+
+1630363269 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_modmatrix_widget.h
+	"gui/kode_widget.h"
+	"gui/kode_widgets.h"
+	"gui/widgets/kode_selector_widget.h"
+	"gui/widgets/kode_drag_value_widget.h"
+
+1630363500 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_plot_widget.h
+
+1630362417 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_symbol_widget.h
+
+1630363269 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_text_box_widget.h
+	"base/kode_lock.h"
+	"base/kode_string.h"
+	"gui/kode_widget.h"
+	"gui/widgets/kode_color_widget.h"
+	"gui/widgets/kode_scroll_bar_widget.h"
+
+1630363840 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_text_edit_widget.h
+	"base/kode_string_utils.h"
+	"gui/kode_widget.h"
+
+1630375939 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_timeline_widget.h
+	"base/kode_list.h"
+	"gui/kode_widget.h"
+
+1630375990 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_value_graph_widget.h
+	"base/kode_random.h"
+	"gui/kode_widget.h"
+
+1630363459 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_waveform_widget.h
+	"base/kode_color.h"
+	"gui/kode_widget.h"
+
+1630379734 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_cairo_widget.h
 

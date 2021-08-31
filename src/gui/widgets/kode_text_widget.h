@@ -75,7 +75,7 @@ public:
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     fillBackground(APainter);
-    paintChildren(APainter,ARect,AMode);
+    //paintChildren(APainter,getRect(),AMode);
     drawText(APainter);
     drawBorder(APainter);
 

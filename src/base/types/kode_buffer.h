@@ -29,11 +29,11 @@ public:
 
   KODE_StaticBuffer(const KODE_StaticBuffer& ABuffer) {
     //KODE_StaticBuffer* buf = (KODE_StaticBuffer*)&ABuffer;
-    //KODE_Memcpy(MBuffer,buf->ptr());
+    //memcpy(MBuffer,buf->ptr());
   }
 
   KODE_StaticBuffer(void* ABuffer, uint32_t ASize) {
-    //KODE_Strcpy(MBuffer,ABuffer,ASize);
+    //strcpy(MBuffer,ABuffer,ASize);
   }
 
   virtual ~KODE_StaticBuffer() {
@@ -56,22 +56,22 @@ public:
   }
 
   KODE_StaticBuffer& operator = (TYPE* ABuffer) {
-    KODE_Memcpy(MBuffer,ABuffer,SIZE * sizeof(TYPE));
+    memcpy(MBuffer,ABuffer,SIZE * sizeof(TYPE));
     return *this;
   }
 
   KODE_StaticBuffer& operator = (/*const*/ KODE_StaticBuffer& ABuffer) {
-    KODE_Memcpy(MBuffer,ABuffer,SIZE * sizeof(TYPE));
+    memcpy(MBuffer,ABuffer,SIZE * sizeof(TYPE));
     return *this;
   }
 
   //KODE_StaticBuffer& operator += (TYPE* ABuffer) {
-  //  //KODE_Strcat(MBuffer,str);
+  //  //strcat(MBuffer,str);
   //  return *this;
   //}
 
   //bool operator == (const TYPE* str) {
-  //  //return (KODE_Strcmp(MBuffer,str) == 0) ? true : false;
+  //  //return (strcmp(MBuffer,str) == 0) ? true : false;
   //  return false;
   //}
 
@@ -88,7 +88,7 @@ public:
   }
 
   void clearBuffer() {
-    KODE_Memset(MBuffer,0,SIZE*sizeof(TYPE));
+    memset(MBuffer,0,SIZE*sizeof(TYPE));
   }
 
   void fillBuffer(TYPE AItem) {
@@ -112,14 +112,14 @@ public:
     resizeBuffer(MBufferSize + ACount);
     TYPE* dst = &MBuffer[APos + ACount];
     TYPE* src = &MBuffer[APos];
-    KODE_Memmove(dst,src,num * sizeof(TYPE));
+    memmove(dst,src,num * sizeof(TYPE));
   }
 
   void removeSpace(uint32_t APos, uint32_t ACount) {
     TYPE* dst = &MBuffer[APos];
     TYPE* src = &MBuffer[APos + ACount];
     uint32_t num = (MBufferSize - APos);
-    KODE_Memmove(dst,src,num * sizeof(TYPE));
+    memmove(dst,src,num * sizeof(TYPE));
     resizeBuffer(MBufferSize - ACount);
   }
 
@@ -214,7 +214,7 @@ public:
   //----------
 
   void clearBuffer() {
-    KODE_Memset(MBuffer,0,MSize * sizeof(TYPE));
+    memset(MBuffer,0,MSize * sizeof(TYPE));
   }
 
   //----------
@@ -240,7 +240,7 @@ public:
   void createBuffer(uint32_t ASize) {
     uint32_t size = KODE_NextPowerOfTwo(ASize);
     //if (size != MAllocated) {
-      MBuffer = (TYPE*)KODE_Malloc(size * sizeof(TYPE));
+      MBuffer = (TYPE*)malloc(size * sizeof(TYPE));
       MAllocated = size;
       MSize = ASize;
     //}
@@ -249,7 +249,7 @@ public:
   //----------
 
   void deleteBuffer() {
-    if (MBuffer) KODE_Free(MBuffer);
+    if (MBuffer) free(MBuffer);
     MBuffer = KODE_NULL;
     MAllocated = 0;
     MSize = 0;
@@ -261,7 +261,7 @@ public:
     //if (MAllocated == 0) createBuffer(ASize);
     uint32_t size2 = KODE_NextPowerOfTwo(ASize);
     if (size2 != MAllocated) {
-      MBuffer = (TYPE*)KODE_Realloc(MBuffer,size2 * sizeof(TYPE));
+      MBuffer = (TYPE*)realloc(MBuffer,size2 * sizeof(TYPE));
       MAllocated = size2;
     }
     MSize = ASize;
@@ -274,7 +274,7 @@ public:
     resizeBuffer(MSize + ACount);
     TYPE* dst = &MBuffer[APos + ACount];
     TYPE* src = &MBuffer[APos];
-    KODE_Memmove(dst,src,num * sizeof(TYPE));
+    memmove(dst,src,num * sizeof(TYPE));
   }
 
   //----------
@@ -297,7 +297,7 @@ public:
     TYPE* dst = &MBuffer[APos];
     TYPE* src = &MBuffer[APos + ACount];
     uint32_t num = (MSize - APos);
-    KODE_Memmove(dst,src,num * sizeof(TYPE));
+    memmove(dst,src,num * sizeof(TYPE));
     resizeBuffer(MSize - ACount);
   }
 

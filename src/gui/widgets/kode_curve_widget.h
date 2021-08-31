@@ -95,7 +95,7 @@ public:
       // background
 
       //APainter->setFillColor(MBackgroundColor);
-      APainter->fillRect(mrect,MBackgroundColor);
+      APainter->fillRectangle(mrect,MBackgroundColor);
 
       // curve
 

@@ -8,7 +8,7 @@
 
 // 2^n
 
-// appendParameter( KODE_New KParamPow2("pow2", 4, 1, 16, 1 )); // (1..16)^2, default = 4^2
+// appendParameter( new KParamPow2("pow2", 4, 1, 16, 1 )); // (1..16)^2, default = 4^2
 
 class KODE_Pow2Parameter
 : public KODE_FloatParameter {

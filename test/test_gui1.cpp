@@ -32,10 +32,10 @@ public:
 //----------------------------------------------------------------------
 
 int main() {
-  myWindow* window = KODE_New myWindow(400,300,"KODE2");
+  myWindow* window = new myWindow(400,300,"KODE2");
   window->open();
   window->eventLoop();
   window->close();
-  KODE_Delete window;
+  delete window;
   return 0;
 }

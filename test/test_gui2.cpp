@@ -24,8 +24,8 @@ public:
   : KODE_Window(AWidth,AHeight,ATitle,AParent) {
     setFillBackground();
 
-    MBitmap = KODE_New KODE_Bitmap(256,256);
-    MBitmap2 = KODE_New KODE_Bitmap(256,256);
+    MBitmap = new KODE_Bitmap(256,256);
+    MBitmap2 = new KODE_Bitmap(256,256);
     //MBitmap->genFractalCloud(3,20);
     MBitmap->genFractalCloudLayer(0);
     MBitmap->genFractalCloudLayer(1);
@@ -43,20 +43,20 @@ public:
     MBitmap2->rotate( MBitmap, 128,128, 128,128, 0.1f/*-KODE_PI05*/, 0.9f, 0xff0000);
     //MBitmap2->copyBitmap(0,0,MBitmap);
 
-    MSurface = KODE_New KODE_Surface(this,256,256);
+    MSurface = new KODE_Surface(this,256,256);
 
-    KODE_Painter* painter = KODE_New KODE_Painter(MSurface);
-    //painter->fillRect(KODE_FRect(256,256),KODE_Color(1,1,0));
+    KODE_Painter* painter = new KODE_Painter(MSurface);
+    //painter->fillRectangle(KODE_FRect(256,256),KODE_Color(1,1,0));
     painter->uploadBitmap(0,0,MBitmap2);
-    KODE_Delete painter;
+    delete painter;
 
   }
 
   virtual ~myWindow() {
-    if (MBitmap)  KODE_Delete MBitmap;
-    if (MBitmap2) KODE_Delete MBitmap2;
-    //if (MImage)   KODE_Delete MImage;
-    if (MSurface) KODE_Delete MSurface;
+    if (MBitmap)  delete MBitmap;
+    if (MBitmap2) delete MBitmap2;
+    //if (MImage)   delete MImage;
+    if (MSurface) delete MSurface;
   }
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) final {
@@ -69,11 +69,11 @@ public:
 //----------------------------------------------------------------------
 
 int main() {
-  myWindow* window = KODE_New myWindow(400,300,"KODE2");
+  myWindow* window = new myWindow(400,300,"KODE2");
   window->open();
   window->eventLoop();
   window->close();
-  KODE_Delete window;
+  delete window;
   return 0;
 }
 

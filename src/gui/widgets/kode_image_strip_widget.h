@@ -2,8 +2,9 @@
 #define kode_template_widget_included
 //----------------------------------------------------------------------
 
-//#include "gui/kode_tilemap.h"
 #include "gui/widgets/kode_drag_value_widget.h"
+
+//----------
 
 class KODE_ImageStripWidget
 : public KODE_DragValueWidget {
@@ -16,11 +17,24 @@ public:
   : KODE_DragValueWidget(ARect) {
     setName("KODE_ImageStripWidget");
     setHint("imagestrip");
+    setFillBackground(false);
+    setDrawBorder(false);
   }
 
-  //----------
+//------------------------------
+public:
+//------------------------------
 
-  virtual ~KODE_ImageStripWidget() {
+  virtual void drawTile(KODE_BasePainter* APainter) {
+    if (MWidgetSurface) {
+    uint32_t num_tiles = MTileXcount * MTileYcount;
+    if (num_tiles > 0) {
+      float v = (float)getValue() * (float)num_tiles;
+      uint32_t tile = KODE_MinI( num_tiles - 1, floorf(v) );
+      KODE_FRect rect = getTileRect(tile);
+      APainter->drawBitmap(getRect().x,getRect().y,MWidgetSurface,rect);
+    }
+    }
   }
 
 //------------------------------
@@ -28,13 +42,9 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
-    uint32_t num = MTileXcount * MTileYcount;
-    if (num > 0) {
-      float idx = (float)getValue() * (float)num;
-      uint32_t index = KODE_MinI( num-1, floorf(idx) );
-      KODE_FRect rect = getTileRect(index);
-      APainter->drawBitmap(getRect().x,getRect().y,MWidgetSurface,rect);
-    }
+    fillBackground(APainter);
+    drawTile(APainter);
+    drawBorder(APainter);
   }
 
 };

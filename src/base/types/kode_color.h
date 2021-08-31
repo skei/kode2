@@ -67,7 +67,7 @@ public:
   }
 
   //bool operator == (const char* str) {
-  //  return (KODE_Strcmp(MBuffer,str) == 0) ? true : false;
+  //  return (strcmp(MBuffer,str) == 0) ? true : false;
   //}
 
 //------------------------------

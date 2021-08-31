@@ -45,16 +45,16 @@ public:
     setHasEditor();
     setEditorSize(400,300);
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
     KODE_Parameter* parameter;
-    parameter = appendParameter( KODE_New KODE_Parameter("param1",0.2f) );
-    parameter = appendParameter( KODE_New KODE_Parameter("param2",0.7f) );
+    parameter = appendParameter( new KODE_Parameter("param1",0.2f) );
+    parameter = appendParameter( new KODE_Parameter("param2",0.7f) );
     parameter->setLabel("db");
-    parameter = appendParameter( KODE_New KODE_Parameter("param3",0.4f) );
+    parameter = appendParameter( new KODE_Parameter("param3",0.4f) );
     parameter->setLabel("%");
 
   }
@@ -82,15 +82,15 @@ public:
     setBackgroundColor(0.5f);
 
     KODE_ValueWidget* widget;
-    widget = (KODE_ValueWidget*)appendWidget(KODE_New KODE_ValueWidget( KODE_FRect(10,10,150,20) ));
+    widget = (KODE_ValueWidget*)appendWidget(new KODE_ValueWidget( KODE_FRect(10,10,150,20) ));
     connectParameter(widget,0);
 
-    widget = (KODE_ValueWidget*)appendWidget(KODE_New KODE_ValueWidget( KODE_FRect(10,35,150,20) ));
+    widget = (KODE_ValueWidget*)appendWidget(new KODE_ValueWidget( KODE_FRect(10,35,150,20) ));
     widget->setDrawLabel(true);
     connectParameter(widget,1);
 
     KODE_SliderWidget* slider;
-    slider = (KODE_SliderWidget*)appendWidget(KODE_New KODE_SliderWidget( KODE_FRect(10,60,150,20) ));
+    slider = (KODE_SliderWidget*)appendWidget(new KODE_SliderWidget( KODE_FRect(10,60,150,20) ));
     slider->setValueBarDirection(KODE_RIGHT);
     slider->setDrawLabel(true);
     connectParameter(slider,2);
@@ -266,7 +266,7 @@ public:
 
   KODE_BaseEditor* on_plugin_openEditor(void* AParent) final {
     KODE_Print("parent %p\n",AParent);
-    myEditor* editor = KODE_New myEditor(this,AParent);
+    myEditor* editor = new myEditor(this,AParent);
     return editor;
   }
 
@@ -275,7 +275,7 @@ public:
   void  on_plugin_closeEditor(KODE_BaseEditor* AEditor) final {
     KODE_Print("\n");
     if (AEditor) {
-      KODE_Delete (myEditor*)AEditor;
+      delete (myEditor*)AEditor;
     }
   }
 

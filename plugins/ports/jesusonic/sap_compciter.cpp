@@ -50,10 +50,10 @@ public:
     MAuthor = "skei.audio";
     MVersion = 0x00000001;
 
-    appendInput( KODE_New KODE_PluginPort("input1"));
-    appendInput( KODE_New KODE_PluginPort("input2"));
-    appendOutput( KODE_New KODE_PluginPort("output1"));
-    appendOutput( KODE_New KODE_PluginPort("output2"));
+    appendInput( new KODE_PluginPort("input1"));
+    appendInput( new KODE_PluginPort("input2"));
+    appendOutput( new KODE_PluginPort("output1"));
+    appendOutput( new KODE_PluginPort("output2"));
 
     /*
     slider1:0<0,60,.1>Drive (dB)
@@ -63,11 +63,11 @@ public:
     slider5:0<-120,0,1>Dry (dB)
     */
 
-    appendParameter( KODE_New KODE_FloatParameter("drive",  0.0f,     0.0f,   60.0f) );
-    appendParameter( KODE_New KODE_FloatParameter("dist",   25.0f,    0.0f,   100.0f) );
-    appendParameter( KODE_New KODE_FloatParameter("hp",     5000.0f,  800.0f, 12000.0f) );
-    appendParameter( KODE_New KODE_FloatParameter("wet",   -6.0f,    -60.0f,  24.0f) );
-    appendParameter( KODE_New KODE_FloatParameter("dry",    0.0f,    -120.0f, 0.0f) );
+    appendParameter( new KODE_FloatParameter("drive",  0.0f,     0.0f,   60.0f) );
+    appendParameter( new KODE_FloatParameter("dist",   25.0f,    0.0f,   100.0f) );
+    appendParameter( new KODE_FloatParameter("hp",     5000.0f,  800.0f, 12000.0f) );
+    appendParameter( new KODE_FloatParameter("wet",   -6.0f,    -60.0f,  24.0f) );
+    appendParameter( new KODE_FloatParameter("dry",    0.0f,    -120.0f, 0.0f) );
 
   }
 

@@ -87,18 +87,18 @@ public:
     MAuthor     = "skei.audio";
     MVersion = 0x00000001;
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
-    //appendParameter( KODE_New KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
-    //appendParameter( KODE_New KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
 
-      appendParameter( KODE_New KODE_FloatParameter( "main vol", 1,  0, 2 ));
-      appendParameter( KODE_New KODE_IntParameter( "num bands", 4, 1, MAX_BANDS ));
+      appendParameter( new KODE_FloatParameter( "main vol", 1,  0, 2 ));
+      appendParameter( new KODE_IntParameter( "num bands", 4, 1, MAX_BANDS ));
       for (int32_t i=0; i<MAX_BANDS; i++) {
-        appendParameter( KODE_New KODE_Parameter( _band_names[i]/*"band"*/, 1 ));
+        appendParameter( new KODE_Parameter( _band_names[i]/*"band"*/, 1 ));
       }
 
   }
@@ -136,9 +136,9 @@ public:
     //KODE_TRACE;
       num_bands = -1;
       mainvol   = 1.0f;
-      KODE_Memset(bands_formant,0,sizeof(bands_formant));
-      KODE_Memset(bands_carrier,0,sizeof(bands_carrier));
-      KODE_Memset(bands_out,0,sizeof(bands_out));
+      memset(bands_formant,0,sizeof(bands_formant));
+      memset(bands_carrier,0,sizeof(bands_carrier));
+      memset(bands_out,0,sizeof(bands_out));
   }
 
   virtual ~myInstance() {
@@ -197,7 +197,7 @@ public:
         num_bands = nb;
         //STrace("num_bands %i\n",num_bands);
         for (int32_t i=0; i<nb; i++) {
-          KODE_Memset(&bands_formant[i], 0, sizeof(_bandpass));
+          memset(&bands_formant[i], 0, sizeof(_bandpass));
           // stretch existing bands
 
           /*
@@ -213,7 +213,7 @@ public:
           bands_formant[i].c = c * c;
           bands_formant[i].f = 0.4/c;
           bands_formant[i].att = 1/(6.0 + ((exp (bands_formant[i].freq / AContext->samplerate) - 1) * 10));
-          KODE_Memcpy(&bands_carrier[i], &bands_formant[i], sizeof(_bandpass));
+          memcpy(&bands_carrier[i], &bands_formant[i], sizeof(_bandpass));
           bands_out[i].decay = _decay_table[(int32_t)a];
           bands_out[i].level = CLAMP(par_BandLevels[i], 0.0, 1.0);
         }

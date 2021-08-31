@@ -9,6 +9,10 @@
   #include "gui/xcb/kode_xcb_surface.h"
 #endif
 
+#ifdef KODE_GUI_CAIRO
+  typedef KODE_XcbSurface KODE_ImplementedSurface;
+#endif
+
 #ifdef KODE_GUI_XCB
   typedef KODE_XcbSurface KODE_ImplementedSurface;
 #endif

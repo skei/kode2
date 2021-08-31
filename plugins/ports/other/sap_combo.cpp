@@ -41,17 +41,17 @@ public:
     setName("sap_combo");
     setAuthor("skei.audio");
     setVersion(0x00000001);
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
-    appendParameter( KODE_New KODE_TextParameter(  "Model",    0,   7,   model_txt ));
-    appendParameter( KODE_New KODE_FloatParameter( "Drive",    0,  -100, 100, 1 ));
-    appendParameter( KODE_New KODE_FloatParameter( "Bias",     0,  -100, 100, 1 ));
-    appendParameter( KODE_New KODE_FloatParameter( "Output",   0,  -20,  20,  1 ));
-    appendParameter( KODE_New KODE_TextParameter(  "Process",  0,   2,   process_txt ));
-    appendParameter( KODE_New KODE_FloatParameter( "HPF Freq", 0,   0,   100, 1 ));
-    appendParameter( KODE_New KODE_FloatParameter( "HPF Reso", 50,  0,   100, 1 ));
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
+    appendParameter( new KODE_TextParameter(  "Model",    0,   7,   model_txt ));
+    appendParameter( new KODE_FloatParameter( "Drive",    0,  -100, 100, 1 ));
+    appendParameter( new KODE_FloatParameter( "Bias",     0,  -100, 100, 1 ));
+    appendParameter( new KODE_FloatParameter( "Output",   0,  -20,  20,  1 ));
+    appendParameter( new KODE_TextParameter(  "Process",  0,   2,   process_txt ));
+    appendParameter( new KODE_FloatParameter( "HPF Freq", 0,   0,   100, 1 ));
+    appendParameter( new KODE_FloatParameter( "HPF Reso", 50,  0,   100, 1 ));
   }
 
   //----------
@@ -135,8 +135,8 @@ private:
 //------------------------------
 
   void init(void) {
-    KODE_Memset(buffer,  0, BUFFER_SIZE * sizeof(float));
-    KODE_Memset(buffer2, 0, BUFFER_SIZE * sizeof(float));
+    memset(buffer,  0, BUFFER_SIZE * sizeof(float));
+    memset(buffer2, 0, BUFFER_SIZE * sizeof(float));
     ff1  = 0.0f;
     ff2  = 0.0f;
     ff3  = 0.0f;

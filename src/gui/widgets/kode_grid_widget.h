@@ -154,7 +154,7 @@ public:
     KODE_FRect mrect = getRect();
 
     // background
-    //if (MFillBackground) APainter->fillRect(getRect(),MBackgroundColor);
+    //if (MFillBackground) APainter->fillRectangle(getRect(),MBackgroundColor);
     fillBackground(APainter);
 
     if ((MNumColumns > 0) && (MNumRows > 0)) {
@@ -207,7 +207,7 @@ public:
           float hh = yn - 1;
           x  += mrect.x;
           y  += mrect.y;
-          APainter->drawRect( KODE_FRect(x,y,ww,hh), KODE_COLOR_WHITE );
+          APainter->drawRectangle( KODE_FRect(x,y,ww,hh), KODE_COLOR_WHITE );
         }
       }
 
@@ -234,23 +234,27 @@ public:
     int32_t y = floorf( (float)(AYpos - mrect.y) / ycell );
     MClickedX = x;
     MClickedY = y;
-    if (MSelectCell) {
-      MSelectedX = x;
-      MSelectedY = y;
-      MSelectedXcount = 1;
-      MSelectedYcount = 1;
-      if (MSelectMultipleCells) {
-        MIsDragging = true;
+    if (AButton == KODE_BUTTON_LEFT) {
+      if (MSelectCell) {
+        MSelectedX = x;
+        MSelectedY = y;
+        MSelectedXcount = 1;
+        MSelectedYcount = 1;
+        if (MSelectMultipleCells) {
+          MIsDragging = true;
+        }
+        on_clickCell(x,y,AButton);
+        do_widget_redraw(this,mrect,0);
       }
-      on_clickCell(x,y,AButton);
-      do_widget_redraw(this,mrect,0);
     }
   }
 
   //----------
 
   void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) override {
-    MIsDragging = false;
+    if (AButton == KODE_BUTTON_LEFT) {
+      MIsDragging = false;
+    }
   }
 
   //----------

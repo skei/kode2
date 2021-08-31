@@ -195,7 +195,7 @@ public:
           r.setY2(  y + MNoteRects2[n+3] );
           break;
       }
-      APainter->fillRect( r, color );
+      APainter->fillRectangle( r, color );
     }
 
 
@@ -223,13 +223,13 @@ public:
         if (typ == 3) {
           if (active) {
 //            //APainter->setFillColor(MBlackActiveColor);
-//            APainter->fillRect( KODE_FRect( mrect.x + MNoteRects1[n4],  mrect.y + MNoteRects1[n4+1],
+//            APainter->fillRectangle( KODE_FRect( mrect.x + MNoteRects1[n4],  mrect.y + MNoteRects1[n4+1],
 //                                            mrect.x + MNoteRects1[n4+2],mrect.y + MNoteRects1[n4+3] ), MBlackActiveColor);
             fill_rect(APainter,mrect.x,mrect.y,n4,1,MBlackActiveColor);
           }
           else {
 //            //APainter->setFillColor(MBlackColor);
-//            APainter->fillRect( KODE_FRect( mrect.x + MNoteRects1[n4],  mrect.y + MNoteRects1[n4+1],
+//            APainter->fillRectangle( KODE_FRect( mrect.x + MNoteRects1[n4],  mrect.y + MNoteRects1[n4+1],
 //                                            mrect.x + MNoteRects1[n4+2],mrect.y + MNoteRects1[n4+3] ), MBlackColor);
             fill_rect(APainter,mrect.x,mrect.y,n4,1,MBlackColor);
           }
@@ -238,20 +238,20 @@ public:
 
           if (active) {
 //            //APainter->setFillColor(MWhiteActiveColor);
-//            APainter->fillRect( KODE_FRect( mrect.x + MNoteRects1[n4  ], mrect.y + MNoteRects1[n4+1],
+//            APainter->fillRectangle( KODE_FRect( mrect.x + MNoteRects1[n4  ], mrect.y + MNoteRects1[n4+1],
 //                                            mrect.x + MNoteRects1[n4+2], mrect.y + MNoteRects1[n4+3] ), MWhiteActiveColor);
 //
-//            APainter->fillRect( KODE_FRect( mrect.x + MNoteRects2[n4  ], mrect.y + MNoteRects2[n4+1],
+//            APainter->fillRectangle( KODE_FRect( mrect.x + MNoteRects2[n4  ], mrect.y + MNoteRects2[n4+1],
 //                                            mrect.x + MNoteRects2[n4+2], mrect.y + MNoteRects2[n4+3] ), MWhiteActiveColor);
             fill_rect(APainter,mrect.x,mrect.y,n4,1,MWhiteActiveColor);
             fill_rect(APainter,mrect.x,mrect.y,n4,2,MWhiteActiveColor);
           }
           else {
 //            //APainter->setFillColor(MWhiteColor);
-//            APainter->fillRect( KODE_FRect( mrect.x + MNoteRects1[n4  ], mrect.y + MNoteRects1[n4+1],
+//            APainter->fillRectangle( KODE_FRect( mrect.x + MNoteRects1[n4  ], mrect.y + MNoteRects1[n4+1],
 //                                            mrect.x + MNoteRects1[n4+2], mrect.y + MNoteRects1[n4+3] ), MWhiteColor);
 //
-//            APainter->fillRect( KODE_FRect( mrect.x + MNoteRects2[n4  ], mrect.y + MNoteRects2[n4+1],
+//            APainter->fillRectangle( KODE_FRect( mrect.x + MNoteRects2[n4  ], mrect.y + MNoteRects2[n4+1],
 //                                            mrect.x + MNoteRects2[n4+2], mrect.y + MNoteRects2[n4+3] ), MWhiteColor);
             fill_rect(APainter,mrect.x,mrect.y,n4,1,MWhiteColor);
             fill_rect(APainter,mrect.x,mrect.y,n4,2,MWhiteColor);

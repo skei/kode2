@@ -143,12 +143,13 @@ public: // drawable
   xcb_connection_t*   getXcbConnection()  final { return MConnection; }
   xcb_visualid_t      getXcbVisual()      final { return MScreenVisual; }
 
-//------------------------------
-public:
-//------------------------------
-
   #ifdef KODE_USE_CAIRO
-  cairo_surface_t* createCairoSurface() {
+
+  bool isCairo() final {
+    return true;
+  }
+
+  cairo_surface_t* createCairoSurface() final {
     cairo_surface_t* surface = cairo_xcb_surface_create(
       MConnection,
       MWindow,
@@ -158,7 +159,13 @@ public:
     );
     return surface;
   }
+
   #endif
+
+//------------------------------
+public:
+//------------------------------
+
 
 //------------------------------
 private:
@@ -396,7 +403,7 @@ private:
     //xcb_change_property(MConnection, XCB_PROP_MODE_REPLACE, MWindow, protocol_reply->atom, 4, 32, 1, &MDeleteWindowAtom);
     xcb_change_property(MConnection, XCB_PROP_MODE_REPLACE, MWindow, MWMProtocolsAtom, 4, 32, 1, &MWMDeleteWindowAtom);
     //xcb_flush(MConnection);
-    free(protocol_reply); // note KODE_Malloc'ed ??
+    free(protocol_reply); // note malloc'ed ??
     free(close_reply);
   }
 
@@ -415,7 +422,7 @@ private:
       xcb_generic_event_t* event;
       event = xcb_wait_for_event(MConnection);
       uint8_t e = event->response_type & ~0x80;
-      free(event); // not KODE_Malloc'ed
+      free(event); // not malloc'ed
       if (e == XCB_MAP_NOTIFY) break;
     }
   }
@@ -462,7 +469,7 @@ private:
     xcb_keysym_t keysym = xcb_key_symbols_get_keysym(MKeySyms,AKey,col);
     //xcb_keycode_t* keycode = xcb_key_symbols_get_keycode(MKeySyms,keysym);
     //KODE_Print("AKey %i AState %i keysym %i keycode %i\n",AKey,AState,keysym,keycode[0]);
-    //KODE_Free(keycode);
+    //free(keycode);
     return keysym;
   }
 
@@ -973,7 +980,7 @@ public:
       XCB_ATOM_WM_NAME,
       XCB_ATOM_STRING,
       8,
-      KODE_Strlen(ATitle),
+      strlen(ATitle),
       ATitle
     );
     xcb_flush(MConnection);
@@ -1019,14 +1026,14 @@ public:
         uint32_t      data = client_message->data.data32[0];
         if (type == MWMProtocolsAtom) {
           if (data == MWMDeleteWindowAtom) {
-            free(event); // not KODE_Malloc'ed
+            free(event); // not malloc'ed
             //MQuitEventLoop = true;
             break;
           }
         }
       }
       eventHandler(event);
-      free(event); // not KODE_Malloc'ed
+      free(event); // not malloc'ed
       if (MQuitEventLoop) break;
       //event = xcb_wait_for_event(MConnection);
     }
@@ -1149,7 +1156,7 @@ public:
 
   void invalidate(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight) override {
     //XCB_Print("xcb: invalidate ARect %.0f %.0f %.0f %.0f\n",ARect.x,ARect.y,ARect.w,ARect.h);
-    KODE_Memset(MExposeEventBuffer,0,sizeof(MExposeEventBuffer));
+    memset(MExposeEventBuffer,0,sizeof(MExposeEventBuffer));
     MExposeEvent->window        = MWindow;
     MExposeEvent->response_type = XCB_EXPOSE;
     MExposeEvent->x             = AXpos;
@@ -1174,7 +1181,7 @@ public:
   */
 
   void sendEvent(uint32_t AData, uint32_t AType) override {
-    KODE_Memset(MClientMessageEventBuffer,0,sizeof(MClientMessageEventBuffer));
+    memset(MClientMessageEventBuffer,0,sizeof(MClientMessageEventBuffer));
     MClientMessageEvent->window         = MWindow;
     MClientMessageEvent->response_type  = XCB_CLIENT_MESSAGE;
     MClientMessageEvent->format         = 32; // didn't work without this

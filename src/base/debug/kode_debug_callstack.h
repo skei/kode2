@@ -32,7 +32,7 @@
     if ((size_t)(buf->end_ptr-buf->out_ptr)<(str_len+1)) return "out of memory";
     res = buf->out_ptr;
     buf->out_ptr += str_len + 1;
-    KODE_Memcpy(res,str,str_len);
+    memcpy(res,str,str_len);
     res[str_len] = '\0';
     return res;
   }
@@ -70,7 +70,7 @@
     ++skip_frames;
     void* trace[256];
     int fetched = backtrace(trace,num_addresses+skip_frames)-skip_frames;
-    KODE_Memcpy(addresses,trace+skip_frames,(size_t)fetched*sizeof(void*));
+    memcpy(addresses,trace+skip_frames,(size_t)fetched*sizeof(void*));
     return fetched;
   }
 
@@ -89,7 +89,7 @@
   int KODE_CallStackSymbols(void** addresses, KODE_CallStackSymbol* out_syms, int num_addresses, char* memory, int mem_size) {
     int num_translated = 0;
     KODE_CallStackStringBuffer outbuf = { memory, memory + mem_size };
-    KODE_Memset(out_syms,0x0,(size_t)num_addresses*sizeof(KODE_CallStackSymbol));
+    memset(out_syms,0x0,(size_t)num_addresses*sizeof(KODE_CallStackSymbol));
     char** syms = backtrace_symbols(addresses,num_addresses);
     size_t tmp_buf_len = 1024 * 32;
     char*  tmp_buffer  = (char*)malloc(tmp_buf_len);
@@ -98,8 +98,8 @@
       char* symbol = syms[i];
       unsigned int offset = 0;
       // find function name and offset
-      char* name_start = KODE_Strchr(symbol,'(');
-      char* offset_start = name_start ? KODE_Strchr(name_start,'+') : 0x0;
+      char* name_start = strchr(symbol,'(');
+      char* offset_start = name_start ? strchr(name_start,'+') : 0x0;
       if (name_start && offset_start) {
         // zero terminate all strings
         ++name_start;
@@ -110,16 +110,16 @@
         offset = (unsigned int)strtoll(offset_start,0x0,16);
         symbol = kode_demangle_symbol(name_start,tmp_buffer,tmp_buf_len);
       }
-      out_syms[i].func  = kode_callstack_alloc_string(&outbuf,symbol,KODE_Strlen(symbol));
+      out_syms[i].func  = kode_callstack_alloc_string(&outbuf,symbol,strlen(symbol));
       out_syms[i].ofs   = offset;
       out_syms[i].file  = "failed to lookup file";
       out_syms[i].line  = 0;
       if( addr2line != 0x0 ) {
         if ( fgets(tmp_buffer,(int)tmp_buf_len, addr2line) != 0x0) {
-          char* line_start = KODE_Strchr(tmp_buffer,':');
+          char* line_start = strchr(tmp_buffer,':');
           *line_start = '\0';
           if (tmp_buffer[0] != '?' && tmp_buffer[1] != '?') {
-            out_syms[i].file = kode_callstack_alloc_string(&outbuf,tmp_buffer,KODE_Strlen(tmp_buffer));
+            out_syms[i].file = kode_callstack_alloc_string(&outbuf,tmp_buffer,strlen(tmp_buffer));
           }
           out_syms[i].line = (unsigned int)strtoll(line_start+1,0x0,10);
         }

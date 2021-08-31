@@ -54,10 +54,10 @@ public:
     MAuthor = "skei.audio";
     MVersion = 0x00000001;
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
     //MFlags |= KODE_PLUGIN_HAS_EDITOR;
 
@@ -68,10 +68,10 @@ public:
     slider4:-6<-120,0,.1>Mix Back (dB
     */
 
-    appendParameter( KODE_New KODE_FloatParameter(  "freq",   2000.0f,  100.0f, 18000.0f  ));
-    appendParameter( KODE_New KODE_FloatParameter(  "boost",     0.0f,    0.0f,     6.0f  ));
-    appendParameter( KODE_New KODE_FloatParameter(  "harm",      0.0f,    0.0f,   100.0f  ));
-    appendParameter( KODE_New KODE_FloatParameter(  "mix",      -6.0f, -120.0f,     0.0f  ));
+    appendParameter( new KODE_FloatParameter(  "freq",   2000.0f,  100.0f, 18000.0f  ));
+    appendParameter( new KODE_FloatParameter(  "boost",     0.0f,    0.0f,     6.0f  ));
+    appendParameter( new KODE_FloatParameter(  "harm",      0.0f,    0.0f,   100.0f  ));
+    appendParameter( new KODE_FloatParameter(  "mix",      -6.0f, -120.0f,     0.0f  ));
 
   }
 

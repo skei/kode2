@@ -13,6 +13,52 @@ public:
     layout.innerBorder = 10;
     layout.spacing = 10;
 
+    // tabs
+
+    KODE_TabsWidget* tabs1 = new KODE_TabsWidget( KODE_FRect(180,150), 5 );
+    tabs1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+
+      KODE_PanelWidget* page1 = new KODE_PanelWidget(KODE_FRect(100,100));
+      page1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+      page1->setFillBackground();
+      page1->setDrawBorder();
+      page1->setBackgroundColor(KODE_COLOR_DARK_RED);
+      page1->setBorderColor(KODE_COLOR_BRIGHT_RED);
+      tabs1->appendPage(page1,"page1");
+
+      KODE_PanelWidget* page2 = new KODE_PanelWidget(KODE_FRect(100,100));
+      page2->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+      page2->setFillBackground();
+      page2->setDrawBorder();
+      page2->setBackgroundColor(KODE_COLOR_DARK_GREEN);
+      page2->setBorderColor(KODE_COLOR_BRIGHT_GREEN);
+      tabs1->appendPage(page2,"page2");
+
+      KODE_PanelWidget* page3 = new KODE_PanelWidget(KODE_FRect(100,100));
+      page3->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+      page3->setFillBackground();
+      page3->setDrawBorder();
+      page3->setBackgroundColor(KODE_COLOR_DARK_BLUE);
+      page3->setBorderColor(KODE_COLOR_BRIGHT_BLUE);
+      tabs1->appendPage(page3,"page3");
+
+    tabs1->selectPage(0);
+    appendWidget(tabs1);
+
+    // scroll box
+
+    KODE_ScrollBoxWidget* scrollbox1 = new KODE_ScrollBoxWidget( KODE_FRect(100,100) );
+    scrollbox1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+    appendWidget(scrollbox1);
+
+    // knobs
+
+    for (uint32_t i=0; i<10; i++) {
+      KODE_KnobWidget* knob = new KODE_KnobWidget(KODE_FRect(32,32));
+      knob->layout.alignment = KODE_WIDGET_ALIGN_TOP_LEFT;
+      scrollbox1->appendWidget(knob);
+    }
+
   }
 
   //----------

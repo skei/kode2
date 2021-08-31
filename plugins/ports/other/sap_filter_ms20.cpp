@@ -26,20 +26,20 @@ public:
     MAuthor     = "skei.audio";
     MVersion = 0x00000001;
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
-    //appendParameter( KODE_New KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
-    //appendParameter( KODE_New KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
 
-    appendParameter( KODE_New KODE_TextParameter(  "type", 0,    2,    txt_type  ));
-    appendParameter( KODE_New KODE_FloatParameter( "freq", 1.0                   ));
-    appendParameter( KODE_New KODE_FloatParameter( "reso", 0.0,  0.0,  1.1       ));
-    appendParameter( KODE_New KODE_FloatParameter( "clip", 0.5,  0.01, 4         ));
-    appendParameter( KODE_New KODE_FloatParameter( "pre",  1.0,  0,    2         ));
-    appendParameter( KODE_New KODE_FloatParameter( "post", 1.0,  0,    2         ));
+    appendParameter( new KODE_TextParameter(  "type", 0,    2,    txt_type  ));
+    appendParameter( new KODE_FloatParameter( "freq", 1.0                   ));
+    appendParameter( new KODE_FloatParameter( "reso", 0.0,  0.0,  1.1       ));
+    appendParameter( new KODE_FloatParameter( "clip", 0.5,  0.01, 4         ));
+    appendParameter( new KODE_FloatParameter( "pre",  1.0,  0,    2         ));
+    appendParameter( new KODE_FloatParameter( "post", 1.0,  0,    2         ));
 
   }
 

@@ -39,18 +39,18 @@ public:
     MAuthor     = "skei.audio";
     MVersion = 0x00000001;
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
-    //appendParameter( KODE_New KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
-    //appendParameter( KODE_New KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
 
-      appendParameter( KODE_New KODE_FloatParameter( "Size",     50,  0,   100, 1 ));
-      appendParameter( KODE_New KODE_FloatParameter( "Damping",  80,  0,   100, 1 ));
-      appendParameter( KODE_New KODE_FloatParameter( "Dry",     -6,  -120, 0 ));
-      appendParameter( KODE_New KODE_FloatParameter( "Wet",     -6,  -120, 0 ));
+      appendParameter( new KODE_FloatParameter( "Size",     50,  0,   100, 1 ));
+      appendParameter( new KODE_FloatParameter( "Damping",  80,  0,   100, 1 ));
+      appendParameter( new KODE_FloatParameter( "Dry",     -6,  -120, 0 ));
+      appendParameter( new KODE_FloatParameter( "Wet",     -6,  -120, 0 ));
 
 
   }

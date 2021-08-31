@@ -8,8 +8,8 @@
 
 // value^n
 
-// appendParameter( KODE_New KODE_ParamPow( "pow/post", 440,  2,true,     20, 20000, 1 )); // n^2 = 20.20000, default = 440
-// appendParameter( KODE_New KODE_ParamPow( "pow",      5,    2,false,    1,  10,    1 ));    // 1^2..10^2, default = 5^2
+// appendParameter( new KODE_ParamPow( "pow/post", 440,  2,true,     20, 20000, 1 )); // n^2 = 20.20000, default = 440
+// appendParameter( new KODE_ParamPow( "pow",      5,    2,false,    1,  10,    1 ));    // 1^2..10^2, default = 5^2
 
 class KODE_PowParameter
 : public KODE_FloatParameter {

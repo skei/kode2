@@ -1,5 +1,10 @@
 
-#define KODE_GUI_XCB
+//#define KODE_GUI_XCB
+#define KODE_GUI_CAIRO
+
+//#define KODE_USE_CAIRO
+//#define KODE_USE_CAIRO
+
 #define KODE_DEBUG_PRINT_TIME
 #define KODE_DEBUG_PRINT_THREAD
 //#define KODE_DEBUG_PRINT_SOCKET
@@ -60,19 +65,19 @@ public:
     setAuthor("author");
     setVersion(0x0101001);
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
     #ifndef KODE_NO_GUI
       setHasEditor(true);
       setEditorSize(1024,768);
     #endif
 
-    KODE_Parameter* param1 = KODE_New KODE_FloatParameter("float",  0.2f,  -10.0f, 2.0f, 0.2f );
-    KODE_Parameter* param2 = KODE_New KODE_PowParameter(  "pow 2",  440.0f, 2.0f, true, 20, 20000, 1);
-    KODE_Parameter* param3 = KODE_New KODE_TextParameter( "text",   0,      5, param_txt );
+    KODE_Parameter* param1 = new KODE_FloatParameter("float",  0.2f,  -10.0f, 2.0f, 0.2f );
+    KODE_Parameter* param2 = new KODE_PowParameter(  "pow 2",  440.0f, 2.0f, true, 20, 20000, 1);
+    KODE_Parameter* param3 = new KODE_TextParameter( "text",   0,      5, param_txt );
 
     //param1->setLabel("db");
     param2->setLabel("hz");
@@ -118,7 +123,7 @@ public:
 
     // header
 
-    KODE_SAHeaderWidget* header = KODE_New KODE_SAHeaderWidget(KODE_FRect(60));
+    KODE_SAHeaderWidget* header = new KODE_SAHeaderWidget(KODE_FRect(60));
     header->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     header->setImage(this,(uint8_t*)sa_logo_40_white_trans,sa_logo_40_white_trans_size,KODE_COLOR_GRAY);
     header->setPluginName("demo_gui");
@@ -127,7 +132,7 @@ public:
 
     // footer
 
-    footer = KODE_New KODE_TextWidget( KODE_FRect(20) );
+    footer = new KODE_TextWidget( KODE_FRect(20) );
     footer->layout.alignment = KODE_WIDGET_ALIGN_FILL_BOTTOM;
     footer->setText("text..");
     footer->setTextColor(KODE_COLOR_BLACK);
@@ -136,16 +141,16 @@ public:
 
     //
 
-    KODE_left_panel*    left_panel    = KODE_New KODE_left_panel(   KODE_FRect(200) );
-    KODE_right_panel*   right_panel   = KODE_New KODE_right_panel(  KODE_FRect(100) );
-    KODE_top_panel*     top_panel     = KODE_New KODE_top_panel(    KODE_FRect(100),this );
-    KODE_bottom_panel*  bottom_panel  = KODE_New KODE_bottom_panel( KODE_FRect(100) );
-    KODE_main_panel*    main_panel    = KODE_New KODE_main_panel(   KODE_FRect(),   this );
+    KODE_left_panel*    left_panel    = new KODE_left_panel(   KODE_FRect(200) );
+    KODE_right_panel*   right_panel   = new KODE_right_panel(  KODE_FRect(200) );
+    KODE_top_panel*     top_panel     = new KODE_top_panel(    KODE_FRect(100),this );
+    KODE_bottom_panel*  bottom_panel  = new KODE_bottom_panel( KODE_FRect(100) );
+    KODE_main_panel*    main_panel    = new KODE_main_panel(   KODE_FRect(),   this );
 
-    KODE_SizerWidget*   left_sizer    = KODE_New KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_LEFT,left_panel);
-    KODE_SizerWidget*   right_sizer   = KODE_New KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_RIGHT,right_panel);
-    KODE_SizerWidget*   top_sizer     = KODE_New KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_TOP,top_panel);
-    KODE_SizerWidget*   bottom_sizer  = KODE_New KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_BOTTOM,bottom_panel);
+    KODE_SizerWidget*   left_sizer    = new KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_LEFT,left_panel);
+    KODE_SizerWidget*   right_sizer   = new KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_RIGHT,right_panel);
+    KODE_SizerWidget*   top_sizer     = new KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_TOP,top_panel);
+    KODE_SizerWidget*   bottom_sizer  = new KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_BOTTOM,bottom_panel);
 
     appendWidget(left_panel);
     appendWidget(left_sizer);
@@ -354,9 +359,9 @@ public:
 
   KODE_BaseEditor* on_plugin_openEditor(void* AParent) final {
     //KODE_Print("parent %p\n",AParent);
-    //myEditor* editor = (myEditor*)KODE_New myEditor(this,AParent);
+    //myEditor* editor = (myEditor*)new myEditor(this,AParent);
     //return editor;
-    MEditor = KODE_New myEditor(this,AParent);
+    MEditor = new myEditor(this,AParent);
     return MEditor;
   }
 
@@ -366,8 +371,8 @@ public:
     //KODE_Print("\n");
     //KODE_Assert(AEditor == MEditor);
     if (MEditor) {
-      //KODE_Delete (myEditor*)AEditor;
-      KODE_Delete MEditor;
+      //delete (myEditor*)AEditor;
+      delete MEditor;
       MEditor = KODE_NULL;
     }
   }

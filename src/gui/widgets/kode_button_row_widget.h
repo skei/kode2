@@ -31,7 +31,7 @@ public:
 
     //int32_t ANum, const char** ATxt, int32_t AMode=KODE_BUTTON_ROW_SINGLE)
 
-  KODE_ButtonRowWidget(KODE_FRect ARect, int32_t ANum, const char** ATxt, int32_t AMode=KODE_BUTTON_ROW_SINGLE)
+  KODE_ButtonRowWidget(KODE_FRect ARect, int32_t ANum, const char** ATxt=KODE_NULL, int32_t AMode=KODE_BUTTON_ROW_SINGLE)
   : KODE_GridWidget(ARect,ANum,1) {
 
     KODE_GridWidget::setName("KODE_ButtonRowWidget");
@@ -52,11 +52,14 @@ public:
     //MHeight = 1;
     //for (int32 i=0; i<KODE_MAX_STATES; i++) {
 
-    for (int32_t i=0; i<ANum; i++) {
-      MStates[i] = false;
-      //MLabels[i] = KODE_NULL;
-      MLabels[i] = (char*)ATxt[i];
+    if (ATxt) {
+      for (int32_t i=0; i<ANum; i++) {
+        MStates[i] = false;
+        //MLabels[i] = KODE_NULL;
+        MLabels[i] = (char*)ATxt[i];
+      }
     }
+
   }
 
   //----------
@@ -82,6 +85,10 @@ public:
 //------------------------------
 public:
 //------------------------------
+
+    void setNumButtons(uint32_t ANum) {
+      setNumColumns(ANum);
+    }
 
     bool getButtonState(int32_t i) {
       return MStates[i];
@@ -166,8 +173,8 @@ public:
     //else APainter->setFillColor( MBackgroundColor );
     //APainter->fillRectangle(ARect);
 
-    if (MStates[AX]) APainter->fillRect(ARect,MActiveColor);
-    else APainter->fillRect(ARect,MBackgroundColor);
+    if (MStates[AX]) APainter->fillRectangle(ARect,MActiveColor);
+    else APainter->fillRectangle(ARect,MBackgroundColor);
 
     //if ((AX > 0) /*&& (AX < (MWidth-1))*/  ) {
     //  APainter->setDrawColor( MBorderColor );

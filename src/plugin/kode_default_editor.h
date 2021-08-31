@@ -28,14 +28,14 @@ public:
     //MInstance = AInstance;
     //uint32_t num = MDescriptor->getNumParameters();
     //uint32_t size = num * sizeof(KODE_Widget*);
-    //MParameterToWidget = (KODE_Widget**)KODE_Malloc(size);
-    //KODE_Memset(MParameterToWidget,0,size);
+    //MParameterToWidget = (KODE_Widget**)malloc(size);
+    //memset(MParameterToWidget,0,size);
   }
 
   //----------
 
   virtual ~KODE_DefaultEditor() {
-    //if (MParameterToWidget) KODE_Free(MParameterToWidget);
+    //if (MParameterToWidget) free(MParameterToWidget);
   }
 
 //------------------------------

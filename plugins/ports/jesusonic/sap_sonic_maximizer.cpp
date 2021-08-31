@@ -69,13 +69,13 @@ public:
     setVersion(0x00000001);
     setHasEditor();
     setEditorSize(320,155);
-    appendInput( KODE_New KODE_PluginPort("input1"));
-    appendInput( KODE_New KODE_PluginPort("input2"));
-    appendOutput( KODE_New KODE_PluginPort("output1"));
-    appendOutput( KODE_New KODE_PluginPort("output2"));
-    appendParameter( KODE_New KODE_FloatParameter("Low Cont",  1,  0,  10, 0.1 ) );
-    appendParameter( KODE_New KODE_FloatParameter("Process",   1,  0,  10, 0.1 ) );
-    appendParameter( KODE_New KODE_FloatParameter("Output",   -3, -30, 0,  0.1 ) );
+    appendInput( new KODE_PluginPort("input1"));
+    appendInput( new KODE_PluginPort("input2"));
+    appendOutput( new KODE_PluginPort("output1"));
+    appendOutput( new KODE_PluginPort("output2"));
+    appendParameter( new KODE_FloatParameter("Low Cont",  1,  0,  10, 0.1 ) );
+    appendParameter( new KODE_FloatParameter("Process",   1,  0,  10, 0.1 ) );
+    appendParameter( new KODE_FloatParameter("Output",   -3, -30, 0,  0.1 ) );
   }
 
   //----------
@@ -112,21 +112,21 @@ public:
     setFillBackground();
     setBackgroundColor(KODE_Color(0.6,0.6,0.6));
 
-    MBitmap = KODE_New KODE_Bitmap(sa_logo_40_trans_black,sa_logo_40_trans_black_size);
+    MBitmap = new KODE_Bitmap(sa_logo_40_trans_black,sa_logo_40_trans_black_size);
     MBitmap->premultAlpha(0x999999);
-    KODE_ImageWidget* imagewidget = KODE_New KODE_ImageWidget( KODE_FRect(10,10,64,64) );
+    KODE_ImageWidget* imagewidget = new KODE_ImageWidget( KODE_FRect(10,10,64,64) );
     imagewidget->setImage(MBitmap);
     appendWidget(imagewidget);
 
-    KODE_TextWidget* text1 = KODE_New KODE_TextWidget( KODE_FRect(64,10,200,20) );
-    KODE_TextWidget* text2 = KODE_New KODE_TextWidget( KODE_FRect(64,30,200,20) );
+    KODE_TextWidget* text1 = new KODE_TextWidget( KODE_FRect(64,10,200,20) );
+    KODE_TextWidget* text2 = new KODE_TextWidget( KODE_FRect(64,30,200,20) );
     text1->setText("sa_sonic_maximizer");
     text2->setText("v0.0.2");
     appendWidget(text1);
     appendWidget(text2);
-    KODE_SliderWidget* slider1 = KODE_New KODE_SliderWidget( KODE_FRect( 10,64 + 10,300,20) );
-    KODE_SliderWidget* slider2 = KODE_New KODE_SliderWidget( KODE_FRect( 10,64 + 35,300,20) );
-    KODE_SliderWidget* slider3 = KODE_New KODE_SliderWidget( KODE_FRect( 10,64 + 60,300,20) );
+    KODE_SliderWidget* slider1 = new KODE_SliderWidget( KODE_FRect( 10,64 + 10,300,20) );
+    KODE_SliderWidget* slider2 = new KODE_SliderWidget( KODE_FRect( 10,64 + 35,300,20) );
+    KODE_SliderWidget* slider3 = new KODE_SliderWidget( KODE_FRect( 10,64 + 60,300,20) );
     slider1->setText("Low Cont");
     slider2->setText("Process");
     slider3->setText("Output");
@@ -145,7 +145,7 @@ public:
 
   virtual ~myEditor() {
     //KODE_PRINT;
-    KODE_Delete MBitmap;
+    delete MBitmap;
   }
 
 //------------------------------
@@ -278,7 +278,7 @@ public:
 
   KODE_BaseEditor* on_plugin_openEditor(void* AParent) final {
     //KODE_PRINT;
-    MEditor = KODE_New myEditor(this,AParent);
+    MEditor = new myEditor(this,AParent);
     return MEditor;
   }
 
@@ -286,10 +286,10 @@ public:
 
   void on_plugin_closeEditor(KODE_BaseEditor* AEditor) final {
     //KODE_PRINT;
-    //KODE_Delete (myEditor*)AEditor;
+    //delete (myEditor*)AEditor;
     KODE_Assert(AEditor == MEditor);
     if (MEditor) {
-      KODE_Delete MEditor;
+      delete MEditor;
       MEditor = KODE_NULL;
     }
   }

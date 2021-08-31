@@ -25,7 +25,7 @@ public:
 
   virtual char* getDisplayString(float AValue, char* buffer) override {
     int32_t i = floorf(from01(AValue));
-    KODE_Strcpy(buffer,MStrings[i]);
+    strcpy(buffer,MStrings[i]);
     return buffer;
   }
 

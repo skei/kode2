@@ -33,12 +33,12 @@ public:
     setAuthor("skei.audio");
     setVersion(0x00000001);
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
-    appendParameter( KODE_New KODE_Parameter( "level", 1.0f ) );
+    appendParameter( new KODE_Parameter( "level", 1.0f ) );
 
   }
 };

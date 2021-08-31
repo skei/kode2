@@ -41,10 +41,10 @@ public:
     MAuthor = "skei.audio";
     MVersion = 0x00000001;
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
     appendParameter( new KODE_Parameter("gain", 1) );
     appendParameter( new KODE_TextParameter("mode", 0, 2, txt_mode ) );

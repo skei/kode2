@@ -110,20 +110,20 @@ private:
 //  void createParameterBuffers() {
 //    uint32_t size = MDescriptor->getNumParameters() * sizeof(float);
 //    //MNumParameters = MDescriptor->getNumParameters();
-//    MParameterValues        = (float*)KODE_Malloc(size);
-//    //MEditorParameterValues  = (float*)KODE_Malloc(size);
-//    MHostParameterValues    = (float*)KODE_Malloc(size);
-//    KODE_Memset(MParameterValues,       0,size);
-//    //KODE_Memset(MEditorParameterValues, 0,size);
-//    KODE_Memset(MHostParameterValues,   0,size);
+//    MParameterValues        = (float*)malloc(size);
+//    //MEditorParameterValues  = (float*)malloc(size);
+//    MHostParameterValues    = (float*)malloc(size);
+//    memset(MParameterValues,       0,size);
+//    //memset(MEditorParameterValues, 0,size);
+//    memset(MHostParameterValues,   0,size);
 //  }
 //
 //  //----------
 //
 //  void destroyParameterBuffers() {
-//    if (MParameterValues)       KODE_Free(MParameterValues);
-//    //if (MEditorParameterValues) KODE_Free(MEditorParameterValues);
-//    if (MHostParameterValues)   KODE_Free(MHostParameterValues);
+//    if (MParameterValues)       free(MParameterValues);
+//    //if (MEditorParameterValues) free(MEditorParameterValues);
+//    if (MHostParameterValues)   free(MHostParameterValues);
 //  }
 //
 //  //----------

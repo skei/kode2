@@ -93,7 +93,7 @@ public:
       //APainter->setDrawColor(MKnobBack);
       //APainter->drawArc(r,-0.4f,0.8f);
 
-      APainter->drawPie(r,-0.4f,0.8f,MKnobBack,arc_thickness);
+      APainter->drawArc(r,-0.4f,0.8f,MKnobBack,arc_thickness);
 
       if (MBipolar) {
         float v = (value * 2.0f) - 1.0f;
@@ -116,7 +116,7 @@ public:
       //APainter->drawArc(r,a1,a2);
 
       //r.shrink(2.0f);
-      APainter->drawPie(r,a1,a2,MKnobColor,arc_thickness);
+      APainter->drawArc(r,a1,a2,MKnobColor,arc_thickness);
 
       // steps
 
@@ -187,9 +187,7 @@ public:
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     fillBackground(APainter);
     drawKnob(APainter,ARect);
-    //drawText(APainter,ARect);
-    //drawValue(APainter,ARect);
-    paintChildren(APainter,ARect,AMode);
+    //paintChildren(APainter,ARect,AMode);
     drawBorder(APainter);
   }
 

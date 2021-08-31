@@ -65,7 +65,7 @@ public:
   //    float w = ( (float)MRect.w / (float)MNumSliders );
   //    float x = (float)MRect.x + (w * AIndex);
   //    float y = MRect.y2() - floorf(MSliderValues[AIndex] * MRect.h);
-  //    APainter->fillRect( floorf(x), y/*MRect.y*/, floorf(x+w)-2, MRect.y2() );
+  //    APainter->fillRectangle( floorf(x), y/*MRect.y*/, floorf(x+w)-2, MRect.y2() );
   //  }
 
 //------------------------------
@@ -88,8 +88,8 @@ public:
         float y = mrect.y2() - v;
         float h = v;//mrect.h - v;
         int32_t ix = floorf(x);
-        if (i==MHoverSlider) APainter->fillRect( KODE_FRect(ix,y,iw2,h),MHoverColor );
-        else APainter->fillRect( KODE_FRect(ix,y,iw2,h), MBarColor );
+        if (i==MHoverSlider) APainter->fillRectangle( KODE_FRect(ix,y,iw2,h),MHoverColor );
+        else APainter->fillRectangle( KODE_FRect(ix,y,iw2,h), MBarColor );
         x += w;
       }
     }

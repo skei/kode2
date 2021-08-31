@@ -1,6 +1,4 @@
 
-
-
 class KODE_top_panel
 : public KODE_PanelWidget {
 

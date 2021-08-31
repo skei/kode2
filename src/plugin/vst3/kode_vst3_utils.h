@@ -31,7 +31,7 @@ void KODE_Utf16ToChar(const void* U, void* C) {
   std::u16string source = (char16_t*)U;
   std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,char16_t> convert;
   std::string dest = convert.to_bytes(source);
-  KODE_Strcpy((char*)C,dest.data());
+  strcpy((char*)C,dest.data());
 }
 
 //----------

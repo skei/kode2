@@ -79,13 +79,13 @@ void KODE_AddMonoToStereoBuffer(float** ADst, float* ASrc, uint32_t ALength);
 //------------------------------
 
 void KODE_CopyMonoBuffer(float** ADst, float** ASrc, uint32_t ALength) {
-  KODE_Memcpy(ADst[0],ASrc[0],ALength*sizeof(float));
+  memcpy(ADst[0],ASrc[0],ALength*sizeof(float));
 }
 
 //----------
 
 void KODE_ClearMonoBuffer(float** ADst, uint32_t ALength) {
-  KODE_Memset(ADst[0],0,ALength*sizeof(float));
+  memset(ADst[0],0,ALength*sizeof(float));
 }
 
 //----------
@@ -110,13 +110,13 @@ void KODE_ScaleMonoBuffer(float** ADst, float AScale, uint32_t ALength) {
 //------------------------------
 
 void KODE_CopyMonoBuffer(float* ADst, float* ASrc, uint32_t ALength) {
-  KODE_Memcpy(ADst,ASrc,ALength*sizeof(float));
+  memcpy(ADst,ASrc,ALength*sizeof(float));
 }
 
 //----------
 
 void KODE_ClearMonoBuffer(float* ADst, uint32_t ALength) {
-  KODE_Memset(ADst,0,ALength*sizeof(float));
+  memset(ADst,0,ALength*sizeof(float));
 }
 
 //----------
@@ -145,13 +145,13 @@ void KODE_ScaleMonoBuffer(float* ADst, float AScale, uint32_t ALength) {
 /*
 
 void KODE_CopyMonoBuffer(float** ADst, float** ASrc) {
-  KODE_Memcpy(ADst[0],ASrc[0],KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
+  memcpy(ADst[0],ASrc[0],KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
 }
 
 //----------
 
 void KODE_ClearMonoBuffer(float** ADst) {
-  KODE_Memset(ADst[0],0,KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
+  memset(ADst[0],0,KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
 }
 
 //----------
@@ -176,13 +176,13 @@ void KODE_ScaleMonoBuffer(float** ADst, float AScale) {
 //------------------------------
 
 void KODE_CopyMonoBuffer(float* ADst, float* ASrc) {
-  KODE_Memcpy(ADst,ASrc,KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
+  memcpy(ADst,ASrc,KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
 }
 
 //----------
 
 void KODE_ClearMonoBuffer(float* ADst) {
-  KODE_Memset(ADst,0,KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
+  memset(ADst,0,KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
 }
 
 //----------
@@ -211,15 +211,15 @@ void KODE_ScaleMonoBuffer(float* ADst, float AScale) {
 //------------------------------
 
 void KODE_CopyStereoBuffer(float** ADst, float** ASrc, uint32_t ALength) {
-  KODE_Memcpy(ADst[0],ASrc[0],ALength*sizeof(float));
-  KODE_Memcpy(ADst[1],ASrc[1],ALength*sizeof(float));
+  memcpy(ADst[0],ASrc[0],ALength*sizeof(float));
+  memcpy(ADst[1],ASrc[1],ALength*sizeof(float));
 }
 
 //----------
 
 void KODE_ClearStereoBuffer(float** ADst, uint32_t ALength) {
-  KODE_Memset(ADst[0],0,ALength*sizeof(float));
-  KODE_Memset(ADst[1],0,ALength*sizeof(float));
+  memset(ADst[0],0,ALength*sizeof(float));
+  memset(ADst[1],0,ALength*sizeof(float));
 }
 
 //----------
@@ -279,15 +279,15 @@ void KODE_ClampStereoBuffer(float** ADst, float AMin, float AMax, uint32_t ALeng
 /*
 
 void KODE_CopyStereoBuffer(float** ADst, float** ASrc) {
-  KODE_Memcpy(ADst[0],ASrc[0],KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
-  KODE_Memcpy(ADst[1],ASrc[1],KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
+  memcpy(ADst[0],ASrc[0],KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
+  memcpy(ADst[1],ASrc[1],KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
 }
 
 //----------
 
 void KODE_ClearStereoBuffer(float** ADst) {
-  KODE_Memset(ADst[0],0,KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
-  KODE_Memset(ADst[1],0,KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
+  memset(ADst[0],0,KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
+  memset(ADst[1],0,KPLUGIN_PROCESS_TICKSIZE*sizeof(float));
 }
 
 //----------

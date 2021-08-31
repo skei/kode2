@@ -59,7 +59,7 @@ public: // FUnknown
   uint32_t KODE_VST3_PLUGIN_API release() final {
     const uint32_t r = --MRefCount;
     KODE_Vst3Print("-> %i %s",r, (r==0) ? "(delete)\n" : "\n" );
-    if (r == 0) KODE_Delete this;
+    if (r == 0) delete this;
     return r;
   }
 
@@ -95,9 +95,9 @@ public:
 
   int32_t KODE_VST3_PLUGIN_API getFactoryInfo(KODE_Vst3PFactoryInfo* info) final {
     KODE_Vst3Print(" -> Ok\n");
-    KODE_Strcpy(info->vendor,MDescriptor.getAuthor());
-    KODE_Strcpy(info->url,MDescriptor.getUrl());
-    KODE_Strcpy(info->email,MDescriptor.getEmail());
+    strcpy(info->vendor,MDescriptor.getAuthor());
+    strcpy(info->url,MDescriptor.getUrl());
+    strcpy(info->email,MDescriptor.getEmail());
     info->flags = KODE_Vst3PFactoryInfo::kode_vst3_NoFlags;
     KODE_Vst3DPrint(". author: '%s'\n",info->vendor);
     KODE_Vst3DPrint(". url: '%s'\n",info->url);
@@ -120,10 +120,10 @@ public:
     switch (index) {
       case 0:
         KODE_Vst3DPrint(" -> Ok\n");
-        KODE_Memcpy(info->cid,MDescriptor.getLongId(),16);
+        memcpy(info->cid,MDescriptor.getLongId(),16);
         info->cardinality = KODE_Vst3PClassInfo::kode_vst3_ManyInstances;
-        KODE_Strncpy(info->category,kode_vst3_VstAudioEffectClass,KODE_Vst3PClassInfo::kode_vst3_CategorySize);
-        KODE_Strncpy(info->name,MDescriptor.getName(),KODE_Vst3PClassInfo::kode_vst3_NameSize);
+        strncpy(info->category,kode_vst3_VstAudioEffectClass,KODE_Vst3PClassInfo::kode_vst3_CategorySize);
+        strncpy(info->name,MDescriptor.getName(),KODE_Vst3PClassInfo::kode_vst3_NameSize);
         KODE_Vst3DPrint(". cid: ");   KODE_Vst3PrintIID(info->cid);   KODE_Vst3DPrint("\n");
         KODE_Vst3DPrint(". cardinality: %i (%s)\n",info->cardinality,info->cardinality?"ManyInstances":"");
         KODE_Vst3DPrint(". category: '%s'\n",info->category);
@@ -142,7 +142,7 @@ public:
     KODE_Vst3PrintIID(cid);
     if (KODE_iidEqual(MDescriptor.getLongId(),cid)) {
       KODE_Vst3DPrint(" (%s) -> Ok\n",MDescriptor.getName());
-      INST* instance = KODE_New INST(&MDescriptor);
+      INST* instance = new INST(&MDescriptor);
       instance->on_plugin_open();
       instance->setDefaultParameterValues();
       instance->updateAllParameters();
@@ -162,20 +162,20 @@ public: // IPluginFactory2
     KODE_Vst3Print("index: %i",index);
     switch (index) {
       case 0:
-        KODE_Memcpy(info->cid,MDescriptor.getLongId(),16);
+        memcpy(info->cid,MDescriptor.getLongId(),16);
         info->cardinality = KODE_Vst3PClassInfo::kode_vst3_ManyInstances;
-        KODE_Strcpy(info->category,kode_vst3_VstAudioEffectClass);
-        KODE_Strcpy(info->name,MDescriptor.getName());
+        strcpy(info->category,kode_vst3_VstAudioEffectClass);
+        strcpy(info->name,MDescriptor.getName());
         info->classFlags = 0;
         if (MDescriptor.isSynth()) {
-          KODE_Strcpy(info->subCategories,kode_vst3_Instrument);
+          strcpy(info->subCategories,kode_vst3_Instrument);
         }
         else {
-          KODE_Strcpy(info->subCategories,kode_vst3_Fx);
+          strcpy(info->subCategories,kode_vst3_Fx);
         }
-        KODE_Strcpy(info->vendor,MDescriptor.getAuthor());
-        KODE_Strcpy(info->version,MDescriptor.getVersionText());
-        KODE_Strcpy(info->sdkVersion,kode_vst3_VstVersionString);
+        strcpy(info->vendor,MDescriptor.getAuthor());
+        strcpy(info->version,MDescriptor.getVersionText());
+        strcpy(info->sdkVersion,kode_vst3_VstVersionString);
         KODE_Vst3DPrint(" -> Ok\n");
         KODE_Vst3DPrint(". cid: ");   KODE_Vst3PrintIID(info->cid);   KODE_Vst3DPrint("\n");
         KODE_Vst3DPrint(". cardinality: %i (%s)\n",info->cardinality,info->cardinality?"ManyInstances":"");
@@ -230,7 +230,7 @@ bool vst3_module_exit(void) VST3_MODULE_EXIT_SYMBOL;
   __KODE_DLLEXPORT                                                    \
   KODE_Vst3IPluginFactory* KODE_VST3_PLUGIN_API vst3_entrypoint() {   \
     KODE_Vst3Print("\n");                                             \
-    return KODE_New KODE_Vst3Plugin<DESC,INST>();                     \
+    return new KODE_Vst3Plugin<DESC,INST>();                     \
   }                                                                   \
                                                                       \
   void* moduleHandle = 0;                                             \

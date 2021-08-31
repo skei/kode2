@@ -27,18 +27,18 @@ public:
     MAuthor     = "skei.audio";
     MVersion = 0x00000001;
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
-    //appendParameter( KODE_New KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
-    //appendParameter( KODE_New KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
 
-      appendParameter( KODE_New KODE_TextParameter(  "processing",   0,  2,  str_proc  ));
-      appendParameter( KODE_New KODE_FloatParameter( "center freq",  50, 0,  100, 0.25 ));
-      appendParameter( KODE_New KODE_FloatParameter( "tilt (lo/hi)", 0, -6,  6         ));
-      appendParameter( KODE_New KODE_FloatParameter( "gain",         0, -25, 25        ));
+      appendParameter( new KODE_TextParameter(  "processing",   0,  2,  str_proc  ));
+      appendParameter( new KODE_FloatParameter( "center freq",  50, 0,  100, 0.25 ));
+      appendParameter( new KODE_FloatParameter( "tilt (lo/hi)", 0, -6,  6         ));
+      appendParameter( new KODE_FloatParameter( "gain",         0, -25, 25        ));
 
   }
 

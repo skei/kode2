@@ -24,50 +24,50 @@ public:
     setFillBackground();
     //KODE_PRINT;
 
-    appendWidget( KODE_New KODE_PanelWidget( KODE_FRect(10,10,100,20) ));
+    appendWidget( new KODE_PanelWidget( KODE_FRect(10,10,100,20) ));
 
-    appendWidget( KODE_New KODE_PanelWidget( KODE_FRect(10,35,100,20) ));
+    appendWidget( new KODE_PanelWidget( KODE_FRect(10,35,100,20) ));
 
     KODE_ValueWidget* v;
-    v = (KODE_ValueWidget*)appendWidget( KODE_New KODE_ValueWidget( KODE_FRect(10,60,100,20) ));
+    v = (KODE_ValueWidget*)appendWidget( new KODE_ValueWidget( KODE_FRect(10,60,100,20) ));
     v->setValue(0.5f);
     //v->setDrawLabel();
     v->setLabel("db");
 
-    MBitmap = KODE_New KODE_Bitmap(100,100);
+    MBitmap = new KODE_Bitmap(100,100);
     MBitmap->fill(0x80);
 
     KODE_ImageWidget* i;
-    i = (KODE_ImageWidget*)appendWidget( KODE_New KODE_ImageWidget( KODE_FRect(10,85,100,100) ));
+    i = (KODE_ImageWidget*)appendWidget( new KODE_ImageWidget( KODE_FRect(10,85,100,100) ));
     i->setBitmap(MBitmap);
 
     //
 
     KODE_TextWidget* tw;
 
-    tw = (KODE_TextWidget*)appendWidget( KODE_New KODE_TextWidget(  KODE_FRect(115,10,100,35) ));
+    tw = (KODE_TextWidget*)appendWidget( new KODE_TextWidget(  KODE_FRect(115,10,100,35) ));
     //tw->setDrawBorder(false);
     tw->setTextAlignment(KODE_TEXT_ALIGN_CENTER);
 
-    tw = (KODE_TextWidget*)appendWidget( KODE_New KODE_TextWidget(  KODE_FRect(115,50,100,35) ));
+    tw = (KODE_TextWidget*)appendWidget( new KODE_TextWidget(  KODE_FRect(115,50,100,35) ));
     //tw->setDrawBorder(false);
     tw->setTextAlignment(KODE_TEXT_ALIGN_LEFT);
 
-    tw = (KODE_TextWidget*)appendWidget( KODE_New KODE_TextWidget(  KODE_FRect(115,90,100,35) ));
+    tw = (KODE_TextWidget*)appendWidget( new KODE_TextWidget(  KODE_FRect(115,90,100,35) ));
     //tw->setDrawBorder(false);
     tw->setTextAlignment(KODE_TEXT_ALIGN_RIGHT);
 
-    tw = (KODE_TextWidget*)appendWidget( KODE_New KODE_TextWidget(  KODE_FRect(115,130,100,35) ));
+    tw = (KODE_TextWidget*)appendWidget( new KODE_TextWidget(  KODE_FRect(115,130,100,35) ));
     //tw->setDrawBorder(false);
     tw->setTextAlignment(KODE_TEXT_ALIGN_TOP);
 
-    tw = (KODE_TextWidget*)appendWidget( KODE_New KODE_TextWidget(  KODE_FRect(115,170,100,35) ));
+    tw = (KODE_TextWidget*)appendWidget( new KODE_TextWidget(  KODE_FRect(115,170,100,35) ));
     //tw->setDrawBorder(false);
     tw->setTextAlignment(KODE_TEXT_ALIGN_BOTTOM);
   }
 
   virtual ~myEditor() {
-    if (MBitmap) KODE_Delete MBitmap;
+    if (MBitmap) delete MBitmap;
   }
 
   //void on_window_paint(uint32_t AXpos, uint32_t AYpos, uint32_t AWidth, uint32_t AHeight) final {
@@ -92,9 +92,9 @@ public:
     MOptions.hasEditor = true;
     MEditorWidth = 640;
     MEditorHeight = 480;
-    appendParameter( KODE_New KODE_Parameter("param1",0.3f) );
-    appendParameter( KODE_New KODE_Parameter("param2",0.9f) );
-    appendParameter( KODE_New KODE_Parameter("param3",0.5f) );
+    appendParameter( new KODE_Parameter("param1",0.3f) );
+    appendParameter( new KODE_Parameter("param2",0.9f) );
+    appendParameter( new KODE_Parameter("param3",0.5f) );
   }
 };
 
@@ -115,13 +115,13 @@ public:
 
   KODE_BaseEditor* on_plugin_openEditor(void* AParent) final {
     //KODE_PRINT;
-    myEditor* editor = (myEditor*)KODE_New myEditor(this,AParent);
+    myEditor* editor = (myEditor*)new myEditor(this,AParent);
     return editor;
   }
 
   void  on_plugin_closeEditor(KODE_BaseEditor* AEditor) final {
     //KODE_PRINT;
-    KODE_Delete (myEditor*)AEditor;
+    delete (myEditor*)AEditor;
   }
 
 };

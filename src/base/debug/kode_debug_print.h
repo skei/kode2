@@ -95,7 +95,7 @@ void KODE_NoPrint(const char*,...) {}
     //open_socket();
     _kode_debug_socket_handle = socket(PF_UNIX,SOCK_STREAM,0);
     sockaddr_un address;
-    KODE_Memset(&address,0,sizeof(sockaddr_un));
+    memset(&address,0,sizeof(sockaddr_un));
     address.sun_family = AF_UNIX;
     snprintf(address.sun_path,108,"/tmp/kode.socket"); // max 108?
     connect(_kode_debug_socket_handle,reinterpret_cast<sockaddr*>(&address),sizeof(sockaddr_un));
@@ -120,7 +120,7 @@ void KODE_NoPrint(const char*,...) {}
 
   const char* _kode_debug_strip_path(const char* buffer) {
     const char *slash;
-    slash = KODE_Strrchr(buffer,'/');
+    slash = strrchr(buffer,'/');
     if (slash) {
       return slash + 1;
     }
@@ -134,20 +134,20 @@ void KODE_NoPrint(const char*,...) {}
   void _kode_print_prefix(const char* file, const char* func, int line) {
     char buffer[256];
     const char* filename  = _kode_debug_strip_path(file);
-    KODE_Strcat(_kode_debug_prefix_buffer,"[");
+    strcat(_kode_debug_prefix_buffer,"[");
     #ifdef KODE_DEBUG_PRINT_TIME
       double time = _kode_debug_time_elapsed();
       sprintf(buffer,"%.3f:",time);
-      KODE_Strcat(_kode_debug_prefix_buffer,buffer);
+      strcat(_kode_debug_prefix_buffer,buffer);
     #endif
     #ifdef KODE_DEBUG_PRINT_THREAD
       uint32_t thread_id = _kode_debug_get_thread_id();
       sprintf(buffer,"%i:",thread_id);
-      KODE_Strcat(_kode_debug_prefix_buffer,buffer);
+      strcat(_kode_debug_prefix_buffer,buffer);
     #endif
     sprintf(buffer,"%s:%s:%i",filename,func,line);
-    KODE_Strcat(_kode_debug_prefix_buffer,buffer);
-    KODE_Strcat(_kode_debug_prefix_buffer,"] ");
+    strcat(_kode_debug_prefix_buffer,buffer);
+    strcat(_kode_debug_prefix_buffer,"] ");
   }
 
   //----------
@@ -156,7 +156,7 @@ void KODE_NoPrint(const char*,...) {}
     va_list args;
     va_start(args,format);
     vsprintf(_kode_debug_print_buffer,format,args);
-    KODE_Strcat(_kode_debug_prefix_buffer,_kode_debug_print_buffer);
+    strcat(_kode_debug_prefix_buffer,_kode_debug_print_buffer);
 
     #if defined KODE_DEBUG_PRINT_SOCKET
       _kode_debug_socket_print(_kode_debug_prefix_buffer);

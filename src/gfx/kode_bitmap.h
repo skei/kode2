@@ -66,7 +66,7 @@ public:
     MHeight     = AHeight;
     MStride     = MWidth * 4;
     MBufferSize = MStride * MHeight;
-    MBuffer     = (uint32_t*)KODE_Malloc(MBufferSize);
+    MBuffer     = (uint32_t*)malloc(MBufferSize);
     MAllocated  = true;
   }
 
@@ -82,12 +82,12 @@ public:
     MHeight     = AH;
     MStride     = MWidth * 4;
     MBufferSize = MStride * MHeight;
-    MBuffer     = (uint32_t*)KODE_Malloc(MBufferSize);
+    MBuffer     = (uint32_t*)malloc(MBufferSize);
     MAllocated  = true;
     uint32_t* dst = (uint32_t*)MBuffer;
     for (uint32_t y=0; y<MHeight; y++) {
       uint32_t* src = (uint32_t*)ABitmap->getLinePtr(AY + y);
-      KODE_Memcpy(dst,src,MWidth*4);
+      memcpy(dst,src,MWidth*4);
       dst += MWidth;
     }
   }
@@ -104,9 +104,9 @@ public:
     MHeight     = y;
     MStride     = MWidth  * 4; //n;
     MBufferSize = MStride * MHeight;
-    MBuffer     = (uint32_t*)KODE_Malloc(MBufferSize);
+    MBuffer     = (uint32_t*)malloc(MBufferSize);
     MAllocated  = true;
-    KODE_Memcpy(MBuffer,data,MBufferSize);
+    memcpy(MBuffer,data,MBufferSize);
     //convertRgbaBgra();
     swapLayer(0,2);
     stbi_image_free(data);
@@ -136,9 +136,9 @@ public:
     */
     MStride     = MWidth  * 4; //n;
     MBufferSize = MStride * MHeight;
-    MBuffer     = (uint32_t*)KODE_Malloc(MBufferSize);
+    MBuffer     = (uint32_t*)malloc(MBufferSize);
     MAllocated  = true;
-    KODE_Memcpy(MBuffer,data,MBufferSize);
+    memcpy(MBuffer,data,MBufferSize);
 //    convertRgbaBgra();
     swapLayer(0,2);
     stbi_image_free(data);
@@ -148,7 +148,7 @@ public:
   //----------
 
   virtual ~KODE_Bitmap() {
-    if (MAllocated && MBuffer) KODE_Free(MBuffer);
+    if (MAllocated && MBuffer) free(MBuffer);
   }
 
 //------------------------------
@@ -207,7 +207,7 @@ public: // sub-bitmap
   */
 
   KODE_Bitmap* createSubBitmap(int32_t x, int32_t y, int32_t w, int32_t h) {
-    KODE_Bitmap* bitmap = KODE_New KODE_Bitmap();
+    KODE_Bitmap* bitmap = new KODE_Bitmap();
     bitmap->MWidth      = w;
     bitmap->MHeight     = h;
     bitmap->MStride     = MStride;
@@ -311,7 +311,7 @@ public:
   //void clear() {
   //  for(uint32_t y=0; y<MHeight; y++) {
   //    uint32_t* ptr = getLinePtr(y);
-  //    KODE_Memset(ptr,0,MWidth*4);
+  //    memset(ptr,0,MWidth*4);
   //  }
   //}
 

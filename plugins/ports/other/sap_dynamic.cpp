@@ -22,20 +22,20 @@ public:
     MAuthor     = "skei.audio";
     MVersion = 0x00000001;
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
-    //appendParameter( KODE_New KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
-    //appendParameter( KODE_New KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
 
-    appendParameter( KODE_New KODE_FloatParameter( "pre gain",   0,   -24, 24   )); // db
-    appendParameter( KODE_New KODE_FloatParameter( "post gain",  0,   -24, 24   )); // db
-    appendParameter( KODE_New KODE_FloatParameter( "threshold",  0,   -24, 0    )); // db
-    appendParameter( KODE_New KODE_FloatParameter( "ratio",      3,    1,  10   ));
-    appendParameter( KODE_New KODE_FloatParameter( "attack",     2000, 1,  3000 )); // db/sec
-    appendParameter( KODE_New KODE_FloatParameter( "release",    300,  1,  3000 )); // db/sec
+    appendParameter( new KODE_FloatParameter( "pre gain",   0,   -24, 24   )); // db
+    appendParameter( new KODE_FloatParameter( "post gain",  0,   -24, 24   )); // db
+    appendParameter( new KODE_FloatParameter( "threshold",  0,   -24, 0    )); // db
+    appendParameter( new KODE_FloatParameter( "ratio",      3,    1,  10   ));
+    appendParameter( new KODE_FloatParameter( "attack",     2000, 1,  3000 )); // db/sec
+    appendParameter( new KODE_FloatParameter( "release",    300,  1,  3000 )); // db/sec
 
   }
 

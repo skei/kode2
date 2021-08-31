@@ -21,17 +21,17 @@ public:
     MAuthor     = "skei.audio";
     MVersion = 0x00000001;
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
-    appendParameter( KODE_New KODE_FloatParameter("Even Harmonics",   0.3f,   0.0f,   1.0f) );
-    appendParameter( KODE_New KODE_FloatParameter("Odd Harmonics",    0.3f,   0.0f,   1.0f) );
-    appendParameter( KODE_New KODE_FloatParameter("Fluctuation",      0.3f,   0.0f,   1.0f) );
-    appendParameter( KODE_New KODE_FloatParameter("TS Input (dB)",    0.0f, -24.0f,  24.0f) );
-    appendParameter( KODE_New KODE_FloatParameter("TS Output (dB)",   0.0f, -24.0f,  24.0f) );
-    appendParameter( KODE_New KODE_FloatParameter("Output Gain (dB)", 0.0f, -12.0f,  12.0f) );
+    appendParameter( new KODE_FloatParameter("Even Harmonics",   0.3f,   0.0f,   1.0f) );
+    appendParameter( new KODE_FloatParameter("Odd Harmonics",    0.3f,   0.0f,   1.0f) );
+    appendParameter( new KODE_FloatParameter("Fluctuation",      0.3f,   0.0f,   1.0f) );
+    appendParameter( new KODE_FloatParameter("TS Input (dB)",    0.0f, -24.0f,  24.0f) );
+    appendParameter( new KODE_FloatParameter("TS Output (dB)",   0.0f, -24.0f,  24.0f) );
+    appendParameter( new KODE_FloatParameter("Output Gain (dB)", 0.0f, -12.0f,  12.0f) );
 
   }
 

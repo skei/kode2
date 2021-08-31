@@ -143,7 +143,7 @@ public:
         if (i < num) {
           const char* txt = MItems[i];
           //KODE_DTrace("%i %i %s : %i %i %i %i\n",x,y,txt,(int)R.x,(int)R.y,(int)R.w,(int)R.h);
-          KODE_MenuItemWidget* mi = (KODE_MenuItemWidget*)appendWidget( KODE_New KODE_MenuItemWidget( R ));
+          KODE_MenuItemWidget* mi = (KODE_MenuItemWidget*)appendWidget( new KODE_MenuItemWidget( R ));
           mi->setText(txt);
           R.y += MItemHeight;
         }

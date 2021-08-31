@@ -23,10 +23,10 @@ public:
   //----------
 
   ~KODE_ExePlugin() {
-    //if (MDescriptor) KODE_Delete MDescriptor;
-    //if (MInstance) KODE_Delete MInstance;
+    //if (MDescriptor) delete MDescriptor;
+    //if (MInstance) delete MInstance;
     //#ifndef KODE_NO_GUI
-    //if (MEditor) KODE_Delete MEditor;
+    //if (MEditor) delete MEditor;
     //#endif
   }
 
@@ -36,8 +36,8 @@ public:
 
   int main(int argc, char** argv) {
     //init_audio();
-    KODE_Descriptor* descriptor = KODE_New DESC();
-    KODE_Instance* instance = KODE_New INST(descriptor);
+    KODE_Descriptor* descriptor = new DESC();
+    KODE_Instance* instance = new INST(descriptor);
     instance->on_plugin_open();
     instance->on_plugin_initialize();
     instance->on_plugin_activate();
@@ -58,8 +58,8 @@ public:
     instance->on_plugin_deactivate();
     instance->on_plugin_terminate();
     instance->on_plugin_close();
-    KODE_Delete instance;
-    KODE_Delete descriptor;
+    delete instance;
+    delete descriptor;
     //shutdown_audio();
     return 0;
   }

@@ -20,11 +20,11 @@ struct KODE_WidgetFlags {
   bool posPercent       = false;
   bool autoCursor       = true;
   bool autoHint         = false;
-//bool autoMouseCapture = false;
-//bool autoMouseHide    = false;
-//bool autoClip         = false;
-//bool canDrag          = false;
-//bool canDrop          = false;
+  bool autoClip         = true;
+  bool autoMouseLock    = false;
+  bool autoMouseHide    = false;
+  bool canDrag          = false;
+  bool canDrop          = false;
 };
 
 struct KODE_WidgetLayout {
@@ -49,24 +49,19 @@ class KODE_Widget {
 private:
 //------------------------------
 
-  int32_t             MIndex              = -1;
-
-  float               MValue              = 0.0f;
-  float               MDefaultValue       = 0.0f;
-
-  KODE_FRect          MRect               = KODE_FRect(0);
-  KODE_FRect          MInitialRect        = KODE_FRect(0);
-  KODE_FRect          MContentRect        = KODE_FRect(0);
-
-  KODE_Widget*        MParent             = KODE_NULL;
-  KODE_Widgets        MChildren;
-  KODE_Parameter*     MParameterPtrs[KODE_WIDGET_MAX_PARAMETERS] = {0};
-  uint32_t            MSelectedParameter  = 0;
-
   const char*         MName               = "KODE_Widget";
   const char*         MHint               = "widget";
   int32_t             MCursor             = KODE_CURSOR_DEFAULT;
-
+  int32_t             MIndex              = -1;
+  float               MValue              = 0.0f;
+  float               MDefaultValue       = 0.0f;
+  KODE_FRect          MRect               = KODE_FRect(0);
+  KODE_FRect          MInitialRect        = KODE_FRect(0);
+  KODE_FRect          MContentRect        = KODE_FRect(0);
+  KODE_Widget*        MParent             = KODE_NULL;
+  KODE_Widgets        MChildren;
+  KODE_Parameter*     MParameterPtrs[KODE_WIDGET_MAX_PARAMETERS] = {0};
+//uint32_t            MSelectedParameter  = 0;
 
 //------------------------------
 protected:
@@ -74,12 +69,14 @@ protected:
 
   KODE_Surface*       MWidgetSurface          = KODE_NULL;
   bool                MWidgetSurfaceAllocated = false;
+  uint32_t            MTileCount              = 0;
+  uint32_t            MTileXcount             = 0;
+  uint32_t            MTileYcount             = 0;
+  uint32_t            MTileWidth              = 0;
+  uint32_t            MTileHeight             = 0;
 
-  uint32_t            MTileCount    = 0;
-  uint32_t            MTileXcount   = 0;
-  uint32_t            MTileYcount   = 0;
-  uint32_t            MTileWidth    = 0;
-  uint32_t            MTileHeight   = 0;
+  float               MChildXOffset           = 0.0f;
+  float               MChildYOffset           = 0.0f;
 
 //------------------------------
 public:
@@ -102,7 +99,7 @@ public:
     #ifndef KODE_NO_AUTODELETE
     deleteChildren();
     #endif
-    if (MWidgetSurface && MWidgetSurfaceAllocated) KODE_Delete MWidgetSurface;
+    if (MWidgetSurface && MWidgetSurfaceAllocated) delete MWidgetSurface;
   }
 
 //------------------------------
@@ -124,15 +121,15 @@ public: // set
   virtual void setInitialWidth(float AW)                { MInitialRect.w = AW; }
   virtual void setInitialHeight(float AH)               { MInitialRect.h = AH; }
   virtual void setCursor(int32_t ACursor)               { MCursor = ACursor; }
-  virtual void setparent(KODE_Widget* AParent) { MParent = AParent; }
-  virtual void setSelectedParameter(uint32_t AIndex)    { MSelectedParameter = AIndex; }
+  virtual void setparent(KODE_Widget* AParent)          { MParent = AParent; }
+  virtual void setIndex(int32_t AIndex)                 { MIndex = AIndex; }
+  virtual void setHint(const char* AHint)               { MHint = AHint; }
+  virtual void setChildOffset(float AX, float AY)       { MChildXOffset = AX; MChildYOffset = AY; }
+
   virtual void setParameterPtr(KODE_Parameter* AParameter, uint32_t AIndex=0) { MParameterPtrs[AIndex] = AParameter; }
+
+  //virtual void setSelectedParameter(uint32_t AIndex)    { MSelectedParameter = AIndex; }
   //virtual void setParameterPtr(KODE_Parameter* p)       { MParameterPtr = p; }
-
-  virtual void setIndex(int32_t AIndex) { MIndex = AIndex; }
-  virtual int32_t getIndex() { return MIndex; }
-
-  virtual void setHint(const char* AHint) { MHint = AHint; }
 
 //------------------------------
 public: // get
@@ -140,21 +137,22 @@ public: // get
 
   virtual float               getValue()                    { return MValue; }
   virtual float               getDefaultValue()             { return MDefaultValue; }
+  virtual KODE_FRect          getRect()                     { return MRect; }
+  virtual KODE_FRect          getInitialRect()              { return MInitialRect; }
+  virtual KODE_FRect          getContentRect()              { return MContentRect; }
+  virtual int32_t             getCursor()                   { return MCursor; }
+  virtual KODE_Parameter*     getParameterPtr(uint32_t i=0) { return MParameterPtrs[i]; }
+  virtual KODE_Widget*        getParent()                   { return MParent; }
+  virtual const char*         getHint()                     { return MHint; }
+  virtual uint32_t            getNumChildren()              { return MChildren.size(); }
+  virtual KODE_Widget*        getChild(uint32_t AIndex)     { return MChildren[AIndex]; }
+  virtual int32_t             getIndex()                    { return MIndex; }
+
   //virtual KODE_WidgetLayout*  getLayout()                   { return &MLayout; }
   //virtual KODE_WidgetOptions* getOptions()                  { return &MOptions; }
   //virtual KODE_WidgetStates*  getStates()                   { return &MStates; }
-  virtual KODE_FRect          getRect()                     { return MRect; }
-  virtual KODE_FRect          getInitialRect()              { return MInitialRect; }
-  virtual KODE_FRect          getContainerRect()            { return MContentRect; }
-  virtual int32_t             getCursor()                   { return MCursor; }
-  virtual KODE_Parameter*     getParameterPtr(uint32_t i=0) { return MParameterPtrs[i]; }
-  virtual uint32_t            getSelectedParameter()        { return MSelectedParameter; }
-//virtual KODE_Parameter*     getParameter(uint32_t AIndex) { return MParameters[AIndex]; }
-
-  virtual KODE_Widget*        getParent()                   { return MParent; }
-
-  virtual const char*         getHint()                     { return MHint; }
-  virtual KODE_Widget*        getChild(uint32_t AIndex)     { return MChildren[AIndex]; }
+  //virtual uint32_t            getSelectedParameter()        { return MSelectedParameter; }
+  //virtual KODE_Parameter*     getParameter(uint32_t AIndex) { return MParameters[AIndex]; }
 
 //------------------------------
 public:
@@ -178,26 +176,26 @@ public:
   }
 
   virtual void setImage(KODE_Drawable* ATarget, KODE_Bitmap* ABitmap) {
-    MWidgetSurface = KODE_New KODE_Surface(ATarget,ABitmap->getWidth(),ABitmap->getHeight());
+    MWidgetSurface = new KODE_Surface(ATarget,ABitmap->getWidth(),ABitmap->getHeight());
     MWidgetSurfaceAllocated = true;
-    KODE_Painter* painter = KODE_New KODE_Painter(MWidgetSurface);
+    KODE_Painter* painter = new KODE_Painter(MWidgetSurface);
     painter->uploadBitmap(0,0,ABitmap);
     //painter->flush();
-    KODE_Delete painter;
+    delete painter;
   }
 
   virtual void setImage(KODE_Drawable* ATarget, uint8_t* ABuffer, uint32_t ASize, KODE_Color ABackground) {
-    KODE_Bitmap* bitmap = KODE_New KODE_Bitmap(ABuffer,ASize);
+    KODE_Bitmap* bitmap = new KODE_Bitmap(ABuffer,ASize);
     bitmap->premultAlpha( (uint32_t)ABackground );
     setImage(ATarget,bitmap);
-    KODE_Delete bitmap;
+    delete bitmap;
   }
 
   virtual void setImage(KODE_Drawable* ATarget, const char* AFilename, KODE_Color ABackground) {
-    KODE_Bitmap* bitmap = KODE_New KODE_Bitmap(AFilename);
+    KODE_Bitmap* bitmap = new KODE_Bitmap(AFilename);
     bitmap->premultAlpha( (uint32_t)ABackground );
     setImage(ATarget,bitmap);
-    KODE_Delete bitmap;
+    delete bitmap;
   }
 
   //----------
@@ -233,7 +231,7 @@ public:
 
   virtual void deleteChildren() {
     for (uint32_t i=0; i<MChildren.size(); i++) {
-      KODE_Delete MChildren[i];
+      delete MChildren[i];
       MChildren[i] = KODE_NULL;
     }
     MChildren.clear();
@@ -247,12 +245,13 @@ public:
       for (int32_t i=(num-1); i>=0; i--) {
         KODE_Widget* widget = MChildren[i];
         //if (widget->flags.visible) {
+        if (widget->flags.active) {
           if ( widget->getRect().contains(AXpos,AYpos) ) {
             KODE_Widget* child = widget->findChild(AXpos,AYpos);
             if (child) return child;
             return widget;
           }
-        //}
+        }
       }
     }
     return KODE_NULL;
@@ -267,17 +266,44 @@ public:
 
   //----------
 
+  /*
+    ARect = parent/update rect
+  */
+
   virtual void paintChildren(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
+    KODE_FRect mrect = getRect();
     for (uint32_t i=0; i<MChildren.size(); i++) {
-      KODE_Widget* widget = MChildren[i];
-      if (widget->flags.visible) {
-        KODE_FRect rect = widget->getRect();
-        rect.intersect(ARect);
-        if (rect.isNotEmpty()) {
-          widget->on_widget_paint(APainter,ARect,AMode);
-        }
-      }
-    }
+      KODE_Widget* child = MChildren[i];
+      if (child->flags.visible) {
+        KODE_FRect child_rect = child->getRect();
+        if (child_rect.isNotEmpty()) {
+          if (child_rect.touches(mrect)) {
+
+            if (child->flags.autoClip) {
+              KODE_FRect r = mrect;
+              r.overlap(child_rect);
+              r.w += 1;
+              r.h += 1;
+              APainter->setClip(r);
+            } // clip
+
+            child->on_widget_paint(APainter,mrect,AMode);
+
+            /*
+              we don't want to reset the clip rect entirely here, but back to
+              what it was before we set out clipping rect..
+              we need to implement a clipping stack..
+              set/reset clip = push/pop rect..
+            */
+
+            if (child->flags.autoClip) {
+              APainter->resetClip();
+            } // clip
+
+          } // touches
+        } // !empty
+      } // visible
+    } // for all children
   }
 
   //----------
@@ -308,13 +334,12 @@ public:
 
     KODE_FRect content = client;
     content.setSize(0,0);
+    //KODE_Print("content %.0f,%.0f,%.0f,%.0f\n",content.x,content.y,content.w,content.h);
 
     uint32_t num = MChildren.size();
     for (uint32_t i=0; i<num; i++) {
       KODE_Widget* child = MChildren[i];
-
       if (child->flags.visible) {
-
         KODE_FRect rect = child->getInitialRect();
         if (child->flags.sizePercent) {
           rect.w = client.w * (rect.w * 0.01f);
@@ -521,18 +546,27 @@ public:
 
           //-----
 
-        } // switch (chile)
+        } // switch alignment
 
-        child->setRect(rect);
-        child->alignChildren(/*this,0,0*/);
+        KODE_FRect orect = rect;
+        orect.x += MChildXOffset;
+        orect.y += MChildYOffset;
+
+        child->setRect(orect);
+
         content.combine(rect);
+        child->alignChildren(/*this,0,0*/);
 
       } // child visible
 
     } // for all children
 
+
+    //KODE_Print("content %.0f,%.0f,%.0f,%.0f\n",content.x,content.y,content.w,content.h);
     //content.w += layout.innerBorder.w;
     //content.h += layout.innerBorder.h;
+    MContentRect = content;
+
 
   }
 
@@ -548,8 +582,12 @@ public:
     //setSize(AWidth,AHeight);
   }
 
+  //virtual void on_widget_realign(KODE_Painter* APainter, uint32_t AMode) {
+  //}
+
   virtual void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
-    paintChildren(APainter,ARect,AMode);
+    //paintChildren(APainter,ARect,AMode);
+    paintChildren(APainter,getRect(),AMode);
   }
 
   virtual void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) {

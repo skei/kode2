@@ -85,8 +85,8 @@ class KODE_SchroederReverb {
     }
 
     void clear(void) {
-      KODE_Memset(MComb,0,sizeof(MComb));
-      KODE_Memset(MAp,0,sizeof(MAp));
+      memset(MComb,0,sizeof(MComb));
+      memset(MAp,0,sizeof(MAp));
       MComb_pos = 0;
       MAp_pos   = 0;
     }
@@ -169,17 +169,17 @@ public:
     MAuthor     = "skei.audio";
     MVersion = 0x00000001;
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
-    //appendParameter( KODE_New KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
-    //appendParameter( KODE_New KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
 
-    appendParameter( KODE_New KODE_FloatParameter( "decay", 0.5f,  0.0f, 1.0f ));
-    appendParameter( KODE_New KODE_FloatParameter( "size",  0.55f, 0.1f, 1.0f ));
-    appendParameter( KODE_New KODE_FloatParameter( "color", 0.0f, -6.0f, 6.0f ));
+    appendParameter( new KODE_FloatParameter( "decay", 0.5f,  0.0f, 1.0f ));
+    appendParameter( new KODE_FloatParameter( "size",  0.55f, 0.1f, 1.0f ));
+    appendParameter( new KODE_FloatParameter( "color", 0.0f, -6.0f, 6.0f ));
 
   }
 

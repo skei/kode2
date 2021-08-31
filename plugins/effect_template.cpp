@@ -33,16 +33,16 @@ public:
     setAuthor("author");
     setVersion(0x00000001);
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
     //KODE_Parameter* parameter;
-    //parameter = appendParameter( KODE_New KODE_Parameter("param1",0.2f) );
-    //parameter = appendParameter( KODE_New KODE_Parameter("param2",0.7f) );
+    //parameter = appendParameter( new KODE_Parameter("param1",0.2f) );
+    //parameter = appendParameter( new KODE_Parameter("param2",0.7f) );
     //parameter->setLabel("db");
-    //parameter = appendParameter( KODE_New KODE_Parameter("param3",0.4f) );
+    //parameter = appendParameter( new KODE_Parameter("param3",0.4f) );
     //parameter->setLabel("%");
 
   }

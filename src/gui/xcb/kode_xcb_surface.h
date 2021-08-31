@@ -26,7 +26,7 @@ private:
 //------------------------------
 
   KODE_Drawable*    MTarget           = KODE_NULL;
-  xcb_connection_t* MConnection = KODE_NULL;
+  xcb_connection_t* MConnection       = KODE_NULL;
   xcb_visualid_t    MTargetVisual     = XCB_NONE;
   xcb_drawable_t    MTargetDrawable   = XCB_NONE;
   xcb_pixmap_t      MPixmap           = XCB_NONE;
@@ -109,22 +109,29 @@ public: // drawable
   xcb_visualid_t      getXcbVisual()      final { return MTargetVisual; }
   xcb_drawable_t      getXcbDrawable()    final { return MPixmap; } //MTargetDrawable; }
 
-//------------------------------
-public:
-//------------------------------
-
   #ifdef KODE_USE_CAIRO
-  cairo_surface_t* void createCairoSurface() {
-    cairo_surface_t* surface = MCairoSurface = cairo_xcb_surface_create(
+
+  bool isCairo() final {
+    return true;
+  }
+
+  cairo_surface_t* createCairoSurface() final {
+    cairo_surface_t* surface = cairo_xcb_surface_create(
       MConnection,
       MPixmap,
-      kode_xcb_find_visual(MConnection,MVisual),
+      kode_xcb_find_visual(MConnection,MTargetVisual),
       MWidth,
       MHeight
     );
     return surface;
   }
+
   #endif
+
+//------------------------------
+public:
+//------------------------------
+
 
 //------------------------------
 public:

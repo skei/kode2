@@ -33,10 +33,10 @@ public:
     MAuthor = "skei.audio";
     MVersion = 0x00000001;
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
     /*
     slider1:0<0,100,0.1>Mix (%)
@@ -44,9 +44,9 @@ public:
     slider3:5000<2000,10000,100>Frequency (Hz)
     */
 
-    appendParameter( KODE_New KODE_FloatParameter("mix",    0.0f,     0.0f,     100.0f ) );
-    appendParameter( KODE_New KODE_FloatParameter("drive",  0.0f,     0.0f,     100.0f ) );
-    appendParameter( KODE_New KODE_FloatParameter("freq",   5000.0f,  2000.0f,  10000.0f ) );
+    appendParameter( new KODE_FloatParameter("mix",    0.0f,     0.0f,     100.0f ) );
+    appendParameter( new KODE_FloatParameter("drive",  0.0f,     0.0f,     100.0f ) );
+    appendParameter( new KODE_FloatParameter("freq",   5000.0f,  2000.0f,  10000.0f ) );
   }
 
   //----------

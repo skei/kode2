@@ -135,11 +135,11 @@ public:
     recalcThumbRect();
     //APainter->setFillColor(MBackgroundColor);
     //APainter->fillRectangle(MRect);
-    APainter->fillRect(getRect(),MBackgroundColor);
+    APainter->fillRectangle(getRect(),MBackgroundColor);
     //if (MIsInteractive) APainter->setFillColor(MInteractiveColor);
     //else APainter->setFillColor(MThumbColor);
     //APainter->fillRectangle(MThumbRect);
-    APainter->fillRect(MThumbRect,MThumbColor);
+    APainter->fillRectangle(MThumbRect,MThumbColor);
   }
 
   void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {

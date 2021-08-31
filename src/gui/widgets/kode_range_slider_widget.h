@@ -116,44 +116,48 @@ public:
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) final {
     KODE_FRect mrect = getRect();
-    APainter->fillRect( mrect, MBackgroundColor );
+    APainter->fillRectangle( mrect, MBackgroundColor );
     float x1 = mrect.x + (mrect.w * getValue());
     float x2 = mrect.x + (mrect.w * getValue2()) - 1;
     float w  = (x2 - x1 + 1);
     if (w > 0) {
-      APainter->fillRect( KODE_FRect(x1,mrect.y,w,mrect.h), MBarColor );
+      APainter->fillRectangle( KODE_FRect(x1,mrect.y,w,mrect.h), MBarColor );
     }
     if (MHoverEdge == 0) {
-      APainter->fillRect( KODE_FRect(x1,mrect.y,MEdgeWidth,mrect.h), MEdgeColor );
+      APainter->fillRectangle( KODE_FRect(x1,mrect.y,MEdgeWidth,mrect.h), MEdgeColor );
     }
     else if (MHoverEdge == 1) {
-      APainter->fillRect( KODE_FRect(x2-MEdgeWidth,mrect.y,MEdgeWidth,mrect.h), MEdgeColor );
+      APainter->fillRectangle( KODE_FRect(x2-MEdgeWidth,mrect.y,MEdgeWidth,mrect.h), MEdgeColor );
     }
   }
 
   //----------
 
   void on_widget_mouseClick(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
-    if (MHoverEdge==0) MIsDragging1 = true;
-    else if (MHoverEdge==1) MIsDragging2 = true;
-    //MIsInteractive = true;
-    //if (hasFlag(KODE_WIDGET_HIDECURSOR)) do_setCursor(this,KODE_CURSOR_HIDE);
-    do_widget_redraw(this,getRect(),0);
+    if (AButton == KODE_BUTTON_LEFT) {
+      if (MHoverEdge==0) MIsDragging1 = true;
+      else if (MHoverEdge==1) MIsDragging2 = true;
+      //MIsInteractive = true;
+      //if (hasFlag(KODE_WIDGET_HIDECURSOR)) do_setCursor(this,KODE_CURSOR_HIDE);
+      do_widget_redraw(this,getRect(),0);
+    }
   }
 
   //----------
 
   void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) final {
-    MIsDragging1 = false;
-    MIsDragging2 = false;
-    if (getRect().contains(AXpos,AYpos)) findHoverEdge(AXpos);
-    else {
-      MHoverEdge = -1;
-      do_widget_setMouseCursor(this,KODE_CURSOR_DEFAULT);
+    if (AButton == KODE_BUTTON_LEFT) {
+      MIsDragging1 = false;
+      MIsDragging2 = false;
+      if (getRect().contains(AXpos,AYpos)) findHoverEdge(AXpos);
+      else {
+        MHoverEdge = -1;
+        do_widget_setMouseCursor(this,KODE_CURSOR_DEFAULT);
+      }
+      //MIsInteractive = false;
+      //if (hasFlag(KODE_WIDGET_HIDECURSOR)) do_setCursor(this,KODE_CURSOR_SHOW);
+      do_widget_redraw(this,getRect(),0);
     }
-    //MIsInteractive = false;
-    //if (hasFlag(KODE_WIDGET_HIDECURSOR)) do_setCursor(this,KODE_CURSOR_SHOW);
-    do_widget_redraw(this,getRect(),0);
   }
 
   //----------

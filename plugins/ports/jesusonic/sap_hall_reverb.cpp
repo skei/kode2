@@ -33,18 +33,18 @@ public:
     MAuthor     = "skei.audio";
     MVersion = 0x00000001;
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
-    //appendParameter( KODE_New KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
-    //appendParameter( KODE_New KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
 
-      appendParameter( KODE_New KODE_FloatParameter("dry",      0,  -48,    0  ) );
-      appendParameter( KODE_New KODE_FloatParameter("wet",     -12, -48,    0  ) );
-      appendParameter( KODE_New KODE_FloatParameter("length",   1,    0.01, 3  ) );
-      appendParameter( KODE_New KODE_FloatParameter("predelay", 10,   0,    100) );
+      appendParameter( new KODE_FloatParameter("dry",      0,  -48,    0  ) );
+      appendParameter( new KODE_FloatParameter("wet",     -12, -48,    0  ) );
+      appendParameter( new KODE_FloatParameter("length",   1,    0.01, 3  ) );
+      appendParameter( new KODE_FloatParameter("predelay", 10,   0,    100) );
 
   }
 
@@ -97,7 +97,7 @@ public:
     //KODE_TRACE;
       tmp1 = 0;
       tmp2 = 0;
-      KODE_Memset(&BUF,0,sizeof(BUF));
+      memset(&BUF,0,sizeof(BUF));
       needrecalc = true;;
   }
 

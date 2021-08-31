@@ -22,6 +22,7 @@ private:
 
   KODE_Drawable*    MTarget       = KODE_NULL;
   xcb_connection_t* MConnection   = KODE_NULL;
+  xcb_visualid_t    MVisual       = XCB_NONE;
   xcb_drawable_t    MDrawable     = XCB_NONE;
   uint32_t          MWidth        = 0;
   uint32_t          MHeight       = 0;
@@ -46,6 +47,7 @@ public:
     if (ATarget->isDrawable()) {
       MTarget     = ATarget;
       MConnection = ATarget->getXcbConnection();
+      MVisual     = ATarget->getXcbVisual();
       MDrawable   = ATarget->getXcbDrawable();
       MWidth      = ATarget->getWidth();
       MHeight     = ATarget->getHeight();
@@ -93,19 +95,18 @@ public:
 public:
 //------------------------------
 
-  #ifdef KODE_USE_CAIRO
-  cairo_surface_t* void createCairoSurface() {
-    cairo_surface_t* surface = MCairoSurface = cairo_xcb_surface_create(
-      MConnection,
-      MDrawable,
-      kode_xcb_find_visual(MConnection,MVisual),
-      MWidth,
-      MHeight
-    );
-    return surface;
-  }
-  #endif
-
+//  #ifdef KODE_USE_CAIRO
+//  cairo_surface_t* createCairoSurface() {
+//    cairo_surface_t* surface = cairo_xcb_surface_create(
+//      MConnection,
+//      MDrawable,
+//      kode_xcb_find_visual(MConnection,MVisual),
+//      MWidth,
+//      MHeight
+//    );
+//    return surface;
+//  }
+//  #endif
 
 //------------------------------
 private:
@@ -134,11 +135,11 @@ private:
 
   void measure_string(const char *string) {
     xcb_char2b_t xcb_str[256];
-    for (uint32_t i = 0; i < KODE_Strlen(string); i++) {
+    for (uint32_t i = 0; i < strlen(string); i++) {
       xcb_str[i].byte1 = 0;
       xcb_str[i].byte2 = string[i];
     }
-    xcb_query_text_extents_cookie_t cookie = xcb_query_text_extents(MConnection, MGC, KODE_Strlen(string), xcb_str);
+    xcb_query_text_extents_cookie_t cookie = xcb_query_text_extents(MConnection, MGC, strlen(string), xcb_str);
     xcb_query_text_extents_reply_t* reply = xcb_query_text_extents_reply(MConnection, cookie, NULL);
     MFontAscent   = reply->font_ascent;
     MFontDescent  = reply->font_descent;
@@ -149,15 +150,21 @@ private:
     MFontRight    = reply->overall_right;
     //MFontOverallAscent = reply->overall_ascent;
     //MFontOverallDescent = reply->overall_descent;
-    //KODE_Free(xcb_str);
-    KODE_Free(reply);
+    //free(xcb_str);
+    free(reply);
   }
 
 //------------------------------
 public:
 //------------------------------
 
-  void resize(uint32_t AWidth, uint32_t AHeight) final {
+  KODE_Drawable* getTarget() override {
+    return MTarget;
+  }
+
+  //----------
+
+  void resize(uint32_t AWidth, uint32_t AHeight) override {
     MWidth = AWidth;
     MHeight = AHeight;
     // cairo: cairo_xcb_surface_set_size:
@@ -166,7 +173,7 @@ public:
 
   //----------
 
-  void setClip(KODE_FRect ARect) final {
+  void setClip(KODE_FRect ARect) override {
     //resetClip();
     xcb_rectangle_t rectangles[] = {{
       (int16_t)ARect.x,
@@ -188,7 +195,7 @@ public:
 
   //----------
 
-  void resetClip() final {
+  void resetClip() override {
     uint32_t mask = XCB_GC_CLIP_MASK;
     uint32_t values[1];
     values[0] = XCB_NONE;
@@ -200,14 +207,14 @@ public:
 public:
 //------------------------------
 
-  float getTextWidth(const char* AText) final {
+  float getTextWidth(const char* AText) override {
     measure_string(AText);
     return MFontWidth;
   }
 
   //----------
 
-  float getTextHeight(const char* AText) final {
+  float getTextHeight(const char* AText) override {
     measure_string(AText);
     return MFontHeight;
   }
@@ -216,7 +223,7 @@ public:
 public:
 //------------------------------
 
-  void drawLine(float AXpos1, float AYpos1, float AXpos2, float AYpos2, KODE_Color AColor, uint32_t AWidth=1) final {
+  void drawLine(float AXpos1, float AYpos1, float AXpos2, float AYpos2, KODE_Color AColor, uint32_t AWidth=1) override {
     set_color(AColor);
     set_line_width(AWidth);
     xcb_point_t polyline[] =  {
@@ -228,7 +235,7 @@ public:
 
   //----------
 
-  void drawRect(KODE_FRect ARect, KODE_Color AColor, uint32_t AWidth=1) final {
+  void drawRectangle(KODE_FRect ARect, KODE_Color AColor, uint32_t AWidth=1) override {
     set_color(AColor);
     set_line_width(AWidth);
     xcb_rectangle_t rectangles[] = {{
@@ -242,7 +249,8 @@ public:
 
   //----------
 
-  void fillRect(KODE_FRect ARect, KODE_Color AColor) final {
+  void fillRectangle(KODE_FRect ARect, KODE_Color AColor) override {
+    if ((ARect.w <= 0) || (ARect.h <= 0)) return;
     set_color(AColor);
     xcb_rectangle_t rectangles[] = {{
       (int16_t)ARect.x,
@@ -260,7 +268,7 @@ public:
     angle 2 = 'distance' 0..1, counter-clockwise
   */
 
-  void drawPie(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor, uint32_t AWidth=1) final {
+  void drawArc(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor, uint32_t AWidth=1) override {
     set_color(AColor);
     set_line_width(AWidth);
     // start angle = 12 o'clock
@@ -284,7 +292,7 @@ public:
   // angle 1 = start angle, relative to 3 o'clock
   // angle 2 = 'distance' 0..1, counter-clockwise
 
-  void fillPie(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor) final {
+  void fillArc(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor) override {
     set_color(AColor);
     //if (abs(AAngle2) >= 0.01) EPSILON
     // start angle = 12 o'clock
@@ -304,7 +312,7 @@ public:
 
   //----------
 
-  void drawText(float AXpos, float AYpos, const char* AText, KODE_Color AColor) final {
+  void drawText(float AXpos, float AYpos, const char* AText, KODE_Color AColor) override {
     set_color(AColor);
     uint8_t buffer[512];
     KODE_XcbPolyText8 pt;
@@ -316,7 +324,7 @@ public:
 
   //----------
 
-  void drawText(KODE_FRect ARect, const char* AText, uint32_t AAlignment, KODE_Color AColor) final {
+  void drawText(KODE_FRect ARect, const char* AText, uint32_t AAlignment, KODE_Color AColor) override {
     measure_string(AText);
     float x,y,w;
     if (AAlignment & KODE_TEXT_ALIGN_TOP) y = ARect.y    + MFontAscent;
@@ -331,7 +339,7 @@ public:
 
   //----------
 
-  void uploadBitmap(float AXpos, float AYpos, KODE_Bitmap* ABitmap) final {
+  void uploadBitmap(float AXpos, float AYpos, KODE_Bitmap* ABitmap) override {
     uint32_t width      = ABitmap->getWidth();
     uint32_t height     = ABitmap->getHeight();
     uint32_t buffersize = ABitmap->getBufferSize();
@@ -371,7 +379,7 @@ public:
 
   //----------
 
-  void drawBitmap(float AXpos, float AYpos, KODE_Drawable* ASource) final {
+  void drawBitmap(float AXpos, float AYpos, KODE_Drawable* ASource) override {
     if (ASource->isImage()) {
       xcb_image_put(
         MConnection,            // xcb_connection_t*  conn,
@@ -412,7 +420,7 @@ public:
 
   //----------
 
-  void drawBitmap(float AXpos, float AYpos, KODE_Drawable* ASource, KODE_FRect ASrc) final {
+  void drawBitmap(float AXpos, float AYpos, KODE_Drawable* ASource, KODE_FRect ASrc) override {
     if (ASource->isImage()) {
       KODE_Bitmap* bitmap = ASource->getBitmap();
       kode_xcb_put_image(
@@ -460,7 +468,7 @@ public:
 
   //----------
 
-  void drawBitmap(KODE_FRect ADst, KODE_Drawable* ASource, KODE_FRect ASrc) final {
+  void drawBitmap(KODE_FRect ADst, KODE_Drawable* ASource, KODE_FRect ASrc) override {
   }
 
   //----------

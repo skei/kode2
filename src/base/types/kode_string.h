@@ -44,17 +44,17 @@ public:
   //----------
 
   KODE_DynamicString(const KODE_DynamicString& str) {
-    uint32_t size = KODE_Strlen(str);
+    uint32_t size = strlen(str);
     resizeBuffer(size+1);
-    KODE_Strcpy(MBuffer,str);
+    strcpy(MBuffer,str);
   }
 
   //----------
 
   KODE_DynamicString(const char* str) {
-    uint32_t size = KODE_Strlen(str);
+    uint32_t size = strlen(str);
     resizeBuffer(size+1);
-    KODE_Strcpy(MBuffer,str);
+    strcpy(MBuffer,str);
   }
 
   //----------
@@ -69,23 +69,23 @@ public:
 //------------------------------
 
   uint32_t length() {
-    return KODE_Strlen(MBuffer);
+    return strlen(MBuffer);
   }
 
   //----------
 
   void setString(const char* str) {
-    uint32_t size = KODE_Strlen(str);
+    uint32_t size = strlen(str);
     resizeBuffer(size+1);
-    KODE_Strcpy(MBuffer,str);
+    strcpy(MBuffer,str);
   }
 
   //----------
 
   void appendString(const char* str) {
-    uint32_t size = length() + KODE_Strlen(str);
+    uint32_t size = length() + strlen(str);
     resizeBuffer(size+1);
-    KODE_Strcat(MBuffer,str);
+    strcat(MBuffer,str);
   }
 
 //------------------------------
@@ -171,25 +171,25 @@ public:
   //------------------------------
 
   bool operator == (const char* str) {
-    return (KODE_Strcmp(MBuffer,str) == 0) ? true : false;
+    return (strcmp(MBuffer,str) == 0) ? true : false;
   }
 
   //----------
 
   bool operator == (KODE_DynamicString& str) {
-    return (KODE_Strcmp(MBuffer,str.ptr()) == 0) ? true : false;
+    return (strcmp(MBuffer,str.ptr()) == 0) ? true : false;
   }
 
   //----------
 
   bool operator != (const char* str) {
-    return (KODE_Strcmp(MBuffer,str) != 0) ? true : false;
+    return (strcmp(MBuffer,str) != 0) ? true : false;
   }
 
   //----------
 
   bool operator != (KODE_DynamicString& str) {
-    return (KODE_Strcmp(MBuffer,str.ptr()) != 0) ? true : false;
+    return (strcmp(MBuffer,str.ptr()) != 0) ? true : false;
   }
 
 //------------------------------
@@ -197,7 +197,7 @@ public: // strutils
 //------------------------------
 
   char* createUnique(const char* APrefix, void* APtr) {
-    uint32_t len = KODE_Strlen(APrefix);
+    uint32_t len = strlen(APrefix);
     const uint32_t hex_size  = sizeof(void*) * 2;   // 8*2 = 16
     const uint32_t rand_size = sizeof(int32_t) * 2; // 4*2 = 8
     // prefix + ':' + inv_ptr + ':' + random + '\0'
@@ -306,11 +306,11 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //
 //  KODE_StaticString(const KODE_StaticString& str) {
 //    KODE_StaticString* sstr = (KODE_StaticString*)&str;
-//    KODE_Strcpy(MBuffer,sstr->ptr());
+//    strcpy(MBuffer,sstr->ptr());
 //  }
 //
 //  KODE_StaticString(const char* str) {
-//    KODE_Strcpy(MBuffer,str);
+//    strcpy(MBuffer,str);
 //  }
 //
 ////------------------------------
@@ -324,7 +324,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  //----------
 //
 //  uint32_t length() {
-//    return KODE_Strlen(MBuffer);
+//    return strlen(MBuffer);
 //  }
 //
 //  //----------
@@ -344,7 +344,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  //----------
 //
 //  void clear(bool AErase=false) {
-//    if (AErase) KODE_Memset(MBuffer,0,sizeof(MBuffer));
+//    if (AErase) memset(MBuffer,0,sizeof(MBuffer));
 //    else MBuffer[0] = 0;
 //  }
 //
@@ -371,21 +371,21 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  //----------
 //
 //  KODE_StaticString& operator = (char* str) {
-//    KODE_Strcpy(MBuffer,str);
+//    strcpy(MBuffer,str);
 //    return *this;
 //  }
 //
 //  //----------
 //
 //  KODE_StaticString& operator = (const char* str) {
-//    KODE_Strcpy(MBuffer,str);
+//    strcpy(MBuffer,str);
 //    return *this;
 //  }
 //
 //  //----------
 //
 //  KODE_StaticString& operator = (/*const*/ KODE_StaticString& str) {
-//    KODE_Strcpy(MBuffer,str.ptr());
+//    strcpy(MBuffer,str.ptr());
 //    return *this;
 //  }
 //
@@ -394,7 +394,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  KODE_StaticString& operator = (int AValue) {
 //    char temp[16];
 //    char* str = KODE_IntToString(temp,AValue);
-//    KODE_Strcpy(MBuffer,str);
+//    strcpy(MBuffer,str);
 //    return *this;
 //  }
 //
@@ -403,28 +403,28 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  KODE_StaticString& operator = (float AValue) {
 //    char temp[16];
 //    char* str = KODE_FloatToString(temp,AValue);
-//    KODE_Strcpy(MBuffer,str);
+//    strcpy(MBuffer,str);
 //    return *this;
 //  }
 //
 //  //----------
 //
 //  KODE_StaticString& operator += (char* str) {
-//    KODE_Strcat(MBuffer,str);
+//    strcat(MBuffer,str);
 //    return *this;
 //  }
 //
 //  //----------
 //
 //  KODE_StaticString& operator += (const char* str) {
-//    KODE_Strcat(MBuffer,str);
+//    strcat(MBuffer,str);
 //    return *this;
 //  }
 //
 //  //----------
 //
 //  KODE_StaticString& operator += (/*const*/ KODE_StaticString& str) {
-//    KODE_Strcat(MBuffer,str.ptr());
+//    strcat(MBuffer,str.ptr());
 //    return *this;
 //  }
 //
@@ -434,7 +434,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //    char temp[16];
 //    char* str = KODE_IntToString(temp,i);
 //    //KODE_Trace("%s\n",str);
-//    KODE_Strcat(MBuffer,str);
+//    strcat(MBuffer,str);
 //    return *this;
 //  }
 //
@@ -443,32 +443,32 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  KODE_StaticString& operator += (const float f) {
 //    char temp[16];
 //    char* str = KODE_FloatToString(temp,f);
-//    KODE_Strcat(MBuffer,str);
+//    strcat(MBuffer,str);
 //    return *this;
 //  }
 //
 //  //----------
 //
 //  bool operator == (const char* str) {
-//    return (KODE_Strcmp(MBuffer,str) == 0) ? true : false;
+//    return (strcmp(MBuffer,str) == 0) ? true : false;
 //  }
 //
 //  //----------
 //
 //  bool operator == (KODE_StaticString& str) {
-//    return (KODE_Strcmp(MBuffer,str.ptr()) == 0) ? true : false;
+//    return (strcmp(MBuffer,str.ptr()) == 0) ? true : false;
 //  }
 //
 //  //----------
 //
 //  bool operator != (const char* str) {
-//    return (KODE_Strcmp(MBuffer,str) != 0) ? true : false;
+//    return (strcmp(MBuffer,str) != 0) ? true : false;
 //  }
 //
 //  //----------
 //
 //  bool operator != (KODE_StaticString& str) {
-//    return (KODE_Strcmp(MBuffer,str.ptr()) != 0) ? true : false;
+//    return (strcmp(MBuffer,str.ptr()) != 0) ? true : false;
 //  }
 //
 ////------------------------------
@@ -541,19 +541,19 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  // or NULL if not found
 //
 //  char* find(char* str) {
-//    return KODE_Strstr(MBuffer,str);
+//    return strstr(MBuffer,str);
 //  }
 //
 //  //----------
 //
 //  void append(const char* str) {
-//    KODE_Strcat(MBuffer,str);
+//    strcat(MBuffer,str);
 //  }
 //
 //  //----------
 //
 //  void append(/*const*/KODE_StaticString& str) {
-//    KODE_Strcat(MBuffer,str.ptr());
+//    strcat(MBuffer,str.ptr());
 //  }
 //
 //  //----------
@@ -562,7 +562,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //
 //  void replaceChars(const char c1, const char c2) {
 //    char *pos;
-//    while ((pos = KODE_Strchr(MBuffer,c1))) {
+//    while ((pos = strchr(MBuffer,c1))) {
 //      *pos = c2;
 //    }
 //  }
@@ -577,19 +577,19 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  void replace(const char* str1, const char* str2) {
 //    //_grow_buffer(1024);
 //    char temp[1024];
-//    uint32_t length = KODE_Strlen(MBuffer);
-//    KODE_Memcpy(temp,MBuffer,length+1);
+//    uint32_t length = strlen(MBuffer);
+//    memcpy(temp,MBuffer,length+1);
 //    char *pos;
-//    int clen1 = KODE_Strlen(str1);
-//    int clen2 = KODE_Strlen(str2);
-//    while ((pos = KODE_Strstr(temp,str1))) {
+//    int clen1 = strlen(str1);
+//    int clen2 = strlen(str2);
+//    while ((pos = strstr(temp,str1))) {
 //      //char* bufpos = pos - temp + MBuffer;
-//      KODE_Memmove(pos + clen2, pos + clen1, KODE_Strlen(pos) - clen1 + 1);
-//      KODE_Memcpy(pos, str2, clen2);
-//      //KODE_Memset(pos , 1, clen1);
+//      memmove(pos + clen2, pos + clen1, strlen(pos) - clen1 + 1);
+//      memcpy(pos, str2, clen2);
+//      //memset(pos , 1, clen1);
 //    }
-//    //_resize_buffer( KODE_Strlen(MBuffer) );
-//    KODE_Strcpy(MBuffer,temp);
+//    //_resize_buffer( strlen(MBuffer) );
+//    strcpy(MBuffer,temp);
 //  }
 //
 //  //----------
@@ -618,7 +618,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //
 //  void reverse(void) {
 //    int i;
-//    int len = KODE_Strlen(MBuffer) - 1;
+//    int len = strlen(MBuffer) - 1;
 //    int mid = (len % 2) ? (len / 2) : ((len + 1) / 2);
 //    for (i=0; i<=mid; ++i) {
 //      char buf = MBuffer[i];
@@ -630,7 +630,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  //----------
 //
 //  void makeValidSymbol(void) {
-//    for (uint32_t i=0; i<KODE_Strlen(MBuffer); i++) {
+//    for (uint32_t i=0; i<strlen(MBuffer); i++) {
 //      unsigned char c = MBuffer[i];
 //      if ((c<32) || (c>127)) MBuffer[i] = '_';
 //      else MBuffer[i] = KODE_VALID_CSYMBOLS[c];
@@ -648,7 +648,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //    const char hex_table[17] = "0123456789ABCDEF";  // +'\0' = 17
 //    const uint32_t hex_size  = sizeof(void*) * 2;
 //    const uint32_t rand_size = sizeof(int32_t) * 2;
-//    //_resize_buffer( KODE_Strlen(APrefix) + hex_size + 1 + rand_size );
+//    //_resize_buffer( strlen(APrefix) + hex_size + 1 + rand_size );
 //    char* buf = MBuffer;//temp;
 //    while (*APrefix != '\0') *buf++ = *APrefix++;   // memset + update ptrs
 //    intptr_t iptr = (intptr_t)APtr;
@@ -689,7 +689,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  /*
 //  void stripFileExt(void) {
 //    char *dot;
-//    dot = KODE_Strrchr(MBuffer,'.');
+//    dot = strrchr(MBuffer,'.');
 //    if (dot) {
 //      int32_t len = dot - MBuffer;
 //      _resize_buffer(len);
@@ -714,8 +714,8 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  /*
 //  void stripPath(void) {
 //    const char *slash, *backslash;
-//    slash     = KODE_Strrchr(MBuffer,'/');
-//    backslash = KODE_Strrchr(MBuffer,'\\');//+1;
+//    slash     = strrchr(MBuffer,'/');
+//    backslash = strrchr(MBuffer,'\\');//+1;
 //    if (slash) {
 //      _copy_buffer(slash + 1);
 //    }
@@ -812,11 +812,11 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //
 //  KODE_StaticString(const KODE_StaticString& str) {
 //    KODE_StaticString* sstr = (KODE_StaticString*)&str;
-//    KODE_Strcpy(MBuffer,sstr->ptr());
+//    strcpy(MBuffer,sstr->ptr());
 //  }
 //
 //  KODE_StaticString(const char* str) {
-//    KODE_Strcpy(MBuffer,str);
+//    strcpy(MBuffer,str);
 //  }
 //
 ////------------------------------
@@ -830,7 +830,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  //----------
 //
 //  uint32_t length() {
-//    return KODE_Strlen(MBuffer);
+//    return strlen(MBuffer);
 //  }
 //
 //  //----------
@@ -850,7 +850,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  //----------
 //
 //  void clear(bool AErase=false) {
-//    if (AErase) KODE_Memset(MBuffer,0,sizeof(MBuffer));
+//    if (AErase) memset(MBuffer,0,sizeof(MBuffer));
 //    else MBuffer[0] = 0;
 //  }
 //
@@ -877,21 +877,21 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  //----------
 //
 //  KODE_StaticString& operator = (char* str) {
-//    KODE_Strcpy(MBuffer,str);
+//    strcpy(MBuffer,str);
 //    return *this;
 //  }
 //
 //  //----------
 //
 //  KODE_StaticString& operator = (const char* str) {
-//    KODE_Strcpy(MBuffer,str);
+//    strcpy(MBuffer,str);
 //    return *this;
 //  }
 //
 //  //----------
 //
 //  KODE_StaticString& operator = (/*const*/ KODE_StaticString& str) {
-//    KODE_Strcpy(MBuffer,str.ptr());
+//    strcpy(MBuffer,str.ptr());
 //    return *this;
 //  }
 //
@@ -900,7 +900,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  KODE_StaticString& operator = (int AValue) {
 //    char temp[16];
 //    char* str = KODE_IntToString(temp,AValue);
-//    KODE_Strcpy(MBuffer,str);
+//    strcpy(MBuffer,str);
 //    return *this;
 //  }
 //
@@ -909,28 +909,28 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  KODE_StaticString& operator = (float AValue) {
 //    char temp[16];
 //    char* str = KODE_FloatToString(temp,AValue);
-//    KODE_Strcpy(MBuffer,str);
+//    strcpy(MBuffer,str);
 //    return *this;
 //  }
 //
 //  //----------
 //
 //  KODE_StaticString& operator += (char* str) {
-//    KODE_Strcat(MBuffer,str);
+//    strcat(MBuffer,str);
 //    return *this;
 //  }
 //
 //  //----------
 //
 //  KODE_StaticString& operator += (const char* str) {
-//    KODE_Strcat(MBuffer,str);
+//    strcat(MBuffer,str);
 //    return *this;
 //  }
 //
 //  //----------
 //
 //  KODE_StaticString& operator += (/*const*/ KODE_StaticString& str) {
-//    KODE_Strcat(MBuffer,str.ptr());
+//    strcat(MBuffer,str.ptr());
 //    return *this;
 //  }
 //
@@ -940,7 +940,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //    char temp[16];
 //    char* str = KODE_IntToString(temp,i);
 //    //KODE_Trace("%s\n",str);
-//    KODE_Strcat(MBuffer,str);
+//    strcat(MBuffer,str);
 //    return *this;
 //  }
 //
@@ -949,32 +949,32 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  KODE_StaticString& operator += (const float f) {
 //    char temp[16];
 //    char* str = KODE_FloatToString(temp,f);
-//    KODE_Strcat(MBuffer,str);
+//    strcat(MBuffer,str);
 //    return *this;
 //  }
 //
 //  //----------
 //
 //  bool operator == (const char* str) {
-//    return (KODE_Strcmp(MBuffer,str) == 0) ? true : false;
+//    return (strcmp(MBuffer,str) == 0) ? true : false;
 //  }
 //
 //  //----------
 //
 //  bool operator == (KODE_StaticString& str) {
-//    return (KODE_Strcmp(MBuffer,str.ptr()) == 0) ? true : false;
+//    return (strcmp(MBuffer,str.ptr()) == 0) ? true : false;
 //  }
 //
 //  //----------
 //
 //  bool operator != (const char* str) {
-//    return (KODE_Strcmp(MBuffer,str) != 0) ? true : false;
+//    return (strcmp(MBuffer,str) != 0) ? true : false;
 //  }
 //
 //  //----------
 //
 //  bool operator != (KODE_StaticString& str) {
-//    return (KODE_Strcmp(MBuffer,str.ptr()) != 0) ? true : false;
+//    return (strcmp(MBuffer,str.ptr()) != 0) ? true : false;
 //  }
 //
 ////------------------------------
@@ -1047,19 +1047,19 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  // or NULL if not found
 //
 //  char* find(char* str) {
-//    return KODE_Strstr(MBuffer,str);
+//    return strstr(MBuffer,str);
 //  }
 //
 //  //----------
 //
 //  void append(const char* str) {
-//    KODE_Strcat(MBuffer,str);
+//    strcat(MBuffer,str);
 //  }
 //
 //  //----------
 //
 //  void append(/*const*/KODE_StaticString& str) {
-//    KODE_Strcat(MBuffer,str.ptr());
+//    strcat(MBuffer,str.ptr());
 //  }
 //
 //  //----------
@@ -1068,7 +1068,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //
 //  void replaceChars(const char c1, const char c2) {
 //    char *pos;
-//    while ((pos = KODE_Strchr(MBuffer,c1))) {
+//    while ((pos = strchr(MBuffer,c1))) {
 //      *pos = c2;
 //    }
 //  }
@@ -1083,19 +1083,19 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  void replace(const char* str1, const char* str2) {
 //    //_grow_buffer(1024);
 //    char temp[1024];
-//    uint32_t length = KODE_Strlen(MBuffer);
-//    KODE_Memcpy(temp,MBuffer,length+1);
+//    uint32_t length = strlen(MBuffer);
+//    memcpy(temp,MBuffer,length+1);
 //    char *pos;
-//    int clen1 = KODE_Strlen(str1);
-//    int clen2 = KODE_Strlen(str2);
-//    while ((pos = KODE_Strstr(temp,str1))) {
+//    int clen1 = strlen(str1);
+//    int clen2 = strlen(str2);
+//    while ((pos = strstr(temp,str1))) {
 //      //char* bufpos = pos - temp + MBuffer;
-//      KODE_Memmove(pos + clen2, pos + clen1, KODE_Strlen(pos) - clen1 + 1);
-//      KODE_Memcpy(pos, str2, clen2);
-//      //KODE_Memset(pos , 1, clen1);
+//      memmove(pos + clen2, pos + clen1, strlen(pos) - clen1 + 1);
+//      memcpy(pos, str2, clen2);
+//      //memset(pos , 1, clen1);
 //    }
-//    //_resize_buffer( KODE_Strlen(MBuffer) );
-//    KODE_Strcpy(MBuffer,temp);
+//    //_resize_buffer( strlen(MBuffer) );
+//    strcpy(MBuffer,temp);
 //  }
 //
 //  //----------
@@ -1124,7 +1124,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //
 //  void reverse(void) {
 //    int i;
-//    int len = KODE_Strlen(MBuffer) - 1;
+//    int len = strlen(MBuffer) - 1;
 //    int mid = (len % 2) ? (len / 2) : ((len + 1) / 2);
 //    for (i=0; i<=mid; ++i) {
 //      char buf = MBuffer[i];
@@ -1136,7 +1136,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  //----------
 //
 //  void makeValidSymbol(void) {
-//    for (uint32_t i=0; i<KODE_Strlen(MBuffer); i++) {
+//    for (uint32_t i=0; i<strlen(MBuffer); i++) {
 //      unsigned char c = MBuffer[i];
 //      if ((c<32) || (c>127)) MBuffer[i] = '_';
 //      else MBuffer[i] = KODE_VALID_CSYMBOLS[c];
@@ -1154,7 +1154,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //    const char hex_table[17] = "0123456789ABCDEF";  // +'\0' = 17
 //    const uint32_t hex_size  = sizeof(void*) * 2;
 //    const uint32_t rand_size = sizeof(int32_t) * 2;
-//    //_resize_buffer( KODE_Strlen(APrefix) + hex_size + 1 + rand_size );
+//    //_resize_buffer( strlen(APrefix) + hex_size + 1 + rand_size );
 //    char* buf = MBuffer;//temp;
 //    while (*APrefix != '\0') *buf++ = *APrefix++;   // memset + update ptrs
 //    intptr_t iptr = (intptr_t)APtr;
@@ -1195,7 +1195,7 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  /*
 //  void stripFileExt(void) {
 //    char *dot;
-//    dot = KODE_Strrchr(MBuffer,'.');
+//    dot = strrchr(MBuffer,'.');
 //    if (dot) {
 //      int32_t len = dot - MBuffer;
 //      _resize_buffer(len);
@@ -1220,8 +1220,8 @@ KODE_DynamicString operator + (T var, const KODE_DynamicString& str)  {
 //  /*
 //  void stripPath(void) {
 //    const char *slash, *backslash;
-//    slash     = KODE_Strrchr(MBuffer,'/');
-//    backslash = KODE_Strrchr(MBuffer,'\\');//+1;
+//    slash     = strrchr(MBuffer,'/');
+//    backslash = strrchr(MBuffer,'\\');//+1;
 //    if (slash) {
 //      _copy_buffer(slash + 1);
 //    }

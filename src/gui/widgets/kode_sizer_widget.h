@@ -95,10 +95,10 @@ public:
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) final {
     //if (MMode == KODE_SIZER_WINDOW) {
-    //  APainter->fillRect( KODE_FRect( MRect.x2()-1, MRect.y, MRect.x2()-1, MRect.y2()-1, MRect.x, MRect.y2()-1 );
+    //  APainter->fillRectangle( KODE_FRect( MRect.x2()-1, MRect.y, MRect.x2()-1, MRect.y2()-1, MRect.x, MRect.y2()-1 );
     //}
     //else {
-      APainter->fillRect(getRect(),MFillColor);
+      APainter->fillRectangle(getRect(),MFillColor);
     //}
   }
 

@@ -5,8 +5,8 @@
 //#ifndef kode_included
 //  #define KODE_NULL     0
 //  #define KODE_INV255F  (1.0f/255.0f)
-//  #define KODE_Malloc   malloc
-//  #define KODE_Free     free
+//  #define malloc   malloc
+//  #define free     free
 //  // vec2_t, vec3_t
 //#endif
 
@@ -111,23 +111,23 @@ public:
   void cleanup() {
     for (int i=0; i<mdl_header.num_skins; i++) {
       if (mdl_skins && mdl_skins[i].data) {
-        KODE_Free(mdl_skins[i].data);
+        free(mdl_skins[i].data);
         mdl_skins[i].data = KODE_NULL;
       }
     }
-    KODE_Free(mdl_skins);
+    free(mdl_skins);
     mdl_skins = KODE_NULL;
     for (int i=0; i<mdl_header.num_frames; ++i) {
       if (mdl_frames && mdl_frames[i].frame.verts) {
-        KODE_Free(mdl_frames[i].frame.verts);
+        free(mdl_frames[i].frame.verts);
         mdl_frames[i].frame.verts = KODE_NULL;
       }
     }
-    KODE_Free(mdl_frames);
+    free(mdl_frames);
     mdl_frames = KODE_NULL;
-    KODE_Free(mdl_texcoords);
+    free(mdl_texcoords);
     mdl_texcoords = KODE_NULL;
-    KODE_Free(mdl_triangles);
+    free(mdl_triangles);
     mdl_triangles = KODE_NULL;
     //mdl_header = KODE_NULL;
   }
@@ -225,7 +225,7 @@ private:
 //------------------------------
 
   uint8_t* read_bytes(int num) {
-    uint8_t* buffer = (uint8_t*)KODE_Malloc(num * sizeof(uint8_t));
+    uint8_t* buffer = (uint8_t*)malloc(num * sizeof(uint8_t));
     fread(buffer,sizeof(uint8_t),num,read_fp);
     return buffer;
   }
@@ -233,7 +233,7 @@ private:
   //----------
 
   float* read_floats(int num) {
-    float* buffer = (float*)KODE_Malloc(num * sizeof(float));
+    float* buffer = (float*)malloc(num * sizeof(float));
     fread(buffer,sizeof(float),num,read_fp);
     return buffer;
   }
@@ -251,7 +251,7 @@ private:
   */
 
   void read_mdl_header() {
-    //mdl_header = (mdl_header_t*)KODE_Malloc(sizeof(mdl_header_t));
+    //mdl_header = (mdl_header_t*)malloc(sizeof(mdl_header_t));
     mdl_header.ident          = read_int();
     mdl_header.version        = read_int();
     mdl_header.scale          = read_vector();
@@ -272,11 +272,11 @@ private:
   //----------
 
   void read_mdl_skins() {
-    mdl_skins = (mdl_skin_t *)KODE_Malloc(sizeof(mdl_skin_t) * mdl_header.num_skins);
+    mdl_skins = (mdl_skin_t *)malloc(sizeof(mdl_skin_t) * mdl_header.num_skins);
     for (int i=0; i<mdl_header.num_skins; i++) {
       int skinsize = mdl_header.skinwidth * mdl_header.skinheight;
-      //uint8_t* temp = (uint8_t*)KODE_Malloc(size);
-      //mdl_skins[i].data = (uint8_t *)KODE_Malloc(sizeof(uint8_t) * skinsize);
+      //uint8_t* temp = (uint8_t*)malloc(size);
+      //mdl_skins[i].data = (uint8_t *)malloc(sizeof(uint8_t) * skinsize);
       int group = read_int();
       if (group == 0) {
         mdl_skins[i].group = group;
@@ -298,7 +298,7 @@ private:
         //temp = read_byte_buffer(s.nb * size);
         //s.data  = convert_skin(temp,s.nb * size);
       }
-      //KODE_Free(temp);
+      //free(temp);
     }
   }
 
@@ -317,7 +317,7 @@ private:
   */
 
   void read_mdl_texcoords() {
-    mdl_texcoords = (mdl_texcoord_t *)KODE_Malloc(sizeof(mdl_texcoord_t) * mdl_header.num_verts);
+    mdl_texcoords = (mdl_texcoord_t *)malloc(sizeof(mdl_texcoord_t) * mdl_header.num_verts);
     for (int i=0; i<mdl_header.num_verts; i++) {
       mdl_texcoords[i].onseam = read_int();
       mdl_texcoords[i].s      = read_int();
@@ -335,7 +335,7 @@ private:
   */
 
   void read_mdl_triangles() {
-    mdl_triangles = (mdl_triangle_t *)KODE_Malloc(sizeof(mdl_triangle_t) * mdl_header.num_tris);
+    mdl_triangles = (mdl_triangle_t *)malloc(sizeof(mdl_triangle_t) * mdl_header.num_tris);
     for (int i=0; i<mdl_header.num_tris; i++) {
       mdl_triangles[i] = read_triangle();
       //printf("  triangle %i front %i x %i y %i z %i\n",i,mdl_triangles[i].facesfront,mdl_triangles[i].vertex[0],mdl_triangles[i].vertex[1],mdl_triangles[i].vertex[2]);
@@ -350,7 +350,7 @@ private:
   */
 
   mdl_vertex_t* read_mdl_vertices(int num) {
-    mdl_vertex_t* vertices = (mdl_vertex_t *)KODE_Malloc(sizeof(mdl_vertex_t) * num);
+    mdl_vertex_t* vertices = (mdl_vertex_t *)malloc(sizeof(mdl_vertex_t) * num);
     for (int i=0; i<num; i++) {
       vertices[i] = read_vertex();
       //printf("  vertex %i v1 %i v2 %i v3 %i normal %i\n",i,vertices[i].v[0],vertices[i].v[1],vertices[i].v[2]);
@@ -361,7 +361,7 @@ private:
   //----------
 
   void read_mdl_frames() {
-    mdl_frames = (mdl_frame_t *)KODE_Malloc(sizeof(mdl_frame_t) * mdl_header.num_frames);
+    mdl_frames = (mdl_frame_t *)malloc(sizeof(mdl_frame_t) * mdl_header.num_frames);
     for (int i=0; i<mdl_header.num_frames; ++i) {
       int type = read_int();
       if (type == 0) { // mdl_simpleframe_t
@@ -459,7 +459,7 @@ private:
   //----------
 
   uint8_t* convert_skin(uint8_t* skin, int size) {
-    uint8_t* buffer = (uint8_t*)KODE_Malloc(4 * size);
+    uint8_t* buffer = (uint8_t*)malloc(4 * size);
     for (int i=0; i<size; i++) {
       uint8_t c = skin[i];
       buffer[i*4  ] = mdl_colormap[c][0]; // b
@@ -478,7 +478,7 @@ private:
     int numver = mdl_header.num_verts;
     int numtri = mdl_header.num_tris;
     mdl_vertex_t* vertices = mdl_frames[fr].frame.verts;
-    vec3_t* vert_normals = (vec3_t*)KODE_Malloc(numver * sizeof(vec3_t));
+    vec3_t* vert_normals = (vec3_t*)malloc(numver * sizeof(vec3_t));
 
     for (int i=0; i<numver; i++) {
       vert_normals[i] = vec3_t(0,0,0);
@@ -707,7 +707,7 @@ private:
       if (i < (mdl_header.num_tris-1)) fprintf(write_fp,", ");
     }
     fprintf(write_fp," ),\n");
-    KODE_Free(normals);
+    free(normals);
   }
 
   //----------
@@ -861,7 +861,7 @@ private:
     sprintf(filename,"%s_vertex_frames.png",AName);
     uint32_t num_tris = mdl_header.num_tris;
     uint32_t num_frames = mdl_header.num_frames;
-    uint8_t* buffer = (uint8_t*)KODE_Malloc(num_tris*3*num_frames*4);
+    uint8_t* buffer = (uint8_t*)malloc(num_tris*3*num_frames*4);
     uint8_t* ptr = buffer;
     for (int i=0; i<mdl_header.num_frames; i++) {
       for (int j=0; j<mdl_header.num_tris; j++) {
@@ -874,7 +874,7 @@ private:
       }
     }
     stbi_write_png(filename,num_tris*3,num_frames,4,buffer,(num_tris*3*4));
-    KODE_Free(buffer);
+    free(buffer);
   }
 
   //----------
@@ -885,7 +885,7 @@ private:
     sprintf(filename,"%s_normal_frames.png",AName);
     uint32_t num_tris = mdl_header.num_tris;
     uint32_t num_frames = mdl_header.num_frames;
-    uint8_t* buffer = (uint8_t*)KODE_Malloc(num_tris*3*4*num_frames);
+    uint8_t* buffer = (uint8_t*)malloc(num_tris*3*4*num_frames);
     uint8_t* ptr = buffer;
     for (uint32_t i=0; i<num_frames; i++) {
       //KODE_Print("  - frame %i\n",i);
@@ -901,10 +901,10 @@ private:
         write_vec8(ptr,n3);
         ptr += 4;
       }
-      KODE_Free(normals);
+      free(normals);
     }
     stbi_write_png(filename,num_tris*3,num_frames,4,buffer,(num_tris*3*4));
-    KODE_Free(buffer);
+    free(buffer);
   }
 
   //----------
@@ -950,7 +950,7 @@ private:
       buffer,     //mdl_skins[num].data,
       width * 4   // stride (bytes)
     );
-    KODE_Free(buffer);
+    free(buffer);
   }
 
   //----------
@@ -964,13 +964,13 @@ private:
     int width = mdl_header.skinwidth;
     int height = mdl_header.skinheight;
     int size = width * height * 4;
-    uint8_t* buffer = (uint8_t*)KODE_Malloc(num * size);
+    uint8_t* buffer = (uint8_t*)malloc(num * size);
     uint8_t* ptr = buffer;
     for (int i=0; i<num; i++) {
       uint8_t* temp = convert_skin(mdl_skins[i].data,(width*height));
-      KODE_Memcpy(ptr,temp,size);
+      memcpy(ptr,temp,size);
       ptr += size;
-      KODE_Free(temp);
+      free(temp);
     }
     //int res =
     stbi_write_png(
@@ -981,7 +981,7 @@ private:
       buffer,     //mdl_skins[num].data,
       width * 4   // stride (bytes)
     );
-    KODE_Free(buffer);
+    free(buffer);
   }
 
   //----------

@@ -34,7 +34,7 @@ public:
     add_squares( 80,  60, KODE_COLOR_DARK_GRAY,    KODE_COLOR_GRAY,    KODE_COLOR_LIGHT_GRAY,    KODE_COLOR_WHITE          );
 
     //black
-    KODE_PanelWidget* black_panel = KODE_New KODE_PanelWidget(KODE_FRect( 160, 60, 15,15 ));
+    KODE_PanelWidget* black_panel = new KODE_PanelWidget(KODE_FRect( 160, 60, 15,15 ));
     black_panel->setBackgroundColor(KODE_COLOR_BLACK);
     black_panel->setCursor(KODE_CURSOR_FINGER);
     appendWidget(black_panel);
@@ -51,10 +51,10 @@ public:
 //------------------------------
 
   void add_squares(float x, float y, KODE_Color c1, KODE_Color c2, KODE_Color c3, KODE_Color c4) {
-    KODE_PanelWidget* panel1 = KODE_New KODE_PanelWidget(KODE_FRect(  x,    y,  15, 15 ));
-    KODE_PanelWidget* panel2 = KODE_New KODE_PanelWidget(KODE_FRect(  x+20, y,  15, 15 ));
-    KODE_PanelWidget* panel3 = KODE_New KODE_PanelWidget(KODE_FRect(  x+40, y,  15, 15 ));
-    KODE_PanelWidget* panel4 = KODE_New KODE_PanelWidget(KODE_FRect(  x+60, y,  15, 15 ));
+    KODE_PanelWidget* panel1 = new KODE_PanelWidget(KODE_FRect(  x,    y,  15, 15 ));
+    KODE_PanelWidget* panel2 = new KODE_PanelWidget(KODE_FRect(  x+20, y,  15, 15 ));
+    KODE_PanelWidget* panel3 = new KODE_PanelWidget(KODE_FRect(  x+40, y,  15, 15 ));
+    KODE_PanelWidget* panel4 = new KODE_PanelWidget(KODE_FRect(  x+60, y,  15, 15 ));
     panel1->setBackgroundColor(c1);
     panel2->setBackgroundColor(c2);
     panel3->setBackgroundColor(c3);

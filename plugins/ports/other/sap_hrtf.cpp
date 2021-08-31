@@ -45,17 +45,17 @@ public:
     MAuthor     = "skei.audio";
     MVersion = 0x00000001;
 
-    appendInput(  KODE_New KODE_PluginPort("input1")  );
-    appendInput(  KODE_New KODE_PluginPort("input2")  );
-    appendOutput( KODE_New KODE_PluginPort("output1") );
-    appendOutput( KODE_New KODE_PluginPort("output2") );
+    appendInput(  new KODE_PluginPort("input1")  );
+    appendInput(  new KODE_PluginPort("input2")  );
+    appendOutput( new KODE_PluginPort("output1") );
+    appendOutput( new KODE_PluginPort("output2") );
 
-    //appendParameter( KODE_New KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
-    //appendParameter( KODE_New KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("left",   0.5f, 0.0f, 2.0f) );
+    //appendParameter( new KODE_FloatParameter("right",  0.5f, 0.0f, 2.0f) );
 
-    appendParameter( KODE_New KODE_FloatParameter( "rotation", 0,  -180,180 ));
-    appendParameter( KODE_New KODE_FloatParameter( "slope",    0,  -90, 90 ));
-    appendParameter( KODE_New KODE_FloatParameter( "distance", 1,   1,  100 )); // 100^2 = 10000
+    appendParameter( new KODE_FloatParameter( "rotation", 0,  -180,180 ));
+    appendParameter( new KODE_FloatParameter( "slope",    0,  -90, 90 ));
+    appendParameter( new KODE_FloatParameter( "distance", 1,   1,  100 )); // 100^2 = 10000
 
   }
 

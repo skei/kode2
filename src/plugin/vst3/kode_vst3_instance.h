@@ -182,21 +182,21 @@ private:
     KODE_VST3PRINT;
     uint32_t size = MDescriptor->getNumParameters() * sizeof(float);
     //MNumParameters = MDescriptor->getNumParameters();
-    MParameterValues        = (float*)KODE_Malloc(size);
-    //MEditorParameterValues  = (float*)KODE_Malloc(size);
-    MHostParameterValues    = (float*)KODE_Malloc(size);
-    KODE_Memset(MParameterValues,       0,size);
-    //KODE_Memset(MEditorParameterValues, 0,size);
-    KODE_Memset(MHostParameterValues,   0,size);
+    MParameterValues        = (float*)malloc(size);
+    //MEditorParameterValues  = (float*)malloc(size);
+    MHostParameterValues    = (float*)malloc(size);
+    memset(MParameterValues,       0,size);
+    //memset(MEditorParameterValues, 0,size);
+    memset(MHostParameterValues,   0,size);
   }
 
   //----------
 
   void destroyParameterBuffers() {
     KODE_VST3PRINT;
-    if (MParameterValues)       KODE_Free(MParameterValues);
-    //if (MEditorParameterValues) KODE_Free(MEditorParameterValues);
-    if (MHostParameterValues)   KODE_Free(MHostParameterValues);
+    if (MParameterValues)       free(MParameterValues);
+    //if (MEditorParameterValues) free(MEditorParameterValues);
+    if (MHostParameterValues)   free(MHostParameterValues);
   }
 
   //----------
@@ -487,7 +487,7 @@ public: // FUnknown
     KODE_Vst3Print("-> %i %s",r, (r==0) ? "(delete)\n" : "\n" );
     if (r == 0) {
       on_plugin_close();
-      KODE_Delete this;
+      delete this;
     };
     return r;
   }
@@ -684,7 +684,7 @@ public: // IComponent
     KODE_Vst3Print("classId: ");
     KODE_Vst3PrintIID(classId);
     if (MDescriptor->hasEditor()) {
-      KODE_Memcpy(classId,MDescriptor->getLongEditorId(),16);
+      memcpy(classId,MDescriptor->getLongEditorId(),16);
       KODE_Vst3DPrint("-> ");
       KODE_Vst3PrintIID(classId);
       KODE_Vst3DPrint(" -> Ok\n");
@@ -957,10 +957,10 @@ public: // IComponent
       case 0: {
         // is it safe to malloc/free here?
         // use static, pre malloc'd buffer?
-        void* ptr = KODE_Malloc(size);
+        void* ptr = malloc(size);
         state->read(&ptr,size,&num_read);
         on_plugin_restoreState(size,ptr,0);
-        KODE_Free(ptr);
+        free(ptr);
         break;
       }
       case 1: {
@@ -1759,7 +1759,7 @@ public: // IEditController
       if (paramIndex < (int32_t)MDescriptor->getNumParameters()) {
         //VST3_Parameter* param = MDescriptor->getParameter(paramIndex);
         //if (param) {
-          KODE_Memcpy(&info,&MParamInfos[paramIndex],sizeof(KODE_Vst3ParameterInfo));
+          memcpy(&info,&MParamInfos[paramIndex],sizeof(KODE_Vst3ParameterInfo));
           return kode_vst3_ResultOk;
         //}
       } // index < numparams
