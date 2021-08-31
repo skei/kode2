@@ -143,7 +143,7 @@ public:
 
     KODE_left_panel*    left_panel    = new KODE_left_panel(   KODE_FRect(200) );
     KODE_right_panel*   right_panel   = new KODE_right_panel(  KODE_FRect(200) );
-    KODE_top_panel*     top_panel     = new KODE_top_panel(    KODE_FRect(100),this );
+    KODE_top_panel*     top_panel     = new KODE_top_panel(    KODE_FRect(200),this );
     KODE_bottom_panel*  bottom_panel  = new KODE_bottom_panel( KODE_FRect(100) );
     KODE_main_panel*    main_panel    = new KODE_main_panel(   KODE_FRect(),   this );
 

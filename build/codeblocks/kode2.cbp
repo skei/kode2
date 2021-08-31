@@ -357,11 +357,14 @@
 		<Unit filename="../../src/base/system/kode_library.h" />
 		<Unit filename="../../src/base/system/kode_lock.h" />
 		<Unit filename="../../src/base/system/kode_memory.h" />
+		<Unit filename="../../src/base/system/kode_paths.h" />
+		<Unit filename="../../src/base/system/kode_shm.h" />
 		<Unit filename="../../src/base/system/kode_simd.h" />
 		<Unit filename="../../src/base/system/kode_system.h" />
 		<Unit filename="../../src/base/system/kode_thread.h" />
 		<Unit filename="../../src/base/system/kode_time.h" />
 		<Unit filename="../../src/base/types/kode_array.h" />
+		<Unit filename="../../src/base/types/kode_assoc_array.h" />
 		<Unit filename="../../src/base/types/kode_buffer.h" />
 		<Unit filename="../../src/base/types/kode_color.h" />
 		<Unit filename="../../src/base/types/kode_complex.h" />
@@ -387,6 +390,9 @@
 		<Unit filename="../../src/base/utils/kode_isaac.h" />
 		<Unit filename="../../src/base/utils/kode_math.h" />
 		<Unit filename="../../src/base/utils/kode_modular.h" />
+		<Unit filename="../../src/base/utils/kode_neural.h" />
+		<Unit filename="../../src/base/utils/kode_parser.h" />
+		<Unit filename="../../src/base/utils/kode_pattern.h" />
 		<Unit filename="../../src/base/utils/kode_random.h" />
 		<Unit filename="../../src/base/utils/kode_sort.h" />
 		<Unit filename="../../src/base/utils/kode_strutils.h" />
