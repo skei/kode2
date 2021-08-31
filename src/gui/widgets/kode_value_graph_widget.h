@@ -118,8 +118,7 @@ public:
             }
 
             if (i==MSelected) {
-              //APainter->drawRectangle( x+w-2, mrect.y+h2-2, x+w+2, mrect.y+h2+2 );
-              APainter->fillRectangle( KODE_FRect(x-2, mrect.y+h1-2, x+2, mrect.y+h1+2), MNodeColor );
+              APainter->fillRectangle( KODE_FRect(x-3, mrect.y+h1-3, 6, 6), MNodeColor );
             }
 
             x += w;

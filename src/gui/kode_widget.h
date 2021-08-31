@@ -75,8 +75,8 @@ protected:
   uint32_t            MTileWidth              = 0;
   uint32_t            MTileHeight             = 0;
 
-  float               MChildXOffset           = 0.0f;
-  float               MChildYOffset           = 0.0f;
+//  float               MChildXOffset           = 0.0f;
+//  float               MChildYOffset           = 0.0f;
 
 //------------------------------
 public:
@@ -124,7 +124,7 @@ public: // set
   virtual void setparent(KODE_Widget* AParent)          { MParent = AParent; }
   virtual void setIndex(int32_t AIndex)                 { MIndex = AIndex; }
   virtual void setHint(const char* AHint)               { MHint = AHint; }
-  virtual void setChildOffset(float AX, float AY)       { MChildXOffset = AX; MChildYOffset = AY; }
+//  virtual void setChildOffset(float AX, float AY)       { MChildXOffset = AX; MChildYOffset = AY; }
 
   virtual void setParameterPtr(KODE_Parameter* AParameter, uint32_t AIndex=0) { MParameterPtrs[AIndex] = AParameter; }
 
@@ -326,16 +326,12 @@ public:
   */
 
   virtual void alignChildren(/*KODE_Widget* AParent, float AXOffset=0.0f, float AYOffset=0.0f*/) {
-
     KODE_FRect client = getRect();
     client.shrink(layout.innerBorder);
-
     KODE_FRect parent = client;
-
     KODE_FRect content = client;
     content.setSize(0,0);
     //KODE_Print("content %.0f,%.0f,%.0f,%.0f\n",content.x,content.y,content.w,content.h);
-
     uint32_t num = MChildren.size();
     for (uint32_t i=0; i<num; i++) {
       KODE_Widget* child = MChildren[i];
@@ -350,44 +346,34 @@ public:
           rect.y = client.w * (rect.y * 0.01f);
         }
         switch (child->layout.alignment) {
-
           case KODE_WIDGET_ALIGN_NONE:
             break;
-
           case KODE_WIDGET_ALIGN_PARENT:
             rect.x += parent.x;
             rect.y += parent.y;
             break;
-
           case KODE_WIDGET_ALIGN_CLIENT:
             rect.x += client.x;
             rect.y += client.y;
             break;
-
           //-----
-
           case KODE_WIDGET_ALIGN_CENTER:
             rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
             rect.y = client.y + (client.h * 0.5f) - (rect.h * 0.5f);
             break;
-
           case KODE_WIDGET_ALIGN_CENTER_HORIZ:
             rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
             break;
-
           case KODE_WIDGET_ALIGN_CENTER_VERT:
             rect.y = client.y + (client.h * 0.5f) - (rect.h * 0.5f);
             break;
-
           //-----
-
           case KODE_WIDGET_ALIGN_FILL_CLIENT:
             rect.x = client.x;
             rect.y = client.y;
             rect.w = client.w;
             rect.h = client.h;
             break;
-
           case KODE_WIDGET_ALIGN_FILL_LEFT:
             rect.x = client.x;
             rect.y = client.y;
@@ -395,7 +381,6 @@ public:
             client.x += (rect.w + layout.spacing.x);
             client.w -= (rect.w + layout.spacing.x);
             break;
-
           case KODE_WIDGET_ALIGN_FILL_RIGHT:
             rect.x = client.x2() - rect.w;
             rect.y = client.y;
@@ -403,7 +388,6 @@ public:
             //client.x += (rect.w + getWidgetSpacing.x);
             client.w -= (rect.w + layout.spacing.x);
             break;
-
           case KODE_WIDGET_ALIGN_FILL_TOP:
             rect.x = client.x;
             rect.y = client.y;
@@ -411,7 +395,6 @@ public:
             client.y += (rect.h + layout.spacing.y);
             client.h -= (rect.h + layout.spacing.y);
             break;
-
           case KODE_WIDGET_ALIGN_FILL_BOTTOM:
             rect.x = client.x;
             rect.y = client.y2() - rect.h;
@@ -419,155 +402,135 @@ public:
             //client.y += (rect.h + layout.spacing.y);
             client.h -= (rect.h + layout.spacing.y);
             break;
-
           //-----
-
           //case KODE_WIDGET_ALIGN_LEFT:
           //  rect.x += client.x;
           //  client.x += (rect.w + layout.spacing.x);
           //  client.w -= (rect.w + layout.spacing.x);
           //  break;
-
           case KODE_WIDGET_ALIGN_LEFT_TOP:
             rect.x += client.x;
             rect.y += client.y;
             client.x += (rect.w + layout.spacing.x);
             client.w -= (rect.w + layout.spacing.x);
             break;
-
           case KODE_WIDGET_ALIGN_LEFT_CENTER:
             rect.x += client.x;
             rect.y += client.y + (client.h * 0.5f) - (rect.h * 0.5f);
             client.x += (rect.w + layout.spacing.x);
             client.w -= (rect.w + layout.spacing.x);
             break;
-
           case KODE_WIDGET_ALIGN_LEFT_BOTTOM:
             rect.x += client.x;
             rect.y += client.y2() - rect.h;
             client.x += (rect.w + layout.spacing.x);
             client.w -= (rect.w + layout.spacing.x);
             break;
-
           //-----
-
           //case KODE_WIDGET_ALIGN_RIGHT:
           //  rect.x += client.x2() - rect.w;
           //  //client.x += (rect.w + getWidgetSpacing.x);
           // client.w -= (rect.w + layout.spacing.x);
           //  break;
-
           case KODE_WIDGET_ALIGN_RIGHT_TOP:
             rect.x += client.x2() - rect.w;
             rect.y += client.y;
             //client.x += (rect.w + getWidgetSpacing.x);
             client.w -= (rect.w + layout.spacing.x);
             break;
-
           case KODE_WIDGET_ALIGN_RIGHT_CENTER:
             rect.x += client.x2() - rect.w;
             rect.y += client.y + (client.h * 0.5f) - (rect.h * 0.5f);
             //client.x += (rect.w + getWidgetSpacing.x);
             client.w -= (rect.w + layout.spacing.x);
             break;
-
           case KODE_WIDGET_ALIGN_RIGHT_BOTTOM:
             rect.x += client.x2() - rect.w;
             rect.y += client.y2() - rect.h;
             //client.x += (rect.w + getWidgetSpacing.x);
             client.w -= (rect.w + layout.spacing.x);
             break;
-
           //-----
-
           //case KODE_WIDGET_ALIGN_TOP:
           //  rect.y += client.y;
           // client.y += (rect.h + layout.spacing.y);
           //  client.h -= (rect.h + layout.spacing.y);
           //  break;
-
           case KODE_WIDGET_ALIGN_TOP_LEFT:
             rect.x += client.x;
             rect.y += client.y;
             client.y += (rect.h + layout.spacing.y);
             client.h -= (rect.h + layout.spacing.y);
             break;
-
           case KODE_WIDGET_ALIGN_TOP_CENTER:
             rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
             rect.y += client.y;
             client.y += (rect.h + layout.spacing.y);
             client.h -= (rect.h + layout.spacing.y);
             break;
-
           case KODE_WIDGET_ALIGN_TOP_RIGHT:
             rect.x += client.x2() - rect.w;
             rect.y += client.y;
             client.y += (rect.h + layout.spacing.y);
             client.h -= (rect.h + layout.spacing.y);
             break;
-
           //-----
-
           //case KODE_WIDGET_ALIGN_BOTTOM:
           //  rect.y += client.y2() - rect.h;
           // //client.y += (rect.h + layout.spacing.y);
           // client.h -= (rect.h + layout.spacing.y);
           //  break;
-
           case KODE_WIDGET_ALIGN_BOTTOM_LEFT:
             rect.x += client.x;
             rect.y += client.y2() - rect.h;
             //client.y += (rect.h + layout.spacing.y);
             client.h -= (rect.h + layout.spacing.y);
             break;
-
           case KODE_WIDGET_ALIGN_BOTTOM_CENTER:
             rect.x = client.x + (client.w * 0.5f) - (rect.w * 0.5f);
             rect.y += client.y2() - rect.h;
             //client.y += (rect.h + layout.spacing.y);
             client.h -= (rect.h + layout.spacing.y);
             break;
-
           case KODE_WIDGET_ALIGN_BOTTOM_RIGHT:
             rect.x += client.x2() - rect.w;
             rect.y += client.y2() - rect.h;
             //client.y += (rect.h + layout.spacing.y);
             client.h -= (rect.h + layout.spacing.y);
             break;
-
           //-----
-
           //case KODE_WIDGET_STACK_HORIZ:
           //  break;
-
           //case KODE_WIDGET_STACK_VERT:
           //  break;
-
-          //-----
-
         } // switch alignment
-
         KODE_FRect orect = rect;
-        orect.x += MChildXOffset;
-        orect.y += MChildYOffset;
-
+//        orect.x += MChildXOffset;
+//        orect.y += MChildYOffset;
         child->setRect(orect);
-
         content.combine(rect);
         child->alignChildren(/*this,0,0*/);
-
       } // child visible
-
     } // for all children
-
-
     //KODE_Print("content %.0f,%.0f,%.0f,%.0f\n",content.x,content.y,content.w,content.h);
     //content.w += layout.innerBorder.w;
     //content.h += layout.innerBorder.h;
     MContentRect = content;
+  }
 
+  //----------
 
+  virtual void scrollChildren(float AOffsetX, float AOffsetY) {
+    uint32_t num = MChildren.size();
+    for (uint32_t i=0; i<num; i++) {
+      KODE_Widget* child = MChildren[i];
+      if (child->flags.visible) {
+        //KODE_FRect rect = child->MRectgetRect();
+        child->MRect.x += AOffsetX;
+        child->MRect.y += AOffsetY;
+        child->scrollChildren(AOffsetX,AOffsetY);
+      }
+    }
   }
 
 //------------------------------

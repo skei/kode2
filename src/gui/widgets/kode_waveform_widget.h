@@ -35,6 +35,7 @@ private:
     float*                MBuffer         = KODE_NULL;
     int32_t               MBufferSize     = 0;
     int32_t               MNumChannels    = 0;
+    uint32_t              MStereoMode     = 1; // left
 
 //------------------------------
 protected:
@@ -202,7 +203,14 @@ public:
             //if (MMono) s = MBuffer[index];
             //else s = ( MBuffer[ index*2 ] + MBuffer[ index*2 + 1 ] ) * 0.5;
 
-            float s = MBuffer[index*2]; // *2
+            float s = 0.0f;
+
+            switch (MStereoMode) {
+              case 0: s =  MBuffer[index * 2];                                    break; // mono
+              case 1: s = (MBuffer[index * 2] + MBuffer[(index * 2) + 1]) * 0.5f; break; // stereo mixdown
+              case 2: s =  MBuffer[index * 2];                                    break; // stereo left
+              case 3: s =  MBuffer[(index * 2) + 1] ;                             break; // stereo right
+            }
 
             // todo: if (MDrawDb) s = KVolumeToDb(s);
             s *=  h2;

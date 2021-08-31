@@ -1,5 +1,5 @@
-#ifndef kode_template_widget_included
-#define kode_template_widget_included
+#ifndef kode_plot_widget_included
+#define kode_plot_widget_included
 //----------------------------------------------------------------------
 
 #define MAX_WIDTH 4096
@@ -38,10 +38,10 @@ public:
 public:
 //------------------------------
 
-    int32_t width(void)   { return MRect.w; }
-    int32_t height(void)  { return MRect.h; }
+    int32_t getWidth(void)   { return getRect().w; }
+    int32_t getHeight(void)  { return getRect().h; }
 
-    void value(int32_t AIndex, float AValue) {
+    void setValue(int32_t AIndex, float AValue) {
       MValues[AIndex] = AValue;
     }
 
@@ -50,19 +50,20 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+    KODE_FRect mrect = getRect();
     if (MDrawBackground) {
-      APainter->fillRectangle(MRect,MBackColor);
+      APainter->fillRectangle(mrect,MBackColor);
     }
-    float h2 = (float)MRect.h * 0.5f;
-    int32_t yprev = MRect.y2() - 1;
+    float h2 = (float)mrect.h * 0.5f;
+    int32_t yprev = mrect.y2() - 1;
     if (MBipolar) yprev -= h2;
-    int32_t x = MRect.x;
-    for (int32_t i=0; i<MRect.w; i++) {
+    int32_t x = mrect.x;
+    for (int32_t i=0; i<mrect.w; i++) {
       float v = MValues[i];
       if (MBipolar) v = (v+1) * 0.5;        // -1..1 -> 0..1
-      //int32 y = MRect.y2() - (v*h2) - 1;
-      int32_t y = MRect.y2() - (v*MRect.h) - 1;
-      APainter->drawLine(KODE_FRect(x,yprev,x+1,y),MLineColor);
+      //int32 y = mrect.y2() - (v*h2) - 1;
+      int32_t y = mrect.y2() - (v*mrect.h) - 1;
+      APainter->drawLine(x,yprev,x+1,y,MLineColor);
       x++;
       yprev = y;
     }
