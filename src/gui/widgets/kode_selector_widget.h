@@ -114,6 +114,7 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) final {
+    KODE_FRect mrect = getRect();
     if (MMenu) {
       //if (MMenu->getNumItems() > 0) {
         float val = getValue();
@@ -126,11 +127,12 @@ public:
     //else MText = "(no menu)";
     KODE_TextWidget::on_widget_paint(APainter,ARect,AMode);
     //APainter->setDrawColor(KODE_LightGrey);
-    //APainter->fillTriangle(
-    // MRect.x2() - 10,  MRect.y2() - 7,
-    //  MRect.x2() - 3,   MRect.y2() - 7,
-    //  MRect.x2() - 7,   MRect.y2() - 3
-    //);
+    APainter->fillTriangle(
+      mrect.x2() - 10,  mrect.y2() - 7,
+      mrect.x2() - 3,   mrect.y2() - 7,
+      mrect.x2() - 7,   mrect.y2() - 3,
+      KODE_COLOR_LIGHT_GRAY
+    );
   }
 
   //----------

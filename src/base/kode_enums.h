@@ -209,6 +209,16 @@ enum KODE_ELineJoins {
   KODE_LINE_JOIN_BEVEL            = 2
 };
 
+enum KODE_ESymbols {
+  KODE_SYMBOL_NONE                = 0,
+  KODE_SYMBOL_DRAW_RECT           = 1,
+  KODE_SYMBOL_FILL_RECT           = 2,
+  KODE_SYMBOL_DRAW_TRI_DOWN       = 3,
+  KODE_SYMBOL_FILL_TRI_DOWN       = 4,
+  KODE_SYMBOL_DRAW_ELLIPSE        = 5,
+  KODE_SYMBOL_FILL_ELLIPSE        = 6
+};
+
 enum KODE_ETextAlignment {
   KODE_TEXT_ALIGN_NONE            = 0,
   KODE_TEXT_ALIGN_TOP             = 1,
