@@ -126,6 +126,17 @@ enum KODE_EKeyState {
   KODE_KEY_ALTGR                  = 16
 };
 
+enum KODE_EKeyChar {
+  KODE_KEY_ENTER      = 13,
+  KODE_KEY_ESC        = 27,
+  KODE_KEY_HOME       = 36,
+  KODE_KEY_END        = 35,
+  KODE_KEY_LEFT       = 37,
+  KODE_KEY_RIGHT      = 39,
+  KODE_KEY_DELETE     = 46,
+  KODE_KEY_BACKSPACE  = 8
+};
+
 enum KODE_EWidgetAlignment {
 
   KODE_WIDGET_ALIGN_NONE          = 0,  // relative to window

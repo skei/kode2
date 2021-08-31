@@ -27,6 +27,7 @@
 //----------------------------------------------------------------------
 
 #include "base/types/kode_array.h"
+#include "base/types/kode_assoc_array.h"
 #include "base/types/kode_buffer.h"
 #include "base/types/kode_complex.h"
 #include "base/types/kode_list.h"

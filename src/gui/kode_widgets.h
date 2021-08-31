@@ -14,6 +14,7 @@
 #include "gui/widgets/kode_curve_widget.h"
 #include "gui/widgets/kode_drag_value_widget.h"
 #include "gui/widgets/kode_grid_widget.h"
+#include "gui/widgets/kode_graph_widget.h"
 #include "gui/widgets/kode_group_box_widget.h"
 #include "gui/widgets/kode_image_widget.h"
 #include "gui/widgets/kode_image_strip_widget.h"
@@ -23,6 +24,7 @@
 #include "gui/widgets/kode_menu_item_widget.h"
 #include "gui/widgets/kode_pages_widget.h"
 #include "gui/widgets/kode_panel_widget.h"
+#include "gui/widgets/kode_plot_widget.h"
 #include "gui/widgets/kode_range_slider_widget.h"
 #include "gui/widgets/kode_saheader_widget.h"
 #include "gui/widgets/kode_scroll_bar_widget.h"
@@ -34,23 +36,20 @@
 #include "gui/widgets/kode_symbol_widget.h"
 #include "gui/widgets/kode_tabs_widget.h"
 #include "gui/widgets/kode_text_widget.h"
+#include "gui/widgets/kode_value_graph_widget.h"
 #include "gui/widgets/kode_value_widget.h"
 #include "gui/widgets/kode_waveform_widget.h"
 
 //----------
 // todo
 
-
-#include "gui/widgets/kode_graph_widget.h"
 #include "gui/widgets/kode_knob2_widget.h"
 #include "gui/widgets/kode_knob3_widget.h"
 #include "gui/widgets/kode_knob4_widget.h"
 #include "gui/widgets/kode_modmatrix_widget.h"
-#include "gui/widgets/kode_plot_widget.h"
 #include "gui/widgets/kode_text_box_widget.h"
 #include "gui/widgets/kode_text_edit_widget.h"
 #include "gui/widgets/kode_timeline_widget.h"
-#include "gui/widgets/kode_value_graph_widget.h"
 
 //----------------------------------------------------------------------
 #endif

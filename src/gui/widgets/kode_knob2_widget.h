@@ -4,6 +4,10 @@
 #define kode_knob2_widget_included
 //----------------------------------------------------------------------
 
+// label
+//   O
+// value
+
 #include "base/kode.h"
 #include "gui/kode_widget.h"
 #include "gui/kode_widgets.h"
