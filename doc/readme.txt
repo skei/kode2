@@ -1,70 +1,49 @@
 
-TODO
-MAYBE
-IDEAD
-THOUGHTS
+sketch, work in progress, notes, ..
+
 
 ----------------------------------------------------------------------
 plugin
 ----------------------------------------------------------------------
 
-* sample-accurate automation
+format: vst3, vst2, lv2, ladspa, dssi, exe
 
-  currently, the automation uses the last value received per block
-  todo: ramp/interpolate
-  a) split block at parameter changes, interpolate parameter values
-     between those
-  b) give plugins the (sorted) list of parameter changes for the
-     current block
-  c) keep track of interpolated parameter values, add function to
-     calc value for current sample in block..
+entrypoint
 
-----------
+  basically, the entrypoint is one or more exported functions in the plugin
+  binary (.so/.dll), that returns a struct or class..
 
-* data-transfer
+descriptor
 
-  safe, thread-safe, lock/wait-free way to transfer data to/from processing
-  and/or gui parts?
+  const/static plugin description, features, inuts/outputs, parameters,
+  programs, ..
 
-  samples for ffft analysis, to paint output uv/waveforms, image to audio,..
+  lv2: lv2_descriptor
+  vst3: plugin factory
 
-----------
+instance
 
-* parameter dezipping
+  one specific instance of the plugin
 
-----------
+editor
 
-* tick-processing
+parameter
 
-  cache lines = 16 floats
-  simd = 4 floats (or 8 for avx?)
-  4 simd operations per cache line
-  - unrolling loops
-  - const propagation
-  split processing block into 16-samples chunks
-  hardcode as much as posssible, even destination addressed
-  (calc to hardcoded 16-samples buffer, so that all low-level processing
-  functions are loop-unrolled, fixed number of iterations, etc..
+  conversion from/to 0..1
+  text display
 
-  16 samples = 0.3ms at 48khz..
+voice manager
+
+modulation matrix
 
 ----------------------------------------------------------------------
 gui
 ----------------------------------------------------------------------
 
-* scrollbox
-
-  widget rects are current_pos, so we don't know how much we have already
-  scrolled when we scroll some more..
-  we either need a unscroll, recalc, rescroll, or keep track of current
-  scroll amount
-
-----------
-
-* resizer
-
-  when realigning widgets, we start from initial_rect.. when resizing, we need
-  to keep track of how much this has chaned, or perhaps modify this initial
-  rect directly.. but this will be lost when we close the plugin, won't it?
-  ...
-
+backend: xcb, cairo
+window
+surface
+painter
+widget
+bitmap
+  gen, proc

@@ -10,7 +10,7 @@
 //
 //----------------------------------------------------------------------
 
-#include "../demo/demo_gui.cpp"
+//#include "../demo/demo_gui.cpp"
 
 //----------------------------------------------------------------------
 //
@@ -19,6 +19,7 @@
 //----------------------------------------------------------------------
 
 //#include "../test/test1.cpp"
+#include "../test/test_graph.cpp"
 //#include "../test/test_gui1.cpp"
 //#include "../test/test_gui2.cpp"
 //#include "../test/test_gui3.cpp"

@@ -1104,6 +1104,13 @@ public:
 
   //----------
 
+  /*
+    xcb_grab_pointer:
+    Actively grabs control of the pointer. Further pointer events are reported
+    only to the grabbing client. Overrides any active pointer grab by this
+    client.
+  */
+
   void grabMouseCursor(void) override {
     int32_t event_mask =
       XCB_EVENT_MASK_BUTTON_PRESS   |

@@ -2,6 +2,7 @@
 #define kode_cairo_painter_included
 //----------------------------------------------------------------------
 
+
 /*
   Most surface types allow accessing the surface without using Cairo functions.
   If you do this, keep in mind that it is mandatory that you call
@@ -654,6 +655,8 @@ public: // text
 public: // bitmap
 //------------------------------
 
+#ifndef KODE_CAIRO_USE_XCB_FOR_BITMAPS
+
   //void uploadBitmap(float AXpos, float AYpos, KODE_Bitmap* ABitmap) override {
   //}
 
@@ -690,8 +693,7 @@ public: // bitmap
     cairo_restore(MCairo);
   }
 
-  //----------
-
+#endif // KODE_CAIRO_USE_XCB_FOR_BITMAPS
 
 };
 

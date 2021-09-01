@@ -92,39 +92,25 @@ public:
 
   //----------
 
-  void add(KODE_Rect<T> R) {
-    x += R.x;
-    y += R.y;
-    w += R.w;
-    h += R.h;
-  }
-
-  void sub(KODE_Rect<T> R) {
-    x -= R.x;
-    y -= R.y;
-    w -= R.w;
-    h -= R.h;
-  }
-
-  void grow(KODE_Rect<T> R) {
-    x -= R.x;
-    y -= R.y;
-    w += (R.x + R.w);
-    h += (R.y + R.h);
-  }
-
-  void shrink(KODE_Rect<T> R) {
-    x += R.x;
-    y += R.y;
-    w -= (R.x + R.w);
-    h -= (R.y + R.h);
-  }
-
   void add(T AValue) {
     x += AValue;
     y += AValue;
     w += AValue;
     h += AValue;
+  }
+
+  void add(T ax, T ay, T aw, T ah) {
+    x += ax;
+    y += ay;
+    w += aw;
+    h += ah;
+  }
+
+  void add(KODE_Rect<T> R) {
+    x += R.x;
+    y += R.y;
+    w += R.w;
+    h += R.h;
   }
 
   void sub(T AValue) {
@@ -134,6 +120,20 @@ public:
     h -= AValue;
   }
 
+  void sub(T ax, T ay, T aw, T ah) {
+    x -= ax;
+    y -= ay;
+    w -= aw;
+    h -= ah;
+  }
+
+  void sub(KODE_Rect<T> R) {
+    x -= R.x;
+    y -= R.y;
+    w -= R.w;
+    h -= R.h;
+  }
+
   void grow(T AValue) {
     x -= AValue;
     y -= AValue;
@@ -141,11 +141,39 @@ public:
     h += (AValue + AValue);
   }
 
+  void grow(T ax, T ay, T aw, T ah) {
+    x -= ax;
+    y -= ay;
+    w += (ax + aw);
+    h += (ay + ah);
+  }
+
+  void grow(KODE_Rect<T> R) {
+    x -= R.x;
+    y -= R.y;
+    w += (R.x + R.w);
+    h += (R.y + R.h);
+  }
+
   void shrink(T AValue) {
     x += AValue;
     y += AValue;
     w -= (AValue + AValue);
     h -= (AValue + AValue);
+  }
+
+  void shrink(T ax, T ay, T aw, T ah) {
+    x += ax;
+    y += ay;
+    w -= (ax + aw);
+    h -= (ay + ah);
+  }
+
+  void shrink(KODE_Rect<T> R) {
+    x += R.x;
+    y += R.y;
+    w -= (R.x + R.w);
+    h -= (R.y + R.h);
   }
 
   void addLeft(T ASize)    { x -= ASize; w += ASize; }

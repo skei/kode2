@@ -173,6 +173,19 @@ public:
 
   //----------
 
+  /*
+    The XSetClipRectangles() function changes the clip-mask in the specified GC
+    to the specified list of rectangles and sets the clip origin. The output is
+    clipped to remain contained within the rectangles. The clip-origin is
+    interpreted relative to the origin of whatever destination drawable is
+    specified in a graphics request. The rectangle coordinates are interpreted
+    relative to the clip-origin. The rectangles should be nonintersecting, or
+    the graphics results will be undefined. Note that the list of rectangles
+    can be empty, which effectively disables output. This is the opposite of
+    passing None as the clip-mask in XCreateGC(), XChangeGC(), and
+    XSetClipMask().
+  */
+
   void setClip(KODE_FRect ARect) override {
     //resetClip();
     xcb_rectangle_t rectangles[] = {{

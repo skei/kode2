@@ -8,9 +8,13 @@
 #include "gui/kode_surface.h"
 #include "gui/kode_widget.h"
 
+//----------------------------------------------------------------------
+
 #ifdef KODE_USE_XCB
   #include "gui/xcb/kode_xcb_window.h"
 #endif
+
+//----------
 
 #ifdef KODE_GUI_CAIRO
   typedef KODE_XcbWindow KODE_ImplementedWindow;
@@ -32,31 +36,21 @@ protected:
 
   bool          MFillBackground         = false;
   KODE_Color    MBackgroundColor        = KODE_Color(0.5f);
-
   // painted
-
-  uint32_t      MWindowWidth            = 0;  // overrides xcbWindow
-  uint32_t      MWindowHeight           = 0;
   KODE_Painter* MWindowPainter          = KODE_NULL;
-
   // buffered
-
   #ifndef KODE_NO_WINDOW_BUFFERING
   uint32_t      MBufferWidth            = 0;
   uint32_t      MBufferHeight           = 0;
   KODE_Painter* MBufferPainter          = KODE_NULL;
   KODE_Surface* MBufferSurface          = KODE_NULL;
   #endif
-
   // status
-
-  KODE_Widget*  MHoverWidget            = KODE_NULL;
-  KODE_Widget*  MModalWidget            = KODE_NULL;
-
+  KODE_Widget*  MMouseHoverWidget       = KODE_NULL;
+  KODE_Widget*  MMouseModalWidget       = KODE_NULL;
   KODE_Widget*  MMouseClickedWidget     = KODE_NULL;
-  KODE_Widget*  MMouseCapturedWidget    = KODE_NULL;
-  KODE_Widget*  MKeyCapturedWidget      = KODE_NULL;
-
+  KODE_Widget*  MMouseLockeddWidget     = KODE_NULL;
+  KODE_Widget*  MKeyInputWidget         = KODE_NULL;
   int32_t       MMouseX                 = 0;
   int32_t       MMouseY                 = 0;
   int32_t       MMousePrevX             = 0;
@@ -76,10 +70,8 @@ public:
   KODE_Window(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL)
   : KODE_ImplementedWindow(AWidth,AHeight,ATitle,AParent)
   , KODE_Widget(KODE_FRect(AWidth,AHeight)) {
-    //MText = "KODE_Window";
-    MRect = KODE_FRect(AWidth,AHeight);
-    MWindowWidth = AWidth;
-    MWindowHeight = AHeight;
+    setName("KODE_Window");
+    setRect(KODE_FRect(AWidth,AHeight));
     MWindowPainter = new KODE_Painter(this);
     #ifndef KODE_NO_WINDOW_BUFFERING
       createBuffer(AWidth,AHeight);
@@ -94,13 +86,6 @@ public:
       destroyBuffer();
     #endif
   }
-
-//------------------------------
-public:
-//------------------------------
-
-  virtual uint32_t getWindowWidth() { return MWindowWidth; }
-  virtual uint32_t getWindowHeight() { return MWindowHeight; }
 
 //------------------------------
 public: // painted
@@ -134,7 +119,7 @@ public: // window
     alignChildren(/*this*/);
     KODE_ImplementedWindow::open();
     //#ifndef KODE_PLUGIN_EXE
-    //  //on_window_paint(0,0,MWindowWidth,MWindowHeight);
+    //  //on_window_paint(0,0,MRect.w,MRect.h);
     //  paintWidget(this,MRect,0);
     //#endif
   }
@@ -180,15 +165,9 @@ public:
 
   void paintWidget(KODE_Widget* AWidget, KODE_FRect ARect, uint32_t AMode=0) {
     #ifdef KODE_NO_WINDOW_BUFFERING
-      //MWindowPainter->resetClip();
-      //MWindowPainter->setClip(ARect);
       AWidget->on_widget_paint(MWindowPainter,ARect,AMode);
-      //AWidget->paintChildren(MWindowPainter,ARect);
     #else
-      //MBufferPainter->resetClip();
-      //MBufferPainter->setClip(ARect);
       AWidget->on_widget_paint(MBufferPainter,ARect,AMode);
-      //AWidget->paintChildren(MBufferPainter,ARect,AMode);
       MWindowPainter->drawBitmap(ARect.x,ARect.y,MBufferSurface,ARect);
     #endif
   }
@@ -199,8 +178,6 @@ public:
     #ifndef KODE_NO_WINDOW_BUFFERING
       resizeBuffer(AWidth,AHeight);
     #endif
-    MWindowWidth = AWidth;
-    MWindowHeight = AHeight;
     MRect.w = AWidth;
     MRect.h = AHeight;
     alignChildren(/*this*/);
@@ -210,61 +187,66 @@ public:
   //----------
 
   void updateHoverWidget(uint32_t AXpos, uint32_t AYpos, uint32_t ATimeStamp=0) {
-
     KODE_Widget* hover = KODE_NULL;
-
-    if (MModalWidget) {
-      hover = MModalWidget->findChild(AXpos,AYpos);
+    if (MMouseModalWidget) {
+      hover = MMouseModalWidget->findChild(AXpos,AYpos);
     }
     else {
       hover = findChild(AXpos,AYpos);
     }
-
     if (hover) {
-      if (hover != MHoverWidget) {
-        if (MHoverWidget) {
-          MHoverWidget->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
+      if (hover != MMouseHoverWidget) {
+        if (MMouseHoverWidget) {
+          MMouseHoverWidget->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
         }
         if (hover->flags.active) {
-          MHoverWidget = hover;
-          MHoverWidget->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);
+          MMouseHoverWidget = hover;
+          MMouseHoverWidget->on_widget_enter(AXpos,AYpos,MMouseHoverWidget,ATimeStamp);
         }
       }
     }
     else {
-      if (MHoverWidget) {
-        MHoverWidget->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
-        MHoverWidget = KODE_NULL;
+      if (MMouseHoverWidget) {
+        MMouseHoverWidget->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
+        MMouseHoverWidget = KODE_NULL;
       }
     }
   }
 
   //----------
 
+  // assume no prev widget, only prev clicked
+  // called after mouse release
+
   void releaseHoverWidget(KODE_Widget* AClicked, uint32_t AXpos, uint32_t AYpos, uint32_t ATimeStamp=0) {
-
     KODE_Widget* hover = KODE_NULL;
-
-    if (MModalWidget) hover = MModalWidget->findChild(AXpos,AYpos);
-    else hover = findChild(AXpos,AYpos);
-
+    if (MMouseModalWidget) {
+      hover = MMouseModalWidget->findChild(AXpos,AYpos);
+    }
+    else {
+      hover = findChild(AXpos,AYpos);
+    }
     if (hover != AClicked) {
       AClicked->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
     }
     if (hover) {
       if (hover->flags.active) {
-        hover->on_widget_enter(AXpos,AYpos,MHoverWidget,ATimeStamp);
-        MHoverWidget = hover;
+        hover->on_widget_enter(AXpos,AYpos,MMouseHoverWidget,ATimeStamp);
+        MMouseHoverWidget = hover;
       }
     }
     else {
-      MHoverWidget = KODE_NULL;
+      MMouseHoverWidget = KODE_NULL;
     }
   }
 
 //------------------------------
 public: // base window
 //------------------------------
+
+  // ATimestamp = ms
+
+  //----------
 
   void on_window_move(uint32_t AXpos, uint32_t AYpos) override {
   }
@@ -286,14 +268,20 @@ public: // base window
   //----------
 
   void on_window_keyPress(uint32_t AKey, uint32_t AState, uint32_t ATimeStamp) override {
-    if (MKeyCapturedWidget) MKeyCapturedWidget->on_widget_keyPress(AKey,0,AState,ATimeStamp);
+    if (MKeyInputWidget) MKeyInputWidget->on_widget_keyPress(AKey,0,AState,ATimeStamp);
   }
 
   //----------
 
   void on_window_keyRelease(uint32_t AKey, uint32_t AState, uint32_t ATimeStamp) override {
-    if (MKeyCapturedWidget) MKeyCapturedWidget->on_widget_keyRelease(AKey,0,AState,ATimeStamp);
+    if (MKeyInputWidget) MKeyInputWidget->on_widget_keyRelease(AKey,0,AState,ATimeStamp);
   }
+
+  //----------
+
+  /*
+    click/release doesn't take different buttins onto account..
+  */
 
   //----------
 
@@ -309,10 +297,10 @@ public: // base window
     MMousePrevY     = AYpos;
     MMouseDragX     = AXpos;
     MMouseDragY     = AYpos;
-    if (MHoverWidget) {
-      if (MHoverWidget->flags.active) {
+    if (MMouseHoverWidget) {
+      if (MMouseHoverWidget->flags.active) {
         grabMouseCursor();
-        MMouseClickedWidget = MHoverWidget;
+        MMouseClickedWidget = MMouseHoverWidget;
         MMouseClickedWidget->on_widget_mouseClick(AXpos,AYpos,AButton,AState,ATimeStamp);
       }
     }
@@ -335,13 +323,10 @@ public: // base window
   //----------
 
   void on_window_mouseMove(int32_t AXpos, int32_t AYpos, uint32_t AState, uint32_t ATimeStamp) override {
-
     MMouseX = AXpos;
     MMouseY = AYpos;
-
     if (MMouseClickedWidget) {
-
-      if (MMouseCapturedWidget) {
+      if (MMouseLockeddWidget) {
         if ((AXpos == MMouseClickedX) && (AYpos == MMouseClickedY)) {
           MMousePrevX = AXpos;
           MMousePrevY = AYpos;
@@ -354,18 +339,14 @@ public: // base window
         MMouseClickedWidget->on_widget_mouseMove(MMouseDragX,MMouseDragY,AState,ATimeStamp);
         setMouseCursorPos(MMouseClickedX,MMouseClickedY);
       }
-
       else { // no captured widgets
         MMouseClickedWidget->on_widget_mouseMove(AXpos,AYpos,AState,ATimeStamp);
       }
-
     }
-
     else { // no widget clicked
       updateHoverWidget(AXpos,AYpos,ATimeStamp);
-      if (MHoverWidget) MHoverWidget->on_widget_mouseMove(AXpos,AYpos,AState,ATimeStamp);
+      if (MMouseHoverWidget) MMouseHoverWidget->on_widget_mouseMove(AXpos,AYpos,AState,ATimeStamp);
     }
-
     MMousePrevX = AXpos;
     MMousePrevY = AYpos;
   }
@@ -374,7 +355,7 @@ public: // base window
 
   void on_window_enter(int32_t AXpos, int32_t AYpos, uint32_t ATimeStamp) override {
     if (!MMouseClickedWidget) {
-      MHoverWidget = KODE_NULL;
+      MMouseHoverWidget = KODE_NULL;
       updateHoverWidget(AXpos,AYpos,ATimeStamp);
       //on_widget_enter(AXpos,AYpos,KODE_NULL);
     }
@@ -386,7 +367,7 @@ public: // base window
 
   void on_window_leave(int32_t AXpos, int32_t AYpos, uint32_t ATimeStamp) override {
     if (!MMouseClickedWidget) {
-      //MHoverWidget = KODE_NULL;
+      //MMouseHoverWidget = KODE_NULL;
       updateHoverWidget(AXpos,AYpos,ATimeStamp);
       //on_widget_leave(AXpos,AYpos,KODE_NULL);
     }
@@ -455,19 +436,19 @@ public: // "widget listener"
   void do_widget_grabMouseCursor(KODE_Widget* ASender) override {
     //if (ASender) grabMouseCursor();
     //else releaseMouseCursor();
-    MMouseCapturedWidget = ASender;
+    MMouseLockeddWidget = ASender;
   }
 
   //----------
 
   void do_widget_grabKeyboard(KODE_Widget* AWidget) override {
-    MKeyCapturedWidget = AWidget;
+    MKeyInputWidget = AWidget;
   }
 
   //----------
 
   void do_widget_grabModal(KODE_Widget* AWidget) override {
-    MModalWidget = AWidget;
+    MMouseModalWidget = AWidget;
     updateHoverWidget(MMouseX,MMouseY);
   }
 
@@ -477,11 +458,11 @@ public: // "widget listener"
     switch (ACursor) {
       case KODE_CURSOR_GRAB:
         grabMouseCursor();
-        MMouseCapturedWidget = AWidget;
+        MMouseLockeddWidget = AWidget;
         break;
       case KODE_CURSOR_RELEASE:
         releaseMouseCursor();
-        MMouseCapturedWidget = KODE_NULL;
+        MMouseLockeddWidget = KODE_NULL;
         break;
       case KODE_CURSOR_SHOW:
         showMouseCursor();
@@ -499,13 +480,13 @@ public: // "widget listener"
     }
   }
 
+  //----------
+
   void do_widget_setMouseCursorPos(KODE_Widget* ASender, float AXpos, float AYpos) override {
     setMouseCursorPos(AXpos,AYpos);
   }
 
   //----------
-
-
 
   void do_widget_setHint(KODE_Widget* AWidget, const char* AHint) override {
     //MHintString = AHint;
@@ -513,21 +494,8 @@ public: // "widget listener"
 
   //----------
 
-  //void do_widget_mouseCapture(KODE_Widget* AWidget) override {
-  //  MMouseClickedWidget = AWidget;
-  //}
-
-  //----------
-
   void do_widget_notify(KODE_Widget* AWidget, uint32_t AValue=0) override {
   }
-
-  //----------
-
-  //void do_sizer(KODE_Widget* ASender, float ADeltaX, float ADeltaY, uint32_t AMode) override {
-  //}
-
-//------------------------------
 
 
 };

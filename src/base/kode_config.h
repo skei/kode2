@@ -14,6 +14,8 @@
 
 //----------------------------------------------------------------------
 
+//#define KODE_CAIRO_USE_XCB_FOR_BITMAPS
+
 //#define KODE_DEBUG
   #define KODE_DEBUG_ASSERT
   #define KODE_DEBUG_CALLSTACK

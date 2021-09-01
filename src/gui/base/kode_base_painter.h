@@ -27,8 +27,15 @@ public:
   virtual void            finish() {}
   virtual KODE_Drawable*  getTarget() { return KODE_NULL; }
   virtual void            resize(uint32_t AWidth, uint32_t AHeight) {}
+
   virtual void            setClip(KODE_FRect ARect) {}
   virtual void            resetClip() {}
+
+  virtual void            pushClip(KODE_FRect ARect) {}
+  virtual KODE_FRect      popClip() { return KODE_FRect(0); }
+  virtual void            resetClipStack() {}
+  virtual void            setClipRect(KODE_FRect ARect) {}
+  virtual KODE_FRect      getClipRect() { return KODE_FRect(0); }
 
   virtual float           getTextWidth(const char* AText) { return 0; }
   virtual float           getTextHeight(const char* AText) { return 0; }

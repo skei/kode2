@@ -60,7 +60,7 @@ public:
 //#define NUMSTEPS 1024
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
-    fillBackground(APainter);
+    fillBackground(APainter,ARect);
     KODE_FRect mrect = getRect();
     if (MBufferSize > 0) {
       float xcenter = mrect.x + (mrect.w / 2);

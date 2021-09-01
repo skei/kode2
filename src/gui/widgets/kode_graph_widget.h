@@ -2,7 +2,11 @@
 #define kode_graph_widget_included
 //----------------------------------------------------------------------
 
-//todo: check all drawRect, etc  -> x1,y1,x2,y2 -> x,m,w,h
+/*
+  todo:
+  - check all drawRect, etc  -> x1,y1,x2,y2 -> x,m,w,h
+  - wire endpoint calculations are wrong..
+*/
 
 //#include "base/types/kode_list.h"
 #include "gui/widgets/kode_panel_widget.h"
@@ -17,14 +21,18 @@ struct  KODE_Graph;
 //
 //----------------------------------------------------------------------
 
-#define MODULE_WIDTH    96
-#define MODULE_HEIGHT   32
-#define PIN_WIDTH       7
-#define PIN_HEIGHT      5
-#define PIN_XDIST       9
-#define PIN_YDIST       7
+#define MODULE_WIDTH    100
+#define MODULE_HEIGHT   45
+
+#define PIN_WIDTH       12
+#define PIN_XDIST       16
+
+#define PIN_HEIGHT      8
+#define PIN_YDIST       12
+
 #define MAX_PINS        16
-#define BASE_HEIGHT     (MODULE_HEIGHT-(PIN_HEIGHT*2)-2)
+//#define BASE_HEIGHT     (MODULE_HEIGHT - (PIN_YDIST * 2) - 2)
+#define BASE_HEIGHT     (MODULE_HEIGHT - (PIN_YDIST * 2))
 
 //----------
 
@@ -88,20 +96,20 @@ public:
   }
 
   bool insideBase(int32_t x, int32_t y) {
-    if (y < (ypos + PIN_HEIGHT + BASE_HEIGHT)) return true;
+    if (y < (ypos + /*PIN_HEIGHT*/PIN_YDIST + BASE_HEIGHT)) return true;
     return false;
   }
 
   int32_t insideInput(int32_t x, int32_t y) {
-    if (y < (ypos + PIN_HEIGHT)) {
-      int32_t pin = (x-xpos) / PIN_WIDTH;
+    if (y < (ypos + PIN_YDIST)) {
+      int32_t pin = (x-xpos) / PIN_XDIST;
       if (pin < numInputs) return pin;
     }
     return -1;
   }
 
   int32_t insideOutput(int32_t x, int32_t y) {
-    int32_t pin = (x-xpos) / PIN_WIDTH;
+    int32_t pin = (x-xpos) / PIN_XDIST;
     if (pin < numOutputs) return pin;
     return -1;
   }
@@ -513,67 +521,82 @@ public:
   public:
 
     void drawModule(KODE_GraphModule* AModule) {
-      int32_t x1 = getRect().x + AModule->xpos;
-      int32_t y1 = getRect().y + AModule->ypos;
-      int32_t x2 = x1 + MODULE_WIDTH - 1;
-      int32_t y2 = y1 + MODULE_HEIGHT - 1;
 
-      // background
+      KODE_FRect module_full_rect = KODE_FRect(
+        getRect().x + AModule->xpos,
+        getRect().y + AModule->ypos,
+        MODULE_WIDTH - 1,
+        MODULE_HEIGHT - 1
+      );
 
-      if (AModule->selected)
-        MPainter->fillRectangle( KODE_FRect(x1, y1+PIN_YDIST, x2, y2-PIN_YDIST), MSelectedModuleColor );
-      else
-        MPainter->fillRectangle( KODE_FRect(x1, y1+PIN_YDIST, x2, y2-PIN_YDIST), MModuleColor );
+      KODE_FRect module_body_rect = module_full_rect;
+      module_body_rect.shrink(0,PIN_YDIST,0,PIN_YDIST);
+
+      KODE_Color color;
+
+      KODE_FRect input_rect = module_body_rect;
+      input_rect.y -= PIN_YDIST;
+      input_rect.setSize(PIN_WIDTH-1,PIN_HEIGHT-1);
+
+      KODE_FRect output_rect = module_body_rect;
+      output_rect.y += (output_rect.h + PIN_YDIST - PIN_HEIGHT);
+      output_rect.setSize(PIN_WIDTH-1,PIN_HEIGHT-1);
+
+      //int32_t x = getRect().x + AModule->xpos;
+      //int32_t y = getRect().y + AModule->ypos;
+      //int32_t w = MODULE_WIDTH - 1;
+      //int32_t h = MODULE_HEIGHT - 1;
+
+      // body
+
+      if (AModule->selected) color = MSelectedModuleColor; else color = MModuleColor;
+      MPainter->fillRectangle( module_body_rect, color );
 
       // inputs
 
       for (int32_t i=0; i<AModule->numInputs; i++) {
-
         // fill
-
-        if (AModule->inputs[i] == kpt_signal)
-          MPainter->fillRectangle( KODE_FRect(x1+(i*PIN_XDIST), y1, x1+(i*PIN_XDIST)+PIN_WIDTH-1, y1+PIN_HEIGHT-1), MSignalPinColor );
-        else
-          MPainter->fillRectangle( KODE_FRect(x1+(i*PIN_XDIST), y1, x1+(i*PIN_XDIST)+PIN_WIDTH-1, y1+PIN_HEIGHT-1), MDataPinColor );
-
+        if (AModule->inputs[i] == kpt_signal) color = MSignalPinColor; else color = MDataPinColor;
+        MPainter->fillRectangle( input_rect, color );
         // border
-
         if ((AModule == MHoverModule) && (i == MHoverInput) && (!MDraggingModules)) {
-
-          if (AModule->inputs[i] == kpt_signal)
-            MPainter->drawRectangle( KODE_FRect(x1+(i*PIN_XDIST), y1, x1+(i*PIN_XDIST)+PIN_WIDTH-1, y1+PIN_HEIGHT-1), MSignalPinHoverColor );
-          else if (AModule->inputs[i] == kpt_data)
-            MPainter->drawRectangle( KODE_FRect(x1+(i*PIN_XDIST), y1, x1+(i*PIN_XDIST)+PIN_WIDTH-1, y1+PIN_HEIGHT-1), MDataPinHoverColor );
-
+          if (AModule->inputs[i] == kpt_signal) color = MSignalPinHoverColor; else color = MDataPinHoverColor;
+          MPainter->drawRectangle( input_rect, color );
         }
+        input_rect.x += PIN_XDIST;
       }
 
       // outputs
 
       for (int32_t i=0; i<AModule->numOutputs; i++) {
-
         // fill
-        if (AModule->outputs[i] == kpt_signal)
-          MPainter->fillRectangle(KODE_FRect(x1+(i*PIN_XDIST),y2-PIN_HEIGHT+1,x1+(i*PIN_XDIST)+PIN_WIDTH-1,y2),MSignalPinColor);
-        else
-          MPainter->fillRectangle(KODE_FRect(x1+(i*PIN_XDIST),y2-PIN_HEIGHT+1,x1+(i*PIN_XDIST)+PIN_WIDTH-1,y2),MDataPinColor);
-
+        //if (AModule->outputs[i] == kpt_signal)
+        //  MPainter->fillRectangle(KODE_FRect(x+(i*PIN_XDIST),h-PIN_HEIGHT+1,PIN_WIDTH-1,PIN_HEIGHT+1),MSignalPinColor);
+        //else
+        //  MPainter->fillRectangle(KODE_FRect(x+(i*PIN_XDIST),h-PIN_HEIGHT+1,PIN_WIDTH-1,PIN_HEIGHT+1),MDataPinColor);
+        if (AModule->outputs[i] == kpt_signal) color = MSignalPinColor; else color = MDataPinColor;
+        MPainter->fillRectangle( output_rect, color );
         // border
         if ((AModule == MHoverModule) && (i == MHoverOutput) && (!MDraggingModules)) {
-
-          if (AModule->outputs[i] == kpt_signal)
-            MPainter->drawRectangle(KODE_FRect(x1+(i*PIN_XDIST),y2-PIN_HEIGHT+1,x1+(i*PIN_XDIST)+PIN_WIDTH-1,y2),MSignalPinHoverColor);
-          else if (AModule->outputs[i] == kpt_data)
-            MPainter->drawRectangle(KODE_FRect(x1+(i*PIN_XDIST),y2-PIN_HEIGHT+1,x1+(i*PIN_XDIST)+PIN_WIDTH-1,y2),MDataPinHoverColor);
+          //if (AModule->outputs[i] == kpt_signal)
+          //  MPainter->drawRectangle(KODE_FRect(x+(i*PIN_XDIST),h-PIN_HEIGHT+1,PIN_WIDTH-1,PIN_HEIGHT+1),MSignalPinHoverColor);
+          //else if (AModule->outputs[i] == kpt_data)
+          //  MPainter->drawRectangle(KODE_FRect(x+(i*PIN_XDIST),h-PIN_HEIGHT+1,PIN_WIDTH-1,PIN_HEIGHT+1),MDataPinHoverColor);
+          if (AModule->outputs[i] == kpt_signal) color = MSignalPinHoverColor; else color = MDataPinHoverColor;
+          MPainter->drawRectangle( output_rect, color );
         }
+        output_rect.x += PIN_XDIST;
       }
 
       // name
 
-      if (AModule->selected)
-        MPainter->drawText(KODE_FRect(x1,y1,x2,y2),AModule->name,KODE_TEXT_ALIGN_CENTER,MSelectedModuleNameColor);
-      else
-        MPainter->drawText(KODE_FRect(x1,y1,x2,y2),AModule->name,KODE_TEXT_ALIGN_CENTER,MModuleNameColor);
+      //if (AModule->selected)
+      //  MPainter->drawText(KODE_FRect(x,y,w,h),AModule->name,KODE_TEXT_ALIGN_CENTER,MSelectedModuleNameColor);
+      //else
+      //  MPainter->drawText(KODE_FRect(x,y,w,h),AModule->name,KODE_TEXT_ALIGN_CENTER,MModuleNameColor);
+
+      if (AModule->selected) color = MSelectedModuleNameColor; else color = MModuleNameColor;
+      MPainter->drawText(module_body_rect,AModule->name,KODE_TEXT_ALIGN_CENTER,color);
 
       // border
 
@@ -587,15 +610,30 @@ public:
     //----------
 
     void drawWire(KODE_GraphWire* AWire) {
-      int32_t x1 = getRect().x + AWire->outModule->xpos + 2 + (AWire->outPin * PIN_XDIST);
-      int32_t y1 = getRect().y + AWire->outModule->ypos + 31 - 2;
-      int32_t x2 = getRect().x + AWire->inModule->xpos + 2 + (AWire->inPin * PIN_XDIST);
-      int32_t y2 = getRect().y + AWire->inModule->ypos + 2;
 
-      if (AWire->outModule->outputs[AWire->outPin] == kpt_signal)
-        MPainter->drawLine(x1,y1,x2,y2,MSignalWireColor,1);
-      else
-        MPainter->drawLine(x1,y1,x2,y2,MDataWireColor,1);
+      int32_t x1 = getRect().x + AWire->outModule->xpos + (AWire->outPin * PIN_XDIST);// + 2;
+      int32_t y1 = getRect().y + AWire->outModule->ypos;// + 31 - 2;
+
+      int32_t x2 = getRect().x + AWire->inModule->xpos + (AWire->inPin * PIN_XDIST);// + 2;
+      int32_t y2 = getRect().y + AWire->inModule->ypos;// + 2;
+
+
+      x1 += (PIN_WIDTH  / 2);
+      y1 += (PIN_HEIGHT / 2) + MODULE_HEIGHT - PIN_YDIST;
+      x2 += (PIN_WIDTH  / 2);
+      y2 += (PIN_HEIGHT / 2);
+
+
+
+      //if (AWire->outModule->outputs[AWire->outPin] == kpt_signal)
+      //  MPainter->drawLine(x1,y1,x2,y2,MSignalWireColor,1);
+      //else
+      //  MPainter->drawLine(x1,y1,x2,y2,MDataWireColor,1);
+
+      KODE_Color color;
+      if (AWire->outModule->outputs[AWire->outPin] == kpt_signal) color = MSignalWireColor; else color = MDataWireColor;
+      MPainter->drawLine(x1,y1,x2,y2,color,1);
+
     }
 
     //----------
@@ -643,6 +681,8 @@ public:
     }
     APainter->popClip();
   }
+
+  //----------
 
   // AXpos, AYpos = 'world' coordinates
   // x,y = local coords (graph)
@@ -723,6 +763,8 @@ public:
       KODE_PanelWidget::on_widget_mouseClick(AXpos,AYpos,AButton,AState);
   }
 
+  //----------
+
   void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) override {
       KODE_GraphWire* wire;
       bool changed;
@@ -792,6 +834,8 @@ public:
       //inherited;
       KODE_PanelWidget::on_widget_mouseRelease(AXpos,AYpos,AButton,AState);
   }
+
+  //----------
 
   void on_widget_mouseMove(float AXpos, float AYpos, uint32_t AState, uint32_t ATimeStamp=0) override {
       int32_t x = AXpos - getRect().x;
@@ -873,6 +917,7 @@ public:
       if (MDraggingSelect) {
         MDragSelectX2 = AXpos;
         MDragSelectY2 = AYpos;
+        clearSelection();
         selectModules(MDragSelectX1,MDragSelectY1,MDragSelectX2,MDragSelectY2);
         changed = true;
       }
@@ -883,6 +928,8 @@ public:
 
       KODE_PanelWidget::on_widget_mouseMove(AXpos,AYpos,AState);
   }
+
+  //----------
 
 //  void on_widget_keyPress(uint32_t AKey, char AChar, uint32_t AState, uint32_t ATimeStamp=0) override {
 //  }
@@ -905,35 +952,3 @@ public:
 
 //----------------------------------------------------------------------
 #endif
-
-
-
-
-
-
-
-
-
-
-
-#if 0
-
-
-
-
-
-
-
-
-
-    void on_paint(KODE_Painter* APainter, KODE_Rect ARect) override {
-
-    }
-
-    //----------
-
-};
-
-
-
-#endif // 0

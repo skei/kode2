@@ -89,7 +89,7 @@ public:
       float value = getValue();
       const char*     label = "";
 
-      KODE_Parameter* param = getParameterPtr();
+      KODE_Parameter* param = getParameter();
 
       if (param) {
         label = param->getLabel();
@@ -127,7 +127,7 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
-    fillBackground(APainter);
+    fillBackground(APainter,ARect);
     //paintChildren(APainter,getRect(),AMode);
     drawText(APainter);
     drawValueText(APainter);

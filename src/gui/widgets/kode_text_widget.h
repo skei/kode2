@@ -58,7 +58,7 @@ public:
     rect.shrink(MTextOffset);
     if (MDrawText) {
 
-      KODE_Parameter* param = getParameterPtr();
+      KODE_Parameter* param = getParameter();
       if (param) {
         APainter->drawText(rect,param->getName(),MTextAlignment,MTextColor);
       }
@@ -74,7 +74,7 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
-    fillBackground(APainter);
+    fillBackground(APainter,ARect);
     //paintChildren(APainter,getRect(),AMode);
     drawText(APainter);
     drawBorder(APainter);

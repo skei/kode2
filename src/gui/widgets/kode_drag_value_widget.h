@@ -139,7 +139,7 @@ public:
 
       if (MDblClickReset) {
         if ((ATimeStamp - MPrevClickTime) < KODE_GUI_DBLCLICK_MS) {
-          if (getParameterPtr()) setValue( getParameterPtr()->getDefValue() );
+          if (getParameter()) setValue( getParameter()->getDefValue() );
           else setValue( getDefaultValue() );
           update();
           redraw();

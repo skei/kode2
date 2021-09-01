@@ -60,9 +60,10 @@ public:
     }
   }
 
-  virtual void fillBackground(KODE_BasePainter* APainter) {
+  virtual void fillBackground(KODE_BasePainter* APainter, KODE_FRect ARect) {
     if (MFillBackground) {
-      APainter->fillRectangle(getRect(),MBackgroundColor);
+      //APainter->fillRectangle(getRect(),MBackgroundColor);
+      APainter->fillRectangle(ARect,MBackgroundColor);
     }
   }
 
@@ -76,8 +77,9 @@ public:
 //    //APainter->resetClip();
 //    APainter->setClip(mrect);
 
-    fillBackground(APainter);
-    paintChildren(APainter,getRect(),AMode);
+    fillBackground(APainter,ARect);
+    //paintChildren(APainter,getRect(),AMode);
+    paintChildren(APainter,ARect,AMode);
     drawBorder(APainter);
 
 //    APainter->resetClip();
