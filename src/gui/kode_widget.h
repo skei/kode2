@@ -31,8 +31,9 @@ struct KODE_WidgetFlags {
 struct KODE_WidgetLayout {
   uint32_t    alignment     = KODE_WIDGET_ALIGN_PARENT;
   KODE_FRect  innerBorder   = KODE_FRect(0);              // space between widgets and parent edges
-  KODE_FRect  extraBorder   = KODE_FRect(0);
   KODE_FPoint spacing       = KODE_FPoint(0);             // space inbetween widgets
+  KODE_FRect  extraBorder   = KODE_FRect(0);              // extra space/border for each widget
+  bool        contentBorder = true;                       // true if content rect includes innerBorder of parent
 };
 
 class KODE_Widget;
@@ -93,9 +94,17 @@ public:
 //------------------------------
 
   KODE_Widget(KODE_FRect ARect) {
-    setRect(ARect);
-    setInitialRect(ARect);
-    setContentRect(KODE_FRect(0));
+    init(ARect);
+  }
+
+  KODE_Widget(float AWidth, float AHeight) {
+    KODE_FRect arect = KODE_FRect(0,0,AWidth,AHeight);
+    init(arect);
+  }
+
+  KODE_Widget(float ASize) {
+    KODE_FRect arect = KODE_FRect(ASize);
+    init(arect);
   }
 
   //----------
@@ -111,10 +120,21 @@ public:
 public: // set
 //------------------------------
 
+  void init(KODE_FRect ARect) {
+    setRect(ARect);
+    setInitialRect(ARect);
+    setContentRect(KODE_FRect(0));
+  }
+
+//------------------------------
+public: // set
+//------------------------------
+
   virtual void setName(const char* AName)               { MName = AName; }
   virtual void setValue(float AValue)                   { MValue = AValue; }
   virtual void setDefaultValue(float AValue)            { MDefaultValue = AValue; }
   virtual void setRect(KODE_FRect ARect)                { MRect = ARect; }
+  virtual void setRect(float x, float y, float w, float h)  { MRect.x=x; MRect.y=y; MRect.w=w;MRect.h=h; }
   virtual void setPos(float AXpos, float AYpos)         { MRect.x = AXpos; MRect.y = AYpos; }
   virtual void setSize(float AWidth, float AHeight)     { MRect.w = AWidth; MRect.h = AHeight; }
   virtual void setWidth(float AWidth)                   { MRect.w = AWidth; }
@@ -145,6 +165,8 @@ public: // get
   virtual float               getValue()                    { return MValue; }
   virtual float               getDefaultValue()             { return MDefaultValue; }
   virtual KODE_FRect          getRect()                     { return MRect; }
+  //virtual float               getWidth()                    { return MRect.w; }
+  //virtual float               getHeight()                   { return MRect.h; }
   virtual KODE_FRect          getInitialRect()              { return MInitialRect; }
   virtual KODE_FRect          getContentRect()              { return MContentRect; }
   virtual int32_t             getCursor()                   { return MCursor; }
@@ -311,18 +333,30 @@ public:
     - percentages
   */
 
-  virtual void alignChildren(/*KODE_Widget* AParent, float AXOffset=0.0f, float AYOffset=0.0f*/) {
-    KODE_FRect client = getRect();
+  // content includes innerBorder?
+
+  virtual void alignChildren(bool ARecursive=true) {
+    KODE_FRect client   = getRect();
+    KODE_FRect parent   = client;
+    KODE_FRect content  = client;
     client.shrink(layout.innerBorder);
-    KODE_FRect parent = client;
-    KODE_FRect content = client;
+    parent.shrink(layout.innerBorder);
+    if (!layout.contentBorder) content.shrink(layout.innerBorder);
     content.setSize(0,0);
-    //KODE_Print("content %.0f,%.0f,%.0f,%.0f\n",content.x,content.y,content.w,content.h);
+    float stackx = 0;
+    float stacky = 0;
+    float stack_highest = 0;
+    float stack_widest = 0;
+    //bool prev_was_stacking = false;
+    uint32_t prev_alignment = KODE_WIDGET_ALIGN_NONE;
     uint32_t num = MChildren.size();
     for (uint32_t i=0; i<num; i++) {
       KODE_Widget* child = MChildren[i];
       if (child->flags.visible) {
-        KODE_FRect rect = child->getInitialRect();
+
+        KODE_FRect  rect      = child->getInitialRect();
+        uint32_t    alignment = child->layout.alignment;
+
         if (child->flags.sizePercent) {
           rect.w = client.w * (rect.w * 0.01f);
           rect.h = client.h * (rect.h * 0.01f);
@@ -331,7 +365,30 @@ public:
           rect.x = client.w * (rect.x * 0.01f);
           rect.y = client.w * (rect.y * 0.01f);
         }
-        switch (child->layout.alignment) {
+
+//----------
+
+        //  if we were stacking, but isn't now..
+
+        if (prev_alignment == KODE_WIDGET_STACK_HORIZ) {
+          if (alignment != KODE_WIDGET_STACK_HORIZ) {
+            client.y += (stacky + stack_highest + layout.spacing.y);
+          }
+        }
+
+        if (prev_alignment == KODE_WIDGET_STACK_VERT) {
+          if (alignment != KODE_WIDGET_STACK_VERT) {
+            client.x += (stackx + stack_widest + layout.spacing.x);
+          }
+        }
+
+        prev_alignment = alignment;
+
+        //KODE_FRect new_client_rect = client;
+
+//----------
+
+        switch (alignment) {
           case KODE_WIDGET_ALIGN_NONE:
             break;
           case KODE_WIDGET_ALIGN_PARENT:
@@ -484,28 +541,54 @@ public:
             //client.y += (rect.h + layout.spacing.y);
             client.h -= (rect.h + layout.spacing.y);
             break;
+
           //-----
-          //case KODE_WIDGET_STACK_HORIZ:
-          //  break;
-          //case KODE_WIDGET_STACK_VERT:
-          //  break;
+
+          case KODE_WIDGET_STACK_HORIZ:
+            if ((stackx + rect.w + layout.innerBorder.w - layout.spacing.x) >= client.w) {
+              stackx = 0;
+              stacky += stack_highest + layout.spacing.y;
+              stack_highest = 0;
+            }
+            rect.x = (client.x + stackx);
+            rect.y = (client.y + stacky);
+            stackx += rect.w + layout.spacing.x;
+            if (rect.h > stack_highest) stack_highest = rect.h;
+            break;
+          case KODE_WIDGET_STACK_VERT:
+            if ((stacky + rect.h) >= client.h) {
+              stackx += stack_widest + layout.spacing.x;
+              stacky = 0;
+              stack_widest = 0;
+            }
+            rect.x += client.x + stackx;
+            rect.y += client.y + stacky;
+            stacky  += rect.h + layout.spacing.y;
+            if (rect.w > stack_widest) stack_widest = rect.w;
+            break;
+
         } // switch alignment
 
+        //if (rect.w < child->getMinWidth()) rect.w = child->getMinWidth();
+        //if (rect.h < child->getMinHeight()) rect.h = child->getMinHeight();
+        //rect = new_client_rect;
+
         rect.shrink(child->layout.extraBorder);
-
-        KODE_FRect offsetrect = rect;
-        offsetrect.x += MChildrenXOffset;
-        offsetrect.y += MChildrenYOffset;
-        child->setRect(offsetrect);
-
         content.combine(rect);
-        child->alignChildren(/*this,0,0*/);
+
+        child->MRect.x = rect.x + MChildrenXOffset;
+        child->MRect.y = rect.y + MChildrenYOffset;
+        child->MRect.w = rect.w;
+        child->MRect.h = rect.h;
+
+        if (ARecursive) child->alignChildren(ARecursive);
 
       } // child visible
     } // for all children
-    //KODE_Print("content %.0f,%.0f,%.0f,%.0f\n",content.x,content.y,content.w,content.h);
-    //content.w += layout.innerBorder.w;
-    //content.h += layout.innerBorder.h;
+    if (layout.contentBorder) {
+      content.w += layout.innerBorder.w;
+      content.h += layout.innerBorder.h;
+    }
     MContentRect = content;
   }
 
@@ -516,7 +599,7 @@ public:
     for (uint32_t i=0; i<num; i++) {
       KODE_Widget* child = MChildren[i];
       if (child->flags.visible) {
-        //KODE_FRect rect = child->MRectgetRect();
+        //child->setChildrenOffset(AOffsetX,AOffsetY);
         child->MRect.x += AOffsetX;
         child->MRect.y += AOffsetY;
         child->scrollChildren(AOffsetX,AOffsetY);

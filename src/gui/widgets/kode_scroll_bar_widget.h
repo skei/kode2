@@ -15,8 +15,9 @@ protected:
   KODE_Color  MThumbColor       = KODE_COLOR_LIGHT_GRAY;
   KODE_Color  MInteractiveColor = KODE_COLOR_WHITE;
   float       MThumbPos         = 0.0f;
-  float       MThumbSize        = 0.25f;
-  float       MPageSize         = 0.1f;
+  float       MPrevThumbPos     = 0.0f;
+  float       MThumbSize        = 0.2f;
+  float       MPageSize         = 0.2f;
 
   KODE_FRect  MThumbRect        = {0};
   bool        MIsDragging       = false;
@@ -54,7 +55,13 @@ public:
     return MThumbPos;
   }
 
-  //virtual void getThumbSize() { return MThumbSize; }
+  virtual float getPrevThumbPos() {
+    return MPrevThumbPos;
+  }
+
+  virtual float getThumbSize() {
+    return MThumbSize;
+  }
 
   virtual void setBackgroundColor(KODE_Color AColor) {
     MBackgroundColor = AColor;
@@ -75,6 +82,7 @@ public:
   //----------
 
   virtual void setThumbPos(float APos, bool ARedraw=true) {
+    MPrevThumbPos = MThumbPos;
     MThumbPos = APos;
     MThumbPos = KODE_Clamp(MThumbPos,0.0f,1.0f);
     //recalcThumbRect();
@@ -85,7 +93,10 @@ public:
 
   virtual void setThumbSize(float ASize, bool ARedraw=true) {
     MThumbSize = ASize;
-    if (MThumbSize >= 1.0f) MThumbPos = 0.0f;
+    if (MThumbSize >= 1.0f) {
+      MPrevThumbPos = MThumbPos;
+      MThumbPos = 0.0f;
+    }
     MThumbSize = KODE_Clamp(MThumbSize,0.0f,1.0f);
     //recalcThumbRect();
     if (ARedraw) do_widget_redraw(this,getRect(),0);
@@ -152,17 +163,19 @@ public:
         MClickedPos = MThumbPos;
         MIsDragging = true;
         //MIsInteractive  = true;
-        do_widget_redraw(this,mrect,0);
+        //do_widget_redraw(this,mrect,0);
       }
       else {
         if (MDirection == KODE_VERTICAL) {
           if (AYpos < MThumbRect.y) {
+            MPrevThumbPos = MThumbPos;
             MThumbPos -= MPageSize;
             //recalcThumbRect();
             do_widget_update(this);
             do_widget_redraw(this,mrect,0);
           }
           else if (AYpos > MThumbRect.y2()) {
+            MPrevThumbPos = MThumbPos;
             MThumbPos += MPageSize;
             //recalcThumbRect();
             do_widget_update(this);
@@ -171,12 +184,14 @@ public:
         }
         else {
           if (AXpos < MThumbRect.x) {
+            MPrevThumbPos = MThumbPos;
             MThumbPos -= MPageSize;
             //recalcThumbRect();
             do_widget_update(this);
             do_widget_redraw(this,mrect,0);
           }
           else if (AXpos > MThumbRect.x2()) {
+            MPrevThumbPos = MThumbPos;
             MThumbPos += MPageSize;
             //recalcThumbRect();
             do_widget_update(this);
@@ -218,6 +233,7 @@ public:
       }
       if (available > 0.0f) {
         float v = dist / available;
+        MPrevThumbPos = MThumbPos;
         MThumbPos = MClickedPos + v;
         MThumbPos = KODE_Clamp(MThumbPos,0.0f,1.0f);
         //recalcThumbRect();

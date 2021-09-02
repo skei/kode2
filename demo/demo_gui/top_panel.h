@@ -67,6 +67,22 @@ public:
     circwave->setBipolar(true);
     right->appendWidget(circwave);
 
+    // knobs
+
+    KODE_Knob2Widget* knob2 = new KODE_Knob2Widget( KODE_FRect(40,80) );
+    knob2->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    knob2->setValue(0.25);
+    right->appendWidget(knob2);
+
+    KODE_Knob3Widget* knob3 = new KODE_Knob3Widget( KODE_FRect(90,30) );
+    knob3->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    knob3->setValue(0.45);
+    right->appendWidget(knob3);
+
+    KODE_Knob4Widget* knob4 = new KODE_Knob4Widget( KODE_FRect(120,30) );
+    knob4->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    knob4->setValue(0.85);
+    right->appendWidget(knob4);
 
   }
 

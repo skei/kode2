@@ -49,13 +49,20 @@ public:
 
     KODE_ScrollBoxWidget* scrollbox1 = new KODE_ScrollBoxWidget( KODE_FRect(100,100) );
     scrollbox1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+    scrollbox1->getContentWidget()->layout.innerBorder = 10;
     appendWidget(scrollbox1);
 
     // knobs
 
-    for (uint32_t i=0; i<10; i++) {
-      KODE_KnobWidget* knob = new KODE_KnobWidget(KODE_FRect(32,32));
-      knob->layout.alignment = KODE_WIDGET_ALIGN_TOP_LEFT;
+    KODE_KnobWidget* knob;
+    for (uint32_t i=0; i<50; i++) {
+      //if ((i+1) & 15)
+      //  knob = new KODE_KnobWidget(KODE_FRect(32,32));
+      //else
+      knob = new KODE_KnobWidget(KODE_FRect(40,40));
+      //knob->layout.alignment = KODE_WIDGET_ALIGN_TOP_LEFT;
+      knob->layout.alignment = KODE_WIDGET_STACK_HORIZ;
+      knob->setValue((float)i * 0.01);
       scrollbox1->appendWidget(knob);
     }
 

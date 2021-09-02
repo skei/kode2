@@ -67,15 +67,15 @@ public:
   virtual void            drawLine(float AXpos1, float AYpos1, float AXpos2, float AYpos2, KODE_Color AColor, uint32_t AWidth=1) {}
 //virtual void            drawLines(int32 ANum, float* ACoords) override {}
   virtual void            drawRectangle(KODE_FRect ARect, KODE_Color AColor, uint32_t AWidth=1) {}
+  virtual void            drawRoundedRectangle(KODE_FRect ARect, float ARadius, uint32_t ACorners, KODE_Color AColor, uint32_t AWidth=1) {}
   virtual void            drawArc(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor, uint32_t AWidth=1) {}
   virtual void            drawEllipse(KODE_FRect ARect, KODE_Color AColor, uint32_t AWidth=1) {}
   virtual void            drawTriangle(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3, KODE_Color AColor, uint32_t AWidth=1) {}
   virtual void            drawCurve(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3, float AX4, float AY4, KODE_Color AColor, uint32_t AWidth=1) {}
-  virtual void            drawRoundedRectangle(KODE_FRect ARect, float ARadius, uint32_t ACorners, KODE_Color AColor, uint32_t AWidth=1) {}
 
   virtual void            fillRectangle(KODE_FRect ARect, KODE_Color AColor) {}
-  virtual void            fillArc(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor) {}
   virtual void            fillRoundedRectangle(KODE_FRect ARect, float ARadius, uint32_t ACorners, KODE_Color AColor) {}
+  virtual void            fillArc(KODE_FRect ARect, float AAngle1, float AAngle2, KODE_Color AColor) {}
   virtual void            fillEllipse(KODE_FRect ARect, KODE_Color AColor) {}
   virtual void            fillTriangle(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3, KODE_Color AColor) {}
 //virtual void            fillPolygon(int32 ANum, float* ACoords, KODE_Color AColor) {}

@@ -4,9 +4,13 @@ MAYBE
 IDEAD
 THOUGHTS
 
+
+
 ----------------------------------------------------------------------
 plugin
 ----------------------------------------------------------------------
+
+
 
 * sample-accurate automation
 
@@ -19,20 +23,20 @@ plugin
   c) keep track of interpolated parameter values, add function to
      calc value for current sample in block..
 
-----------
+
 
 * data-transfer
 
-  safe, thread-safe, lock/wait-free way to transfer data to/from processing
-  and/or gui parts?
+  safe, thread-safe, lock/wait-free way to transfer data buffers to/from
+  processing/gui parts..
 
   samples for ffft analysis, to paint output uv/waveforms, image to audio,..
 
-----------
 
-* parameter dezipping
 
-----------
+* parameter dezipping/denoising
+
+
 
 * tick-processing
 
@@ -48,32 +52,154 @@ plugin
 
   16 samples = 0.3ms at 48khz..
 
-----------
 
-* parameters
+
+* more parameter types
 
   - dB
   - hz
+
+  - simplify on_parameter, if plugin have array for params, and
+    param convert does everything needed, we can just insert the value
+    into the array, instead of a big switch/case section..
+
+
+
+* midi (cc) out
 
 ----------------------------------------------------------------------
 gui
 ----------------------------------------------------------------------
 
+
+
 * mouse cursor
 
   investigate why we get these weird cursors..
   looks like kd
-----------
-
-* scrollbox
-
-----------
-
-* resizer
-
-  when realigning widgets, we start from initial_rect.. when resizing, we need
-  to keep track of how much this has chaned, or perhaps modify this initial
-  rect directly.. but this will be lost when we close the plugin, won't it?
-  ...
 
 
+
+* scale factor for gui
+
+
+
+* resizable editor
+
+
+
+------------------------------
+widgets
+------------------------------
+
+
+
+* widget background/border
+
+  move fill background, draw border to base widget, since these are
+  used almost everywhere..
+
+
+
+* resizable widgets
+
+  see kode_sizer_widget:
+    on_mouse_move
+      float deltax = AXpos - prevx;
+      float deltay = AYpos - prevy;
+      do_widget_resized(this,deltax,deltay)
+
+
+
+* alignment
+
+  - stacking
+  - min/max sizes (resizing)
+
+
+
+* clipping
+
+  - update-rect vs MRect somewhere?
+  - hierarchy, push/pop clip..
+
+
+
+------------------------------
+specific widgets
+------------------------------
+
+
+* new widgets:
+
+  - lider w/thumb (image)
+  - xy-pad
+  - dual-value knobs (sliders?)
+    - right click for value2
+    - range.. show modulation..
+
+
+
+* dragvalue
+
+  - snap, quantize
+    - wdg.parameter, is_stepped
+    - param.defaultvalue
+
+
+
+* scrollbar
+
+  - combine with dualslider
+  - optional mouse movement from dragvalue (sensibility)
+             initial sensitivity -> pixel perfect
+  - optional up/down buttons
+    min/max thumb size (resize scollbox)
+  - keep track of real and drawn/used thumb size
+
+
+
+* slider-bank
+
+  - stepped/quantized values..
+  - option: need shift/ctrl to draw
+  - interactive bar color
+  - draw line from top of each bar = value-graph, combine?
+
+
+
+* text
+
+  - vertical text
+    (is it possible with xcb?)
+
+
+
+* text-edit
+
+ - mouse/xy -> char pos.. (
+   int getCharIndexFromXpos(float xpos)
+   (getStringWidth)
+  - fix chars (shift doesn't work)
+  - modal doesn't work: error when exiting
+
+
+
+* value-widget
+
+  adjustable precision after . in getdisplaytext
+  timer, adjust caret color (blink)
+
+
+
+* waveform, circular..
+
+  - cache positions (so we don't need to trash cache every time)
+  - combine circular & regular..
+    - func: index to line endpoints
+    - circular: precalc line endpoints
+    - circular: draw areas as arcs
+
+
+
+*

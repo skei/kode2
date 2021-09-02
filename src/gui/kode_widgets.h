@@ -20,6 +20,9 @@
 #include "gui/widgets/kode_image_strip_widget.h"
 #include "gui/widgets/kode_keyboard_widget.h"
 #include "gui/widgets/kode_knob_widget.h"
+#include "gui/widgets/kode_knob2_widget.h"
+#include "gui/widgets/kode_knob3_widget.h"
+#include "gui/widgets/kode_knob4_widget.h"
 #include "gui/widgets/kode_menu_widget.h"
 #include "gui/widgets/kode_menu_item_widget.h"
 #include "gui/widgets/kode_pages_widget.h"
@@ -44,9 +47,6 @@
 //----------
 // todo
 
-#include "gui/widgets/kode_knob2_widget.h"
-#include "gui/widgets/kode_knob3_widget.h"
-#include "gui/widgets/kode_knob4_widget.h"
 #include "gui/widgets/kode_modmatrix_widget.h"
 #include "gui/widgets/kode_text_box_widget.h"
 #include "gui/widgets/kode_timeline_widget.h"

@@ -60,9 +60,12 @@ public:
 //#define NUMSTEPS 1024
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+
     fillBackground(APainter,ARect);
+
     KODE_FRect mrect = getRect();
     if (MBufferSize > 0) {
+
       float xcenter = mrect.x + (mrect.w / 2);
       float ycenter = mrect.y + (mrect.h / 2);
       float radius = KODE_Min(mrect.w,mrect.h);
@@ -85,6 +88,7 @@ public:
       else          { r2 = 1.0f -  MInnerRadius; }
       r2 *= radius;// * 0.5f;
       rec2.shrink( r2 * 0.5f );
+
       APainter->drawEllipse(rec2,KODE_COLOR_WHITE,1);
 
       if (MBuffer) {
@@ -123,6 +127,8 @@ public:
           }
         } // bipolar
       } // buffer
+
+//      APainter->drawEllipse(rec2,KODE_COLOR_WHITE,1);
 
 //      KODE_FRect rec2 = mrect;
 //      float r2 = 0.0f;

@@ -211,6 +211,7 @@
 		<Unit filename="../../doc/license.txt" />
 		<Unit filename="../../doc/makedocs.sh" />
 		<Unit filename="../../doc/readme.txt" />
+		<Unit filename="../../doc/todo.txt" />
 		<Unit filename="../../plugins/effect_template.cpp">
 			<Option compile="0" />
 			<Option link="0" />
@@ -608,6 +609,10 @@
 		<Unit filename="../../src/plugin/vst3/kode_vst3_plugin.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_utils.h" />
 		<Unit filename="../../test/test1.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../test/test_graph.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>

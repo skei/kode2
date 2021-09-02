@@ -2,6 +2,8 @@
 #define kode_cairo_painter_included
 //----------------------------------------------------------------------
 
+//#define KODE_CAIRO_USE_XCB_FOR_BITMAPS
+//#define KODE_CAIRO_USE_XCB_FOR_CLIPPING
 
 /*
   Most surface types allow accessing the surface without using Cairo functions.
@@ -197,6 +199,9 @@ public:
 public: // clip
 //------------------------------
 
+#ifndef KODE_CAIRO_USE_XCB_FOR_CLIPPING
+
+
   /*
   - After cairo_clip(), the current path will be cleared from the cairo
     context.
@@ -218,6 +223,8 @@ public: // clip
     //KODE_Trace("RESET CLIP\n");
     cairo_reset_clip(MCairo);
   }
+
+#endif // KODE_CAIRO_USE_XCB_FOR_CLIPPING
 
 //------------------------------
 public: // get

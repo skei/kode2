@@ -26,9 +26,10 @@ private:
 
   bool        MBipolar      = false;
 
-  float       MArcThickness = 0.2f;
-  float       MNeedleLength = 0.25f;
-  KODE_Color  MNeedleColor  = KODE_COLOR_LIGHT_GRAY;
+  float       MArcThickness     = 0.20;
+  float       MNeedleLength     = 0.25;
+  float       MNeedleThickness  = 0.10;
+  KODE_Color  MNeedleColor      = KODE_COLOR_LIGHT_GRAY;
 
   bool        MDrawSteppedArc = true;
   KODE_Color  MStepColor      = KODE_COLOR_GRAY;
@@ -62,6 +63,7 @@ public:
   //void setArcBackgroundColor(KODE_Color AColor) { MArcBackgroundColor = AColor; }
   void setArcThickness(float AThickness)        { MArcThickness = AThickness; }
   void setNeedleLength(float ALength)           { MNeedleLength = ALength; }
+  void setNeedleThickness(float AThickness)     { MNeedleThickness = AThickness; }
   void setNeedleColor(KODE_Color AColor)        { MNeedleColor = AColor; }
 
 
@@ -77,7 +79,7 @@ public:
       float     step_start        = S / 2.0f - arc_thickness;
       float     step_end          = S / 2.0f + 1.0f;
       float     needle_length     = S * MNeedleLength; // / 4;
-      float     needle_thickness  = arc_thickness * 0.33f;
+      float     needle_thickness  = S * MNeedleThickness; // arc_thickness * 0.33f;
 
       KODE_FRect r = getRect();
       //r.shrink(0.5f + MKnobSize * 0.5f);

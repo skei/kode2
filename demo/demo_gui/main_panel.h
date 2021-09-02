@@ -47,7 +47,7 @@ public:
     image->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
     //image->layout.alignment = KODE_WIDGET_ALIGN_FILL_LEFT;
     image->setDrawBorder();
-    image->setCursor(KODE_CURSOR_QUESTION);
+    //image->setCursor(KODE_CURSOR_QUESTION);
     KODE_Bitmap* bitmap = new KODE_Bitmap(128,128);
     bitmap->genFractalCloud();
     //image->setBitmap(bitmap);
@@ -57,7 +57,6 @@ public:
     right->appendWidget(image);
 
     // --- left
-
 
     // keyboard
 
@@ -74,30 +73,36 @@ public:
     // knob
 
     KODE_KnobWidget* knob1 = new KODE_KnobWidget(KODE_FRect(50,50));
-    knob1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    //knob1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    knob1->layout.alignment = KODE_WIDGET_STACK_VERT;
     knob1->setValue(0.3);
+    knob1->setBipolar();
     left->appendWidget(knob1);
-
-    // curves
-
-    KODE_CurveWidget* curve1 = new KODE_CurveWidget(KODE_FRect(50,50),false);
-    curve1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
-    curve1->setValue(0.3);
-    left->appendWidget(curve1);
-
-    KODE_CurveWidget* curve2 = new KODE_CurveWidget(KODE_FRect(50,50),true);
-    curve2->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
-    curve2->setValue(0.8);
-    left->appendWidget(curve2);
 
     // image strip
 
     KODE_ImageStripWidget* imagestrip1 = new KODE_ImageStripWidget(KODE_FRect(60,60));
-    imagestrip1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    //imagestrip1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    imagestrip1->layout.alignment = KODE_WIDGET_STACK_VERT;
     imagestrip1->setImage(ATarget,knob4_60x60_131,knob4_60x60_131_size,KODE_Color(0.6f));
     imagestrip1->setupTiles(1,131);
-    knob1->setValue(0.3);
+    imagestrip1->setValue(0.6);
     left->appendWidget(imagestrip1);
+
+    // curves
+
+    KODE_CurveWidget* curve1 = new KODE_CurveWidget(KODE_FRect(50,50),false);
+    //curve1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    curve1->layout.alignment = KODE_WIDGET_STACK_VERT;
+    curve1->setValue(0.7);
+    left->appendWidget(curve1);
+
+    KODE_CurveWidget* curve2 = new KODE_CurveWidget(KODE_FRect(50,50),true);
+    //curve2->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    curve2->layout.alignment = KODE_WIDGET_STACK_VERT;
+    curve2->setValue(0.3);
+    left->appendWidget(curve2);
+
 
   }
 

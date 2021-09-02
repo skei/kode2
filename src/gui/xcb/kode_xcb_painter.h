@@ -38,6 +38,8 @@ private:
   float             MXpos         = 0.0f;
   float             MYpos         = 0.0f;
 
+  xcb_font_t        MFont         = XCB_NONE;
+
 //------------------------------
 public:
 //------------------------------
@@ -124,10 +126,53 @@ private:
     xcb_change_gc(MConnection, MGC, mask, values);
   }
 
+  void set_background_color(KODE_Color AColor) {
+    uint8_t r = AColor.r * 255.0f;
+    uint8_t g = AColor.g * 255.0f;
+    uint8_t b = AColor.b * 255.0f;
+    uint8_t a = AColor.a * 255.0f;
+    uint32_t color = (a << 24) + (r << 16) + (g << 8) + b;
+    uint32_t mask = XCB_GC_BACKGROUND;
+    uint32_t values[1];
+    values[0] = color;
+    xcb_change_gc(MConnection, MGC, mask, values);
+  }
+
   void set_line_width(uint32_t AWidth) {
     uint32_t mask = XCB_GC_LINE_WIDTH;
     uint32_t values[1];
     values[0] = AWidth;
+    xcb_change_gc(MConnection, MGC, mask, values);
+  }
+
+  //----------
+
+  void open_font(const char* AName) {
+    close_font();
+    MFont = xcb_generate_id(MConnection);
+    xcb_open_font(
+      MConnection,
+      MFont, //font,
+      strlen(AName),
+      AName
+    );
+  }
+
+  //----------
+
+  void close_font(void) {
+    if (MFont) {
+      xcb_close_font(MConnection,MFont);
+    }
+  }
+
+  //----------
+
+  void select_font(const char* AName) {
+    open_font(AName);
+    uint32_t mask = XCB_GC_FONT;
+    uint32_t values[1];
+    values[0] = MFont;
     xcb_change_gc(MConnection, MGC, mask, values);
   }
 
@@ -191,8 +236,8 @@ public:
     xcb_rectangle_t rectangles[] = {{
       (int16_t)ARect.x,
       (int16_t)ARect.y,
-      (uint16_t)ARect.w, // +1
-      (uint16_t)ARect.h  // +1
+      (uint16_t)(ARect.w + 1),
+      (uint16_t)(ARect.h + 1),
     }};
     xcb_set_clip_rectangles(
       MConnection,
@@ -262,16 +307,25 @@ public:
 
   //----------
 
-  void fillRectangle(KODE_FRect ARect, KODE_Color AColor) override {
-    if ((ARect.w <= 0) || (ARect.h <= 0)) return;
-    set_color(AColor);
-    xcb_rectangle_t rectangles[] = {{
-      (int16_t)ARect.x,
-      (int16_t)ARect.y,
-      (uint16_t)ARect.w,
-      (uint16_t)ARect.h
-    }};
-    xcb_poly_fill_rectangle(MConnection,MDrawable,MGC,1,rectangles);
+  // todo: no color/size per call
+
+  void drawRoundedRectangle(KODE_FRect ARect, float ARadius, uint32_t ACorners, KODE_Color AColor, uint32_t AWidth=1) override {
+    //set_color(AColor);
+    //set_line_width(AWidth);
+    float r  = ARadius;// - 1;
+    float r2 = r*2;
+    float AX1 = ARect.x;
+    float AY1 = ARect.y;
+    float AX2 = ARect.x2();
+    float AY2 = ARect.y2();
+    drawArc(  KODE_FRect(AX1,      AY1,      AX1+r2-2, AY1+r2-3), 0.75, 0.25, AColor, AWidth ); // upper left
+    drawArc(  KODE_FRect(AX2-r2+1, AY1,      AX2-1,    AY1+r2-2), 0.00, 0.25, AColor, AWidth ); // upper right
+    drawArc(  KODE_FRect(AX1,      AY2-r2+1, AX1+r2-2, AY2-1),    0.50, 0.25, AColor, AWidth ); // lower left
+    drawArc(  KODE_FRect(AX2-r2+1, AY2-r2+2, AX2-1,    AY2-1),    0.25, 0.25, AColor, AWidth ); // lower right
+    drawLine( AX1+r,    AY1,      AX2-r,    AY1,   AColor, AWidth );  // top
+    drawLine( AX1+r,    AY2,      AX2-r,    AY2,   AColor, AWidth );  // bottom
+    drawLine( AX1,      AY1+r,    AX1,      AY2-r, AColor, AWidth );  // left
+    drawLine( AX2,      AY1+r,    AX2,      AY2-r, AColor, AWidth );  // right
   }
 
   //----------
@@ -302,6 +356,71 @@ public:
 
   //----------
 
+  void drawEllipse(KODE_FRect ARect, KODE_Color AColor, uint32_t AWidth=1) override {
+    set_color(AColor);
+    set_line_width(AWidth);
+    xcb_arc_t arcs[] = {
+      (int16_t)ARect.x,
+      (int16_t)ARect.y,
+      (uint16_t)ARect.w, // +1
+      (uint16_t)ARect.h, // +1
+      0,
+      360 * 64
+    };
+    xcb_poly_arc(MConnection, MDrawable, MGC, 1, arcs );
+  }
+
+  //----------
+
+  void drawTriangle(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3, KODE_Color AColor, uint32_t AWidth=1) override {
+    xcb_point_t polyline[] =  {
+      (int16_t)AX1, (int16_t)AY1, (int16_t)AX2, (int16_t)AY2,
+      (int16_t)AX2, (int16_t)AY2, (int16_t)AX3, (int16_t)AY3,
+      (int16_t)AX3, (int16_t)AY3, (int16_t)AX1, (int16_t)AY1,
+    };
+    xcb_poly_line(MConnection,XCB_COORD_MODE_ORIGIN,MDrawable,MGC,6,polyline);
+  }
+
+//------------------------------
+public:
+//------------------------------
+
+  void fillRectangle(KODE_FRect ARect, KODE_Color AColor) override {
+    if ((ARect.w <= 0) || (ARect.h <= 0)) return;
+    set_color(AColor);
+    xcb_rectangle_t rectangles[] = {{
+      (int16_t)ARect.x,
+      (int16_t)ARect.y,
+      (uint16_t)ARect.w,
+      (uint16_t)ARect.h
+    }};
+    xcb_poly_fill_rectangle(MConnection,MDrawable,MGC,1,rectangles);
+  }
+
+  //----------
+
+  // todo: no color/size per call
+
+  void fillRoundedRectangle(KODE_FRect ARect, float ARadius, uint32_t ACorners, KODE_Color AColor) override {
+    //set_color(AColor);
+    //set_line_width(AWidth);
+    float r  = ARadius;// - 1;
+    float r2 = r*2;
+    float AX1 = ARect.x;
+    float AY1 = ARect.y;
+    float AX2 = ARect.x2();
+    float AY2 = ARect.y2();
+    fillArc(       KODE_FRect(AX1-1,  AY1-1,   AX1+r2,   AY1+r2),   0.75, 0.25, AColor ); // upper left
+    fillArc(       KODE_FRect(AX2-r2, AY1-1,   AX2,      AY1+r2-1), 0.00, 0.25, AColor ); // upper right
+    fillArc(       KODE_FRect(AX1-1,  AY2-r2,  AX1+r2-1, AY2),      0.50, 0.25, AColor ); // lower left
+    fillArc(       KODE_FRect(AX2-r2, AY2-r2,  AX2,      AY2),      0.25, 0.25, AColor ); // lower right
+    fillRectangle( KODE_FRect(AX1+r,  AY1,     AX2-r,    AY1+r-1), AColor );  // top
+    fillRectangle( KODE_FRect(AX1,    AY1+r,   AX2,      AY2-r),   AColor );  // mid
+    fillRectangle( KODE_FRect(AX1+r,  AY2-r+1, AX2-r,    AY2),     AColor );  // bot
+  }
+
+  //----------
+
   // angle 1 = start angle, relative to 3 o'clock
   // angle 2 = 'distance' 0..1, counter-clockwise
 
@@ -324,6 +443,35 @@ public:
   }
 
   //----------
+
+  void fillEllipse(KODE_FRect ARect, KODE_Color AColor) override {
+    set_color(AColor);
+    xcb_arc_t arcs[] = {
+      (int16_t)ARect.x,
+      (int16_t)ARect.y,
+      (uint16_t)ARect.w, // +1,
+      (uint16_t)ARect.h, // +1,
+      (int16_t)(0),
+      (int16_t)(360 * 64)
+    };
+    xcb_poly_fill_arc(MConnection, MDrawable, MGC, 1, arcs );
+  }
+
+  //----------
+
+  void fillTriangle(float AX1, float AY1, float AX2, float AY2, float AX3, float AY3, KODE_Color AColor) override {
+    set_color(AColor);
+    xcb_point_t polyline[] =  {
+      (int16_t)AX1, (int16_t)AY1, (int16_t)AX2, (int16_t)AY2,
+      (int16_t)AX2, (int16_t)AY2, (int16_t)AX3, (int16_t)AY3,
+      (int16_t)AX3, (int16_t)AY3, (int16_t)AX1, (int16_t)AY1,
+    };
+    xcb_fill_poly(MConnection,MDrawable,MGC,XCB_POLY_SHAPE_CONVEX,XCB_COORD_MODE_ORIGIN,6,polyline);
+  }
+
+//------------------------------
+public:
+//------------------------------
 
   void drawText(float AXpos, float AYpos, const char* AText, KODE_Color AColor) override {
     set_color(AColor);
@@ -350,7 +498,9 @@ public:
     drawText(x,y,AText,AColor);
   }
 
-  //----------
+//------------------------------
+public:
+//------------------------------
 
   void uploadBitmap(float AXpos, float AYpos, KODE_Bitmap* ABitmap) override {
     uint32_t width      = ABitmap->getWidth();
@@ -390,7 +540,9 @@ public:
     xcb_flush(MConnection);
   }
 
-  //----------
+//------------------------------
+public:
+//------------------------------
 
   void drawBitmap(float AXpos, float AYpos, KODE_Drawable* ASource) override {
     if (ASource->isImage()) {

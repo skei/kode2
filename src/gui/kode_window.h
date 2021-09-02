@@ -226,7 +226,7 @@ public:
     else {
       hover = findChild(AXpos,AYpos);
     }
-    if (hover != AClicked) {
+    if (AClicked && (hover != AClicked)) {
       AClicked->on_widget_leave(AXpos,AYpos,hover,ATimeStamp);
     }
     if (hover) {
@@ -442,14 +442,19 @@ public: // "widget listener"
   //----------
 
   void do_widget_grabKeyboard(KODE_Widget* AWidget) override {
+    //KODE_Print("%p\n",AWidget);
     MKeyInputWidget = AWidget;
   }
 
   //----------
 
   void do_widget_grabModal(KODE_Widget* AWidget) override {
+    //KODE_Print("%p\n",AWidget);
     MMouseModalWidget = AWidget;
-    updateHoverWidget(MMouseX,MMouseY);
+    //if (AWidget)
+      updateHoverWidget(MMouseX,MMouseY);
+    //else
+    //  releaseHoverWidget(MMouseClickedWidget,MMouseX,MMouseY,0);
   }
 
   //----------

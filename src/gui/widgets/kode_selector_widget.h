@@ -128,9 +128,9 @@ public:
     KODE_TextWidget::on_widget_paint(APainter,ARect,AMode);
     //APainter->setDrawColor(KODE_LightGrey);
     APainter->fillTriangle(
-      mrect.x2() - 10,  mrect.y2() - 7,
-      mrect.x2() - 3,   mrect.y2() - 7,
-      mrect.x2() - 7,   mrect.y2() - 3,
+      mrect.x2() - 12,  mrect.y2() - 9,
+      mrect.x2() - 5,   mrect.y2() - 9,
+      mrect.x2() - 9,   mrect.y2() - 5,
       KODE_COLOR_LIGHT_GRAY
     );
   }

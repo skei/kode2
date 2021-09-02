@@ -5,6 +5,8 @@
 #include "kode.h"
 #include "base/utils/kode_random.h"
 
+#include <iconv.h>
+
 //----------------------------------------------------------------------
 // private:
 //----------------------------------------------------------------------
@@ -78,6 +80,19 @@ void KODE_AppendString(char* buffer, const char* str) {
 // public:
 //----------------------------------------------------------------------
 
+char* KODE_AsciiToUTF16(char* AUTF16, char* AAscii) {
+  iconv_t cd = iconv_open("UTF-16","ASCII");
+  if (cd == (iconv_t)-1) return KODE_NULL; // iconv_open failed
+  size_t  in_size   = strlen(AAscii);
+  size_t  out_size  = 1024;
+  char*   in_ptr    = AAscii;
+  char*   out_ptr   = AUTF16;
+  int nconv = iconv(cd,&in_ptr,&in_size,&out_ptr,&out_size);
+  if (nconv != 0) return KODE_NULL; // unable to perform conversion
+  return AUTF16;
+}
+
+
 // ptr to (reversed) hex
 // prefix + ptr2hex (inverted) + random number
 // (for creating unique strings (based on pointers)
@@ -109,12 +124,57 @@ void KODE_CreateUniqueString(char* buffer, const char* APrefix, void* APtr) {
 
 //----------
 
+/*
+  assume APos is valid
+*/
+
+char* KODE_DeleteChar(char* ABuffer, int32_t APos) {
+  if (!ABuffer) return ABuffer;
+  int32_t len = strlen(ABuffer);
+  for (int32_t i=APos; i<len; i++) ABuffer[i] = ABuffer[i+1];
+  return ABuffer;
+}
+
+
+//----------
+
 // returns first occurence of 'str'
 // or NULL if not found
 
 char* KODE_FindString(char* buffer, char* str) {
   return strstr(buffer,str);
 }
+
+//----------
+
+// returns 'exe', not '.exe'
+
+//const char* KODE_GetFileExt(/*const*/ char* APath) {
+//  if (APath) {
+//    char *dot;
+//    dot = KODE_Strrchr(APath,'.');
+//    if (dot) return dot+1;
+//  }
+//  return (char*)"NULL";
+//}
+
+//----------
+
+// /home/skei/test -> /home/skei/
+
+// modifies content of APath
+
+//const char* KODE_GetPath(/*const*/ char* APath) {
+//  if (APath) {
+//    char *slash, *backslash;
+//    slash     = KODE_Strrchr(APath,'/');
+//    backslash = KODE_Strrchr(APath,'\\');//+1;
+//    if (slash) *(slash+1) = '\0';
+//    else if (backslash) *(backslash+1) = '\0'; // see above
+//    return APath;
+//  }
+//  return KODE_NULL;
+//}
 
 //----------
 
@@ -128,6 +188,22 @@ uint32_t KODE_HashString(const char* buffer) {
     h = ((h << 5) + h) + c; // h * 33 + c
   }
   return h;
+}
+
+//----------
+
+/*
+  assume APos is valid
+*/
+
+char* KODE_InsertChar(char* ABuffer, int32_t APos, char AChar) {
+//var
+//  i,len : longint;
+  if (!ABuffer) return ABuffer;
+  int32_t len = strlen(ABuffer);
+  for (int32_t i=(len+1); i>=(APos+1);i--) ABuffer[i] = ABuffer[i-1];
+  ABuffer[APos] = AChar;
+  return ABuffer;
 }
 
 //----------
@@ -224,35 +300,34 @@ bool KODE_SearchWildcards(char* buffer, const char* wildcards) {
 
 // problem if there is a dot in the path
 // todo: find last dot..
+// modifies APath
 
-/*
-void KODE_stripFileExt(void) {
-  char *dot;
-  dot = strrchr(MBuffer,'.');
-  if (dot) {
-    int32_t len = dot - MBuffer;
-    _resize_buffer(len);
+char* KODE_StripFileExt(char* APath) {
+  if (APath) {
+    char* dot = strrchr(APath,'.');
+    if (dot) {
+      //int32_t len = dot - APath;
+      *dot = '\0'; // return dot + 1;
+      return APath;
+    }
   }
+  return KODE_NULL;
 }
-*/
 
 //----------
 
 // /home/skei/test -> test
 
-/*
-void KODE_StripPath(char* buffer) {
-  const char *slash, *backslash;
-  slash     = strrchr(buffer,'/');
-  backslash = strrchr(buffer,'\\');//+1;
-  if (slash) {
-    _copy_buffer(slash + 1);
+char* KODE_StripPath(char* APath) {
+  if (APath) {
+    char *slash, *backslash;
+    slash     = strrchr(APath,'/');
+    backslash = strrchr(APath,'\\');//+1;
+    if (slash) return slash + 1;
+    else if (backslash) return backslash + 1; // see above
   }
-  else if (backslash) {
-    _copy_buffer(backslash + 1); // see above
-  }
+  return KODE_NULL;
 }
-*/
 
 //----------
 
@@ -265,6 +340,19 @@ void KODE_UpperCase(char* buffer) {
   }
 }
 
+//----------
+
+char* KODE_UTF16ToAscii(char* AAscii, char* AUTF16) {
+  iconv_t cd = iconv_open("ASCII","UTF-16");
+  if (cd == (iconv_t)-1) return KODE_NULL; // iconv_open failed
+  size_t  in_size   = strlen(AAscii);
+  size_t  out_size  = 1024;
+  char*   in_ptr    = AUTF16;
+  char*   out_ptr   = AAscii;
+  int nconv = iconv(cd,&in_ptr,&in_size,&out_ptr,&out_size);
+  if (nconv != 0) return KODE_NULL; // unable to perform conversion
+  return AAscii;
+}
 
 //----------------------------------------------------------------------
 //

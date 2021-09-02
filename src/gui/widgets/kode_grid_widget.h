@@ -79,22 +79,44 @@ public:
 public:
 //------------------------------
 
-  int32_t     getNumColumns()                           { return MNumColumns; }
-  int32_t     getnumRows()                              { return MNumRows; }
+  virtual int32_t getNumColumns()                           { return MNumColumns; }
+  virtual int32_t getnumRows()                              { return MNumRows; }
 
-  void        setNumColumns(int32_t AWidth)             { MNumColumns = AWidth; }
-  void        setNumRows(int32_t AHeight)               { MNumRows = AHeight; }
-  void        setNumCells(int32_t AX, int32_t AY)       { MNumColumns = AX; MNumRows = AY; }
+  virtual void    setNumColumns(int32_t AWidth)             { MNumColumns = AWidth; }
+  virtual void    setNumRows(int32_t AHeight)               { MNumRows = AHeight; }
+  virtual void    setNumCells(int32_t AX, int32_t AY)       { MNumColumns = AX; MNumRows = AY; }
 
-  void        setSelectCell(bool ASelect=true)          { MSelectCell = ASelect; }
-  void        setSelectMultipleCells(bool ASelect=true) { MSelectMultipleCells = ASelect; }
+  virtual void    setSelectCell(bool ASelect=true)          { MSelectCell = ASelect; }
+  virtual void    setSelectMultipleCells(bool ASelect=true) { MSelectMultipleCells = ASelect; }
 
-  void        setDrawCells(bool ADraw=true)             { MDrawCells = ADraw; }
-  void        setDrawHorizontalLines(bool ADraw=true)   { MDrawHorizontalLines = ADraw; }
-  void        setDrawVerticalLines(bool ADraw=true)     { MDrawVerticalLines = ADraw; }
-  void        setDrawSelectedCells(bool ADraw=true)     { MDrawSelectedCells = ADraw; }
-  void        setBackgroundColor(KODE_Color AColor)     { MBackgroundColor = AColor; }
-  void        setGridColor(KODE_Color AColor)           { MGridColor = AColor; }
+  virtual void    setDrawCells(bool ADraw=true)             { MDrawCells = ADraw; }
+  virtual void    setDrawHorizontalLines(bool ADraw=true)   { MDrawHorizontalLines = ADraw; }
+  virtual void    setDrawVerticalLines(bool ADraw=true)     { MDrawVerticalLines = ADraw; }
+  virtual void    setDrawSelectedCells(bool ADraw=true)     { MDrawSelectedCells = ADraw; }
+  virtual void    setBackgroundColor(KODE_Color AColor)     { MBackgroundColor = AColor; }
+  virtual void    setGridColor(KODE_Color AColor)           { MGridColor = AColor; }
+
+//------------------------------
+public:
+//------------------------------
+
+  virtual void selectCell(int32_t AX, int32_t AY, bool AState=true) {
+    if (AState) {
+      MSelectedX = AX;
+      MSelectedY = AY;
+      MSelectedXcount = 1;
+      MSelectedYcount = 1;
+    }
+    else {
+      MSelectedX = -1;
+      MSelectedY = -1;
+      MSelectedXcount = 0;
+      MSelectedYcount = 0;
+    }
+  }
+
+  //MSelectCell = AState;
+  //MSelectMultipleCells = false;
 
 //------------------------------
 public:

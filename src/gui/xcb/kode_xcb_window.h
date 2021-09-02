@@ -629,10 +629,10 @@ private:
         xcb_key_press_event_t* key_press = (xcb_key_press_event_t*)AEvent;
         uint32_t  k = remapKey(   key_press->detail, key_press->state );
         uint32_t  s = remapState( key_press->state );
-        //uint32_t ts = key_press->time;
+        uint32_t ts = key_press->time;
         //int32_t   x = key_press->event_x;
         //int32_t   y = key_press->event_y;
-      on_window_keyPress(0,k,s);
+      on_window_keyPress(k,s,ts);
         break;
       }
 
@@ -642,10 +642,10 @@ private:
         xcb_key_release_event_t* key_release = (xcb_key_release_event_t*)AEvent;
         uint32_t  k = remapKey( key_release->detail, key_release->state );
         uint32_t  s = remapState( key_release->state );
-        //uint32_t ts = key_release->time;
+        uint32_t ts = key_release->time;
         //int32_t   x = key_release->event_x;
         //int32_t   y = key_release->event_y;
-        on_window_keyRelease(0,k,s);
+        on_window_keyRelease(k,s,ts);
         break;
       }
 
