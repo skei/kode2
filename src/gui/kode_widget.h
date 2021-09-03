@@ -287,31 +287,59 @@ public:
 
   //----------
 
+  /*
+    todo:
+    - cull/clip children using ARect (clipping rect)
+  */
+
   virtual void paintChildren(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
+
     KODE_FRect mrect = getRect();
+    KODE_FRect clip_rect = mrect;
+
+    mrect.overlap(ARect);
+
+    clip_rect.shrink(layout.innerBorder);
+    clip_rect.overlap(ARect);
+
+    if (clip_rect.isEmpty()) return;
+
+    if (flags.autoClip) APainter->pushClip(clip_rect/*mrect*/);
+
     for (uint32_t i=0; i<MChildren.size(); i++) {
       KODE_Widget* child = MChildren[i];
       if (child->flags.visible) {
         KODE_FRect child_rect = child->getRect();
         if (child_rect.isNotEmpty()) {
-          if (child_rect.touches(mrect)) {
-            KODE_FRect cliprect = mrect;
-            cliprect.overlap(child_rect);
-            if (child->flags.autoClip) {
-              //APainter->setClip(r);
-              APainter->pushClip(cliprect);
-            } // clip
-            //child->on_widget_paint(APainter,ARect,AMode);   // incoming rect
-            //child->on_widget_paint(APainter,mrect,AMode);   // this/parent
-            child->on_widget_paint(APainter,cliprect,AMode);  // clip rect
-            if (child->flags.autoClip) {
-              //APainter->resetClip();
-              APainter->popClip();
-            } // clip
-          } // touches
+
+//          if (child_rect.touches(mrect)) {
+
+            KODE_FRect overlap_rect = mrect;
+            overlap_rect.overlap(child_rect);
+            if (overlap_rect.isNotEmpty()) { // shouldn't be empty, because they overlap
+
+//              if (child->flags.autoClip) {
+//                APainter->pushClip(overlap_rect);
+//              } // clip
+
+              //child->on_widget_paint(APainter,ARect,AMode);   // incoming rect
+              //child->on_widget_paint(APainter,mrect,AMode);   // this/parent
+              child->on_widget_paint(APainter,overlap_rect,AMode);  // clip rect
+
+//              if (child->flags.autoClip) {
+//                APainter->popClip();
+//              } // clip
+
+            } // !empty
+
+//          } // touches
+
         } // !empty
       } // visible
     } // for all children
+
+    if (flags.autoClip) APainter->popClip();
+
   }
 
   //----------
@@ -544,11 +572,17 @@ public:
 
           //-----
 
+          /*
+            - if first widget doesn't fit, it will jump to next line
+          */
+
           case KODE_WIDGET_STACK_HORIZ:
             if ((stackx + rect.w + layout.innerBorder.w - layout.spacing.x) >= client.w) {
-              stackx = 0;
-              stacky += stack_highest + layout.spacing.y;
-              stack_highest = 0;
+              if (stackx != 0) {  // first widget..
+                stackx = 0;
+                stacky += stack_highest + layout.spacing.y;
+                stack_highest = 0;
+              }
             }
             rect.x = (client.x + stackx);
             rect.y = (client.y + stacky);
@@ -557,9 +591,11 @@ public:
             break;
           case KODE_WIDGET_STACK_VERT:
             if ((stacky + rect.h) >= client.h) {
-              stackx += stack_widest + layout.spacing.x;
-              stacky = 0;
-              stack_widest = 0;
+              if (stacky != 0) {  // first widget..
+                stacky = 0;
+                stackx += stack_widest + layout.spacing.x;
+                stack_widest = 0;
+              }
             }
             rect.x += client.x + stackx;
             rect.y += client.y + stacky;

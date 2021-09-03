@@ -203,10 +203,8 @@ public: // clip
 
 
   /*
-  - After cairo_clip(), the current path will be cleared from the cairo
-    context.
-  - Calling cairo_clip() can only make the clip region smaller,
-    never larger.
+  - After cairo_clip(), the current path will be cleared from the cairo context
+  - Calling cairo_clip() can only make the clip region smaller, never larger
   */
 
   void setClip(KODE_FRect ARect) override {

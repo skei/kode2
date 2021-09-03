@@ -1162,7 +1162,7 @@ public:
   //----------
 
   void invalidate(int32_t AXpos, int32_t AYpos, int32_t AWidth, int32_t AHeight) override {
-    //XCB_Print("xcb: invalidate ARect %.0f %.0f %.0f %.0f\n",ARect.x,ARect.y,ARect.w,ARect.h);
+    //KODE_Print("xcb: invalidate %i %i %i %i\n",AXpos,AYpos,AWidth,AHeight);
     memset(MExposeEventBuffer,0,sizeof(MExposeEventBuffer));
     MExposeEvent->window        = MWindow;
     MExposeEvent->response_type = XCB_EXPOSE;

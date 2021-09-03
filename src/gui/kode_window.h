@@ -76,6 +76,7 @@ public:
     #ifndef KODE_NO_WINDOW_BUFFERING
       createBuffer(AWidth,AHeight);
     #endif
+    //flags.autoClip = true;
   }
 
   //----------
@@ -164,10 +165,15 @@ public:
 //------------------------------
 
   void paintWidget(KODE_Widget* AWidget, KODE_FRect ARect, uint32_t AMode=0) {
+
     #ifdef KODE_NO_WINDOW_BUFFERING
+      //if (flags.autoClip) MWindowPainter->pushClip(ARect);
       AWidget->on_widget_paint(MWindowPainter,ARect,AMode);
+      //if (flags.autoClip) MWindowPainter->popClip();
     #else
+      //if (flags.autoClip) MBufferPainter->pushClip(ARect);
       AWidget->on_widget_paint(MBufferPainter,ARect,AMode);
+      //if (flags.autoClip) MBufferPainter->popClip();
       MWindowPainter->drawBitmap(ARect.x,ARect.y,MBufferSurface,ARect);
     #endif
   }

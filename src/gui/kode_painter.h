@@ -70,7 +70,7 @@ public:
     //KODE_Trace("pushing x %.0f y %.0f w %.0f h %.0f\n",MClipRect.x,MClipRect.y,MClipRect.w,MClipRect.h);
     MClipStack.push(MClipRect);
     MClipRect = ARect;
-    resetClip();
+//    resetClip();
     setClip(MClipRect);
   }
 
@@ -84,7 +84,7 @@ public:
   KODE_FRect popClip() override {
     //KODE_FRect prev_rect = MClipRect;
     MClipRect = MClipStack.pop();
-    resetClip();
+//    resetClip();
     setClip(MClipRect);
     return MClipRect;
   }
