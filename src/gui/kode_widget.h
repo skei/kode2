@@ -32,6 +32,8 @@ struct KODE_WidgetLayout {
   uint32_t    alignment     = KODE_WIDGET_ALIGN_PARENT;
   KODE_FRect  innerBorder   = KODE_FRect(0);              // space between widgets and parent edges
   KODE_FPoint spacing       = KODE_FPoint(0);             // space inbetween widgets
+  KODE_FPoint minSize       = KODE_FPoint(0,0);
+  KODE_FPoint maxSize       = KODE_FPoint(999999,999999);
   KODE_FRect  extraBorder   = KODE_FRect(0);              // extra space/border for each widget
   bool        contentBorder = true;                       // true if content rect includes innerBorder of parent
 };
@@ -545,13 +547,7 @@ public:
             //client.y += (rect.h + layout.spacing.y);
             client.h -= (rect.h + layout.spacing.y);
             break;
-
           //-----
-
-          /*
-            - if first widget doesn't fit, it will jump to next line
-          */
-
           case KODE_WIDGET_STACK_HORIZ:
             if ((stackx + rect.w + layout.innerBorder.w - layout.spacing.x) >= client.w) {
               if (stackx != 0) {  // first widget..
@@ -580,14 +576,11 @@ public:
             break;
 
         } // switch alignment
-
-        //if (rect.w < child->getMinWidth()) rect.w = child->getMinWidth();
-        //if (rect.h < child->getMinHeight()) rect.h = child->getMinHeight();
-        //rect = new_client_rect;
+        rect.w = KODE_Clamp(rect.w, child->layout.minSize.w, child->layout.maxSize.w);
+        rect.h = KODE_Clamp(rect.h, child->layout.minSize.h, child->layout.maxSize.h);
 
         rect.shrink(child->layout.extraBorder);
         content.combine(rect);
-
         child->MRect.x = rect.x + MChildrenXOffset;
         child->MRect.y = rect.y + MChildrenYOffset;
         child->MRect.w = rect.w;
