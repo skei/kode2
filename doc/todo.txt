@@ -1,14 +1,58 @@
 
+
+
 TODO
 MAYBE
-IDEAD
-THOUGHTS
+IDEAS
+SUGGESTIONS
+CONSIDERATIONS
 
 
 
 ----------------------------------------------------------------------
 plugin
 ----------------------------------------------------------------------
+
+
+
+* data-transfer
+
+  safe, thread-safe, lock/wait-free way to transfer data buffers to/from
+  processing/gui parts.. samples for fft analysis, to paint output uv,
+  waveforms, image to audio,..
+
+
+
+
+
+
+------------------------------
+vst3
+------------------------------
+
+
+
+* midi out
+* state (editor & plugin)
+* presets
+
+
+
+------------------------------
+lv2
+------------------------------
+
+
+
+* extensions
+* gui
+* embedded manifest
+
+
+
+------------------------------
+parameters
+------------------------------
 
 
 
@@ -25,16 +69,23 @@ plugin
 
 
 
-* data-transfer
-
-  safe, thread-safe, lock/wait-free way to transfer data buffers to/from
-  processing/gui parts..
-
-  samples for ffft analysis, to paint output uv/waveforms, image to audio,..
-
-
-
 * parameter dezipping/denoising
+
+
+
+* parameter types
+
+  - dB
+  - hz
+  - simplify on_parameter, if plugin have array for params, and
+    param convert does everything needed, we can just insert the value
+    into the array, instead of a big switch/case section..
+
+
+
+------------------------------
+audio
+------------------------------
 
 
 
@@ -54,19 +105,6 @@ plugin
 
 
 
-* more parameter types
-
-  - dB
-  - hz
-
-  - simplify on_parameter, if plugin have array for params, and
-    param convert does everything needed, we can just insert the value
-    into the array, instead of a big switch/case section..
-
-
-
-* midi (cc) out
-
 ----------------------------------------------------------------------
 gui
 ----------------------------------------------------------------------
@@ -76,15 +114,22 @@ gui
 * mouse cursor
 
   investigate why we get these weird cursors..
-  looks like kd
-
-
-
-* scale factor for gui
+  looks like kde
 
 
 
 * resizable editor
+* scale factor for gui
+
+
+
+* clipping
+
+  something isn't right with the clipping..
+  it's related somehow to deeper
+  it might have something to do with the clip rect stack, and widgets not
+  resetting the clip rect correctly before returning to parent widget
+  (painting the next child widgets)
 
 
 
@@ -177,9 +222,9 @@ specific widgets
 
 * text-edit
 
- - mouse/xy -> char pos.. (
-   int getCharIndexFromXpos(float xpos)
-   (getStringWidth)
+  - mouse/xy -> char pos..
+    int getCharIndexFromXpos(float xpos)
+    (getStringWidth)
   - fix chars (shift doesn't work)
   - modal doesn't work: error when exiting
 
@@ -187,7 +232,7 @@ specific widgets
 
 * value-widget
 
-  adjustable precision after . in getdisplaytext
+  adjustable precision (after .) in getdisplaytext
   timer, adjust caret color (blink)
 
 
@@ -196,7 +241,7 @@ specific widgets
 
   - cache positions (so we don't need to trash cache every time)
   - combine circular & regular..
-    - func: index to line endpoints
+    - (index to line endpoints)
     - circular: precalc line endpoints
     - circular: draw areas as arcs
 

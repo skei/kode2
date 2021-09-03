@@ -1,6 +1,6 @@
 # depslib dependency file v1.0
-1630617549 source:/DISKS/sda2/code/git/kode2/build/build.cpp
-	"../test/test_graph.cpp"
+1630626623 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+	"../demo/demo_gui.cpp"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
 	"kode_config.h"
@@ -101,14 +101,14 @@
 	<stdlib.h>
 	"kode.h"
 
-1630534830 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
+1630689948 /DISKS/sda2/code/git/kode2/src/gui/kode_window.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"gui/kode_surface.h"
 	"gui/kode_widget.h"
 	"gui/xcb/kode_xcb_window.h"
 
-1630441016 /DISKS/sda2/code/git/kode2/src/gui/kode_painter.h
+1630688369 /DISKS/sda2/code/git/kode2/src/gui/kode_painter.h
 	"kode.h"
 	"base/types/kode_stack.h"
 	"gui/cairo/kode_cairo_painter.h"
@@ -230,7 +230,7 @@
 	"kode.h"
 	"gui/kode_drawable.h"
 
-1630550046 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
+1630690088 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"plugin/kode_parameter.h"
@@ -244,7 +244,7 @@
 1630454571 /DISKS/sda2/code/git/kode2/src/base/types/kode_rect.h
 	"kode.h"
 
-1630510017 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_window.h
+1630687797 /DISKS/sda2/code/git/kode2/src/gui/xcb/kode_xcb_window.h
 	"kode.h"
 	"gui/kode_drawable.h"
 	"gui/base/kode_base_window.h"
@@ -415,7 +415,7 @@
 	"gui/kode_widgets.h"
 	"plugin/kode_parameter.h"
 
-1630535184 /DISKS/sda2/code/git/kode2/src/gui/cairo/kode_cairo_painter.h
+1630688344 /DISKS/sda2/code/git/kode2/src/gui/cairo/kode_cairo_painter.h
 	"kode.h"
 	"gfx/kode_bitmap.h"
 	"gui/kode_drawable.h"
@@ -1048,7 +1048,7 @@
 	"gui/widgets/kode_menu_widget.h"
 	"gui/widgets/kode_text_widget.h"
 
-1630616186 /DISKS/sda2/code/git/kode2/demo/demo_gui.cpp
+1630690132 /DISKS/sda2/code/git/kode2/demo/demo_gui.cpp
 	"kode.h"
 	"plugin/kode_parameters.h"
 	"plugin/kode_plugin.h"
