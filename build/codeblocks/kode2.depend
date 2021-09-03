@@ -230,7 +230,7 @@
 	"kode.h"
 	"gui/kode_drawable.h"
 
-1630690088 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
+1630691640 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"plugin/kode_parameter.h"
@@ -1048,7 +1048,7 @@
 	"gui/widgets/kode_menu_widget.h"
 	"gui/widgets/kode_text_widget.h"
 
-1630690132 /DISKS/sda2/code/git/kode2/demo/demo_gui.cpp
+1630690149 /DISKS/sda2/code/git/kode2/demo/demo_gui.cpp
 	"kode.h"
 	"plugin/kode_parameters.h"
 	"plugin/kode_plugin.h"

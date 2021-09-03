@@ -293,53 +293,29 @@ public:
   */
 
   virtual void paintChildren(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
-
     KODE_FRect mrect = getRect();
-    KODE_FRect clip_rect = mrect;
-
     mrect.overlap(ARect);
-
+    KODE_FRect clip_rect = getRect();
     clip_rect.shrink(layout.innerBorder);
     clip_rect.overlap(ARect);
-
     if (clip_rect.isEmpty()) return;
-
-    if (flags.autoClip) APainter->pushClip(clip_rect/*mrect*/);
-
+    if (flags.autoClip) APainter->pushClip(clip_rect);
     for (uint32_t i=0; i<MChildren.size(); i++) {
       KODE_Widget* child = MChildren[i];
       if (child->flags.visible) {
         KODE_FRect child_rect = child->getRect();
         if (child_rect.isNotEmpty()) {
-
-//          if (child_rect.touches(mrect)) {
-
-            KODE_FRect overlap_rect = mrect;
+          //if (child_rect.touches(mrect)) {
+            KODE_FRect overlap_rect = clip_rect;//mrect;
             overlap_rect.overlap(child_rect);
-            if (overlap_rect.isNotEmpty()) { // shouldn't be empty, because they overlap
-
-//              if (child->flags.autoClip) {
-//                APainter->pushClip(overlap_rect);
-//              } // clip
-
-              //child->on_widget_paint(APainter,ARect,AMode);   // incoming rect
-              //child->on_widget_paint(APainter,mrect,AMode);   // this/parent
+            if (overlap_rect.isNotEmpty()) {
               child->on_widget_paint(APainter,overlap_rect,AMode);  // clip rect
-
-//              if (child->flags.autoClip) {
-//                APainter->popClip();
-//              } // clip
-
-            } // !empty
-
-//          } // touches
-
-        } // !empty
-      } // visible
+            } // !overlap.empty
+          //} // child.touches
+        } // !child.empty
+      } // child.visible
     } // for all children
-
     if (flags.autoClip) APainter->popClip();
-
   }
 
   //----------
