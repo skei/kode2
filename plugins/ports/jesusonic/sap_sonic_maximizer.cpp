@@ -1,5 +1,6 @@
 
-#define KODE_GUI_XCB
+//#define KODE_GUI_XCB
+#define KODE_NO_GUI
 
 // nc -U -l -k /tmp/kode.socket
 #define KODE_DEBUG_PRINT_SOCKET
@@ -13,9 +14,11 @@
 #include "plugin/kode_instance.h"
 #include "plugin/kode_parameters.h"
 #include "plugin/kode_plugin.h"
-#include "gui/kode_widgets.h"
 
-//#include "../data/img/sa_logo_40_trans_black.h"
+#ifndef KODE_NO_GUI
+#include "gui/kode_widgets.h"
+#include "../data/img/sa_logo_40_trans_black.h"
+#endif
 
 //----------------------------------------------------------------------
 
@@ -92,6 +95,8 @@ public:
 //
 //----------------------------------------------------------------------
 
+#ifndef KODE_NO_GUI
+
 class myEditor : public KODE_Editor {
 
 //------------------------------
@@ -115,7 +120,7 @@ public:
     MBitmap = new KODE_Bitmap(sa_logo_40_trans_black,sa_logo_40_trans_black_size);
     MBitmap->premultAlpha(0x999999);
     KODE_ImageWidget* imagewidget = new KODE_ImageWidget( KODE_FRect(10,10,64,64) );
-    imagewidget->setImage(MBitmap);
+    imagewidget->setImage(this,MBitmap);
     appendWidget(imagewidget);
 
     KODE_TextWidget* text1 = new KODE_TextWidget( KODE_FRect(64,10,200,20) );
@@ -154,6 +159,8 @@ private:
 
 };
 
+#endif // KODE_NO_GUI
+
 //----------------------------------------------------------------------
 //
 //
@@ -166,7 +173,10 @@ class myInstance : public KODE_Instance {
 private:
 //------------------------------
 
+  #ifndef KODE_NO_GUI
   myEditor* MEditor     = KODE_NULL;
+  #endif
+
   bool      need_recalc = true;
 
   float     param1      = 0.0f;

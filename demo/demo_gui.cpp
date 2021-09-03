@@ -62,7 +62,7 @@ public:
       setName("demo_gui");
     #endif
 
-    setAuthor("author");
+    setAuthor("skei.audio");
     setVersion(0x0101001);
 
     appendInput(  new KODE_PluginPort("input1")  );

@@ -1,6 +1,6 @@
 # depslib dependency file v1.0
-1630503257 source:/DISKS/sda2/code/git/kode2/build/build.cpp
-	"../demo/demo_gui.cpp"
+1630617549 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+	"../test/test_graph.cpp"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
 	"kode_config.h"
@@ -622,7 +622,7 @@
 
 1630412938 /DISKS/sda2/code/git/kode2/src/base/types/kode_quaternion.h
 
-1630363887 /DISKS/sda2/code/git/kode2/src/base/types/kode_string.h
+1630583979 /DISKS/sda2/code/git/kode2/src/base/types/kode_string.h
 	"kode.h"
 	"base/types/kode_buffer.h"
 	"base/utils/kode_strutils.h"
@@ -1048,7 +1048,7 @@
 	"gui/widgets/kode_menu_widget.h"
 	"gui/widgets/kode_text_widget.h"
 
-1630539846 /DISKS/sda2/code/git/kode2/demo/demo_gui.cpp
+1630616186 /DISKS/sda2/code/git/kode2/demo/demo_gui.cpp
 	"kode.h"
 	"plugin/kode_parameters.h"
 	"plugin/kode_plugin.h"
@@ -1064,11 +1064,11 @@
 
 1630552843 /DISKS/sda2/code/git/kode2/demo/demo_gui/right_panel.h
 
-1630537190 /DISKS/sda2/code/git/kode2/demo/demo_gui/top_panel.h
+1630609011 /DISKS/sda2/code/git/kode2/demo/demo_gui/top_panel.h
 
 1630550700 /DISKS/sda2/code/git/kode2/demo/demo_gui/bottom_panel.h
 
-1630552896 /DISKS/sda2/code/git/kode2/demo/demo_gui/main_panel.h
+1630607054 /DISKS/sda2/code/git/kode2/demo/demo_gui/main_panel.h
 	"../data/img/knob4_60x60_131.h"
 
 1630376042 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_button_row_widget.h
@@ -1130,12 +1130,9 @@
 1630406499 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_symbol_widget.h
 	"gui/kode_widget.h"
 
-1630363269 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_text_box_widget.h
-	"base/kode_lock.h"
-	"base/kode_string.h"
+1630586391 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_text_box_widget.h
 	"gui/kode_widget.h"
-	"gui/widgets/kode_color_widget.h"
-	"gui/widgets/kode_scroll_bar_widget.h"
+	"base/types/kode_string.h"
 
 1630536194 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_text_edit_widget.h
 	"base/utils/kode_strutils.h"

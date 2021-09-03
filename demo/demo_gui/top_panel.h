@@ -74,12 +74,12 @@ public:
     knob2->setValue(0.25);
     right->appendWidget(knob2);
 
-    KODE_Knob3Widget* knob3 = new KODE_Knob3Widget( KODE_FRect(90,30) );
+    KODE_Knob3Widget* knob3 = new KODE_Knob3Widget( KODE_FRect(90,32) );
     knob3->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
     knob3->setValue(0.45);
     right->appendWidget(knob3);
 
-    KODE_Knob4Widget* knob4 = new KODE_Knob4Widget( KODE_FRect(120,30) );
+    KODE_Knob4Widget* knob4 = new KODE_Knob4Widget( KODE_FRect(120,20) );
     knob4->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
     knob4->setValue(0.85);
     right->appendWidget(knob4);

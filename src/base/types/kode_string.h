@@ -11,6 +11,9 @@
 #include "base/utils/kode_convert.h"
 #include "base/utils/kode_strutils.h"
 
+#define KODE_String KODE_DynamicString
+//#define KODE_String KODE_StaticString
+
 
 //----------------------------------------------------------------------
 //
