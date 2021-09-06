@@ -1,0 +1,20 @@
+
+----------------------------------------------------------------------
+
+Cairo graphics    LGPL 2.1
+LV2               ISC
+stb_*.h           MIT / Public Domain
+VST2              Steinberg proprietary
+VST3              GPL3 / Steinberg proprietary
+XCB               MIT
+
+----------------------------------------------------------------------
+
+ctx               LGPL3
+fst.h             GPL3
+mayer_fft.h       "I'd say go do whatever you want with it"
+pffft.h           FFTPACK (public domain)
+RtAudio           "similar to the MIT License"
+RtMidi            "similar to the MIT License"
+uuid.h            MIT / BSD (?)
+vestige.h         GPL2
