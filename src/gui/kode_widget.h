@@ -4,6 +4,7 @@
 
 #include "kode.h"
 #include "gui/kode_painter.h"
+#include "gui/base/kode_base_window.h"
 #include "plugin/kode_parameter.h"
 
 //----------------------------------------------------------------------
@@ -22,6 +23,7 @@ struct KODE_WidgetFlags {
   bool autoCursor       = true;
   bool autoHint         = false;
   bool autoClip         = true;
+  //bool autoSize         = false;
   bool autoMouseLock    = false;
   bool autoMouseHide    = false;
   bool canDrag          = false;
@@ -67,6 +69,8 @@ private:
   KODE_Widgets      MChildren;
   KODE_Parameter*   MParameters[MAX_PARAMS] = {0};
 
+  KODE_BaseWindow*  MOwner                  = KODE_NULL;
+
 //uint32_t          MSelectedParameter      = 0;
 
 //------------------------------
@@ -94,6 +98,10 @@ public:
 //------------------------------
 public:
 //------------------------------
+
+  KODE_Widget() {
+    init(KODE_FRect());
+  }
 
   KODE_Widget(KODE_FRect ARect) {
     init(ARect);
@@ -132,30 +140,30 @@ public: // set
 public: // set
 //------------------------------
 
-  virtual void setName(const char* AName)               { MName = AName; }
-  virtual void setValue(float AValue)                   { MValue = AValue; }
-  virtual void setDefaultValue(float AValue)            { MDefaultValue = AValue; }
-  virtual void setRect(KODE_FRect ARect)                { MRect = ARect; }
-  virtual void setRect(float x, float y, float w, float h)  { MRect.x=x; MRect.y=y; MRect.w=w;MRect.h=h; }
-  virtual void setPos(float AXpos, float AYpos)         { MRect.x = AXpos; MRect.y = AYpos; }
-  virtual void setSize(float AWidth, float AHeight)     { MRect.w = AWidth; MRect.h = AHeight; }
-  virtual void setWidth(float AWidth)                   { MRect.w = AWidth; }
-  virtual void setHeight(float AHeight)                 { MRect.h = AHeight; }
-  virtual void setContentRect(KODE_FRect ARect)         { MContentRect = ARect; }
-  virtual void setInitialRect(KODE_FRect ARect)         { MInitialRect = ARect; }
-  virtual void setInitialPos(float AX, float AY)        { MInitialRect.x = AX; MInitialRect.y = AY; }
-  virtual void setInitialSize(float AW, float AH)       { MInitialRect.w = AW; MInitialRect.h = AH; }
-  virtual void setInitialWidth(float AW)                { MInitialRect.w = AW; }
-  virtual void setInitialHeight(float AH)               { MInitialRect.h = AH; }
-  virtual void setCursor(int32_t ACursor)               { MCursor = ACursor; }
-  virtual void setparent(KODE_Widget* AParent)          { MParent = AParent; }
-  virtual void setIndex(int32_t AIndex)                 { MIndex = AIndex; }
-  virtual void setHint(const char* AHint)               { MHint = AHint; }
+  virtual void setChildrenOffset(float AX, float AY)    { MChildrenXOffset = AX; MChildrenYOffset = AY; }
   virtual void setChildrenXOffset(float AX)             { MChildrenXOffset = AX; }
   virtual void setChildrenYOffset(float AY)             { MChildrenYOffset = AY; }
-  virtual void setChildrenOffset(float AX, float AY)    { MChildrenXOffset = AX; MChildrenYOffset = AY; }
-
+  virtual void setContentRect(KODE_FRect ARect)         { MContentRect = ARect; }
+  virtual void setCursor(int32_t ACursor)               { MCursor = ACursor; }
+  virtual void setDefaultValue(float AValue)            { MDefaultValue = AValue; }
+  virtual void setHeight(float AHeight)                 { MRect.h = AHeight; }
+  virtual void setHint(const char* AHint)               { MHint = AHint; }
+  virtual void setIndex(int32_t AIndex)                 { MIndex = AIndex; }
+  virtual void setInitialHeight(float AH)               { MInitialRect.h = AH; }
+  virtual void setInitialPos(float AX, float AY)        { MInitialRect.x = AX; MInitialRect.y = AY; }
+  virtual void setInitialRect(KODE_FRect ARect)         { MInitialRect = ARect; }
+  virtual void setInitialSize(float AW, float AH)       { MInitialRect.w = AW; MInitialRect.h = AH; }
+  virtual void setInitialWidth(float AW)                { MInitialRect.w = AW; }
+  virtual void setName(const char* AName)               { MName = AName; }
+  //virtual void setOwner(KODE_BaseWindow* AOwner)        { MOwner = AOwner; }
   virtual void setParameter(KODE_Parameter* AParameter, uint32_t AIndex=0) { MParameters[AIndex] = AParameter; }
+  virtual void setParent(KODE_Widget* AParent)          { MParent = AParent; }
+  virtual void setPos(float AXpos, float AYpos)         { MRect.x = AXpos; MRect.y = AYpos; }
+  virtual void setRect(KODE_FRect ARect)                { MRect = ARect; }
+  virtual void setRect(float x, float y, float w, float h)  { MRect.x=x; MRect.y=y; MRect.w=w;MRect.h=h; }
+  virtual void setSize(float AWidth, float AHeight)     { MRect.w = AWidth; MRect.h = AHeight; }
+  virtual void setValue(float AValue)                   { MValue = AValue; }
+  virtual void setWidth(float AWidth)                   { MRect.w = AWidth; }
 
   //virtual void setSelectedParameter(uint32_t AIndex)    { MSelectedParameter = AIndex; }
   //virtual void setParameterPtr(KODE_Parameter* p)       { MParameterPtr = p; }
@@ -164,20 +172,22 @@ public: // set
 public: // get
 //------------------------------
 
-  virtual float               getValue()                    { return MValue; }
-  virtual float               getDefaultValue()             { return MDefaultValue; }
-  virtual KODE_FRect          getRect()                     { return MRect; }
-  //virtual float               getWidth()                    { return MRect.w; }
-  //virtual float               getHeight()                   { return MRect.h; }
-  virtual KODE_FRect          getInitialRect()              { return MInitialRect; }
+  virtual KODE_Widget*        getChild(uint32_t AIndex)     { return MChildren[AIndex]; }
   virtual KODE_FRect          getContentRect()              { return MContentRect; }
   virtual int32_t             getCursor()                   { return MCursor; }
+  virtual float               getDefaultValue()             { return MDefaultValue; }
+  virtual const char*         getHint()                     { return MHint; }
+  virtual int32_t             getIndex()                    { return MIndex; }
+  virtual KODE_FRect          getInitialRect()              { return MInitialRect; }
+  virtual uint32_t            getNumChildren()              { return MChildren.size(); }
+  virtual KODE_BaseWindow*    getOwner()                    { return MOwner; }
   virtual KODE_Parameter*     getParameter(uint32_t i=0)    { return MParameters[i]; }
   virtual KODE_Widget*        getParent()                   { return MParent; }
-  virtual const char*         getHint()                     { return MHint; }
-  virtual uint32_t            getNumChildren()              { return MChildren.size(); }
-  virtual KODE_Widget*        getChild(uint32_t AIndex)     { return MChildren[AIndex]; }
-  virtual int32_t             getIndex()                    { return MIndex; }
+  virtual KODE_FRect          getRect()                     { return MRect; }
+  virtual float               getValue()                    { return MValue; }
+
+  //virtual float               getWidth()                    { return MRect.w; }
+  //virtual float               getHeight()                   { return MRect.h; }
 
   //virtual KODE_WidgetLayout*  getLayout()                   { return &MLayout; }
   //virtual KODE_WidgetOptions* getOptions()                  { return &MOptions; }
@@ -251,8 +261,9 @@ public:
 //------------------------------
 
   virtual KODE_Widget* appendWidget(KODE_Widget* AWidget) {
-    AWidget->setIndex(MChildren.size());
     AWidget->MParent = this;
+    //AWidget->MOwner = MOwner;
+    AWidget->setIndex(MChildren.size());
     MChildren.append(AWidget);
     return AWidget;
   }
@@ -345,10 +356,16 @@ public:
     KODE_FRect client   = getRect();
     KODE_FRect parent   = client;
     KODE_FRect content  = client;
+
     client.shrink(layout.innerBorder);
     parent.shrink(layout.innerBorder);
-    if (!layout.contentBorder) content.shrink(layout.innerBorder);
+
+    //if (!layout.contentBorder) content.shrink(layout.innerBorder);
+    //if (layout.contentBorder) content.grow(layout.innerBorder);
+
+    //content.setPos(0,0);
     content.setSize(0,0);
+
     float stackx = 0;
     float stacky = 0;
     float stack_highest = 0;
@@ -595,6 +612,10 @@ public:
       content.h += layout.innerBorder.h;
     }
     MContentRect = content;
+    //if (flags.autoSize) {
+    //  MRect.w = content.w;
+    //  MRect.h = content.h;
+    //}
   }
 
   //----------
@@ -617,6 +638,17 @@ public:
     MRect.h += ADeltaY;
     MInitialRect.w += ADeltaX;
     MInitialRect.h += ADeltaY;
+  }
+
+  //----------
+
+  virtual void attachWindow(KODE_BaseWindow* AWindow) {
+    MOwner = AWindow;
+    uint32_t num = MChildren.size();
+    for (uint32_t i=0; i<num; i++) {
+      KODE_Widget* child = MChildren[i];
+      child->attachWindow(AWindow);
+    }
   }
 
 //------------------------------
@@ -675,6 +707,11 @@ public:
 //------------------------------
 public:
 //------------------------------
+
+  virtual KODE_Widget* do_widget_get_owner(KODE_Widget* ASender) {
+    if (MParent) return MParent->do_widget_get_owner(ASender);
+    else return KODE_NULL;
+  }
 
   virtual void do_widget_update(KODE_Widget* ASender) {
     if (MParent) MParent->do_widget_update(ASender);

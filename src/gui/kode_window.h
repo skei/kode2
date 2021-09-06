@@ -70,6 +70,7 @@ public:
   KODE_Window(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL)
   : KODE_ImplementedWindow(AWidth,AHeight,ATitle,AParent)
   , KODE_Widget(KODE_FRect(AWidth,AHeight)) {
+    MOwner = this;
     setName("KODE_Window");
     setRect(KODE_FRect(AWidth,AHeight));
     MWindowPainter = new KODE_Painter(this);
@@ -89,10 +90,43 @@ public:
   }
 
 //------------------------------
+public:
+//------------------------------
+
+  //KODE_Widget* appendWidget(KODE_Widget* AWidget) override {
+  //  if (AWidget) {
+  //    //AWidget->MOwner = this;//setOwner(this);
+  //    KODE_Widget::appendWidget(AWidget);
+  //  }
+  //  return AWidget;
+  //}
+
+//------------------------------
+public:
+//------------------------------
+
+  //virtual bool isBuffered() {
+  //  #ifdef KODE_NO_WINDOW_BUFFERING
+  //  return false;
+  //  #else
+  //  return true;
+  //  #endif
+  //}
+
+  //virtual KODE_Painter* getPainter() {
+  KODE_Painter* getPainter() override {
+    #ifdef KODE_NO_WINDOW_BUFFERING
+    return MWindowPainter;
+    #else
+    return MBufferPainter;
+    #endif
+  }
+
+//------------------------------
 public: // painted
 //------------------------------
 
-  void setFillBackground(bool AFill=true) {
+  virtual void setFillBackground(bool AFill=true) {
     MFillBackground = AFill;
   }
 
@@ -117,12 +151,18 @@ public: // window
 //------------------------------
 
   void open() override {
-    alignChildren(/*this*/);
+    attachWindow(this);
+    alignChildren();
     KODE_ImplementedWindow::open();
     //#ifndef KODE_PLUGIN_EXE
     //  //on_window_paint(0,0,MRect.w,MRect.h);
     //  paintWidget(this,MRect,0);
     //#endif
+  }
+
+  void close() override {
+    attachWindow(KODE_NULL);
+    KODE_ImplementedWindow::close();
   }
 
 //------------------------------
@@ -397,6 +437,12 @@ public: // base window
 //------------------------------
 public: // "widget listener"
 //------------------------------
+
+  virtual KODE_Widget* do_widget_get_owner(KODE_Widget* AWidget) override {
+    return this;
+  }
+
+  //----------
 
   void do_widget_update(KODE_Widget* AWidget) override {
   }
