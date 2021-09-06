@@ -198,15 +198,6 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="../../demo/demo_gui.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../demo/demo_gui/bottom_panel.h" />
-		<Unit filename="../../demo/demo_gui/left_panel.h" />
-		<Unit filename="../../demo/demo_gui/main_panel.h" />
-		<Unit filename="../../demo/demo_gui/right_panel.h" />
-		<Unit filename="../../demo/demo_gui/top_panel.h" />
 		<Unit filename="../../doc/doxygen.cfg" />
 		<Unit filename="../../doc/license.txt" />
 		<Unit filename="../../doc/makedocs.sh" />
@@ -534,8 +525,11 @@
 		<Unit filename="../../src/gui/widgets/kode_knob3_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_knob4_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_knob_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_main_menu_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_menu_item_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_menu_item_widget2.h" />
 		<Unit filename="../../src/gui/widgets/kode_menu_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_menu_widget2.h" />
 		<Unit filename="../../src/gui/widgets/kode_modmatrix_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_pages_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_panel_widget.h" />
@@ -608,6 +602,28 @@
 		<Unit filename="../../src/plugin/vst3/kode_vst3_instance.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_plugin.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_utils.h" />
+		<Unit filename="../../test/demo.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../test/demo/demo_descriptor.h" />
+		<Unit filename="../../test/demo/demo_editor.h" />
+		<Unit filename="../../test/demo/demo_instance.h" />
+		<Unit filename="../../test/demo/demo_voice.h" />
+		<Unit filename="../../test/demo/pages/audio_page.h" />
+		<Unit filename="../../test/demo/pages/gfx_page.h" />
+		<Unit filename="../../test/demo/pages/gui_page.h" />
+		<Unit filename="../../test/demo/pages/plugin_page.h" />
+		<Unit filename="../../test/demo/pages/system_page.h" />
+		<Unit filename="../../test/demo_gui.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../test/demo_gui/bottom_panel.h" />
+		<Unit filename="../../test/demo_gui/left_panel.h" />
+		<Unit filename="../../test/demo_gui/main_panel.h" />
+		<Unit filename="../../test/demo_gui/right_panel.h" />
+		<Unit filename="../../test/demo_gui/top_panel.h" />
 		<Unit filename="../../test/test1.cpp">
 			<Option compile="0" />
 			<Option link="0" />

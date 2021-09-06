@@ -1,5 +1,5 @@
-#ifndef kdoe_voice_included
-#define kdoe_voice_included
+#ifndef kode_voice_manager_included
+#define kode_voice_manager_included
 //----------------------------------------------------------------------
 
 #define KODE_MASTER_BEND_RANGE  2.0f
@@ -9,6 +9,7 @@
 
 #include "kode.h"
 #include "audio/kode_audio_math.h"
+#include "audio/kode_audio_utils.h"
 #include "plugin/kode_process_context.h"
 
 //----------------------------------------------------------------------
