@@ -76,7 +76,7 @@ public:
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
     KODE_FRect mrect = getRect();
 
-    fillBackground(APainter,ARect);
+    fillBackground(APainter,ARect,AMode);
 
     //STrace("painting %s\n",MName);
     if (MNumSliders > 1) {
@@ -94,7 +94,7 @@ public:
       }
     }
 
-    drawBorder(APainter);
+    drawBorder(APainter,ARect,AMode);
 
   }
 

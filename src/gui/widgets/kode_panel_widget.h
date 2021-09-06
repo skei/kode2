@@ -23,7 +23,7 @@ protected:
 public:
 //------------------------------
 
-  KODE_PanelWidget(KODE_FRect ARect)
+  KODE_PanelWidget(KODE_FRect ARect=KODE_FRect())
   : KODE_Widget(ARect) {
     setName("KODE_PanelWidget");
     setHint("panel");
@@ -54,13 +54,13 @@ public:
 
   //----------
 
-  virtual void drawBorder(KODE_BasePainter* APainter) {
+  virtual void drawBorder(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
     if (MDrawBorder) {
       APainter->drawRectangle(getRect(),MBorderColor);
     }
   }
 
-  virtual void fillBackground(KODE_BasePainter* APainter, KODE_FRect ARect) {
+  virtual void fillBackground(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
     if (MFillBackground) {
       //APainter->fillRectangle(getRect(),MBackgroundColor);
       APainter->fillRectangle(ARect,MBackgroundColor);
@@ -77,10 +77,10 @@ public:
 //    //APainter->resetClip();
 //    APainter->setClip(mrect);
 
-    fillBackground(APainter,ARect);
+    fillBackground(APainter,ARect,AMode);
     //paintChildren(APainter,getRect(),AMode);
     paintChildren(APainter,ARect,AMode);
-    drawBorder(APainter);
+    drawBorder(APainter,ARect,AMode);
 
 //    APainter->resetClip();
 

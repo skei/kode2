@@ -42,9 +42,9 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
-    fillBackground(APainter,ARect);
+    fillBackground(APainter,ARect,AMode);
     drawTile(APainter);
-    drawBorder(APainter);
+    drawBorder(APainter,ARect,AMode);
   }
 
 };

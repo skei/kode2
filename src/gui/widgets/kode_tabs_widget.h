@@ -5,6 +5,8 @@
 #include "gui/widgets/kode_button_row_widget.h"
 #include "gui/widgets/kode_pages_widget.h"
 
+#define MAX_PAGES 32
+
 class KODE_TabsWidget
 : public KODE_Widget {
 
@@ -20,7 +22,7 @@ protected:
 public:
 //------------------------------
 
-  KODE_TabsWidget(KODE_FRect ARect, uint32_t ANum)
+  KODE_TabsWidget(KODE_FRect ARect, uint32_t ANum=MAX_PAGES)
   : KODE_Widget(ARect) {
     setName("KODE_TabsWidget");
     setHint("tabs");
@@ -49,7 +51,8 @@ public:
 
   //----------
 
-  virtual int32_t appendPage(KODE_Widget* AWidget, const char* ATitle) {
+  virtual int32_t appendPage(const char* ATitle, KODE_Widget* AWidget) {
+    AWidget->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
     int32_t result = MPages->appendPage(AWidget);
     MHeader->setButtonName(MNumPages,ATitle);
     MNumPages += 1;
@@ -84,6 +87,9 @@ public:
   }
 
 };
+
+#undef MAX_PAGES
+
 
 //----------------------------------------------------------------------
 #endif

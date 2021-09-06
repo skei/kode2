@@ -26,6 +26,7 @@ public:
 
     setName("KODE_SAHeaderWidget");
     setHint("saheader");
+    layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     layout.innerBorder = 10;
     layout.spacing = KODE_FPoint(10,0);
 

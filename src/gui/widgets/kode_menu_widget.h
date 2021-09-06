@@ -24,7 +24,8 @@ class KODE_MenuListener {
 //----------------------------------------------------------------------
 
 class KODE_MenuWidget
-: public KODE_PanelWidget {
+: public KODE_PanelWidget
+, public KODE_MenuListener {
 
 //------------------------------
 protected:
@@ -50,10 +51,11 @@ public:
 
   KODE_MenuWidget(KODE_FRect ARect)
   : KODE_PanelWidget(ARect) {
+
     setName("KODE_MenuWidget");
     setHint("menu");
-    MMenuWidth  = ARect.w;
-    MMenuHeight = ARect.h;
+//    MMenuWidth  = ARect.w;
+//    MMenuHeight = ARect.h;
     flags.active = false;
     flags.visible = false;
     setFillBackground();
@@ -68,6 +70,20 @@ public:
 public:
 //------------------------------
 
+  virtual int32_t getSelectedItem() {
+    return MSelectedItem;
+  }
+
+  virtual uint32_t getNumItems() {
+    return MItems.size();
+  }
+
+  virtual const char* getItem(uint32_t AIndex) {
+    return MItems[AIndex];
+  }
+
+  //----------
+
   virtual void setItemWidth(int32_t AWidth) {
     //if (AWidth < 0) MItemWidth = (MRect.w * 100 / (-AWidth);
     //else
@@ -80,11 +96,7 @@ public:
     MItemHeight = AHeight;
   }
 
-  virtual int32_t     getSelectedItem()               { return MSelectedItem; }
-  virtual const char* getItem(uint32_t AIndex)        { return MItems[AIndex]; }
-  virtual uint32_t    getNumItems()                   { return MItems.size(); }
-
-  virtual void setMenuSize(int32_t x, int32_t y) {
+  virtual void setItemLayout(int32_t x, int32_t y) {
     MItemsX = x;
     MItemsY = y;
   }
@@ -97,10 +109,6 @@ public:
 //------------------------------
 public:
 //------------------------------
-
-  //virtual void appendMenuItem(const char* AItem) {
-  //  MItems.append((char*)AItem);
-  //}
 
   virtual void appendMenuItem(const char* AItem) {
     //MItems.append((char*)AItem);
@@ -174,6 +182,31 @@ public:
     do_widget_grabModal(KODE_NULL);
     setWidth(0);
     setHeight(0);
+  }
+
+//------------------------------
+public:
+//------------------------------
+
+  virtual void appendMenuItem2(const char* ALabel) {
+    KODE_MenuItemWidget* text;
+    text = new KODE_MenuItemWidget( KODE_FRect(50,20) );
+    text->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+    text->setText(ALabel);
+    appendWidget(text);
+  }
+
+  //----------
+
+  virtual void open2(int32_t AXpos, int32_t AYpos) {
+  }
+
+//------------------------------
+public:
+//------------------------------
+
+  void alignChildren(bool ARecursive=true) override {
+    KODE_PanelWidget::alignChildren(ARecursive);
   }
 
 //------------------------------

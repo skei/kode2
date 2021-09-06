@@ -82,7 +82,7 @@ public:
 public:
 //------------------------------
 
-  virtual void drawValueText(KODE_BasePainter* APainter) {
+  virtual void drawValueText(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
 
     if (MDrawValueText) {
 
@@ -127,11 +127,11 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
-    fillBackground(APainter,ARect);
+    fillBackground(APainter,ARect,AMode);
     //paintChildren(APainter,getRect(),AMode);
-    drawText(APainter);
-    drawValueText(APainter);
-    drawBorder(APainter);
+    drawText(APainter,ARect,AMode);
+    drawValueText(APainter,ARect,AMode);
+    drawBorder(APainter,ARect,AMode);
   }
 
 };

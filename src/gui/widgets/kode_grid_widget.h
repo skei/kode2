@@ -177,7 +177,7 @@ public:
 
     // background
     //if (MFillBackground) APainter->fillRectangle(getRect(),MBackgroundColor);
-    fillBackground(APainter,ARect);
+    fillBackground(APainter,ARect,AMode);
 
     if ((MNumColumns > 0) && (MNumRows > 0)) {
       float xcell = ( mrect.w / (float)MNumColumns );
@@ -237,7 +237,7 @@ public:
 
     // border
     //if (MDrawBorder) APainter->drawRect(getRect(),MBorderColor);
-    drawBorder(APainter);
+    drawBorder(APainter,ARect,AMode);
 
   }
 

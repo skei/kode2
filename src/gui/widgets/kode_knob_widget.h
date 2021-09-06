@@ -71,7 +71,7 @@ public:
 public:
 //------------------------------
 
-  virtual void drawKnob(KODE_Painter* APainter, KODE_FRect ARect) {
+  virtual void drawKnob(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
     if (MDrawKnob) {
       float     value             = getValue();
       float     S                 = (float)getRect().w;
@@ -187,10 +187,10 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
-    fillBackground(APainter,ARect);
-    drawKnob(APainter,ARect);
+    fillBackground(APainter,ARect,AMode);
+    drawKnob(APainter,ARect,AMode);
     //paintChildren(APainter,ARect,AMode);
-    drawBorder(APainter);
+    drawBorder(APainter,ARect,AMode);
   }
 
 };

@@ -55,7 +55,7 @@ public:
 
   //----------
 
-  virtual void drawValueBar(KODE_BasePainter* APainter) {
+  virtual void drawValueBar(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
     if (MDrawValueBar) {
       KODE_FRect  rect  = getRect();
       float       value = getValue();
@@ -87,12 +87,12 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
-    fillBackground(APainter,ARect);
+    fillBackground(APainter,ARect,AMode);
     //paintChildren(APainter,getRect(),AMode);
-    drawValueBar(APainter);
-    drawText(APainter);
-    drawValueText(APainter);
-    drawBorder(APainter);
+    drawValueBar(APainter,ARect,AMode);
+    drawText(APainter,ARect,AMode);
+    drawValueText(APainter,ARect,AMode);
+    drawBorder(APainter,ARect,AMode);
   }
 
 };

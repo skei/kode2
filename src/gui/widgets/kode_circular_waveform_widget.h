@@ -61,7 +61,7 @@ public:
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
 
-    fillBackground(APainter,ARect);
+    fillBackground(APainter,ARect,AMode);
 
     KODE_FRect mrect = getRect();
     if (MBufferSize > 0) {
@@ -141,7 +141,7 @@ public:
     } // size > 0
 
 
-    drawBorder(APainter);
+    drawBorder(APainter,ARect,AMode);
   }
 
 };

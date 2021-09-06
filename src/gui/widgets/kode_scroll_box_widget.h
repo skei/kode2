@@ -7,10 +7,10 @@
 #include "gui/widgets/kode_scroll_bar_widget.h"
 
 class KODE_ScrollBoxWidget
-: public KODE_Widget {
+: public KODE_PanelWidget {
 
 //------------------------------
-public:
+protected:
 //------------------------------
 
   bool showHorizontalScrollBar  = true;
@@ -25,28 +25,15 @@ public:
 //------------------------------
 
   KODE_ScrollBoxWidget(KODE_FRect ARect)
-  : KODE_Widget(ARect) {
-    setName("KODE_ScrollBoxWidget");
-    setHint("scrollbox");
-    if (showVerticalScrollBar) {
-      MVerticalScrollBar = new KODE_ScrollBarWidget( KODE_FRect(10) );
-      MVerticalScrollBar->layout.alignment = KODE_WIDGET_ALIGN_FILL_RIGHT;
-      MVerticalScrollBar->setDirection(KODE_VERTICAL);
-      MVerticalScrollBar->layout.extraBorder.h = 10;
-      KODE_Widget::appendWidget(MVerticalScrollBar);
-    }
-    if (showHorizontalScrollBar) {
-      MHorizontalScrollBar = new KODE_ScrollBarWidget( KODE_FRect(10) );
-      MHorizontalScrollBar->layout.alignment = KODE_WIDGET_ALIGN_FILL_BOTTOM;
-      MHorizontalScrollBar->setDirection(KODE_HORIZONTAL);
-      //MHorizontalScrollBar->layout.extraBorder.w = 10;
-      KODE_Widget::appendWidget(MHorizontalScrollBar);
-    }
-    MContent = new KODE_PanelWidget( KODE_FRect() );
-    MContent->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
-    MContent->layout.spacing = 5;
-//    MContent->setChildOffset(0,-18);
-    KODE_Widget::appendWidget(MContent);
+  : KODE_PanelWidget(ARect) {
+    setup(ARect);
+  }
+
+  //----------
+
+  KODE_ScrollBoxWidget()
+  : KODE_PanelWidget() {
+    setup(KODE_FRect());
   }
 
   //----------
@@ -58,7 +45,38 @@ public:
 public:
 //------------------------------
 
-  virtual KODE_Widget* getContentWidget() { return MContent; }
+  void setup(KODE_FRect ARect) {
+    setName("KODE_ScrollBoxWidget");
+    setHint("scrollbox");
+    setFillBackground(false);
+    setDrawBorder(true);
+    if (showVerticalScrollBar) {
+      MVerticalScrollBar = new KODE_ScrollBarWidget( KODE_FRect(10) );
+      MVerticalScrollBar->layout.alignment = KODE_WIDGET_ALIGN_FILL_RIGHT;
+      MVerticalScrollBar->setDirection(KODE_VERTICAL);
+      MVerticalScrollBar->layout.extraBorder.h = 10;
+      KODE_PanelWidget::appendWidget(MVerticalScrollBar);
+    }
+    if (showHorizontalScrollBar) {
+      MHorizontalScrollBar = new KODE_ScrollBarWidget( KODE_FRect(10) );
+      MHorizontalScrollBar->layout.alignment = KODE_WIDGET_ALIGN_FILL_BOTTOM;
+      MHorizontalScrollBar->setDirection(KODE_HORIZONTAL);
+      //MHorizontalScrollBar->layout.extraBorder.w = 10;
+      KODE_PanelWidget::appendWidget(MHorizontalScrollBar);
+    }
+    MContent = new KODE_PanelWidget();
+    MContent->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+    //MContent->layout.spacing = 5;
+    //MContent->layout.innerBorder = 0;
+    KODE_PanelWidget::appendWidget(MContent);
+
+  }
+
+  //----------
+
+  virtual KODE_Widget* getContentWidget() {
+    return MContent;
+  }
 
   //----------
 
@@ -153,9 +171,11 @@ public:
   //  KODE_Widget::on_widget_setSize(AWidth,AHeight);
   //}
 
-//------------------------------
-public:
-//------------------------------
+  //virtual void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
+  //  fillBackground(APainter);
+  //  paintChildren(APainter,ARect,AMode);
+  //  drawBorder(APainter);
+  //}
 
 //------------------------------
 public:
@@ -175,7 +195,7 @@ public:
       updateScroll(MHorizontalScrollBar,visible,pos,prev);
     }
     else {
-      KODE_Widget::do_widget_update(ASender);
+      KODE_PanelWidget::do_widget_update(ASender);
     }
   }
 
@@ -183,7 +203,7 @@ public:
 
   void do_widget_resized(KODE_Widget* ASender, float ADeltaX=0.0f, float ADeltaY=0.0f) override {
     KODE_PRINT;
-    KODE_Widget::do_widget_resized(ASender);
+    KODE_PanelWidget::do_widget_resized(ASender);
   }
 
 
@@ -192,9 +212,3 @@ public:
 
 //----------------------------------------------------------------------
 #endif
-
-
-
-#if 0
-
-#endif // 0

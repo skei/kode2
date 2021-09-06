@@ -15,6 +15,7 @@ private:
 
   KODE_MenuWidget*    MMenu     = KODE_NULL;
   //KODE_MenuListener*  MListener = KODE_NULL;
+  bool MDrawTriangle = true;
 
 //------------------------------
 public:
@@ -42,6 +43,10 @@ public:
 
   virtual void setMenu(KODE_MenuWidget* AMenu) {
     MMenu = AMenu;
+  }
+
+  virtual void setDrawTriangle(bool ADraw) {
+    MDrawTriangle = ADraw;
   }
 
   //virtual void setListener(KODE_MenuListener* AListener) {
@@ -120,19 +125,23 @@ public:
         float val = getValue();
         int32_t sel = valueToIndex(val);
         if (sel >= 0) MText = MMenu->getItem(sel);
+// !!!!!!!!
         else MText = "---";
+
       //}
       //else MText = "neg";
     }
     //else MText = "(no menu)";
     KODE_TextWidget::on_widget_paint(APainter,ARect,AMode);
     //APainter->setDrawColor(KODE_LightGrey);
-    APainter->fillTriangle(
-      mrect.x2() - 12,  mrect.y2() - 9,
-      mrect.x2() - 5,   mrect.y2() - 9,
-      mrect.x2() - 9,   mrect.y2() - 5,
-      KODE_COLOR_LIGHT_GRAY
-    );
+    if (MDrawTriangle) {
+      APainter->fillTriangle(
+        mrect.x2() - 12,  mrect.y2() - 9,
+        mrect.x2() - 5,   mrect.y2() - 9,
+        mrect.x2() - 9,   mrect.y2() - 5,
+        KODE_COLOR_LIGHT_GRAY
+      );
+    }
   }
 
   //----------
