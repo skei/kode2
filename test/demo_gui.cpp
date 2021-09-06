@@ -118,8 +118,8 @@ public:
     setTitle("demo_gui");
     setFillBackground();
     setBackgroundColor(KODE_COLOR_GRAY);
-    layout.innerBorder = 10;
-    layout.spacing = 10;
+    //layout.innerBorder = 10;
+    //layout.spacing = 10;
 
     // header
 
@@ -146,6 +146,13 @@ public:
     KODE_top_panel*     top_panel     = new KODE_top_panel(    KODE_FRect(200),this );
     KODE_bottom_panel*  bottom_panel  = new KODE_bottom_panel( KODE_FRect(100) );
     KODE_main_panel*    main_panel    = new KODE_main_panel(   KODE_FRect(),   this );
+
+    //left_panel->layout.minSize.w = 100;
+    //left_panel->layout.maxSize.w = 500;
+
+    //right_panel->layout.minSize.w = 100;
+    //top_panel->layout.minSize.h = 100;
+    //bottom_panel->layout.minSize.h = 100;
 
     KODE_SizerWidget*   left_sizer    = new KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_LEFT,left_panel);
     KODE_SizerWidget*   right_sizer   = new KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_RIGHT,right_panel);

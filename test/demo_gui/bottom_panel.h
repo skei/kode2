@@ -13,6 +13,7 @@ public:
     layout.innerBorder = 10;
     layout.spacing = 10;
 
+
     // colors
 
     add_square(KODE_COLOR_DARK_RED);
