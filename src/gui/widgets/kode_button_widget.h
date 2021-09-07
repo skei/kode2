@@ -7,13 +7,14 @@
 //----------------------------------------------------------------------
 
 class KODE_ButtonWidget
-: public KODE_Widget {
+: public KODE_TextWidget {
 
 //------------------------------
 protected:
 //------------------------------
 
   bool        MIsToggle           = false;
+  bool        MDrawTriangle       = true;
 
   const char* MOnText             = "On";
   KODE_Color  MOnBackgroundColor  = KODE_Color(0.7f);
@@ -34,10 +35,11 @@ public:
 //------------------------------
 
   KODE_ButtonWidget(KODE_FRect ARect)
-  : KODE_Widget(ARect) {
+  : KODE_TextWidget(ARect) {
     setName("KODE_ButtonWidget");
     setHint("button");
     setCursor(KODE_CURSOR_FINGER);
+    setFillBackground(true);
   }
 
   virtual ~KODE_ButtonWidget() {
@@ -76,20 +78,43 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
-    if (getValue() >= 0.5f) { // on
-      APainter->fillRectangle(getRect(),MOnBackgroundColor);
-      KODE_FRect rect = getRect();
-      rect.shrink(MOnTextOffset);
-      APainter->drawText(rect,MOnText,MOnTextAlignment,MOnTextColor);
-      APainter->drawRectangle(getRect(),MOnBorderColor);
+    KODE_FRect mrect = getRect();
+    if (getValue() >= 0.5) { // on
+      KODE_TextWidget::setText(MOnText);
+      KODE_TextWidget::setTextColor(MOnTextColor);
+      KODE_TextWidget::setTextAlignment(MOnTextAlignment);
+      KODE_TextWidget::setBackgroundColor(MOnBackgroundColor);
+      //APainter->drawText(mrect,MOnText,MOnTextAlignment,MOnTextColor);
+      //APainter->fillRectangle(getRect(),MOnBackgroundColor);
+      //KODE_FRect rect = getRect();
+      //rect.shrink(MOnTextOffset);
+      //APainter->drawText(rect,MOnText,MOnTextAlignment,MOnTextColor);
+      //APainter->drawRectangle(getRect(),MOnBorderColor);
     }
     else { // off
-      APainter->fillRectangle(getRect(),MOffBackgroundColor);
-      KODE_FRect rect = getRect();
-      rect.shrink(MOffTextOffset);
-      APainter->drawText(rect,MOffText,MOffTextAlignment,MOffTextColor);
-      APainter->drawRectangle(getRect(),MOffBorderColor);
+      KODE_TextWidget::setText(MOffText);
+      KODE_TextWidget::setTextColor(MOffTextColor);
+      KODE_TextWidget::setTextAlignment(MOffTextAlignment);
+      KODE_TextWidget::setBackgroundColor(MOffBackgroundColor);
+      //APainter->fillRectangle(getRect(),MOffBackgroundColor);
+      //KODE_FRect rect = getRect();
+      //rect.shrink(MOffTextOffset);
+      //APainter->drawText(rect,MOffText,MOffTextAlignment,MOffTextColor);
+      //APainter->drawRectangle(getRect(),MOffBorderColor);
     }
+
+    fillBackground(APainter,ARect,AMode);
+    drawText(APainter,ARect,AMode);
+    if (MDrawTriangle) {
+      if (getValue() >= 0.5) {
+        APainter->fillTriangle( mrect.x2() - 12, mrect.y2() - 9,   mrect.x2() - 5, mrect.y2() - 9,   mrect.x2() - 9, mrect.y2() - 5,   KODE_COLOR_LIGHT_GRAY);
+      }
+      else {
+        APainter->fillTriangle( mrect.x2() - 9, mrect.y2() - 13,   mrect.x2() - 5, mrect.y2() - 9,   mrect.x2() - 9, mrect.y2() - 5,   KODE_COLOR_LIGHT_GRAY);
+      }
+    }
+    drawBorder(APainter,ARect,AMode);
+
   }
 
   //----------

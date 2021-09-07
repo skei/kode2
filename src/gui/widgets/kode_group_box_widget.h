@@ -23,20 +23,24 @@ private:
 public:
 //------------------------------
 
-  KODE_GroupBoxWidget(KODE_FRect ARect)
+  #define HEADER_HEIGHT 20
+
+  KODE_GroupBoxWidget(KODE_FRect ARect, bool AClosed=false)
   : KODE_Widget(ARect) {
     setName("KODE_GroupBoxWidget");
     setHint("groupbox");
     //setCursor(KODE_CURSOR_);
 
-    MTitleBar = new KODE_ButtonWidget( KODE_FRect(20) );
+    MTitleBar = new KODE_ButtonWidget( KODE_FRect(HEADER_HEIGHT) );
     MTitleBar->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     MTitleBar->setIsToggle();
     MTitleBar->setText("Open","Closed");
-    MTitleBar->setValue(1);
+    MTitleBar->setBackgroundColor(KODE_Color(0.6),KODE_Color(0.4));
 
-    MContainer = new KODE_PanelWidget(KODE_FRect(0));
+    MContainer = new KODE_PanelWidget();
     MContainer->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+    MContainer->setFillBackground(true);
+    MContainer->setDrawBorder(false);
     MContainer->setCursor(KODE_CURSOR_CROSS);
 
     KODE_Widget::appendWidget( MTitleBar );
@@ -45,9 +49,16 @@ public:
     MOpenSize   = ARect.h;
     MClosedSize = MTitleBar->getRect().h;
 
-    //MClosed     = true;
-    MClosable   = true;
-    //close();
+    MClosable = true;
+    MClosed = AClosed;
+    //if (MClosed) {
+    //  close();
+    //  MTitleBar->setValue(0);
+    //}
+    //else {
+    //  open();
+    //  MTitleBar->setValue(1);
+    //}
 
   }
 
@@ -85,7 +96,7 @@ public:
   //----------
 
   void open(void) {
-    if (MClosed) {
+    //if (MClosed) {
       MClosed = false;
       MContainer->flags.active = true;
       MContainer->flags.visible = true;
@@ -93,13 +104,13 @@ public:
       setHeight(MOpenSize);
       setInitialHeight(MOpenSize);
       do_widget_resized(this/*,MRect.w,MOpenSize*/);
-    }
+    //}
   }
 
   //----------
 
   void close(void) {
-    if (!MClosed) {
+    //if (!MClosed) {
       MClosed = true;
       MContainer->flags.active = false;
       MContainer->flags.visible = false;
@@ -108,7 +119,7 @@ public:
       setHeight(MClosedSize);
       setInitialHeight(MClosedSize);
       do_widget_resized(this/*,MRect.w,MClosedSize*/);
-    }
+    //}
   }
 
   //----------
@@ -130,15 +141,21 @@ public:
 public:
 //------------------------------
 
-  void do_widget_update(KODE_Widget* ASender) final {
+  void do_widget_update(KODE_Widget* ASender) override {
     if (ASender == MTitleBar) {
       if (MClosable) {
-        if (MTitleBar->getValue() >= 0.5f) open();
-        else close();
+        if (MTitleBar->getValue() >= 0.5f) {
+          open();
+          do_widget_realign(this);
+        }
+        else {
+          close();
+          do_widget_realign(this);
+        }
       }
     }
-    KODE_Widget::do_widget_update(ASender);
   }
+
 
 };
 

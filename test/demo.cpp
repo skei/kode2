@@ -1,6 +1,7 @@
 
-#define KODE_GUI_XCB
-#define KODE_USE_CAIRO
+//#define KODE_GUI_XCB
+#define KODE_GUI_CAIRO
+//#define KODE_USE_CAIRO
 //#define KODE_NO_GUI
 //#define KODE_DEBUG_PRINT_TIME
 //#define KODE_DEBUG_PRINT_THREAD

@@ -55,6 +55,10 @@ public:
 public:
 //------------------------------
 
+  virtual void setBackgroundColor(KODE_Color AColor)  { MBackgroundColor = AColor; }
+  virtual void setBarColor(KODE_Color AColor)         { MBarColor = AColor; }
+  virtual void setEdgeColor(KODE_Color AColor)        { MEdgeColor = AColor; }
+
   virtual float getValue2(void)         { return MWidgetValue2; }
   virtual void  setValue2(float AValue) { MWidgetValue2 = AValue; }
 

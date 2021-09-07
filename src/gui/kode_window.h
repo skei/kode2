@@ -160,10 +160,10 @@ public: // window
     //#endif
   }
 
-  void close() override {
-    attachWindow(KODE_NULL);
-    KODE_ImplementedWindow::close();
-  }
+  //void close() override {
+  //  attachWindow(KODE_NULL);
+  //  KODE_ImplementedWindow::close();
+  //}
 
 //------------------------------
 private: // buffer

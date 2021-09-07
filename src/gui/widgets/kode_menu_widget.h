@@ -96,6 +96,13 @@ public:
     MItemHeight = AHeight;
   }
 
+  virtual void setItemSize(int32_t AWidth, int32_t AHeight) {
+    //if (AHeight < 0) MItemHeight = (MRect.h * 100 / (-AHeight);
+    //else
+    MItemWidth = AWidth;
+    MItemHeight = AHeight;
+  }
+
   virtual void setItemLayout(int32_t x, int32_t y) {
     MItemsX = x;
     MItemsY = y;
@@ -134,14 +141,21 @@ public:
   //----------
 
   virtual void open(KODE_MenuListener* AListener, int32_t AXpos, int32_t AYpos) {
+    //KODE_FRect mrect = getRect();
+    //KODE_Print("%i,%i / %i,%i\n",MItemWidth,MItemHeight,MItemsX,MItemsY);
     MListener = AListener;
     MPrevSelected = MSelectedItem;
-    int32_t w = (MItemWidth  * MItemsX) + (MBorderSize * (MItemsX+1));
-    int32_t h = (MItemHeight * MItemsY) + (MBorderSize * 2 /*(MItemsY+1)*/);
+    //int32_t w = (MItemWidth  * MItemsX) + (MBorderSize * (MItemsX+1));
+    //int32_t h = (MItemHeight * MItemsY) + (MBorderSize * 2 /*(MItemsY+1)*/);
+    MMenuWidth = (MItemWidth  * MItemsX) + (MBorderSize * (MItemsX+1));
+    MMenuHeight = (MItemHeight * MItemsY) + (MBorderSize * 2 /*(MItemsY+1)*/);
     // h = (MItems.size() * MItemHeight)  + (MBorderSize * 2);
-    if (MMirrorX) AXpos -= w;
-    if (MMirrorY) AYpos -= h;
-    setRect(KODE_FRect(AXpos,AYpos,w,h));
+    if (MMirrorX) AXpos -= MMenuWidth;
+    if (MMirrorY) AYpos -= MMenuHeight;
+
+    //setRect(KODE_FRect(AXpos,AYpos,w,h));
+
+    //KODE_Print("%i,%i - %i,%i\n",AXpos,AYpos,w,h);
     KODE_FRect R = KODE_FRect(AXpos+MBorderSize, AYpos+MBorderSize, MItemWidth, MItemHeight);
     uint32_t num = MItems.size();
     uint32_t i = 0;
@@ -150,7 +164,7 @@ public:
       for (uint32_t y=0; y<MItemsY; y++) {
         if (i < num) {
           const char* txt = MItems[i];
-          //KODE_DTrace("%i %i %s : %i %i %i %i\n",x,y,txt,(int)R.x,(int)R.y,(int)R.w,(int)R.h);
+          //KODE_Print("%i %i %s : %i %i %i %i\n",x,y,txt,(int)R.x,(int)R.y,(int)R.w,(int)R.h);
           KODE_MenuItemWidget* mi = (KODE_MenuItemWidget*)appendWidget( new KODE_MenuItemWidget( R ));
           mi->setText(txt);
           R.y += MItemHeight;
@@ -164,9 +178,14 @@ public:
     //MIsVisible = true;
     flags.active = true;
     flags.visible = true;
-    setWidth(MMenuWidth);
-    setHeight(MMenuHeight);
-    do_widget_redraw(this,getRect(),0); // redraw parent?
+    //setWidth(MMenuWidth);
+    //setHeight(MMenuHeight);
+
+    KODE_FRect menu_rect = KODE_FRect(AXpos,AYpos,MMenuWidth,MMenuHeight);
+    //KODE_Print("%.0f,%.0f - %.0f,%.0f\n",menu_rect.x,menu_rect.y,menu_rect.w,menu_rect.h);
+    //setRect(AXpos,AYpos,MMenuWidth,MMenuHeight);
+    setRect(menu_rect);
+    do_widget_redraw(this,menu_rect,0); // redraw parent?
     do_widget_grabModal(this);
   }
 

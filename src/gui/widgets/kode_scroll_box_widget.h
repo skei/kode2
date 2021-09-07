@@ -24,17 +24,19 @@ protected:
 public:
 //------------------------------
 
-  KODE_ScrollBoxWidget(KODE_FRect ARect)
+  KODE_ScrollBoxWidget(KODE_FRect ARect=KODE_FRect(), bool AVertical=true, bool AHorizontal=true)
   : KODE_PanelWidget(ARect) {
+    showVerticalScrollBar = AVertical;
+    showHorizontalScrollBar = AHorizontal;
     setup(ARect);
   }
 
   //----------
 
-  KODE_ScrollBoxWidget()
-  : KODE_PanelWidget() {
-    setup(KODE_FRect());
-  }
+  //KODE_ScrollBoxWidget()
+  //: KODE_PanelWidget() {
+  //  setup(KODE_FRect());
+  //}
 
   //----------
 
@@ -45,7 +47,7 @@ public:
 public:
 //------------------------------
 
-  void setup(KODE_FRect ARect) {
+  void setup(KODE_FRect ARect=KODE_FRect()) {
     setName("KODE_ScrollBoxWidget");
     setHint("scrollbox");
     setFillBackground(false);
@@ -54,7 +56,9 @@ public:
       MVerticalScrollBar = new KODE_ScrollBarWidget( KODE_FRect(10) );
       MVerticalScrollBar->layout.alignment = KODE_WIDGET_ALIGN_FILL_RIGHT;
       MVerticalScrollBar->setDirection(KODE_VERTICAL);
-      MVerticalScrollBar->layout.extraBorder.h = 10;
+      if (showHorizontalScrollBar) {
+        MVerticalScrollBar->layout.extraBorder.h = 10;
+      }
       KODE_PanelWidget::appendWidget(MVerticalScrollBar);
     }
     if (showHorizontalScrollBar) {
@@ -134,29 +138,34 @@ public:
     KODE_FRect content = MContent->getContentRect();
     float rect_w = MContent->getRect().w;
     float rect_h = MContent->getRect().h;
-    if (rect_h > 0) {
-      float thumb_ratio = rect_h / content.h;         // szize of thumb (0..1)
-      float thumb_size = KODE_Clamp(thumb_ratio,0,1);
-      MVerticalScrollBar->setThumbSize(thumb_size,false);
-      float visible = MVerticalScrollBar->getThumbSize();
-      float pos     = MVerticalScrollBar->getThumbPos();
-      float prev    = 0.0f; // MVerticalScrollBar->getPrevThumbPos();
-      updateScroll(MVerticalScrollBar,visible,pos,prev);
+    if (showVerticalScrollBar) {
+      if (rect_h > 0) {
+        float thumb_ratio = rect_h / content.h;         // szize of thumb (0..1)
+        float thumb_size = KODE_Clamp(thumb_ratio,0,1);
+        MVerticalScrollBar->setThumbSize(thumb_size,false);
+        float visible = MVerticalScrollBar->getThumbSize();
+        float pos     = MVerticalScrollBar->getThumbPos();
+        float prev    = 0.0f; // MVerticalScrollBar->getPrevThumbPos();
+        updateScroll(MVerticalScrollBar,visible,pos,prev);
+      }
+      else {
+        MVerticalScrollBar->setThumbSize(1,false);
+      }
     }
-    else {
-      MVerticalScrollBar->setThumbSize(1,false);
-    }
-    if (rect_w > 0) {
-      float thumb_ratio = rect_w / content.w;         // szize of thumb (0..1)
-      float thumb_size = KODE_Clamp(thumb_ratio,0,1);
-      MHorizontalScrollBar->setThumbSize(thumb_size,false);
-      float visible = MHorizontalScrollBar->getThumbSize();
-      float pos     = MHorizontalScrollBar->getThumbPos();
-      float prev    = 0.0f; // MHorizontalScrollBar->getPrevThumbPos();
-      updateScroll(MHorizontalScrollBar,visible,pos,prev);
-    }
-    else {
-      MHorizontalScrollBar->setThumbSize(1,false);
+
+    if (showHorizontalScrollBar) {
+      if (rect_w > 0) {
+        float thumb_ratio = rect_w / content.w;         // szize of thumb (0..1)
+        float thumb_size = KODE_Clamp(thumb_ratio,0,1);
+        MHorizontalScrollBar->setThumbSize(thumb_size,false);
+        float visible = MHorizontalScrollBar->getThumbSize();
+        float pos     = MHorizontalScrollBar->getThumbPos();
+        float prev    = 0.0f; // MHorizontalScrollBar->getPrevThumbPos();
+        updateScroll(MHorizontalScrollBar,visible,pos,prev);
+      }
+      else {
+        MHorizontalScrollBar->setThumbSize(1,false);
+      }
     }
 
   }
@@ -201,10 +210,20 @@ public:
 
   //----------
 
-  void do_widget_resized(KODE_Widget* ASender, float ADeltaX=0.0f, float ADeltaY=0.0f) override {
-    KODE_PRINT;
-    KODE_PanelWidget::do_widget_resized(ASender);
+  void do_widget_realign(KODE_Widget* ASender, bool ARecursive=true) override {
+    //KODE_PRINT;
+    alignChildren(ARecursive);
+    redraw();
   }
+
+  //----------
+
+  //void do_widget_resized(KODE_Widget* ASender, float ADeltaX=0.0f, float ADeltaY=0.0f) override {
+  //  KODE_PRINT;
+  //  //KODE_PanelWidget::do_widget_resized(ASender,ADeltaX,ADeltaY);
+  //  MContent->alignChildren();
+  //  do_widget_redraw(MContent,MContent->getRect(),0);
+  //}
 
 
 

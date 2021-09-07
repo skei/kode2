@@ -6,7 +6,8 @@ class plugin_page
 public:
 
   plugin_page()
-  : KODE_ScrollBoxWidget() {
+  : KODE_ScrollBoxWidget(
+  ) {
   }
 
 };

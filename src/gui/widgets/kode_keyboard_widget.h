@@ -72,7 +72,7 @@ protected:
 public:
 //------------------------------
 
-  KODE_KeyboardWidget(KODE_FRect ARect)
+  KODE_KeyboardWidget(KODE_FRect ARect=KODE_FRect())
   : KODE_Widget(ARect) {
     setName("KODE_KeyboardWidget");
     setHint("keyboard");

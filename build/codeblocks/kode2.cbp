@@ -199,7 +199,8 @@
 			<Option link="0" />
 		</Unit>
 		<Unit filename="../../doc/doxygen.cfg" />
-		<Unit filename="../../doc/license.txt" />
+		<Unit filename="../../doc/gpl-3.0.txt" />
+		<Unit filename="../../doc/licenses.txt" />
 		<Unit filename="../../doc/makedocs.sh" />
 		<Unit filename="../../doc/readme.txt" />
 		<Unit filename="../../doc/todo.txt" />
@@ -513,6 +514,7 @@
 		<Unit filename="../../src/gui/widgets/kode_cached_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_cairo_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_circular_waveform_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_container_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_curve_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_drag_value_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_graph_widget.h" />

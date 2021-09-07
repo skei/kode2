@@ -1001,11 +1001,17 @@ public:
     //xcb_flush(MConnection);
     setMouseCursor(KODE_CURSOR_DEFAULT);
     xcb_flush(MConnection);
+
+    //on_window_open(MWindowWidth,MWindowHeight);
+
   }
 
   //----------
 
   void close() override {
+
+    //on_window_close();
+
     if (MUseEventThread) stopEventThread();
     xcb_unmap_window(MConnection,MWindow);
     xcb_flush(MConnection);

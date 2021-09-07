@@ -94,8 +94,13 @@ public:
     //  APainter->fillRectangle( KODE_FRect( MRect.x2()-1, MRect.y, MRect.x2()-1, MRect.y2()-1, MRect.x, MRect.y2()-1 );
     //}
     //else {
-      APainter->fillRectangle(getRect(),MFillColor);
+    //  APainter->fillRectangle(getRect(),MFillColor);
     //}
+//    KODE_FRect rect = getRect();
+//    rect.overlap(ARect);
+//    APainter->fillRectangle(rect,MFillColor);
+    //APainter->fillRectangle(getRect(),MFillColor);
+    APainter->fillRectangle(ARect,MFillColor);
   }
 
   //----------

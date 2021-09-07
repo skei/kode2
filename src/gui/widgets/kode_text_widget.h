@@ -16,14 +16,14 @@ protected:
   bool        MDrawText       = true;
   const char* MText           = "";
   KODE_Color  MTextColor      = KODE_Color(1.0f);
-  uint32_t    MTextAlignment  = KODE_TEXT_ALIGN_CENTER;
+  uint32_t    MTextAlignment  = KODE_TEXT_ALIGN_LEFT;
   KODE_FRect  MTextOffset     = KODE_FRect(2);
 
 //------------------------------
 public:
 //------------------------------
 
-  KODE_TextWidget(KODE_FRect ARect, const char* AText="")
+  KODE_TextWidget(KODE_FRect ARect=KODE_FRect(), const char* AText="")
   : KODE_PanelWidget(ARect) {
     setName("KODE_TextWidget");
     setHint("text");
@@ -45,12 +45,15 @@ public:
 public:
 //------------------------------
 
-  virtual void setDrawText(bool ADraw) { MDrawText = ADraw; }
-  virtual void setTextAlignment(uint32_t AAlignment) { MTextAlignment = AAlignment; }
-  virtual void setTextColor(KODE_Color AColor) { MTextColor = AColor; }
+  virtual void setDrawText(bool ADraw)                { MDrawText = ADraw; }
+  virtual void setTextAlignment(uint32_t AAlignment)  { MTextAlignment = AAlignment; }
+  virtual void setTextColor(KODE_Color AColor)        { MTextColor = AColor; }
+  virtual void setTextOffset(KODE_FRect AOffset)      { MTextOffset = AOffset; }
+  virtual void setTextOffset(float x)                 { MTextOffset = KODE_FRect(x); }
+  virtual void setTextOffset(float x, float y)        { MTextOffset = KODE_FRect(x,y); }
+  virtual void setText(const char* AText)             { MText = AText; }
 
-  virtual void setText(const char* AText) { MText = AText; }
-  virtual const char* getText() { return MText; }
+  virtual const char* getText()                       { return MText; }
 
   //----------
 
@@ -58,7 +61,6 @@ public:
     KODE_FRect rect = getRect();
     rect.shrink(MTextOffset);
     if (MDrawText) {
-
       KODE_Parameter* param = getParameter();
       if (param) {
         APainter->drawText(rect,param->getName(),MTextAlignment,MTextColor);
@@ -66,7 +68,6 @@ public:
       else {
         APainter->drawText(rect,MText,MTextAlignment,MTextColor);
       }
-
     }
   }
 
@@ -76,11 +77,13 @@ public:
 
   void attachWindow(KODE_BaseWindow* AWindow) override {
     if (AWindow) {
-      KODE_BasePainter* painter = AWindow->getPainter();
-      if (painter) {
-        float w = painter->getTextWidth(MText) + 2;
-        float h = painter->getTextHeight(MText);// + 1;
-        setInitialSize(w,h);
+      if (flags.autoSize) {
+        KODE_BasePainter* painter = AWindow->getPainter();
+        if (painter) {
+          float w = painter->getTextWidth(MText) + 2;
+          float h = painter->getTextHeight(MText);// + 1;
+          setInitialSize(w,h);
+        }
       }
     }
   }

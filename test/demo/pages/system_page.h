@@ -7,34 +7,48 @@ class system_page
 public:
 //------------------------------
 
+  uint32_t  MTimerCounter     = 0;
+  char      MValueBuffer[256] = {0};
+  char      MTimerText[256]   = {0};
+
 
 //------------------------------
 public:
 //------------------------------
 
   system_page()
-  : KODE_ScrollBoxWidget() {
+  : KODE_ScrollBoxWidget(true,false) {
     setName("system_page");
-    setHint("system_page");
+    setHint("system page");
     MContent->layout.innerBorder = 10;
+    MContent->layout.spacing = 10;
 
     // textbox
 
-    KODE_TextBoxWidget* textbox = new KODE_TextBoxWidget( KODE_FRect(200) );
+    KODE_TextBoxWidget* textbox = new KODE_TextBoxWidget( KODE_FRect(50) );
     textbox->layout.alignment = KODE_WIDGET_ALIGN_FILL_LEFT;
     //textbox->layout.innerBorder = 5;
-    //textbox->flags.sizePercent = true;
+    textbox->flags.sizePercent = true;
     textbox->getContentWidget()->layout.innerBorder = 5;
     appendWidget(textbox);
 
-    //
+    // add text to textbox
+    addTextBoxText(textbox);
 
-    #if defined(KODE_CPP11)
-      textbox->appendText("c++11: yes");
-    #else
-      textbox->appendText("c++11: no");
-    #endif
+    // timer text
 
+    //KODE_TextWidget* timer_text = new KODE_TextWidget(KODE_FRect(200,20));
+    //timer_text->setText("Timer: ");
+    //timer_text->layout.alignment = KODE_WIDGET_ALIGN_TOP_LEFT;
+    //appendWidget(timer_text);
+
+  }
+
+//------------------------------
+public:
+//------------------------------
+
+  void addTextBoxText(KODE_TextBoxWidget* textbox) {
     #if defined(KODE_LINUX)
       textbox->appendText("os: linux");
     #elif defined(KODE_WINDOW)
@@ -74,13 +88,17 @@ public:
     #elif defined(KODE_GUI_CAIRO)
       textbox->appendText("gui: cairo (+ xcb)");
     #endif
-
-    //
-
   }
 
-//------------------------------
-public:
-//------------------------------
+  //----------
+
+  void timer() {
+    MTimerCounter += 1;
+    KODE_IntToString(MValueBuffer,MTimerCounter);
+    strcat(MTimerText,"Timer: ");
+    strcat(MTimerText,MValueBuffer);
+    do_widget_redraw(this,getRect(),0);
+    //KODE_Print("%s\n",MTimerText);
+  }
 
 };

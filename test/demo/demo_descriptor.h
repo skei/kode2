@@ -39,7 +39,7 @@ public:
 
     #ifndef KODE_NO_GUI
       setHasEditor(true);
-      setEditorSize(640,480);
+      setEditorSize(1024,768);
     #endif
 
   }

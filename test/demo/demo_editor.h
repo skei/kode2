@@ -4,11 +4,16 @@
 
 #ifndef KODE_NO_GUI
 
+//
+
+#define DEMO_TIMER_MS 100
+
 #include "kode.h"
 #include "plugin/kode_editor.h"
 #include "gui/kode_widgets.h"
 
 #include "../../data/img/sa_logo_40_trans_white.h"
+#include "../../data/img/knob2_32x32_65.h"
 
 #include "pages/system_page.h"
 #include "pages/plugin_page.h"
@@ -74,7 +79,7 @@ public:
 
     MSystemPage = new system_page();
     MPluginPage = new plugin_page();
-    MGUIPage    = new gui_page();
+    MGUIPage    = new gui_page(this);
     MAudioPage  = new audio_page();
     MGfxPage    = new gfx_page();
 
@@ -92,7 +97,8 @@ public:
     tabs->appendPage("GUI",MGUIPage);
     tabs->appendPage("Audio",MAudioPage);
     tabs->appendPage("Gfx",MGfxPage);
-    tabs->selectPage(0);
+
+    tabs->selectPage(2);
 
     //--------------------
     //
@@ -112,11 +118,31 @@ public:
 //    slider->setDrawLabel(true);
 //    connectParameter(slider,2);
 
+
   }
 
   //----------
 
-  //virtual ~myEditor() {
+  virtual ~demo_editor() {
+  }
+
+//------------------------------
+public:
+//------------------------------
+
+  //void on_window_open(uint32_t AWidth, uint32_t AHeight) override {
+  //  KODE_Print("%i,%i\n",AWidth,AHeight);
+  //  startTimer(DEMO_TIMER_MS);
+  //}
+
+
+  //void on_window_close() override {
+  //  stopTimer();
+  //  KODE_Print("\n");
+  //}
+
+  //void on_window_timer() override {
+  //  if (MSystemPage) MSystemPage->timer();
   //}
 
 };

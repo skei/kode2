@@ -41,9 +41,10 @@ private:
 protected:
 //------------------------------
 
-    KODE_Color            MBackColor      = KODE_COLOR_BLACK;
+    KODE_Color            MBackColor      = KODE_COLOR_DARK_GRAY;
     KODE_Color            MWaveColor      = KODE_COLOR_LIGHT_GRAY;
     KODE_Color            MGridColor      = KODE_COLOR_GRAY;
+    KODE_Color            MZeroColor      = KODE_COLOR_GRAY;
     bool                  MDrawBackground = true;
     int32_t               MNumMarkers     = 0;
     int32_t               MNumAreas       = 0;
@@ -56,7 +57,7 @@ protected:
 public:
 //------------------------------
 
-  KODE_WaveformWidget(KODE_FRect ARect)
+  KODE_WaveformWidget(KODE_FRect ARect=KODE_FRect())
   : KODE_Widget(ARect) {
     setName("KODE_WaveformWidget");
     setHint("waveform");
@@ -248,6 +249,10 @@ public:
       }
 
     } // w>0
+
+    // zero line
+    int32_t midy = mrect.y + (mrect.h * 0.5f);
+    APainter->drawLine( mrect.x, midy,mrect.x2(),midy, MZeroColor );
 
     KODE_Widget::on_widget_paint(APainter,ARect,0);
   }

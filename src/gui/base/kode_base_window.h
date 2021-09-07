@@ -16,6 +16,10 @@ public:
 public:
   virtual KODE_Painter* getPainter() { return KODE_NULL; }
 public:
+
+  virtual void on_window_open(uint32_t AWidth, uint32_t AHeight) { KODE_Print("%i,%i\n",AWidth,AHeight); }
+  virtual void on_window_close() { KODE_Print("\n"); }
+
   virtual void on_window_move(uint32_t AXpos, uint32_t AYpos) { /*KODE_PRINT;*/ }
   virtual void on_window_resize(uint32_t AWidth, uint32_t AHeight) { /*KODE_PRINT;*/ }
   virtual void on_window_paint(uint32_t AXpos, uint32_t AYpos, uint32_t AWidth, uint32_t AHeight) { /*KODE_PRINT;*/ }

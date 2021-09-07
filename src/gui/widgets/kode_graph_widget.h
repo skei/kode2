@@ -22,13 +22,13 @@ struct  KODE_Graph;
 //----------------------------------------------------------------------
 
 #define MODULE_WIDTH    100
-#define MODULE_HEIGHT   45
+#define MODULE_HEIGHT   30
 
-#define PIN_WIDTH       12
-#define PIN_XDIST       16
+#define PIN_WIDTH       6
+#define PIN_XDIST       8
 
-#define PIN_HEIGHT      8
-#define PIN_YDIST       12
+#define PIN_HEIGHT      5
+#define PIN_YDIST       8
 
 #define MAX_PINS        16
 //#define BASE_HEIGHT     (MODULE_HEIGHT - (PIN_YDIST * 2) - 2)
@@ -181,7 +181,7 @@ protected:
 public:
 //------------------------------
 
-  KODE_GraphWidget(KODE_FRect ARect)
+  KODE_GraphWidget(KODE_FRect ARect=KODE_FRect())
   : KODE_PanelWidget(ARect) {
 
     setName("KODE_GraphWidget");
@@ -536,11 +536,11 @@ public:
 
       KODE_FRect input_rect = module_body_rect;
       input_rect.y -= PIN_YDIST;
-      input_rect.setSize(PIN_WIDTH-1,PIN_HEIGHT-1);
+      input_rect.setSize(PIN_WIDTH,PIN_HEIGHT);
 
       KODE_FRect output_rect = module_body_rect;
       output_rect.y += (output_rect.h + PIN_YDIST - PIN_HEIGHT);
-      output_rect.setSize(PIN_WIDTH-1,PIN_HEIGHT-1);
+      output_rect.setSize(PIN_WIDTH,PIN_HEIGHT);
 
       //int32_t x = getRect().x + AModule->xpos;
       //int32_t y = getRect().y + AModule->ypos;
@@ -935,6 +935,16 @@ public:
 //  }
 
 //  void on_widget_keyRelease(uint32_t AKey, char AChar, uint32_t AState, uint32_t ATimeStamp=0) override {
+//  }
+
+  //------------------------------
+  public:
+  //------------------------------
+
+//  void do_widget_realign(KODE_Widget* ASender, bool ARecursive=true) override {
+//    //KODE_PRINT;
+//    //alignChildren(ARecursive);
+//    findContentRect();
 //  }
 
 };

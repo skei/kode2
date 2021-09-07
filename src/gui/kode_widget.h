@@ -23,7 +23,7 @@ struct KODE_WidgetFlags {
   bool autoCursor       = true;
   bool autoHint         = false;
   bool autoClip         = true;
-  //bool autoSize         = false;
+  bool autoSize         = false;
   bool autoMouseLock    = false;
   bool autoMouseHide    = false;
   bool canDrag          = false;
@@ -360,7 +360,7 @@ public:
     client.shrink(layout.innerBorder);
     parent.shrink(layout.innerBorder);
 
-    //if (!layout.contentBorder) content.shrink(layout.innerBorder);
+    if (!layout.contentBorder) content.shrink(layout.innerBorder);
     //if (layout.contentBorder) content.grow(layout.innerBorder);
 
     //content.setPos(0,0);
@@ -393,14 +393,14 @@ public:
 
         //  if we were stacking, but isn't now..
 
-        if (prev_alignment == KODE_WIDGET_STACK_HORIZ) {
-          if (alignment != KODE_WIDGET_STACK_HORIZ) {
+        if (prev_alignment == KODE_WIDGET_ALIGN_STACK_HORIZ) {
+          if (alignment != KODE_WIDGET_ALIGN_STACK_HORIZ) {
             client.y += (stacky + stack_highest + layout.spacing.y);
           }
         }
 
-        if (prev_alignment == KODE_WIDGET_STACK_VERT) {
-          if (alignment != KODE_WIDGET_STACK_VERT) {
+        if (prev_alignment == KODE_WIDGET_ALIGN_STACK_VERT) {
+          if (alignment != KODE_WIDGET_ALIGN_STACK_VERT) {
             client.x += (stackx + stack_widest + layout.spacing.x);
           }
         }
@@ -565,7 +565,7 @@ public:
             client.h -= (rect.h + layout.spacing.y);
             break;
           //-----
-          case KODE_WIDGET_STACK_HORIZ:
+          case KODE_WIDGET_ALIGN_STACK_HORIZ:
             if ((stackx + rect.w + layout.innerBorder.w - layout.spacing.x) >= client.w) {
               if (stackx != 0) {  // first widget..
                 stackx = 0;
@@ -578,7 +578,7 @@ public:
             stackx += rect.w + layout.spacing.x;
             if (rect.h > stack_highest) stack_highest = rect.h;
             break;
-          case KODE_WIDGET_STACK_VERT:
+          case KODE_WIDGET_ALIGN_STACK_VERT:
             if ((stacky + rect.h) >= client.h) {
               if (stacky != 0) {  // first widget..
                 stacky = 0;
@@ -633,12 +633,12 @@ public:
     }
   }
 
-  virtual void resize(float ADeltaX=0.0f, float ADeltaY=0.0f) {
-    MRect.w += ADeltaX;
-    MRect.h += ADeltaY;
-    MInitialRect.w += ADeltaX;
-    MInitialRect.h += ADeltaY;
-  }
+  //virtual void resize(float ADeltaX=0.0f, float ADeltaY=0.0f) {
+  //  MRect.w += ADeltaX;
+  //  MRect.h += ADeltaY;
+  //  MInitialRect.w += ADeltaX;
+  //  MInitialRect.h += ADeltaY;
+  //}
 
   //----------
 
@@ -731,6 +731,10 @@ public:
     if (MParent) MParent->do_widget_redraw(ASender,ARect,AMode);
   }
 
+  virtual void do_widget_realign(KODE_Widget* ASender, bool ARecursive=true) {
+    if (MParent) MParent->do_widget_realign(ASender,ARecursive);
+  }
+
   virtual void do_widget_moved(KODE_Widget* ASender, float ADeltaX=0.0f, float ADeltaY=0.0f) {
     if (MParent) MParent->do_widget_moved(ASender,ADeltaX,ADeltaY);
   }
@@ -739,7 +743,11 @@ public:
 
   virtual void do_widget_resized(KODE_Widget* ASender, float ADeltaX=0.0f, float ADeltaY=0.0f) {
     //if (MParent) MParent->do_widget_resized(ASender,ADeltaX,ADeltaY);
-    resize(ADeltaX,ADeltaY);
+    MRect.w += ADeltaX;
+    MRect.h += ADeltaY;
+    MInitialRect.w += ADeltaX;
+    MInitialRect.h += ADeltaY;
+    //resize(ADeltaX,ADeltaY);
     if (MParent) {
       MParent->alignChildren();
       MParent->redraw();

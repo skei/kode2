@@ -11,6 +11,7 @@
 #include "gui/widgets/kode_cached_widget.h"
 #include "gui/widgets/kode_cairo_widget.h"
 #include "gui/widgets/kode_circular_waveform_widget.h"
+#include "gui/widgets/kode_container_widget.h"
 #include "gui/widgets/kode_curve_widget.h"
 #include "gui/widgets/kode_drag_value_widget.h"
 #include "gui/widgets/kode_grid_widget.h"

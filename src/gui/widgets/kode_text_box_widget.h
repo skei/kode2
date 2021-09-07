@@ -38,6 +38,7 @@ public:
   virtual void appendText(const char* AText) {
     KODE_TextWidget* textwidget = new KODE_TextWidget( KODE_FRect(0,0,250,MTextHeight),AText);
     textwidget->layout.alignment = KODE_WIDGET_ALIGN_TOP_LEFT;
+    textwidget->flags.autoSize = true;
     textwidget->setTextAlignment(KODE_TEXT_ALIGN_LEFT);
     MContent->appendWidget(textwidget);
   }
