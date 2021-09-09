@@ -17,19 +17,19 @@ public:
 //------------------------------
 
   system_page()
-  : KODE_ScrollBoxWidget(true,false) {
+  : KODE_ScrollBoxWidget(KODE_FRect(),true,false) {
     setName("system_page");
     setHint("system page");
-    MContent->layout.innerBorder = 10;
+    MContent->layout.innerBorder = KODE_FRect(10,10,10,10);
     MContent->layout.spacing = 10;
 
     // textbox
 
-    KODE_TextBoxWidget* textbox = new KODE_TextBoxWidget( KODE_FRect(50) );
+    KODE_TextBoxWidget* textbox = new KODE_TextBoxWidget( KODE_FRect(50,50) );
     textbox->layout.alignment = KODE_WIDGET_ALIGN_FILL_LEFT;
     //textbox->layout.innerBorder = 5;
     textbox->flags.sizePercent = true;
-    textbox->getContentWidget()->layout.innerBorder = 5;
+    textbox->getContentWidget()->layout.innerBorder = KODE_FRect(5,5,5,5);
     appendWidget(textbox);
 
     // add text to textbox

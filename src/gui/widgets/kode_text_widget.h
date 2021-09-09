@@ -17,24 +17,19 @@ protected:
   const char* MText           = "";
   KODE_Color  MTextColor      = KODE_Color(1.0f);
   uint32_t    MTextAlignment  = KODE_TEXT_ALIGN_LEFT;
-  KODE_FRect  MTextOffset     = KODE_FRect(2);
+  KODE_FRect  MTextOffset     = KODE_FRect(2,2,2,2);
 
 //------------------------------
 public:
 //------------------------------
 
-  KODE_TextWidget(KODE_FRect ARect=KODE_FRect(), const char* AText="")
+  KODE_TextWidget(KODE_FRect ARect/*=KODE_FRect()*/, const char* AText="")
   : KODE_PanelWidget(ARect) {
     setName("KODE_TextWidget");
     setHint("text");
     MText = AText;
     MDrawBorder = false;
     MFillBackground = false;
-
-    //KODE_Widget* owner = do_widget_get_owner(this);
-    //if (owner) {
-    //  KODE_PRINT;
-    //}
 
   }
 
@@ -49,7 +44,7 @@ public:
   virtual void setTextAlignment(uint32_t AAlignment)  { MTextAlignment = AAlignment; }
   virtual void setTextColor(KODE_Color AColor)        { MTextColor = AColor; }
   virtual void setTextOffset(KODE_FRect AOffset)      { MTextOffset = AOffset; }
-  virtual void setTextOffset(float x)                 { MTextOffset = KODE_FRect(x); }
+  virtual void setTextOffset(float x)                 { MTextOffset = KODE_FRect(x,x,x,x); }
   virtual void setTextOffset(float x, float y)        { MTextOffset = KODE_FRect(x,y); }
   virtual void setText(const char* AText)             { MText = AText; }
 

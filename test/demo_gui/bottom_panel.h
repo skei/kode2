@@ -10,7 +10,7 @@ public:
   : KODE_PanelWidget(ARect) {
 
     layout.alignment = KODE_WIDGET_ALIGN_FILL_BOTTOM;
-    layout.innerBorder = 10;
+    layout.innerBorder = KODE_FRect(10,10,10,10);
     layout.spacing = 10;
 
 
@@ -90,8 +90,8 @@ public:
 //------------------------------
 
   void add_square(KODE_Color AColor) {
-    KODE_PanelWidget* panel = new KODE_PanelWidget(KODE_FRect(15));
-    panel->layout.alignment = KODE_WIDGET_STACK_HORIZ;
+    KODE_PanelWidget* panel = new KODE_PanelWidget(KODE_FRect(15,15));
+    panel->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
     panel->setFillBackground();
     panel->setBackgroundColor(AColor);
     appendWidget(panel);

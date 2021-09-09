@@ -24,7 +24,6 @@ class KODE_SizerWidget
     float         prevy = 0.0f;
     bool          MIsDragging =false;
     KODE_Widget*  MTarget = KODE_NULL;
-    //int32_t_    MSizeCursor = KODE_CURSOR_DEFAULT;
     uint32_t      MMode = KODE_SIZER_NONE;
     KODE_Color    MFillColor = KODE_Color( 0.40f );
 
@@ -80,10 +79,6 @@ public:
   virtual void setTarget(KODE_Widget* ATarget) {
     MTarget = ATarget;
   }
-
-  //property target : KWidget read FTarget write FTarget;
-  //property cursor : longint read FSizeCursor write FSizeCursor;
-  //property fillcolor : KColor read FFillColor write FFillColor;
 
 //------------------------------
 public:

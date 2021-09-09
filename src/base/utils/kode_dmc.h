@@ -3,12 +3,22 @@
 //----------------------------------------------------------------------
 /*
   Dynamic Markov Compression (DMC)
+
   http://en.wikipedia.org/wiki/Dynamic_Markov_Compression
+
   http://plg1.cs.uwaterloo.ca/~ftp/dmc/
-  https://wwwtest.cs.uwaterloo.ca/research/tr/1986/CS-86-18.pdf
-  http://www.comp.nus.edu.sg/~junping/docs/njp-icita2005.pdf
+
   http://www.jjj.de/crs4/dmc.c
   http://www.jjj.de/crs4/
+
+  "Data Compression Using Dynamic Markov Modelling":
+  http://webhome.cs.uvic.ca/~nigelh/Publications/DMC.pdf
+
+  https://wwwtest.cs.uwaterloo.ca/research/tr/1986/CS-86-18.pdf
+  http://www.comp.nus.edu.sg/~junping/docs/njp-icita2005.pdf
+
+
+
   - predictive arithmetic coding
   - good compression ratio
   - not widely implemented

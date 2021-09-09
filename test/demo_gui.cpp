@@ -123,7 +123,7 @@ public:
 
     // header
 
-    KODE_SAHeaderWidget* header = new KODE_SAHeaderWidget(KODE_FRect(60));
+    KODE_SAHeaderWidget* header = new KODE_SAHeaderWidget(KODE_FRect(60,60));
     header->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     header->setImage(this,(uint8_t*)sa_logo_40_white_trans,sa_logo_40_white_trans_size,KODE_COLOR_GRAY);
     header->setPluginName("demo_gui");
@@ -132,7 +132,7 @@ public:
 
     // footer
 
-    footer = new KODE_TextWidget( KODE_FRect(20) );
+    footer = new KODE_TextWidget( KODE_FRect(20,20) );
     footer->layout.alignment = KODE_WIDGET_ALIGN_FILL_BOTTOM;
     footer->setText("text..");
     footer->setTextColor(KODE_COLOR_BLACK);
@@ -141,10 +141,10 @@ public:
 
     //
 
-    KODE_left_panel*    left_panel    = new KODE_left_panel(   KODE_FRect(200) );
-    KODE_right_panel*   right_panel   = new KODE_right_panel(  KODE_FRect(200) );
-    KODE_top_panel*     top_panel     = new KODE_top_panel(    KODE_FRect(200),this );
-    KODE_bottom_panel*  bottom_panel  = new KODE_bottom_panel( KODE_FRect(100) );
+    KODE_left_panel*    left_panel    = new KODE_left_panel(   KODE_FRect(200,200) );
+    KODE_right_panel*   right_panel   = new KODE_right_panel(  KODE_FRect(200,200) );
+    KODE_top_panel*     top_panel     = new KODE_top_panel(    KODE_FRect(200,200),this );
+    KODE_bottom_panel*  bottom_panel  = new KODE_bottom_panel( KODE_FRect(100,100) );
     KODE_main_panel*    main_panel    = new KODE_main_panel(   KODE_FRect(),   this );
 
     //left_panel->layout.minSize.w = 100;
@@ -154,10 +154,10 @@ public:
     //top_panel->layout.minSize.h = 100;
     //bottom_panel->layout.minSize.h = 100;
 
-    KODE_SizerWidget*   left_sizer    = new KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_LEFT,left_panel);
-    KODE_SizerWidget*   right_sizer   = new KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_RIGHT,right_panel);
-    KODE_SizerWidget*   top_sizer     = new KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_TOP,top_panel);
-    KODE_SizerWidget*   bottom_sizer  = new KODE_SizerWidget(KODE_FRect(5),KODE_SIZER_BOTTOM,bottom_panel);
+    KODE_SizerWidget*   left_sizer    = new KODE_SizerWidget(KODE_FRect(5,5),KODE_SIZER_LEFT,left_panel);
+    KODE_SizerWidget*   right_sizer   = new KODE_SizerWidget(KODE_FRect(5,5),KODE_SIZER_RIGHT,right_panel);
+    KODE_SizerWidget*   top_sizer     = new KODE_SizerWidget(KODE_FRect(5,5),KODE_SIZER_TOP,top_panel);
+    KODE_SizerWidget*   bottom_sizer  = new KODE_SizerWidget(KODE_FRect(5,5),KODE_SIZER_BOTTOM,bottom_panel);
 
     appendWidget(left_panel);
     appendWidget(left_sizer);

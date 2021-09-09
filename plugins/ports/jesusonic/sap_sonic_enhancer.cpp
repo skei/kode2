@@ -1,6 +1,6 @@
 
-#define KODE_GUI_XCB
-//#define KODE_NO_GUI
+//#define KODE_GUI_XCB
+#define KODE_NO_GUI
 
 #include "kode.h"
 //#include "base/utils/kode_random.h"
@@ -9,7 +9,9 @@
 #include "plugin/kode_parameters.h"
 #include "plugin/kode_plugin.h"
 
-#include "plugin/kode_default_editor.h"
+#ifndef KODE_NO_GUI
+  #include "plugin/kode_default_editor.h"
+#endif
 
 //----------------------------------------------------------------------
 

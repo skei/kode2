@@ -14,20 +14,20 @@ public:
 
     //layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
-    layout.innerBorder = 10;
+    layout.innerBorder = KODE_FRect(10,10,10,10);
     layout.spacing = 10;
 
-    KODE_Widget* right = new KODE_Widget( KODE_FRect(150) );
+    KODE_Widget* right = new KODE_Widget( KODE_FRect(150,150) );
     //right->flags.sizepercent = true;
     right->layout.alignment = KODE_WIDGET_ALIGN_FILL_RIGHT;
-    //right->layout.innerBorder = 10;
+    //right->layout.innerBorder = KODE_FRect(10,10,10,10);
     right->layout.spacing = 10;
     appendWidget(right);
 
     KODE_Widget* left = new KODE_Widget( KODE_FRect() );
     //left->flags.sizePercent = true;
     left->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
-    //left->layout.innerBorder = 10;
+    //left->layout.innerBorder = KODE_FRect(10,10,10,10);
     left->layout.spacing = 10;
     appendWidget(left);
 
@@ -35,7 +35,7 @@ public:
 
     // scrollbar
 
-    KODE_ScrollBarWidget* scrollbar2 = new KODE_ScrollBarWidget(KODE_FRect(10));
+    KODE_ScrollBarWidget* scrollbar2 = new KODE_ScrollBarWidget(KODE_FRect(10,10));
     scrollbar2->layout.alignment = KODE_WIDGET_ALIGN_FILL_RIGHT;
     scrollbar2->layout.extraBorder.h = 30;
     scrollbar2->setDirection(KODE_VERTICAL);
@@ -60,13 +60,13 @@ public:
 
     // keyboard
 
-    KODE_KeyboardWidget* keyboard1 = new KODE_KeyboardWidget(KODE_FRect(60));
+    KODE_KeyboardWidget* keyboard1 = new KODE_KeyboardWidget(KODE_FRect(60,60));
     keyboard1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     left->appendWidget(keyboard1);
 
     // sliderbank
 
-    KODE_SliderBankWidget* sliderbank1 = new KODE_SliderBankWidget(KODE_FRect(60),32);
+    KODE_SliderBankWidget* sliderbank1 = new KODE_SliderBankWidget(KODE_FRect(60,60),32);
     sliderbank1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     left->appendWidget(sliderbank1);
 
@@ -74,7 +74,7 @@ public:
 
     KODE_KnobWidget* knob1 = new KODE_KnobWidget(KODE_FRect(50,50));
     //knob1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
-    knob1->layout.alignment = KODE_WIDGET_STACK_HORIZ;
+    knob1->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
     knob1->setValue(0.3);
     knob1->setBipolar();
     left->appendWidget(knob1);
@@ -83,7 +83,7 @@ public:
 
     KODE_ImageStripWidget* imagestrip1 = new KODE_ImageStripWidget(KODE_FRect(60,60));
     //imagestrip1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
-    imagestrip1->layout.alignment = KODE_WIDGET_STACK_HORIZ;
+    imagestrip1->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
     imagestrip1->setImage(ATarget,knob4_60x60_131,knob4_60x60_131_size,KODE_Color(0.6f));
     imagestrip1->setupTiles(1,131);
     imagestrip1->setValue(0.6);
@@ -93,13 +93,13 @@ public:
 
     KODE_CurveWidget* curve1 = new KODE_CurveWidget(KODE_FRect(50,50),false);
     //curve1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
-    curve1->layout.alignment = KODE_WIDGET_STACK_HORIZ;
+    curve1->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
     curve1->setValue(0.7);
     left->appendWidget(curve1);
 
     KODE_CurveWidget* curve2 = new KODE_CurveWidget(KODE_FRect(50,50),true);
     //curve2->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
-    curve2->layout.alignment = KODE_WIDGET_STACK_HORIZ;
+    curve2->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
     curve2->setValue(0.3);
     left->appendWidget(curve2);
 

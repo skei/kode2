@@ -28,12 +28,12 @@ public:
     h = 0;
   }
 
-  KODE_Rect(T _v) {
-    x = _v;
-    y = _v;
-    w = _v;
-    h = _v;
-  }
+  //KODE_Rect(T _v) {
+  //  x = _v;
+  //  y = _v;
+  //  w = _v;
+  //  h = _v;
+  //}
 
   KODE_Rect(T _w, T _h) {
     x = 0;

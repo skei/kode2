@@ -31,7 +31,7 @@ public:
     setHint("groupbox");
     //setCursor(KODE_CURSOR_);
 
-    MTitleBar = new KODE_ButtonWidget( KODE_FRect(HEADER_HEIGHT) );
+    MTitleBar = new KODE_ButtonWidget( KODE_FRect(0,HEADER_HEIGHT) );
     MTitleBar->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     MTitleBar->setIsToggle();
     MTitleBar->setText("Open","Closed");

@@ -10,7 +10,7 @@ public:
   : KODE_PanelWidget(ARect) {
 
     layout.alignment = KODE_WIDGET_ALIGN_FILL_RIGHT;
-    layout.innerBorder = 10;
+    layout.innerBorder = KODE_FRect(10,10,10,10);
     layout.spacing = 10;
 
     // tabs
@@ -24,7 +24,7 @@ public:
       page1->setDrawBorder();
       page1->setBackgroundColor(KODE_COLOR_DARK_RED);
       page1->setBorderColor(KODE_COLOR_BRIGHT_RED);
-      tabs1->appendPage(page1,"page1");
+      tabs1->appendPage("page1",page1);
 
       KODE_PanelWidget* page2 = new KODE_PanelWidget(KODE_FRect(100,100));
       page2->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
@@ -32,7 +32,7 @@ public:
       page2->setDrawBorder();
       page2->setBackgroundColor(KODE_COLOR_DARK_GREEN);
       page2->setBorderColor(KODE_COLOR_BRIGHT_GREEN);
-      tabs1->appendPage(page2,"page2");
+      tabs1->appendPage("page2",page2);
 
       KODE_PanelWidget* page3 = new KODE_PanelWidget(KODE_FRect(100,100));
       page3->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
@@ -40,7 +40,7 @@ public:
       page3->setDrawBorder();
       page3->setBackgroundColor(KODE_COLOR_DARK_BLUE);
       page3->setBorderColor(KODE_COLOR_BRIGHT_BLUE);
-      tabs1->appendPage(page3,"page3");
+      tabs1->appendPage("page3",page3);
 
     tabs1->selectPage(0);
     appendWidget(tabs1);
@@ -49,7 +49,7 @@ public:
 
     KODE_ScrollBoxWidget* scrollbox1 = new KODE_ScrollBoxWidget( KODE_FRect(100,100) );
     scrollbox1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
-    scrollbox1->getContentWidget()->layout.innerBorder = 10;
+    scrollbox1->getContentWidget()->layout.innerBorder = KODE_FRect(10,10,10,10);
     appendWidget(scrollbox1);
 
     // knobs
@@ -61,7 +61,7 @@ public:
       //else
       knob = new KODE_KnobWidget(KODE_FRect(40,40));
       //knob->layout.alignment = KODE_WIDGET_ALIGN_TOP_LEFT;
-      knob->layout.alignment = KODE_WIDGET_STACK_HORIZ;
+      knob->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
       knob->setValue((float)i * 0.01);
       scrollbox1->appendWidget(knob);
     }

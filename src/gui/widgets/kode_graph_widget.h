@@ -133,7 +133,7 @@ private:
   KODE_List     MModules;
   KODE_List     MWires;
   KODE_Painter* MPainter    = KODE_NULL;
-  KODE_FRect    MPaintRect  = KODE_FRect(0);
+  KODE_FRect    MPaintRect  = KODE_FRect(0,0);
 
 //------------------------------
 protected:

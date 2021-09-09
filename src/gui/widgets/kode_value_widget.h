@@ -25,7 +25,7 @@ protected:
   bool        MDrawValueText      = true;
   KODE_Color  MValueTextColor     = KODE_Color(1.0f);
   uint32_t    MValueTextAlignment = KODE_TEXT_ALIGN_RIGHT;
-  KODE_FRect  MValueTextOffset    = KODE_FRect(2);
+  KODE_FRect  MValueTextOffset    = KODE_FRect(2,2,2,2);
 
   // label
   bool        MDrawLabel          = false;

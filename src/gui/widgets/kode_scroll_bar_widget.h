@@ -19,7 +19,7 @@ protected:
   float       MThumbSize        = 0.2f;
   float       MPageSize         = 0.2f;
 
-  KODE_FRect  MThumbRect        = {0};
+  KODE_FRect  MThumbRect        = KODE_FRect(0,0);
   bool        MIsDragging       = false;
   float       MClickedX         = 0.0f;
   float       MClickedY         = 0.0f;

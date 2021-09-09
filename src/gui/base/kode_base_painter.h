@@ -32,10 +32,10 @@ public:
   virtual void            resetClip() {}
 
   virtual void            pushClip(KODE_FRect ARect) {}
-  virtual KODE_FRect      popClip() { return KODE_FRect(0); }
+  virtual KODE_FRect      popClip() { return KODE_FRect(0,0); }
   virtual void            resetClipStack() {}
   virtual void            setClipRect(KODE_FRect ARect) {}
-  virtual KODE_FRect      getClipRect() { return KODE_FRect(0); }
+  virtual KODE_FRect      getClipRect() { return KODE_FRect(0,0); }
 
   virtual float           getTextWidth(const char* AText) { return 0; }
   virtual float           getTextHeight(const char* AText) { return 0; }

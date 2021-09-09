@@ -52,10 +52,10 @@ public:
     //--------------------
 
     //KODE_PanelWidget* left_panel = new KODE_PanelWidget(200);
-    KODE_ScrollBoxWidget* left_panel = new KODE_ScrollBoxWidget(200,true,false);
+    KODE_ScrollBoxWidget* left_panel = new KODE_ScrollBoxWidget(KODE_FRect(200,200),true,false);
     left_panel->layout.alignment = KODE_WIDGET_ALIGN_FILL_LEFT;
       KODE_ScrollBoxWidget* left_content = (KODE_ScrollBoxWidget*)left_panel->getContentWidget();
-      left_content->layout.innerBorder = 10;
+      left_content->layout.innerBorder = KODE_FRect(10,10,10,10);
       left_content->layout.spacing = 10;
       left_content->setFillBackground(false);
       left_content->setDrawBorder(false);
@@ -68,14 +68,14 @@ public:
 
     // panels
 
-    KODE_PanelWidget* panel1 = new KODE_PanelWidget(20);
+    KODE_PanelWidget* panel1 = new KODE_PanelWidget(KODE_FRect(20,20));
     panel1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     panel1->setFillBackground(false);
     panel1->setDrawBorder(true);
     panel1->setBorderColor(KODE_Color(0.35));
     left_panel->appendWidget(panel1);
 
-    KODE_PanelWidget* panel2 = new KODE_PanelWidget(20);
+    KODE_PanelWidget* panel2 = new KODE_PanelWidget(KODE_FRect(20,20));
     panel2->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     panel2->setFillBackground(true);
     panel2->setDrawBorder(false);
@@ -83,7 +83,7 @@ public:
 
     // text
 
-    KODE_TextWidget* text1 = new KODE_TextWidget(20,"Text");
+    KODE_TextWidget* text1 = new KODE_TextWidget(KODE_FRect(20,20),"Text");
     text1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     text1->setFillBackground(true);
     //text1->setDrawBorder(true);
@@ -91,7 +91,7 @@ public:
 
     // button
 
-    KODE_ButtonWidget* button1 = new KODE_ButtonWidget(20);
+    KODE_ButtonWidget* button1 = new KODE_ButtonWidget(KODE_FRect(20,20));
     button1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     button1->setDrawBorder(false);
     //button1->setFillBackground(true);
@@ -100,7 +100,7 @@ public:
     button1->setBackgroundColor(KODE_Color(0.6),KODE_Color(0.4));
     left_panel->appendWidget(button1);
 
-    KODE_ButtonWidget* button2 = new KODE_ButtonWidget(20);
+    KODE_ButtonWidget* button2 = new KODE_ButtonWidget(KODE_FRect(20,20));
     button2->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     button2->setIsToggle();
     button2->setDrawBorder(false);
@@ -112,7 +112,7 @@ public:
 
     // value
 
-    KODE_ValueWidget* value1 = new KODE_ValueWidget(20);
+    KODE_ValueWidget* value1 = new KODE_ValueWidget(KODE_FRect(20,20));
     value1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     value1->setFillBackground(true);
     //value1->setDrawBorder(true);
@@ -123,7 +123,7 @@ public:
 
     // drag value
 
-    KODE_DragValueWidget* dragvalue1 = new KODE_DragValueWidget(20);
+    KODE_DragValueWidget* dragvalue1 = new KODE_DragValueWidget(KODE_FRect(20,20));
     dragvalue1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     dragvalue1->setFillBackground(true);
     //dragvalue1->setDrawBorder(true);
@@ -140,7 +140,7 @@ public:
 
     // slider
 
-    KODE_SliderWidget* slider1 = new KODE_SliderWidget(20);
+    KODE_SliderWidget* slider1 = new KODE_SliderWidget(KODE_FRect(20,20));
     slider1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     slider1->setFillBackground(true);
     slider1->setDrawBorder(false);
@@ -155,7 +155,7 @@ public:
 
     // scroll bar
 
-    KODE_ScrollBarWidget* scrollbar1 = new KODE_ScrollBarWidget(20);
+    KODE_ScrollBarWidget* scrollbar1 = new KODE_ScrollBarWidget(KODE_FRect(20,20));
     scrollbar1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     scrollbar1->setValue(0.4);
     scrollbar1->setBackgroundColor(KODE_Color(0.4));
@@ -163,7 +163,7 @@ public:
 
     // range slider
 
-    KODE_RangeSliderWidget* rangeslider1 = new KODE_RangeSliderWidget(20);
+    KODE_RangeSliderWidget* rangeslider1 = new KODE_RangeSliderWidget(KODE_FRect(20,20));
     rangeslider1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     rangeslider1->setValue(0.3);
     rangeslider1->setValue2(0.9);
@@ -172,14 +172,14 @@ public:
 
     // menu item
 
-    KODE_MenuItemWidget* menuitem1 = new KODE_MenuItemWidget(20);
+    KODE_MenuItemWidget* menuitem1 = new KODE_MenuItemWidget(KODE_FRect(20,20));
     menuitem1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     menuitem1->setText("MenuItem");
     left_panel->appendWidget(menuitem1);
 
     // selector
 
-      KODE_MenuWidget* menu1 = new KODE_MenuWidget(0);
+      KODE_MenuWidget* menu1 = new KODE_MenuWidget(KODE_FRect());
       menu1->setItemSize(100,20);
       menu1->setItemLayout(1,5);
       menu1->appendMenuItem("Item1");
@@ -188,20 +188,20 @@ public:
       menu1->appendMenuItem("Item4");
       menu1->appendMenuItem("Item5");
 
-    KODE_SelectorWidget* selector1 = new KODE_SelectorWidget(20);
+    KODE_SelectorWidget* selector1 = new KODE_SelectorWidget(KODE_FRect(20,20));
     selector1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     selector1->setMenu(menu1);
     left_panel->appendWidget(selector1);
 
     // button row2
 
-    KODE_ButtonRowWidget* buttonrow1 = new KODE_ButtonRowWidget(20,5,button_text,KODE_BUTTON_ROW_SINGLE);
+    KODE_ButtonRowWidget* buttonrow1 = new KODE_ButtonRowWidget(KODE_FRect(20,20),5,button_text,KODE_BUTTON_ROW_SINGLE);
     buttonrow1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     buttonrow1->setDrawBorder(false);
     buttonrow1->setButtonState(0,true);
     left_panel->appendWidget(buttonrow1);
 
-    KODE_ButtonRowWidget* buttonrow2 = new KODE_ButtonRowWidget(20,5,button_text,KODE_BUTTON_ROW_MULTI);
+    KODE_ButtonRowWidget* buttonrow2 = new KODE_ButtonRowWidget(KODE_FRect(20,20),5,button_text,KODE_BUTTON_ROW_MULTI);
     buttonrow2->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     buttonrow2->setDrawBorder(false);
     buttonrow2->setButtonState(1,true);
@@ -210,25 +210,119 @@ public:
 
     // text edit
 
-    KODE_TextEditWidget* textedit1 = new KODE_TextEditWidget(20);
+    KODE_TextEditWidget* textedit1 = new KODE_TextEditWidget(KODE_FRect(20,20));
     textedit1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     textedit1->setText("TextEdit");
     left_panel->appendWidget(textedit1);
+
+    // knobs
+
+    KODE_KnobWidget* knob1 = new KODE_KnobWidget(KODE_FRect(32,32));
+    knob1->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
+    left_panel->appendWidget(knob1);
+
+    KODE_KnobWidget* knob2 = new KODE_KnobWidget(KODE_FRect(32,32));
+    knob2->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
+    knob2->setBipolar();
+    knob2->setValue(0.5);
+    left_panel->appendWidget(knob2);
+
+    // image strip
+
+    KODE_ImageStripWidget* imagestrip1 = new KODE_ImageStripWidget(KODE_FRect(32,32));
+    //imagestrip1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    imagestrip1->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
+    imagestrip1->setImage(ATarget,(uint8_t*)knob2_32x32_65,knob2_32x32_65_size,KODE_Color(0.5f));
+    imagestrip1->setupTiles(1,31);
+    imagestrip1->setValue(0.6);
+    left_panel->appendWidget(imagestrip1);
+
+    // curves
+
+    KODE_CurveWidget* curve1 = new KODE_CurveWidget(KODE_FRect(KODE_FRect(32,32)),false);
+    //curve1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    curve1->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
+    curve1->setValue(0.7);
+    left_panel->appendWidget(curve1);
+
+    KODE_CurveWidget* curve2 = new KODE_CurveWidget(KODE_FRect(32,32),true);
+    //curve2->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+    curve2->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
+    curve2->setValue(0.3);
+    left_panel->appendWidget(curve2);
+
+    // group / waveform
+
+    KODE_GroupBoxWidget* groupbox1 = new KODE_GroupBoxWidget(KODE_FRect(100,100));
+    groupbox1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+    groupbox1->getTitleBar()->setText("Waveform","waveform");
+    groupbox1->close();
+    left_panel->appendWidget(groupbox1);
+
+        KODE_WaveformWidget* waveform1 = new KODE_WaveformWidget();
+        waveform1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+        waveform1->setBufferSize(WAVEFORM_SIZE);
+        waveform1->setBuffer(waveform_buffer);
+        groupbox1->appendWidget(waveform1);
+
+    // group / value graph
+
+    KODE_GroupBoxWidget* groupbox2 = new KODE_GroupBoxWidget(KODE_FRect(100,100));
+    groupbox2->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+    groupbox2->getTitleBar()->setText("ValueGraph","value_graph");
+    groupbox2->close();
+    left_panel->appendWidget(groupbox2);
+
+      KODE_ValueGraphWidget* valuegraph1 = new KODE_ValueGraphWidget(KODE_FRect(100,100),16);
+      valuegraph1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+      //valuegraph1->setBufferSize(WAVEFORM_SIZE);
+      //valuegraph1->setBuffer(waveform_buffer);
+      for (uint32_t i=0; i<16; i++) valuegraph1->appendNode(waveform_buffer[i],0);
+      groupbox2->appendWidget(valuegraph1);
+
+    // group / slider bank
+
+    KODE_GroupBoxWidget* groupbox3 = new KODE_GroupBoxWidget(KODE_FRect(100,100),100);
+    groupbox3->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+    groupbox3->getTitleBar()->setText("SliderBank","slider_bank");
+    groupbox3->close();
+    left_panel->appendWidget(groupbox3);
+
+      KODE_SliderBankWidget* sliderbank1 = new KODE_SliderBankWidget(KODE_FRect(),16);
+      sliderbank1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+      //valuegraph1->setBufferSize(WAVEFORM_SIZE);
+      //valuegraph1->setBuffer(waveform_buffer);
+      //for (uint32_t i=0; i<16; i++) valuegraph1->appendNode(waveform_buffer[i],0);
+      groupbox3->appendWidget(sliderbank1);
+
+    // group / keyboard
+
+    KODE_GroupBoxWidget* groupbox4 = new KODE_GroupBoxWidget(KODE_FRect(100,100));
+    groupbox4->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+    groupbox4->getTitleBar()->setText("Keyboard","keyboard");
+    groupbox4->close();
+    left_panel->appendWidget(groupbox4);
+
+      KODE_KeyboardWidget* keyboard1 = new KODE_KeyboardWidget();
+      keyboard1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+      //keyboard1->setBufferSize(WAVEFORM_SIZE);
+      //keyboard1->setBuffer(waveform_buffer);
+      groupbox4->appendWidget(keyboard1);
 
     //--------------------
     // sizer |
     //--------------------
 
-    KODE_SizerWidget* left_sizer = new KODE_SizerWidget(5,KODE_SIZER_LEFT,left_panel);
+    KODE_SizerWidget* left_sizer = new KODE_SizerWidget(KODE_FRect(5,5),KODE_SIZER_LEFT,left_panel);
     appendWidget(left_sizer);
 
     //--------------------
     // top
     //--------------------
 
-    KODE_PanelWidget* top_panel = new KODE_PanelWidget(100);
+    KODE_PanelWidget* top_panel = new KODE_PanelWidget(KODE_FRect(100,100));
     top_panel->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
-    top_panel->layout.innerBorder = 10;
+    top_panel->layout.innerBorder = KODE_FRect(10,10,10,10);
     top_panel->layout.spacing = 10;
     top_panel->setFillBackground(false);
     top_panel->setDrawBorder(false);
@@ -238,144 +332,144 @@ public:
     // sizer -
     //--------------------
 
-    KODE_SizerWidget* top_sizer = new KODE_SizerWidget(5,KODE_SIZER_TOP,top_panel);
+    KODE_SizerWidget* top_sizer = new KODE_SizerWidget(KODE_FRect(5,5,5,5),KODE_SIZER_TOP,top_panel);
     appendWidget(top_sizer);
 
     //--------------------
     // right
     //--------------------
 
-    KODE_ScrollBoxWidget* right_panel = new KODE_ScrollBoxWidget(KODE_FRect(200),true,false);
+    KODE_ScrollBoxWidget* right_panel = new KODE_ScrollBoxWidget(KODE_FRect(200,200),true,false);
     right_panel->layout.alignment = KODE_WIDGET_ALIGN_FILL_RIGHT;
     right_panel->setFillBackground(false);
     right_panel->setDrawBorder(false);
     appendWidget(right_panel);
 
       KODE_ScrollBoxWidget* right_content = (KODE_ScrollBoxWidget*)right_panel->getContentWidget();
-      right_content->layout.innerBorder = 10;
+      right_content->layout.innerBorder = KODE_FRect(10,10,10,10);
       right_content->layout.spacing = 10;
       right_content->setFillBackground(false);
       right_content->setDrawBorder(false);
 
-        // group / waveform
-
-        KODE_GroupBoxWidget* groupbox1 = new KODE_GroupBoxWidget(100);
-        groupbox1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
-        groupbox1->getTitleBar()->setText("Waveform","waveform");
-        groupbox1->close();
-        right_panel->appendWidget(groupbox1);
-
-          KODE_WaveformWidget* waveform1 = new KODE_WaveformWidget();
-          waveform1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
-          waveform1->setBufferSize(WAVEFORM_SIZE);
-          waveform1->setBuffer(waveform_buffer);
-          groupbox1->appendWidget(waveform1);
-
-        // group / value graph
-
-        KODE_GroupBoxWidget* groupbox2 = new KODE_GroupBoxWidget(100);
-        groupbox2->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
-        groupbox2->getTitleBar()->setText("ValueGraph","value_graph");
-        groupbox2->close();
-        right_panel->appendWidget(groupbox2);
-
-          KODE_ValueGraphWidget* valuegraph1 = new KODE_ValueGraphWidget(0,16);
-          valuegraph1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
-          //valuegraph1->setBufferSize(WAVEFORM_SIZE);
-          //valuegraph1->setBuffer(waveform_buffer);
-          for (uint32_t i=0; i<16; i++) valuegraph1->appendNode(waveform_buffer[i],0);
-          groupbox2->appendWidget(valuegraph1);
-
-        // group / slider bank
-
-        KODE_GroupBoxWidget* groupbox3 = new KODE_GroupBoxWidget(100);
-        groupbox3->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
-        groupbox3->getTitleBar()->setText("SliderBank","slider_bank");
-        groupbox3->close();
-        right_panel->appendWidget(groupbox3);
-
-          KODE_SliderBankWidget* sliderbank1 = new KODE_SliderBankWidget(0,16);
-          sliderbank1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
-          //valuegraph1->setBufferSize(WAVEFORM_SIZE);
-          //valuegraph1->setBuffer(waveform_buffer);
-          //for (uint32_t i=0; i<16; i++) valuegraph1->appendNode(waveform_buffer[i],0);
-          groupbox3->appendWidget(sliderbank1);
-
-        // group / keyboard
-
-        KODE_GroupBoxWidget* groupbox4 = new KODE_GroupBoxWidget(100);
-        groupbox4->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
-        groupbox4->getTitleBar()->setText("Keyboard","keyboard");
-        groupbox4->close();
-        right_panel->appendWidget(groupbox4);
-
-          KODE_KeyboardWidget* keyboard1 = new KODE_KeyboardWidget();
-          keyboard1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
-          //keyboard1->setBufferSize(WAVEFORM_SIZE);
-          //keyboard1->setBuffer(waveform_buffer);
-          groupbox4->appendWidget(keyboard1);
+//    // group / waveform
+//
+//    KODE_GroupBoxWidget* groupbox1 = new KODE_GroupBoxWidget(100);
+//    groupbox1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+//    groupbox1->getTitleBar()->setText("Waveform","waveform");
+//    groupbox1->close();
+//    right_panel->appendWidget(groupbox1);
+//
+//        KODE_WaveformWidget* waveform1 = new KODE_WaveformWidget();
+//        waveform1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+//        waveform1->setBufferSize(WAVEFORM_SIZE);
+//        waveform1->setBuffer(waveform_buffer);
+//        groupbox1->appendWidget(waveform1);
+//
+//    // group / value graph
+//
+//    KODE_GroupBoxWidget* groupbox2 = new KODE_GroupBoxWidget(100);
+//    groupbox2->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+//    groupbox2->getTitleBar()->setText("ValueGraph","value_graph");
+//    groupbox2->close();
+//    right_panel->appendWidget(groupbox2);
+//
+//      KODE_ValueGraphWidget* valuegraph1 = new KODE_ValueGraphWidget(0,16);
+//      valuegraph1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+//      //valuegraph1->setBufferSize(WAVEFORM_SIZE);
+//      //valuegraph1->setBuffer(waveform_buffer);
+//      for (uint32_t i=0; i<16; i++) valuegraph1->appendNode(waveform_buffer[i],0);
+//      groupbox2->appendWidget(valuegraph1);
+//
+//    // group / slider bank
+//
+//    KODE_GroupBoxWidget* groupbox3 = new KODE_GroupBoxWidget(100);
+//    groupbox3->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+//    groupbox3->getTitleBar()->setText("SliderBank","slider_bank");
+//    groupbox3->close();
+//    right_panel->appendWidget(groupbox3);
+//
+//      KODE_SliderBankWidget* sliderbank1 = new KODE_SliderBankWidget(0,16);
+//      sliderbank1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+//      //valuegraph1->setBufferSize(WAVEFORM_SIZE);
+//      //valuegraph1->setBuffer(waveform_buffer);
+//      //for (uint32_t i=0; i<16; i++) valuegraph1->appendNode(waveform_buffer[i],0);
+//      groupbox3->appendWidget(sliderbank1);
+//
+//    // group / keyboard
+//
+//    KODE_GroupBoxWidget* groupbox4 = new KODE_GroupBoxWidget(100);
+//    groupbox4->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+//    groupbox4->getTitleBar()->setText("Keyboard","keyboard");
+//    groupbox4->close();
+//    right_panel->appendWidget(groupbox4);
+//
+//      KODE_KeyboardWidget* keyboard1 = new KODE_KeyboardWidget();
+//      keyboard1->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+//      //keyboard1->setBufferSize(WAVEFORM_SIZE);
+//      //keyboard1->setBuffer(waveform_buffer);
+//      groupbox4->appendWidget(keyboard1);
 
     //--------------------
     // sizer |
     //--------------------
 
-    KODE_SizerWidget* right_sizer = new KODE_SizerWidget(5,KODE_SIZER_RIGHT,right_panel);
+    KODE_SizerWidget* right_sizer = new KODE_SizerWidget(KODE_FRect(5,5,5,5),KODE_SIZER_RIGHT,right_panel);
     appendWidget(right_sizer);
 
     //--------------------
     // bottom
     //--------------------
 
-    KODE_PanelWidget* bottom_panel = new KODE_PanelWidget(100);
+    KODE_PanelWidget* bottom_panel = new KODE_PanelWidget(KODE_FRect(100,100));
     bottom_panel->layout.alignment = KODE_WIDGET_ALIGN_FILL_BOTTOM;
-    bottom_panel->layout.innerBorder = 10;
+    bottom_panel->layout.innerBorder = KODE_FRect(10,10,10,10);
     bottom_panel->layout.spacing = 10;
     bottom_panel->setFillBackground(false);
     bottom_panel->setDrawBorder(false);
     appendWidget(bottom_panel);
 
-      // knobs
-
-      KODE_KnobWidget* knob1 = new KODE_KnobWidget(32);
-      knob1->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
-      bottom_panel->appendWidget(knob1);
-
-      KODE_KnobWidget* knob2 = new KODE_KnobWidget(32);
-      knob2->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
-      knob2->setBipolar();
-      knob2->setValue(0.5);
-      bottom_panel->appendWidget(knob2);
-
-      // image strip
-
-      KODE_ImageStripWidget* imagestrip1 = new KODE_ImageStripWidget(KODE_FRect(32,32));
-      //imagestrip1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
-      imagestrip1->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
-      imagestrip1->setImage(ATarget,(uint8_t*)knob2_32x32_65,knob2_32x32_65_size,KODE_Color(0.5f));
-      imagestrip1->setupTiles(1,31);
-      imagestrip1->setValue(0.6);
-      bottom_panel->appendWidget(imagestrip1);
-
-      // curves
-
-      KODE_CurveWidget* curve1 = new KODE_CurveWidget(KODE_FRect(32),false);
-      //curve1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
-      curve1->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
-      curve1->setValue(0.7);
-      bottom_panel->appendWidget(curve1);
-
-      KODE_CurveWidget* curve2 = new KODE_CurveWidget(KODE_FRect(32),true);
-      //curve2->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
-      curve2->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
-      curve2->setValue(0.3);
-      bottom_panel->appendWidget(curve2);
+//    // knobs
+//
+//    KODE_KnobWidget* knob1 = new KODE_KnobWidget(32);
+//    knob1->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
+//    bottom_panel->appendWidget(knob1);
+//
+//    KODE_KnobWidget* knob2 = new KODE_KnobWidget(32);
+//    knob2->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
+//    knob2->setBipolar();
+//    knob2->setValue(0.5);
+//    bottom_panel->appendWidget(knob2);
+//
+//    // image strip
+//
+//    KODE_ImageStripWidget* imagestrip1 = new KODE_ImageStripWidget(KODE_FRect(32,32));
+//    //imagestrip1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+//    imagestrip1->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
+//    imagestrip1->setImage(ATarget,(uint8_t*)knob2_32x32_65,knob2_32x32_65_size,KODE_Color(0.5f));
+//    imagestrip1->setupTiles(1,31);
+//    imagestrip1->setValue(0.6);
+//    bottom_panel->appendWidget(imagestrip1);
+//
+//    // curves
+//
+//    KODE_CurveWidget* curve1 = new KODE_CurveWidget(KODE_FRect(32),false);
+//    //curve1->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+//    curve1->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
+//    curve1->setValue(0.7);
+//    bottom_panel->appendWidget(curve1);
+//
+//    KODE_CurveWidget* curve2 = new KODE_CurveWidget(KODE_FRect(32),true);
+//    //curve2->layout.alignment = KODE_WIDGET_ALIGN_LEFT_TOP;
+//    curve2->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
+//    curve2->setValue(0.3);
+//    bottom_panel->appendWidget(curve2);
 
 
     //--------------------
     // sizer -
     //--------------------
 
-    KODE_SizerWidget* bottom_sizer = new KODE_SizerWidget(5,KODE_SIZER_BOTTOM,bottom_panel);
+    KODE_SizerWidget* bottom_sizer = new KODE_SizerWidget(KODE_FRect(5,5,5,5),KODE_SIZER_BOTTOM,bottom_panel);
     appendWidget(bottom_sizer);
 
     //--------------------
@@ -394,7 +488,7 @@ public:
 
     KODE_GraphModule* module;
 
-    for (uint32_t i=0; i<10; i++) {
+    for (uint32_t i=0; i<6; i++) {
       module = new KODE_GraphModule();
       uint32_t inum = KODE_RandomRangeInt(1,5);
       uint32_t onum = KODE_RandomRangeInt(0,5);
@@ -402,7 +496,7 @@ public:
       module->numOutputs = onum;
       for (uint32_t j=0; j<inum; j++) module->inputs[j] =  KODE_RandomRangeInt(0,1);
       for (uint32_t j=0; j<onum; j++) module->outputs[j] = KODE_RandomRangeInt(0,1);
-      graph1->addModule(module, 10 + i*50, 10 + i*50, "module" );
+      graph1->addModule(module, 10 + i*50, 10 + i*30, "module" );
     }
 
     //--------------------

@@ -29,7 +29,7 @@ public:
   : KODE_PanelWidget(ARect) {
 
     layout.alignment = KODE_WIDGET_ALIGN_FILL_LEFT;
-    layout.innerBorder = 10;
+    layout.innerBorder = KODE_FRect(10,10,10,10);
     layout.spacing = 10;
 
     //setFillBackground(false);
@@ -38,7 +38,7 @@ public:
     //----------
 
     menu1 = new KODE_MenuWidget( KODE_FRect(250,150) );
-    menu1->setMenuSize(2,5);
+    menu1->setItemLayout(2,5);
     menu1->setItemWidth(100);
     menu1->setItemHeight(20);
     menu1->appendMenuItem("Item1");
@@ -54,7 +54,7 @@ public:
 
     // sliders
 
-    KODE_SliderWidget* slider1 = new KODE_SliderWidget(KODE_FRect(20));
+    KODE_SliderWidget* slider1 = new KODE_SliderWidget(KODE_FRect(20,20));
     slider1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     slider1->setValue(0.2);
     slider1->setText("Slider 1");
@@ -65,7 +65,7 @@ public:
     slider1->setAutoGrabCursor(false);
     appendWidget(slider1);
 
-    KODE_SliderWidget* slider2 = new KODE_SliderWidget(KODE_FRect(20));
+    KODE_SliderWidget* slider2 = new KODE_SliderWidget(KODE_FRect(20,20));
     slider2->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     slider2->setValue(0.7);
     slider2->setText("Slider Two");
@@ -79,7 +79,7 @@ public:
     slider2->setAutoGrabCursor(true);
     appendWidget(slider2);
 
-    KODE_SliderWidget* slider3 = new KODE_SliderWidget(KODE_FRect(20));
+    KODE_SliderWidget* slider3 = new KODE_SliderWidget(KODE_FRect(20,20));
     slider3->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     slider3->setValue(0.4);
     slider3->setText("Slider 3");
@@ -91,14 +91,14 @@ public:
 
     // scrollbar
 
-    KODE_ScrollBarWidget* scrollbar1 = new KODE_ScrollBarWidget(KODE_FRect(20));
+    KODE_ScrollBarWidget* scrollbar1 = new KODE_ScrollBarWidget(KODE_FRect(20,20));
     scrollbar1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     scrollbar1->setThumbPos(0.1);
     appendWidget(scrollbar1);
 
     // range sloder
 
-    KODE_RangeSliderWidget* rangeslider1 = new KODE_RangeSliderWidget(KODE_FRect(20));
+    KODE_RangeSliderWidget* rangeslider1 = new KODE_RangeSliderWidget(KODE_FRect(20,20));
     rangeslider1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     rangeslider1->setValue(0.25);
     rangeslider1->setValue2(0.75);
@@ -106,12 +106,12 @@ public:
 
     // buttons
 
-    KODE_ButtonWidget* button1 = new KODE_ButtonWidget(KODE_FRect(20));
+    KODE_ButtonWidget* button1 = new KODE_ButtonWidget(KODE_FRect(20,20));
     button1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     button1->setText("Button: On","Button: Off");
     appendWidget(button1);
 
-    KODE_ButtonWidget* button2 = new KODE_ButtonWidget(KODE_FRect(20));
+    KODE_ButtonWidget* button2 = new KODE_ButtonWidget(KODE_FRect(20,20));
     button2->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     button2->setIsToggle();
     button2->setText("Toggle: On","Toggle: Off");
@@ -119,33 +119,33 @@ public:
 
     // text edit
 
-    KODE_TextEditWidget* textedit = new KODE_TextEditWidget( KODE_FRect(20) );
+    KODE_TextEditWidget* textedit = new KODE_TextEditWidget( KODE_FRect(20,20) );
     textedit->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     textedit->setText("TextEdit");
     appendWidget(textedit);
 
     // selector
 
-    KODE_SelectorWidget* selector1 = new KODE_SelectorWidget(KODE_FRect(20));
+    KODE_SelectorWidget* selector1 = new KODE_SelectorWidget(KODE_FRect(20,20));
     selector1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     selector1->setMenu(menu1);
     appendWidget(selector1);
 
     // group box
 
-    KODE_GroupBoxWidget* groupbox = new KODE_GroupBoxWidget(KODE_FRect(150));
+    KODE_GroupBoxWidget* groupbox = new KODE_GroupBoxWidget(KODE_FRect(150,150));
     groupbox->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     groupbox->getTitleBar()->setText("GroupBox: Open","GroupBox: Closed");
     appendWidget(groupbox);
 
     // buttonrows
 
-    KODE_ButtonRowWidget* buttonrow1 = new KODE_ButtonRowWidget(KODE_FRect(20),5,buttonrow_txt,KODE_BUTTON_ROW_SINGLE);
+    KODE_ButtonRowWidget* buttonrow1 = new KODE_ButtonRowWidget(KODE_FRect(20,20),5,buttonrow_txt,KODE_BUTTON_ROW_SINGLE);
     buttonrow1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     buttonrow1->setButtonState(0,true);
     appendWidget(buttonrow1);
 
-    KODE_ButtonRowWidget* buttonrow2 = new KODE_ButtonRowWidget(KODE_FRect(20),5,buttonrow_txt,KODE_BUTTON_ROW_MULTI);
+    KODE_ButtonRowWidget* buttonrow2 = new KODE_ButtonRowWidget(KODE_FRect(20,20),5,buttonrow_txt,KODE_BUTTON_ROW_MULTI);
     buttonrow2->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     buttonrow2->setButtonState(1,true);
     buttonrow2->setButtonState(2,true);
@@ -153,7 +153,7 @@ public:
 
     // grid
 
-    KODE_GridWidget* grid1 = new KODE_GridWidget(KODE_FRect(100));
+    KODE_GridWidget* grid1 = new KODE_GridWidget(KODE_FRect(100,100));
     grid1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     grid1->selectCell(1,1,true);
     appendWidget(grid1);

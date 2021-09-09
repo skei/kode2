@@ -70,7 +70,7 @@ public:
   KODE_Window(uint32_t AWidth, uint32_t AHeight, const char* ATitle="", void* AParent=KODE_NULL)
   : KODE_ImplementedWindow(AWidth,AHeight,ATitle,AParent)
   , KODE_Widget(KODE_FRect(AWidth,AHeight)) {
-    MOwner = this;
+    //MOwner = this;
     setName("KODE_Window");
     setRect(KODE_FRect(AWidth,AHeight));
     MWindowPainter = new KODE_Painter(this);
@@ -438,9 +438,9 @@ public: // base window
 public: // "widget listener"
 //------------------------------
 
-  virtual KODE_Widget* do_widget_get_owner(KODE_Widget* AWidget) override {
-    return this;
-  }
+  //virtual KODE_Widget* do_widget_get_owner(KODE_Widget* AWidget) override {
+  //  return this;
+  //}
 
   //----------
 
@@ -461,8 +461,13 @@ public: // "widget listener"
 
   //----------
 
-  void do_widget_moved(KODE_Widget* ASender, float ADeltaX=0.0f, float ADeltaY=0.0f) override {
+  void do_widget_realign(KODE_Widget* ASender, bool ARecursive=true) override {
   }
+
+  //----------
+
+  //void do_widget_moved(KODE_Widget* ASender, float ADeltaX=0.0f, float ADeltaY=0.0f) override {
+  //}
 
   //----------
 
@@ -470,9 +475,6 @@ public: // "widget listener"
     widget has been resized
     notify parent of widget, and realign/redraw
   */
-
-  //void do_resized(KODE_Widget* ASender, float AWidth, float AHeight) override {
-  //}
 
   void do_widget_resized(KODE_Widget* ASender, float ADeltaX=0.0f, float ADeltaY=0.0f) override {
     //KODE_Widget* parent = ASender->getParent();
@@ -485,6 +487,7 @@ public: // "widget listener"
   }
 
   //----------
+
   void do_widget_grabMouseCursor(KODE_Widget* ASender) override {
     //if (ASender) grabMouseCursor();
     //else releaseMouseCursor();

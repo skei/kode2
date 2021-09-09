@@ -16,7 +16,7 @@ protected:
   bool        MDrawValueBar       = true;
   KODE_Color  MValueBarColor      = KODE_Color(0.45f, 0.45f, 0.45f);
   uint32_t    MValueBarDirection  = KODE_RIGHT;
-  KODE_FRect  MValueBarOffset     = KODE_FRect(1);
+  KODE_FRect  MValueBarOffset     = KODE_FRect(1,1,1,1);
 
 //------------------------------
 public:

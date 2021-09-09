@@ -21,14 +21,14 @@ protected:
   KODE_Color  MOnBorderColor      = KODE_Color(0.3f);
   KODE_Color  MOnTextColor        = KODE_Color(0.3f);
   uint32_t    MOnTextAlignment    = KODE_TEXT_ALIGN_CENTER;
-  KODE_FRect  MOnTextOffset       = KODE_FRect(2);
+  KODE_FRect  MOnTextOffset       = KODE_FRect(2,2,2,2);
 
   const char* MOffText            = "Off";
   KODE_Color  MOffBackgroundColor = KODE_Color(0.3f);
   KODE_Color  MOffBorderColor     = KODE_Color(0.7f);
   KODE_Color  MOffTextColor       = KODE_Color(0.7f);
   uint32_t    MOffTextAlignment   = KODE_TEXT_ALIGN_CENTER;
-  KODE_FRect  MOffTextOffset      = KODE_FRect(2);
+  KODE_FRect  MOffTextOffset      = KODE_FRect(2,2,2,2);
 
 //------------------------------
 public:

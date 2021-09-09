@@ -26,7 +26,7 @@ public:
   : KODE_Widget(ARect) {
     setName("KODE_TabsWidget");
     setHint("tabs");
-    MHeader = new KODE_ButtonRowWidget(KODE_FRect(20),ANum);
+    MHeader = new KODE_ButtonRowWidget(KODE_FRect(20,20),ANum);
     MHeader->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     MPages = new KODE_PagesWidget(KODE_FRect());
     MPages->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;

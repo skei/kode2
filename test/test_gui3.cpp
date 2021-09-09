@@ -21,8 +21,8 @@ public:
 
     // sa header
 
-    KODE_SAHeaderWidget* header1 = new KODE_SAHeaderWidget( KODE_FRect(10,10,128,64), "test_gui3", "v0.0.0", this );
-    appendWidget(header1);
+    //KODE_SAHeaderWidget* header1 = new KODE_SAHeaderWidget( KODE_FRect(10,10,128,64), "test_gui3", "v0.0.0", this );
+    //appendWidget(header1);
 
     // panel
 

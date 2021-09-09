@@ -10,7 +10,7 @@
 //
 //----------------------------------------------------------------------
 
-#include "../test/demo.cpp"
+//#include "../test/demo.cpp"
 //#include "../test/demo_gui.cpp"
 
 //----------------------------------------------------------------------
@@ -26,7 +26,7 @@
 //#include "../test/test_gui2.cpp"
 //#include "../test/test_gui3.cpp"
 //#include "../test/test_plugin1.cpp"
-//#include "../test/test_widgets1.cpp"
+//#include "../test/test_widgets1.cpp"      // error ->setBitmap()
 //#include "../test/test_widgets2.cpp"
 
 //----------------------------------------------------------------------
@@ -49,9 +49,16 @@
 
 //------------------------------
 
+
+
+#include "../plugins/sa_botage.cpp"
+
+
+
 //#include "../plugins/sa_brickwall.cpp"
 //#include "../plugins/sa_curve_shaper.cpp"
 //#include "../plugins/sa_frac_delay.cpp"
+
 
 
 //------------------------------

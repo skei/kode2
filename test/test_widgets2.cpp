@@ -106,13 +106,13 @@ public:
     setTitle("test_widgets2");
     setFillBackground();
     setBackgroundColor(KODE_COLOR_GRAY);
-    layout.innerBorder = 10;
+    layout.innerBorder = KODE_FRect(10,10,10,10);
     layout.spacing = 10;
 
     //
 
     KODE_MenuWidget* menu1 = new KODE_MenuWidget( KODE_FRect(200,100) );
-    menu1->setMenuSize(2,4);
+    menu1->setItemLayout(2,4);
     menu1->appendMenuItem("Item1");
     menu1->appendMenuItem("Item2");
     menu1->appendMenuItem("Item3");
@@ -125,41 +125,41 @@ public:
     //
 
 
-    KODE_PanelWidget* left_panel = new KODE_PanelWidget(KODE_FRect(200));
+    KODE_PanelWidget* left_panel = new KODE_PanelWidget(KODE_FRect(200,200));
     left_panel->layout.alignment = KODE_WIDGET_ALIGN_FILL_LEFT;
-    left_panel->layout.innerBorder = 10;
+    left_panel->layout.innerBorder = KODE_FRect(10,10,10,10);
     left_panel->layout.spacing = 10;
     appendWidget(left_panel);
 
-    KODE_SizerWidget* left_right_sizer = new KODE_SizerWidget(KODE_FRect(5));
+    KODE_SizerWidget* left_right_sizer = new KODE_SizerWidget(KODE_FRect(5,5));
     left_right_sizer->setMode(KODE_SIZER_LEFT);
     left_right_sizer->setTarget(left_panel);
     left_right_sizer->layout.alignment = KODE_WIDGET_ALIGN_FILL_LEFT;
     appendWidget(left_right_sizer);
 
-    KODE_PanelWidget* right_panel = new KODE_PanelWidget(KODE_FRect());
+    KODE_PanelWidget* right_panel = new KODE_PanelWidget();
     right_panel->setDrawBorder(false);
     right_panel->setFillBackground(false);
     right_panel->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
-    //right_panel->layout.innerBorder = 10;
+    //right_panel->layout.innerBorder = KODE_FRect(10,10,10,10);
     right_panel->layout.spacing = 10;
     appendWidget(right_panel);
 
-    KODE_PanelWidget* right_bottom_panel = new KODE_PanelWidget(KODE_FRect(200));
+    KODE_PanelWidget* right_bottom_panel = new KODE_PanelWidget(KODE_FRect(200,200));
     right_bottom_panel->layout.alignment = KODE_WIDGET_ALIGN_FILL_BOTTOM;
-    right_bottom_panel->layout.innerBorder = 10;
+    right_bottom_panel->layout.innerBorder = KODE_FRect(10,10,10,10);
     right_bottom_panel->layout.spacing = 10;
     right_panel->appendWidget(right_bottom_panel);
 
-    KODE_SizerWidget* top_bottom_sizer = new KODE_SizerWidget(KODE_FRect(5));
+    KODE_SizerWidget* top_bottom_sizer = new KODE_SizerWidget(KODE_FRect(5,5));
     top_bottom_sizer->setMode(KODE_SIZER_BOTTOM);
     top_bottom_sizer->setTarget(right_bottom_panel);
     top_bottom_sizer->layout.alignment = KODE_WIDGET_ALIGN_FILL_BOTTOM;
     right_panel->appendWidget(top_bottom_sizer);
 
-    KODE_PanelWidget* right_top_panel = new KODE_PanelWidget(KODE_FRect());
+    KODE_PanelWidget* right_top_panel = new KODE_PanelWidget();
     right_top_panel->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
-    right_top_panel->layout.innerBorder = 10;
+    right_top_panel->layout.innerBorder = KODE_FRect(10,10,10,10);
     right_top_panel->layout.spacing = 10;
     right_panel->appendWidget(right_top_panel);
 
@@ -167,7 +167,7 @@ public:
 
     // sliders
 
-    KODE_SliderWidget* slider1 = new KODE_SliderWidget(KODE_FRect(20));
+    KODE_SliderWidget* slider1 = new KODE_SliderWidget(KODE_FRect(20,20));
     slider1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     slider1->setValue(0.2);
     slider1->setText("Slider 1");
@@ -178,7 +178,7 @@ public:
     slider1->setAutoGrabCursor(false);
     left_panel->appendWidget(slider1);
 
-    KODE_SliderWidget* slider2 = new KODE_SliderWidget(KODE_FRect(20));
+    KODE_SliderWidget* slider2 = new KODE_SliderWidget(KODE_FRect(20,20));
     slider2->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     slider2->setValue(0.7);
     slider2->setText("Slider Two");
@@ -190,7 +190,7 @@ public:
     slider2->setAutoGrabCursor(true);
     left_panel->appendWidget(slider2);
 
-    KODE_SliderWidget* slider3 = new KODE_SliderWidget(KODE_FRect(20));
+    KODE_SliderWidget* slider3 = new KODE_SliderWidget(KODE_FRect(20,20));
     slider3->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     slider3->setValue(0.4);
     slider3->setText("Slider 3");
@@ -200,13 +200,13 @@ public:
 
     // scrollbar
 
-    KODE_ScrollBarWidget* scrollbar1 = new KODE_ScrollBarWidget(KODE_FRect(20));
+    KODE_ScrollBarWidget* scrollbar1 = new KODE_ScrollBarWidget(KODE_FRect(20,20));
     scrollbar1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     left_panel->appendWidget(scrollbar1);
 
     // range sloder
 
-    KODE_RangeSliderWidget* rangeslider1 = new KODE_RangeSliderWidget(KODE_FRect(20));
+    KODE_RangeSliderWidget* rangeslider1 = new KODE_RangeSliderWidget(KODE_FRect(20,20));
     rangeslider1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     rangeslider1->setValue(0.25);
     rangeslider1->setValue2(0.75);
@@ -214,38 +214,38 @@ public:
 
     // buttons
 
-    KODE_ButtonWidget* button1 = new KODE_ButtonWidget(KODE_FRect(20));
+    KODE_ButtonWidget* button1 = new KODE_ButtonWidget(KODE_FRect(20,20));
     button1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     left_panel->appendWidget(button1);
 
-    KODE_ButtonWidget* button2 = new KODE_ButtonWidget(KODE_FRect());
+    KODE_ButtonWidget* button2 = new KODE_ButtonWidget(KODE_FRect(20,20));
     button2->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     button2->setIsToggle();
     left_panel->appendWidget(button2);
 
     // menu item
 
-    KODE_MenuItemWidget* menuitem1 = new KODE_MenuItemWidget(KODE_FRect(20));
+    KODE_MenuItemWidget* menuitem1 = new KODE_MenuItemWidget(KODE_FRect(20,20));
     menuitem1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     menuitem1->setText("Item1");
     left_panel->appendWidget(menuitem1);
 
     // selector
 
-    KODE_SelectorWidget* selector1 = new KODE_SelectorWidget(KODE_FRect(20));
+    KODE_SelectorWidget* selector1 = new KODE_SelectorWidget(KODE_FRect(20,20));
     selector1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     selector1->setMenu(menu1);
     left_panel->appendWidget(selector1);
 
     // group box
 
-    KODE_GroupBoxWidget* groupbox = new KODE_GroupBoxWidget(KODE_FRect(150));
+    KODE_GroupBoxWidget* groupbox = new KODE_GroupBoxWidget(KODE_FRect(150,150));
     groupbox->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     left_panel->appendWidget(groupbox);
 
     // grid
 
-    KODE_GridWidget* grid1 = new KODE_GridWidget(KODE_FRect(150));
+    KODE_GridWidget* grid1 = new KODE_GridWidget(KODE_FRect(150,150));
     grid1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     left_panel->appendWidget(grid1);
 
@@ -253,7 +253,7 @@ public:
 
     // header
 
-    KODE_SAHeaderWidget* header = new KODE_SAHeaderWidget(KODE_FRect(60));
+    KODE_SAHeaderWidget* header = new KODE_SAHeaderWidget(KODE_FRect(60,60));
     header->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     header->setImage(this,(uint8_t*)sa_logo_40_white_trans,sa_logo_40_white_trans_size,KODE_COLOR_GRAY);
     header->setPluginName("test_widgets2");
@@ -278,7 +278,7 @@ public:
 
     // vertical  scrollbar
 
-    KODE_ScrollBarWidget* scrollbar2 = new KODE_ScrollBarWidget(KODE_FRect(0,0,20,20));
+    KODE_ScrollBarWidget* scrollbar2 = new KODE_ScrollBarWidget(KODE_FRect(20,20));
     scrollbar2->layout.alignment = KODE_WIDGET_ALIGN_FILL_RIGHT;
     scrollbar2->setDirection(KODE_VERTICAL);
     right_top_panel->appendWidget(scrollbar2);

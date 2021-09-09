@@ -49,14 +49,14 @@ public:
     setFillBackground(true);
     //setBackgroundColor(KODE_Color(0.6));
     setBackgroundColor(0.5f);
-    layout.innerBorder = 10;
+    layout.innerBorder = KODE_FRect(10,10,10,10);
     layout.spacing = 5;
 
     //--------------------
     // header
     //--------------------
 
-    MHeaderWidget = new KODE_SAHeaderWidget( KODE_FRect(60) );
+    MHeaderWidget = new KODE_SAHeaderWidget( KODE_FRect(60,60) );
     MHeaderWidget->setImage (this,(uint8_t*)sa_logo_40_trans_white,sa_logo_40_trans_white_size,KODE_Color(0.6));
     MHeaderWidget->setPluginName("KODE demo");
     MHeaderWidget->setPluginVersion("0.0.0");
@@ -67,7 +67,7 @@ public:
     // footer
     //--------------------
 
-    MFooterWidget = new KODE_TextWidget( KODE_FRect(20) );
+    MFooterWidget = new KODE_TextWidget( KODE_FRect(20,20) );
     MFooterWidget->layout.alignment = KODE_WIDGET_ALIGN_FILL_BOTTOM;
     MFooterWidget->setFillBackground(false);
     MFooterWidget->setText("footer");

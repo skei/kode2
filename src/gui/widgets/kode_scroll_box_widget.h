@@ -53,7 +53,7 @@ public:
     setFillBackground(false);
     setDrawBorder(true);
     if (showVerticalScrollBar) {
-      MVerticalScrollBar = new KODE_ScrollBarWidget( KODE_FRect(10) );
+      MVerticalScrollBar = new KODE_ScrollBarWidget( KODE_FRect(10,10) );
       MVerticalScrollBar->layout.alignment = KODE_WIDGET_ALIGN_FILL_RIGHT;
       MVerticalScrollBar->setDirection(KODE_VERTICAL);
       if (showHorizontalScrollBar) {
@@ -62,7 +62,7 @@ public:
       KODE_PanelWidget::appendWidget(MVerticalScrollBar);
     }
     if (showHorizontalScrollBar) {
-      MHorizontalScrollBar = new KODE_ScrollBarWidget( KODE_FRect(10) );
+      MHorizontalScrollBar = new KODE_ScrollBarWidget( KODE_FRect(10,10) );
       MHorizontalScrollBar->layout.alignment = KODE_WIDGET_ALIGN_FILL_BOTTOM;
       MHorizontalScrollBar->setDirection(KODE_HORIZONTAL);
       //MHorizontalScrollBar->layout.extraBorder.w = 10;
@@ -108,20 +108,6 @@ public:
       do_widget_redraw(MContent,MContent->getRect(),0);
     }
   }
-
-  //----------
-
-  //void realignScroll() {
-  //  float pos  = MVerticalScrollBar->getThumbPos();
-  //  float prev = 0.0f; // MVerticalScrollBar->getPrevThumbPos();
-  //  float delta = prev - pos;
-  //  float visible = MVerticalScrollBar->getThumbSize();
-  //  float can_scroll = 1.0 - visible;
-  //  can_scroll *= MContent->getContentRect().h;
-  //  float scroll = can_scroll * delta; // * pos;
-  //  MContent->scrollChildren(0,scroll);
-  //  do_widget_redraw(MContent,MContent->getRect(),0);
-  //}
 
 //------------------------------
 public:
@@ -175,21 +161,6 @@ public:
 public:
 //------------------------------
 
-  //void on_widget_setSize(float AWidth, float AHeight) override {
-  //  KODE_PRINT;
-  //  KODE_Widget::on_widget_setSize(AWidth,AHeight);
-  //}
-
-  //virtual void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
-  //  fillBackground(APainter);
-  //  paintChildren(APainter,ARect,AMode);
-  //  drawBorder(APainter);
-  //}
-
-//------------------------------
-public:
-//------------------------------
-
   void do_widget_update(KODE_Widget* ASender) override {
     if (ASender == MVerticalScrollBar) {
       float visible = MVerticalScrollBar->getThumbSize();
@@ -215,17 +186,6 @@ public:
     alignChildren(ARecursive);
     redraw();
   }
-
-  //----------
-
-  //void do_widget_resized(KODE_Widget* ASender, float ADeltaX=0.0f, float ADeltaY=0.0f) override {
-  //  KODE_PRINT;
-  //  //KODE_PanelWidget::do_widget_resized(ASender,ADeltaX,ADeltaY);
-  //  MContent->alignChildren();
-  //  do_widget_redraw(MContent,MContent->getRect(),0);
-  //}
-
-
 
 };
 
