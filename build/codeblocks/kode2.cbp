@@ -308,6 +308,16 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="../../plugins/sa_botage.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/sa_botage/sa_botage_editor.h" />
+		<Unit filename="../../plugins/sa_botage/sa_botage_header.h" />
+		<Unit filename="../../plugins/sa_botage/sa_botage_page_arr.h" />
+		<Unit filename="../../plugins/sa_botage/sa_botage_page_fx.h" />
+		<Unit filename="../../plugins/sa_botage/sa_botage_page_rep.h" />
+		<Unit filename="../../plugins/sa_botage/sa_botage_process.h" />
 		<Unit filename="../../plugins/sa_brickwall.cpp">
 			<Option compile="0" />
 			<Option link="0" />
