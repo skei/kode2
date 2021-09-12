@@ -90,6 +90,7 @@ public:
   virtual void    setSelectMultipleCells(bool ASelect=true) { MSelectMultipleCells = ASelect; }
 
   virtual void    setDrawCells(bool ADraw=true)             { MDrawCells = ADraw; }
+  virtual void    setDrawLines(bool H=true, bool V=true)    { MDrawHorizontalLines = H; MDrawVerticalLines = V; }
   virtual void    setDrawHorizontalLines(bool ADraw=true)   { MDrawHorizontalLines = ADraw; }
   virtual void    setDrawVerticalLines(bool ADraw=true)     { MDrawVerticalLines = ADraw; }
   virtual void    setDrawSelectedCells(bool ADraw=true)     { MDrawSelectedCells = ADraw; }
