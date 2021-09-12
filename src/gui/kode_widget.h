@@ -32,7 +32,7 @@ struct KODE_WidgetFlags {
 };
 
 struct KODE_WidgetLayout {
-  uint32_t    alignment     = KODE_WIDGET_ALIGN_PARENT;
+  uint32_t    alignment     = KODE_WIDGET_ALIGN_CLIENT;     //_PARENT;
   KODE_FRect  innerBorder   = KODE_FRect(0,0);              // space between widgets and parent edges
   KODE_FPoint spacing       = KODE_FPoint(0,0);             // space inbetween widgets
   KODE_FPoint minSize       = KODE_FPoint(0,0);
