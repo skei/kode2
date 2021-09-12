@@ -7,7 +7,7 @@
 #include "gui/kode_widgets.h"
 
 #include "sa_botage_header.h"
-#include "sa_botage_page_prob.h"
+#include "sa_botage_page_rep.h"
 #include "sa_botage_page_arr.h"
 #include "sa_botage_page_fx.h"
 
@@ -50,7 +50,8 @@ public:
     KODE_TextWidget* footer = new KODE_TextWidget(KODE_FRect(0,0,20,20),"footer...");
     footer->layout.alignment = KODE_WIDGET_ALIGN_FILL_BOTTOM;
     footer->setTextColor(KODE_Color(0.9));
-    //footer->setDrawBorder(true);
+    footer->setDrawBorder(true);
+    footer->setBorderEdges(KODE_EDGE_TOP);
     appendWidget(footer);
 
     // buffer controls
@@ -67,7 +68,7 @@ public:
 
     // waveform
 
-    KODE_WaveformWidget* waveform = new KODE_WaveformWidget(KODE_FRect(40,40));
+    KODE_WaveformWidget* waveform = new KODE_WaveformWidget(KODE_FRect(80,80));
     waveform->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     waveform->setBackColor(KODE_Color(0.4));
     //waveform->setNumAreas(0);
@@ -77,7 +78,7 @@ public:
 
     // tabs
 
-    KODE_TabsWidget* tabs = new KODE_TabsWidget (KODE_FRect(100,100),3);
+    KODE_TabsWidget* tabs = new KODE_TabsWidget( KODE_FRect(), 3 );
     tabs->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
     //tabs->layout.innerBorder = 10;
     tabs->layout.spacing = 10;
@@ -85,12 +86,12 @@ public:
 
       // pages
 
-      sa_botage_page_prob* page_prob = new sa_botage_page_prob();
+      sa_botage_page_rep* page_rep = new sa_botage_page_rep();
       sa_botage_page_arr* page_arr = new sa_botage_page_arr();
       sa_botage_page_fx* page_fx = new sa_botage_page_fx();
-      tabs->appendPage("Prob",page_prob);
-      tabs->appendPage("Arr",page_arr);
-      tabs->appendPage("FX",page_fx);
+      tabs->appendPage("Repeat",page_rep);
+      tabs->appendPage("Rearrange",page_arr);
+      tabs->appendPage("Effects",page_fx);
       tabs->selectPage(0);
 
   }
