@@ -13,11 +13,12 @@ class KODE_PanelWidget
 protected:
 //------------------------------
 
-  bool MFillBackground        = true;
-  KODE_Color MBackgroundColor = KODE_Color(0.6f);
+  bool        MFillBackground   = true;
+  KODE_Color  MBackgroundColor  = KODE_Color(0.6f);
 
-  bool MDrawBorder            = true;
-  KODE_Color MBorderColor     = KODE_Color(0.3f);
+  bool        MDrawBorder       = true;
+  KODE_Color  MBorderColor      = KODE_Color(0.3f);
+  uint32_t    MBorderEdges      = KODE_EDGES_ALL;
 
 //------------------------------
 public:
@@ -44,6 +45,10 @@ public:
     MBorderColor = AColor;
   }
 
+  virtual void setBorderEdges(uint32_t AEdges) {
+    MBorderEdges = AEdges;
+  }
+
   virtual void setFillBackground(bool AFill=true) {
     MFillBackground = AFill;
   }
@@ -56,7 +61,23 @@ public:
 
   virtual void drawBorder(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
     if (MDrawBorder) {
-      APainter->drawRectangle(getRect(),MBorderColor);
+
+      switch (MBorderEdges) {
+      }
+      if (MBorderEdges == KODE_EDGES_ALL) {
+        APainter->drawRectangle(getRect(),MBorderColor);
+      }
+      else {
+        KODE_FRect rect = getRect();
+        float x1 = rect.x;
+        float y1 = rect.y;
+        float x2 = rect.x2();
+        float y2 = rect.y2();
+        if (MBorderEdges & KODE_EDGE_TOP)     APainter->drawLine(x1,y1,x2,y1,MBorderColor);
+        if (MBorderEdges & KODE_EDGE_BOTTOM)  APainter->drawLine(x1,y2,x2,y2,MBorderColor);
+        if (MBorderEdges & KODE_EDGE_LEFT)    APainter->drawLine(x1,y1,x1,y2,MBorderColor);
+        if (MBorderEdges & KODE_EDGE_RIGHT)   APainter->drawLine(x2,y1,x2,y2,MBorderColor);
+      }
     }
   }
 

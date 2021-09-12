@@ -17,6 +17,15 @@ enum KODE_EDirections {
   KODE_VERTICAL                   = 1
 };
 
+enum KODE_EEdges {
+  KODE_EDGE_NONE                  = 0,
+  KODE_EDGE_TOP                   = 1,
+  KODE_EDGE_BOTTOM                = 2,
+  KODE_EDGE_LEFT                  = 4,
+  KODE_EDGE_RIGHT                 = 8,
+  KODE_EDGES_ALL                  = 15
+};
+
 enum KODE_ECorners {
   KODE_CORNER_NONE                = 0,
   KODE_CORNER_LEFT_TOP            = 1,
