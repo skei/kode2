@@ -60,32 +60,40 @@ private:
   const char*       MName                   = "KODE_Widget";
   const char*       MHint                   = "widget";
   int32_t           MCursor                 = KODE_CURSOR_DEFAULT;
+
+//KODE_BaseWindow*  MOwner                  = KODE_NULL;
+  KODE_Widget*      MParent                 = KODE_NULL;
   int32_t           MIndex                  = -1;
-  float             MValue                  = 0.0f;
-  float             MDefaultValue           = 0.0f;
+  KODE_Widgets      MChildren;
+  float             MChildrenXOffset        = 0.0f;
+  float             MChildrenYOffset        = 0.0f;
+
   KODE_FRect        MRect                   = KODE_FRect(0,0);
   KODE_FRect        MInitialRect            = KODE_FRect(0,0);
   KODE_FRect        MContentRect            = KODE_FRect(0,0);
-  KODE_Widget*      MParent                 = KODE_NULL;
-  KODE_Widgets      MChildren;
+
+  float             MValue                  = 0.0f;
+  float             MDefaultValue           = 0.0f;
   KODE_Parameter*   MParameters[MAX_PARAMS] = {0};
-//KODE_BaseWindow*  MOwner                  = KODE_NULL;
 //uint32_t          MSelectedParameter      = 0;
+
+  KODE_Surface*     MWidgetSurface          = KODE_NULL;
+  bool              MWidgetSurfaceAllocated = false;
+
+  uint32_t          MTileCount              = 0;
+  uint32_t          MTileXCount             = 0;
+  uint32_t          MTileYCount             = 0;
+  uint32_t          MTileWidth              = 0;
+  uint32_t          MTileHeight             = 0;
 
 //------------------------------
 protected:
 //------------------------------
 
-  KODE_Surface*     MWidgetSurface          = KODE_NULL;
-  bool              MWidgetSurfaceAllocated = false;
-  uint32_t          MTileCount              = 0;
-  uint32_t          MTileXcount             = 0;
-  uint32_t          MTileYcount             = 0;
-  uint32_t          MTileWidth              = 0;
-  uint32_t          MTileHeight             = 0;
 
-  float             MChildrenXOffset        = 0.0f;
-  float             MChildrenYOffset        = 0.0f;
+
+
+
 
 //------------------------------
 public:
@@ -184,6 +192,10 @@ public: // get
   virtual KODE_FRect          getRect()                     { return MRect; }
   virtual float               getValue()                    { return MValue; }
 
+  virtual KODE_Surface* getWidgetSurface()  { return MWidgetSurface; }
+  virtual uint32_t      getTileXCount()     { return MTileXCount; }
+  virtual uint32_t      getTileYCount()     { return MTileYCount; }
+
   //virtual KODE_BaseWindow*    getOwner()                    { return MOwner; }
   //virtual float               getWidth()                    { return MRect.w; }
   //virtual float               getHeight()                   { return MRect.h; }
@@ -240,15 +252,15 @@ public:
   //----------
 
   virtual void setupTiles(uint32_t AXcount, uint32_t AYcount) {
-    MTileXcount = AXcount;
-    MTileYcount = AYcount;
+    MTileXCount = AXcount;
+    MTileYCount = AYcount;
     MTileWidth  = MWidgetSurface->getWidth() / AXcount;
     MTileHeight = MWidgetSurface->getHeight() / AYcount;
   }
 
   KODE_FRect getTileRect(uint32_t AIndex) {
-    float x = floorf(AIndex % MTileXcount) * MTileWidth;
-    float y = floorf(AIndex / MTileXcount) * MTileHeight;
+    float x = floorf(AIndex % MTileXCount) * MTileWidth;
+    float y = floorf(AIndex / MTileXCount) * MTileHeight;
     float w = MTileWidth - 1;
     float h = MTileHeight - 1;
     return KODE_FRect(x,y,w,h);

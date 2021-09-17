@@ -26,13 +26,14 @@ public:
 //------------------------------
 
   virtual void drawTile(KODE_BasePainter* APainter) {
-    if (MWidgetSurface) {
-    uint32_t num_tiles = MTileXcount * MTileYcount;
+    KODE_Surface* surface = getWidgetSurface();
+    if (surface) {
+    uint32_t num_tiles = getTileXCount() * getTileYCount();
     if (num_tiles > 0) {
       float v = (float)getValue() * (float)num_tiles;
       uint32_t tile = KODE_MinI( num_tiles - 1, floorf(v) );
       KODE_FRect rect = getTileRect(tile);
-      APainter->drawBitmap(getRect().x,getRect().y,MWidgetSurface,rect);
+      APainter->drawBitmap(getRect().x,getRect().y,surface,rect);
     }
     }
   }

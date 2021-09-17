@@ -73,6 +73,11 @@ public:
     MOffBackgroundColor = AOff;
   }
 
+  virtual void setDrawTriangle(bool ADraw=true) {
+    MDrawTriangle = ADraw;
+  }
+
+
 //------------------------------
 public:
 //------------------------------
