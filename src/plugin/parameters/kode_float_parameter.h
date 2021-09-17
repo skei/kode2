@@ -39,17 +39,36 @@ public:
     MMinValue = AMin;
     MMaxValue = AMax;
     MStep     = AStep;
+    setup(AVal);
+  }
+
+  KODE_FloatParameter(const char* AName, const char* ALabel, float AVal, float AMin=0.0f, float AMax=1.0f, float AStep=0.0f)
+  : KODE_Parameter(AName,AVal) {
+    MIndex    = -1;
+    MName     = AName;
+    MLabel    = ALabel;
+    MMinValue = AMin;
+    MMaxValue = AMax;
+    MStep     = AStep;
+    setup(AVal);
+  }
+
+//------------------------------
+private:
+//------------------------------
+
+  void setup(float AVal=0.0f) {
     MRange    = MMaxValue - MMinValue;
     MInvRange = 1 / MRange;
     if (MStep > 0) {
-//      MIsStepped  = true;
+      //MIsStepped  = true;
       MNumSteps   = 1 + round( MRange / MStep ); // was: KODE_Round
       MStepSize = 1.0f / (float)(MNumSteps - 1);
       //KODE_Trace("%i MStep %f MStepSize %f\n",MStep,MStepSize);
       MHalfStep = 0.5 * MStepSize;
     } else {
-//      MIsStepped  = false;
-//      MNumSteps = 1;
+      //MIsStepped  = false;
+      //MNumSteps = 1;
       MNumSteps = 0;
       MStepSize = 1;
       MHalfStep = 0;
@@ -59,7 +78,9 @@ public:
     //KODE_Trace("%f\n",MDefValue);
   }
 
-  //----------
+//------------------------------
+public:
+//------------------------------
 
   //bool isStepped(void) override {
   //  return MIsStepped;

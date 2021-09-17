@@ -25,8 +25,30 @@ public:
   : KODE_FloatParameter(AName,AVal,AMin,AMax,AStep) {
     MPower = APower;
     MPost = APost;
+    setup(AVal);
+//    //MDefValue = to01(MDefValue);
+//    if (APost) {
+//      float n = ((AVal - MMinValue) * MInvRange);
+//      if (MPower > 0) MDefValue = powf(n,1.0f/MPower);
+//      else MDefValue = 0.0f;
+//    }
+//    else {
+//      //if (MPower > 0) AVal = powf(AVal,1.0f/MPower);
+//      MDefValue = ((AVal - MMinValue) * MInvRange);
+//    }
+  }
+
+  KODE_PowParameter(const char* AName, const char* ALabel, float AVal, float APower, bool APost=false, float AMin=0.0f, float AMax=1.0f, float AStep=0.0f)
+  : KODE_FloatParameter(AName,ALabel,AVal,AMin,AMax,AStep) {
+    MPower = APower;
+    MPost = APost;
+    setup(AVal);
+  }
+private:
+
+  void setup(float AVal) {
     //MDefValue = to01(MDefValue);
-    if (APost) {
+    if (MPost) {
       float n = ((AVal - MMinValue) * MInvRange);
       if (MPower > 0) MDefValue = powf(n,1.0f/MPower);
       else MDefValue = 0.0f;

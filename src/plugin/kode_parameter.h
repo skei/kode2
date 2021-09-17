@@ -20,6 +20,7 @@ protected:
   const char*           MName       = "";
   const char*           MShortName  = "";
   const char*           MLabel      = "";
+  uint32_t              MNumDigits  = 3;
 
   float                 MDefValue   = 0.0f;
 
@@ -38,6 +39,15 @@ public:
 
   KODE_Parameter(const char* AName, float AValue=0.0f) {
     MName = AName;
+    MDefValue = AValue;
+    MOptions.canAutomate = true;
+  }
+
+  //----------
+
+  KODE_Parameter(const char* AName, const char* ALabel, float AValue=0.0f) {
+    MName = AName;
+    MLabel = ALabel;
     MDefValue = AValue;
     MOptions.canAutomate = true;
   }
@@ -74,6 +84,7 @@ public:
   void setMaxValue(float AValue)          { MMaxValue = AValue; }
   void setNumSteps(uint32_t ANum)         { MNumSteps = ANum; }
   void setIndex(int32_t AIndex)           { MIndex = AIndex; }
+  void setNumDigits(uint32_t ANum)        { MNumDigits = ANum; }
 
 //------------------------------
 public:
@@ -94,9 +105,11 @@ public:
   virtual char* getDisplayString(float AValue, char* ABuffer) {
     //KODE_PRINT;
     float value = from01(AValue);
-    KODE_FloatToString(ABuffer,value);
+    KODE_FloatToString(ABuffer,value,MNumDigits);
     return ABuffer;
   }
+
+  //----------
 
 };
 
