@@ -50,6 +50,7 @@ public:
       KODE_Editor* editor = (KODE_Editor*)instance->on_plugin_openEditor(KODE_NULL);
       instance->updateAllEditorParameters(editor);
       editor->open();
+      instance->on_plugin_updateEditor(editor);
       editor->eventLoop();
       editor->close();
       instance->on_plugin_closeEditor(editor);
