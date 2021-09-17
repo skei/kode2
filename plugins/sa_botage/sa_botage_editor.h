@@ -16,6 +16,22 @@ class sa_botage_editor
 : public KODE_Editor {
 
 //------------------------------
+public: //private:
+//------------------------------
+
+  KODE_ImageWidget*     WHeader   = KODE_NULL;
+  //KODE_TextWidget*      WFooter   = KODE_NULL;
+  KODE_SliderWidget*    WNumBeats = KODE_NULL;
+  KODE_SliderWidget*    WBeatDiv  = KODE_NULL;
+  KODE_WaveformWidget*  WWaveform = KODE_NULL;
+  KODE_TabsWidget*      WTabs     = KODE_NULL;
+  sa_botage_page_rep*   WPageRep  = KODE_NULL;
+  sa_botage_page_arr*   WPageArr  = KODE_NULL;
+  sa_botage_page_fx*    WPageFX   = KODE_NULL;
+
+  //
+
+//------------------------------
 public:
 //------------------------------
 
@@ -30,69 +46,68 @@ public:
 
     // header
 
-    KODE_ImageWidget* header_image = new KODE_ImageWidget(KODE_FRect(160,60));
-    header_image->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
-    header_image->setDrawBorder(true);
-    header_image->setFillBackground(false);
-    header_image->setBackgroundColor(0.5);
-    header_image->setImage(this,(uint8_t*)sa_botage_header,sa_botage_header_size,KODE_Color(0.5));
-    appendWidget(header_image);
+    WHeader = new KODE_ImageWidget(KODE_FRect(160,60));
+    WHeader->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+    WHeader->setDrawBorder(true);
+    WHeader->setFillBackground(false);
+    WHeader->setBackgroundColor(0.5);
+    WHeader->setImage(this,(uint8_t*)sa_botage_header,sa_botage_header_size,KODE_Color(0.5));
+    appendWidget(WHeader);
 
-    // -----
+//    // footer
+//
+//    WFooter = new KODE_TextWidget(KODE_FRect(0,0,20,20),"footer...");
+//    WFooter->layout.alignment = KODE_WIDGET_ALIGN_FILL_BOTTOM;
+//    WFooter->setTextColor(KODE_Color(0.9));
+//    WFooter->setDrawBorder(true);
+//    WFooter->setBorderEdges(KODE_EDGE_TOP);
+//    appendWidget(WFooter);
 
-    //KODE_SymbolWidget* hline1 = new KODE_SymbolWidget(KODE_FRect(10),KODE_SYMBOL_HLINE);
-    //hline1->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
-    //hline1->setColor(KODE_COLOR_LIGHT_GRAY);
-    //appendWidget(hline1);
+    // buffer
 
-    // footer
+    WNumBeats = new KODE_SliderWidget(KODE_FRect(150,20));
+    WNumBeats->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
+    WNumBeats->setText("Num Beats");
+    appendWidget(WNumBeats);
+    connectParameter(WNumBeats,0);
 
-    KODE_TextWidget* footer = new KODE_TextWidget(KODE_FRect(0,0,20,20),"footer...");
-    footer->layout.alignment = KODE_WIDGET_ALIGN_FILL_BOTTOM;
-    footer->setTextColor(KODE_Color(0.9));
-    footer->setDrawBorder(true);
-    footer->setBorderEdges(KODE_EDGE_TOP);
-    appendWidget(footer);
-
-    // buffer controls
-
-    KODE_SliderWidget* slider_num_beats = new KODE_SliderWidget(KODE_FRect(150,20));
-    slider_num_beats->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
-    slider_num_beats->setText("Num Beats");
-    appendWidget(slider_num_beats);
-
-    KODE_SliderWidget* slider_beat_div = new KODE_SliderWidget(KODE_FRect(150,20));
-    slider_beat_div->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
-    slider_beat_div->setText("Beat Div");
-    appendWidget(slider_beat_div);
+    WBeatDiv = new KODE_SliderWidget(KODE_FRect(150,20));
+    WBeatDiv->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
+    WBeatDiv->setText("Beat Div");
+    appendWidget(WBeatDiv);
+    connectParameter(WBeatDiv,1);
 
     // waveform
 
-    KODE_WaveformWidget* waveform = new KODE_WaveformWidget(KODE_FRect(80,80));
-    waveform->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
-    waveform->setBackColor(KODE_Color(0.4));
-    //waveform->setNumAreas(0);
-    //waveform->setNumGrid(0);
-    //waveform->setNumMarkers(0);
-    appendWidget(waveform);
+    WWaveform = new KODE_WaveformWidget(KODE_FRect(80,80));
+    WWaveform->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+    WWaveform->setBackgroundColor(KODE_Color(0.4));
+    WWaveform->setNumMarkers(2);
+    WWaveform->setMarkerColor(0,KODE_COLOR_BRIGHT_RED);
+    WWaveform->setMarkerColor(1,KODE_COLOR_BRIGHT_GREEN);
+    WWaveform->setNumAreas(2);
+    WWaveform->setAreaColor(0,KODE_COLOR_GREEN);
+    WWaveform->setAreaColor(1,KODE_COLOR_LIGHT_GREEN);
+    appendWidget(WWaveform);
 
     // tabs
 
-    KODE_TabsWidget* tabs = new KODE_TabsWidget( KODE_FRect(), 3 );
-    tabs->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
-    //tabs->layout.innerBorder = 10;
-    tabs->layout.spacing = 10;
-    appendWidget(tabs);
+    WTabs = new KODE_TabsWidget( KODE_FRect(), 3 );
+    WTabs->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
+    //WTabs->layout.innerBorder = 10;
+    WTabs->layout.spacing = 10;
+    appendWidget(WTabs);
 
-      // pages
+    // pages
 
-      sa_botage_page_rep* page_rep = new sa_botage_page_rep();
-      sa_botage_page_arr* page_arr = new sa_botage_page_arr();
-      sa_botage_page_fx* page_fx = new sa_botage_page_fx();
-      tabs->appendPage("Repeat",page_rep);
-      tabs->appendPage("Rearrange",page_arr);
-      tabs->appendPage("Effects",page_fx);
-      tabs->selectPage(0);
+    WPageRep = new sa_botage_page_rep(this);
+    WPageArr = new sa_botage_page_arr(this);
+    WPageFX  = new sa_botage_page_fx(this);
+
+    WTabs->appendPage("Repeat",WPageRep);
+    WTabs->appendPage("Rearrange",WPageArr);
+    WTabs->appendPage("Effects",WPageFX);
+    WTabs->selectPage(0);
 
   }
 
@@ -100,6 +115,21 @@ public:
 
   //virtual ~sa_botage_editor() {
   //}
+
+//------------------------------
+public:
+//------------------------------
+
+//  void do_widget_update(KODE_Widget* AWidget) override {
+//    if (AWidget == WNumBeats) {
+//      float value = WNumBeats->getValue();
+//      KODE_Print("numbeats %.1f\n",value);
+//    }
+//    if (AWidget == WBeatDiv) {
+//      //KODE_Print("beatdiv\n");
+//    }
+//  }
+
 
 };
 

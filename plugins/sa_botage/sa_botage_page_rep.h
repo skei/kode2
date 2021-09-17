@@ -16,120 +16,113 @@ public:
 public:
 //------------------------------
 
-  sa_botage_page_rep(KODE_FRect ARect=KODE_FRect())
+  sa_botage_page_rep(KODE_Editor* AEditor, KODE_FRect ARect=KODE_FRect())
   : KODE_PanelWidget(ARect) {
     layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
     setDrawBorder(false);
     setFillBackground(false);
 
-      KODE_SliderWidget* slider;
+    __KODE_UNUSED KODE_ButtonWidget* button = KODE_NULL;
+    __KODE_UNUSED KODE_SliderWidget* slider = KODE_NULL;
 
-      // range
+    // PAR_REPEAT_PROB
 
-      slider = new KODE_SliderWidget(KODE_FRect(0,0,190,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("Range");
-      slider->setDrawLabel(true);
-      slider->setLabel("%");
-      appendWidget(slider);
+    slider = new KODE_SliderWidget(KODE_FRect(0,0,200,20));
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    AEditor->connectParameter(slider,2);
 
-      slider = new KODE_SliderWidget(KODE_FRect(0,25,90,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("Min");
-      //slider->setDrawLabel(true);
-      //slider->setLabel("");
-      appendWidget(slider);
+    // PAR_RANGE_MIN_SLICES
 
-      slider = new KODE_SliderWidget(KODE_FRect(100,25,90,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("Max");
-      //slider->setDrawLabel(true);
-      //slider->setLabel("");
-      appendWidget(slider);
+    slider = new KODE_SliderWidget(KODE_FRect(0,25,80,20));
+    appendWidget(slider);
+    AEditor->connectParameter(slider,3);
 
-      // slice
+    // PAR_RANGE_MAX_SLICES
 
-      slider = new KODE_SliderWidget(KODE_FRect(0,50,190,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("Slice");
-      slider->setDrawLabel(true);
-      slider->setLabel("%");
-      appendWidget(slider);
+    slider = new KODE_SliderWidget(KODE_FRect(90,25,80,20));
+    appendWidget(slider);
+    AEditor->connectParameter(slider,4);
 
-      slider = new KODE_SliderWidget(KODE_FRect(0,75,90,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("Min");
-      //slider->setDrawLabel(true);
-      //slider->setLabel("");
-      appendWidget(slider);
+    //
 
-      slider = new KODE_SliderWidget(KODE_FRect(100,75,90,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("Max");
-      //slider->setDrawLabel(true);
-      //slider->setLabel("");
-      appendWidget(slider);
+    button = new KODE_ButtonWidget(KODE_FRect(180,25,20,20));
+    button->setIsToggle(true);
+    button->setDrawTriangle(false);
+    button->setText("2^","2^");
+    button->setDrawBorder(true);
+    button->setTextColor(KODE_COLOR_BLACK,KODE_COLOR_BLACK);
+    button->setBackgroundColor(KODE_COLOR_LIGHT_GRAY,KODE_COLOR_GRAY);
+    appendWidget(button);
+    //AEditor->connectParameter(slider,4);
 
-      // loop
+    // PAR_RANGE_MIN_SUBDIV
 
-      slider = new KODE_SliderWidget(KODE_FRect(200,0,150,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("Inc Loop");
-      slider->setDrawLabel(true);
-      slider->setLabel("%");
-      appendWidget(slider);
+    slider = new KODE_SliderWidget(KODE_FRect(0,50,80,20));
+    appendWidget(slider);
+    AEditor->connectParameter(slider,5);
 
-      slider = new KODE_SliderWidget(KODE_FRect(200,25,150,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("Dec Loop");
-      slider->setDrawLabel(true);
-      slider->setLabel("%");
-      appendWidget(slider);
+    // PAR_RANGE_MAX_SUBDIV
 
-      slider = new KODE_SliderWidget(KODE_FRect(200,50,150,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("Inc Speed");
-      slider->setDrawLabel(true);
-      slider->setLabel("%");
-      appendWidget(slider);
+    slider = new KODE_SliderWidget(KODE_FRect(90,50,80,20));
+    appendWidget(slider);
+    AEditor->connectParameter(slider,6);
 
-      slider = new KODE_SliderWidget(KODE_FRect(200,75,150,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("Dec Speed");
-      slider->setDrawLabel(true);
-      slider->setLabel("%");
-      appendWidget(slider);
+    //
 
-      // amt
+    button = new KODE_ButtonWidget(KODE_FRect(180,50,20,20));
+    button->setIsToggle(true);
+    button->setDrawTriangle(false);
+    button->setText("2^","2^");
+    button->setDrawBorder(true);
+    button->setTextColor(KODE_COLOR_BLACK,KODE_COLOR_BLACK);
+    button->setBackgroundColor(KODE_COLOR_LIGHT_GRAY,KODE_COLOR_GRAY);
+    appendWidget(button);
+    //AEditor->connectParameter(slider,4);
 
-      slider = new KODE_SliderWidget(KODE_FRect(360,0,80,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("amt");
-      //slider->setDrawLabel(true);
-      //slider->setLabel("");
-      appendWidget(slider);
+    //-----
 
-      slider = new KODE_SliderWidget(KODE_FRect(360,25,80,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("amt");
-      //slider->setDrawLabel(true);
-      //slider->setLabel("");
-      appendWidget(slider);
+    // PAR_LOOP_SIZE_PROB
 
-      slider = new KODE_SliderWidget(KODE_FRect(360,50,80,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("amt");
-      //slider->setDrawLabel(true);
-      //slider->setLabel("");
-      appendWidget(slider);
+    slider = new KODE_SliderWidget(KODE_FRect(210,0,150,20));
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    AEditor->connectParameter(slider,7);
 
-      slider = new KODE_SliderWidget(KODE_FRect(360,75,80,20));
-      slider->layout.alignment = KODE_WIDGET_ALIGN_CLIENT;
-      slider->setText("amt");
-      //slider->setDrawLabel(true);
-      //slider->setLabel("");
-      appendWidget(slider);
+    // PAR_LOOP_SIZE_AMT
 
+    slider = new KODE_SliderWidget(KODE_FRect(370,0,80,20));
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    AEditor->connectParameter(slider,8);
+
+    // PAR_LOOP_SPEED_PROB
+
+    slider = new KODE_SliderWidget(KODE_FRect(210,25,150,20));
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    AEditor->connectParameter(slider,9);
+
+    // PAR_LOOP_SPEED_AMT
+
+    slider = new KODE_SliderWidget(KODE_FRect(370,25,80,20));
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    AEditor->connectParameter(slider,10);
+
+    //-----
+
+    // PAR_XFADE_MODE
+
+    slider = new KODE_SliderWidget(KODE_FRect(470,0,100,20));
+    appendWidget(slider);
+    AEditor->connectParameter(slider,11);
+
+    // PAR_XFADE_AM
+
+    slider = new KODE_SliderWidget(KODE_FRect(470,25,100,20));
+    appendWidget(slider);
+    AEditor->connectParameter(slider,12);
 
   }
 
