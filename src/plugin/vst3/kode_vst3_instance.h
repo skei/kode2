@@ -202,7 +202,7 @@ private:
   //----------
 
   void queueParameterToHost(uint32_t AIndex, float AValue) {
-    KODE_Print("index: %i value: %.3f\n",AIndex,AValue);
+    //KODE_Print("index: %i value: %.3f\n",AIndex,AValue);
     MHostParameterValues[AIndex] = AValue;
     MHostParameterQueue.write(AIndex);
   }

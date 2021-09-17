@@ -22,6 +22,7 @@ public:
   virtual void              updateAllParameters() {}
   virtual void              updateAllEditorParameters(KODE_BaseEditor* AEditor, bool ARedraw=true) {}
   virtual void              updateParameterFromEditor(uint32_t AIndex, float AValue) {}
+  //virtual KODE_BaseEditor*  getEditor() { return KODE_NULL; }
 public:
   virtual void              on_plugin_open() {}
   virtual void              on_plugin_close() {}

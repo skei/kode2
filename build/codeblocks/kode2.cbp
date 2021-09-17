@@ -312,6 +312,7 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="../../plugins/sa_botage/sa_botage_descriptor.h" />
 		<Unit filename="../../plugins/sa_botage/sa_botage_editor.h" />
 		<Unit filename="../../plugins/sa_botage/sa_botage_header.h" />
 		<Unit filename="../../plugins/sa_botage/sa_botage_page_arr.h" />
