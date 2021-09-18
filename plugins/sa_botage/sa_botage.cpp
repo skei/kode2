@@ -113,7 +113,6 @@ private:
   bool                MHasRange                   = false;
   uint32_t            MRangeSliceStart            = 0;
   uint32_t            MRangeSliceLength           = 0;
-
   uint32_t            MRangeCurrentSlice          = 0;
   //uint32_t            MRangeSliceCounter          = 0;
 
@@ -182,7 +181,6 @@ private: // update_editor
     if (MEditor) {
       int32_t old_num = MEditor->get_waveform_grid();
       //uint32_t new_num = PNumBeats * PBeatSubdiv;
-      //uint32_t new_num = MNumSlices;
       if (MNumSlices != old_num) {
         MEditor->set_waveform_grid(MNumSlices,PBeatSubdiv);
         if (ARedraw) MEditor->redraw_waveform();
@@ -331,10 +329,16 @@ private:
 //------------------------------
 
   void update_buffersize() {
-    MNumSlices    = PNumBeats * PBeatSubdiv;
-    MHasRange     = false;
-    MHasLoop      = false;
-    MCurrentSlice = KODE_MaxI(MNumSlices-1,MCurrentSlice);
+    MNumSlices          = PNumBeats * PBeatSubdiv;
+    MHasRange           = false;
+    MHasLoop            = false;
+
+    //MWritePos           = 0;
+    //MRangeCurrentSlice  = 0;
+    //MLoopCounter        = 0.0;
+    //MSliceCounter       = 0.0;
+    //MCurrentSlice       = KODE_MaxI(MNumSlices-1,MCurrentSlice);
+
   }
 
   //----------
@@ -386,6 +390,8 @@ private:
   //----------
 
   void next_slice() {
+    //MSliceCounter = 0.0;
+    //MLoopCounter = 0.0;
     MCurrentSlice += 1;
     if (MHasRange) {
       MRangeCurrentSlice += 1;
@@ -435,7 +441,6 @@ public:
     MBufferSize *= 2; // stereo
     MSliceLength = MSamplesPerSlice;
 
-
     // state
 
     bool is_playing = (AContext->playstate & KODE_PLUGIN_PLAYSTATE_PLAYING);
@@ -472,6 +477,7 @@ public:
       if (is_playing) {
         MBuffer[MWritePos] = in0;
         MBuffer[MWritePos+1] = in1;
+
         if (MHasLoop) {
           int32_t ipos = (int32_t)MLoopCounter * 2; // stereo
           MReadPos = MLoopStart + ipos;
@@ -484,11 +490,14 @@ public:
         else {
           MReadPos = MWritePos;
         }
+
         MWritePos += 2;
         if (MWritePos >= MBufferSize) {
           MWritePos = 0;
+          MHasRange = false;
+          MHasLoop = false;
           MSliceCounter = 0.0;
-//          MLoopCounter = 0.0;
+          MLoopCounter = 0.0;
           MCurrentSlice = -1;
           next_slice();
         }
@@ -511,6 +520,9 @@ public:
     if (is_playing) {
       MWritePosQueue.write(MWritePos);
     }
+
+    //KODE_DPrint("readpos %i writepos %i buffersize % i\n",MReadPos,MWritePos,MBufferSize);
+    //KODE_DPrint("MLoopCounter %.2f MSliceCOunter %.2f\n",MLoopCounter,MSliceCounter);
 
   }
 
