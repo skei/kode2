@@ -194,21 +194,21 @@
 			<Add library="SDL2_image" />
 			<Add library="SDL2_mixer" />
 		</Linker>
-		<Unit filename="../../apps/mdl_convert.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
 		<Unit filename="../../doc/doxygen.cfg" />
 		<Unit filename="../../doc/gpl-3.0.txt" />
 		<Unit filename="../../doc/licenses.txt" />
 		<Unit filename="../../doc/makedocs.sh" />
 		<Unit filename="../../doc/readme.txt" />
 		<Unit filename="../../doc/todo.txt" />
-		<Unit filename="../../plugins/effect_template.cpp">
+		<Unit filename="../../plugins/misc/sa_brickwall.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="../../plugins/effect_template2.cpp">
+		<Unit filename="../../plugins/misc/sa_curve_shaper.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/misc/sa_frac_delay.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
@@ -308,7 +308,7 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="../../plugins/sa_botage.cpp">
+		<Unit filename="../../plugins/sa_botage/sa_botage.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
@@ -319,19 +319,15 @@
 		<Unit filename="../../plugins/sa_botage/sa_botage_page_fx.h" />
 		<Unit filename="../../plugins/sa_botage/sa_botage_page_rep.h" />
 		<Unit filename="../../plugins/sa_botage/sa_botage_process.h" />
-		<Unit filename="../../plugins/sa_brickwall.cpp">
+		<Unit filename="../../plugins/templates/effect_template.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="../../plugins/sa_curve_shaper.cpp">
+		<Unit filename="../../plugins/templates/effect_template2.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="../../plugins/sa_frac_delay.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../plugins/synth_template.cpp">
+		<Unit filename="../../plugins/templates/synth_template.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
@@ -615,60 +611,6 @@
 		<Unit filename="../../src/plugin/vst3/kode_vst3_instance.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_plugin.h" />
 		<Unit filename="../../src/plugin/vst3/kode_vst3_utils.h" />
-		<Unit filename="../../test/demo.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../test/demo/demo_descriptor.h" />
-		<Unit filename="../../test/demo/demo_editor.h" />
-		<Unit filename="../../test/demo/demo_instance.h" />
-		<Unit filename="../../test/demo/demo_voice.h" />
-		<Unit filename="../../test/demo/pages/audio_page.h" />
-		<Unit filename="../../test/demo/pages/gfx_page.h" />
-		<Unit filename="../../test/demo/pages/gui_page.h" />
-		<Unit filename="../../test/demo/pages/plugin_page.h" />
-		<Unit filename="../../test/demo/pages/system_page.h" />
-		<Unit filename="../../test/demo_gui.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../test/demo_gui/bottom_panel.h" />
-		<Unit filename="../../test/demo_gui/left_panel.h" />
-		<Unit filename="../../test/demo_gui/main_panel.h" />
-		<Unit filename="../../test/demo_gui/right_panel.h" />
-		<Unit filename="../../test/demo_gui/top_panel.h" />
-		<Unit filename="../../test/test1.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../test/test_graph.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../test/test_gui1.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../test/test_gui2.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../test/test_gui3.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../test/test_plugin1.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../test/test_widgets1.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
-		<Unit filename="../../test/test_widgets2.cpp">
-			<Option compile="0" />
-			<Option link="0" />
-		</Unit>
 		<Unit filename="../../tools/bin2h.c">
 			<Option compilerVar="CC" />
 			<Option compile="0" />

@@ -76,9 +76,10 @@ public:
 public:
 //------------------------------
 
-  int32_t getNumGrid()     { return MNumGrid; }
-  int32_t getNumMarkers()  { return MNumMarkers; }
-  int32_t getNumAreas()    { return MNumAreas; }
+  int32_t getNumGrid()      { return MNumGrid; }
+  int32_t getNumGridMajor() { return MNumGridMajor; }
+  int32_t getNumMarkers()   { return MNumMarkers; }
+  int32_t getNumAreas()     { return MNumAreas; }
 
   //----------
 

@@ -20,7 +20,7 @@
 //
 //----------------------------------------------------------------------
 
-#include "../plugins/sa_botage.cpp"
+#include "../plugins/sa_botage/sa_botage.cpp"
 
 // fx_cutter          sa_botage
 // fx_frac_delay

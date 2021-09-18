@@ -73,7 +73,7 @@ class KODE_Random_Rand {
 
 float KODE_Random_System(void) {
   float rnd = (float)rand();
-  float result = rnd * KODE_INVRANDMAX;
+  float result = rnd * (float)KODE_INVRANDMAX;
   return result;
 }
 
