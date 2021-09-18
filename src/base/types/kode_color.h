@@ -81,6 +81,32 @@ public:
     a += color.a;
   }
 
+  void mul(KODE_Color color) {
+    r *= color.r;
+    g *= color.g;
+    b *= color.b;
+    a *= color.a;
+  }
+
+  void blend(KODE_Color color1, KODE_Color color2, float blend) {
+    KODE_Color result;
+    result.r = (color1.r * blend) + (color2.r * (1.0 - blend));
+    result.g = (color1.g * blend) + (color2.g * (1.0 - blend));
+    result.b = (color1.b * blend) + (color2.b * (1.0 - blend));
+    result.a = (color1.a * blend) + (color2.a * (1.0 - blend));
+  }
+
+  // color2 on top of color1 (alpha from color2)
+
+  void blend(KODE_Color color1, KODE_Color color2) {
+    KODE_Color result;
+    float blend = color2.a;
+    result.r = (color1.r * blend) + (color2.r * (1.0 - blend));
+    result.g = (color1.g * blend) + (color2.g * (1.0 - blend));
+    result.b = (color1.b * blend) + (color2.b * (1.0 - blend));
+    result.a = color1.a;// * blend) + (color2.a * (1.0 - blend));
+  }
+
 };
 
 //----------------------------------------------------------------------
