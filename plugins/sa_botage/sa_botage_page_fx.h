@@ -5,6 +5,8 @@
 #include "kode.h"
 #include "gui/kode_widgets.h"
 
+//----------------------------------------------------------------------
+
 class sa_botage_page_fx
 : public KODE_PanelWidget {
 

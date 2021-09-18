@@ -46,7 +46,7 @@ public:
 
     setAuthor("skei.audio");
     setVersion(0x00000001);
-    setIsSynth(true);
+    //setIsSynth(true);
 
     appendInput(  new KODE_PluginPort("input1")  );
     appendInput(  new KODE_PluginPort("input2")  );

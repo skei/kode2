@@ -6,14 +6,24 @@
 #include "plugin/kode_editor.h"
 #include "gui/kode_widgets.h"
 
+//----------
+
 #include "sa_botage_header.h"
 #include "sa_botage_page_rep.h"
 #include "sa_botage_page_arr.h"
 #include "sa_botage_page_fx.h"
 
+//----------------------------------------------------------------------
 
 class sa_botage_editor
 : public KODE_Editor {
+
+//------------------------------
+private:
+//------------------------------
+
+  uint32_t  MWaveformBufferSize     = 0;
+  float     MWaveformBufferSizeInv  = 0.0;
 
 //------------------------------
 public: //private:
@@ -87,7 +97,7 @@ public:
     WWaveform->setMarkerColor(1,KODE_COLOR_BRIGHT_GREEN);
     WWaveform->setNumAreas(2);
     WWaveform->setAreaColor(0,KODE_COLOR_GREEN);
-    WWaveform->setAreaColor(1,KODE_COLOR_LIGHT_GREEN);
+    WWaveform->setAreaColor(1,KODE_COLOR_DARK_GREEN);
     appendWidget(WWaveform);
 
     // tabs
@@ -115,6 +125,78 @@ public:
 
   //virtual ~sa_botage_editor() {
   //}
+
+//------------------------------
+public:
+//------------------------------
+
+  int32_t get_waveform_grid() {
+    return WWaveform->getNumGrid();
+  }
+
+  void set_waveform_buffer(float* ABuffer) {
+    WWaveform->setBuffer(ABuffer);
+  }
+
+  //----------
+
+  void set_waveform_buffer_size(uint32_t ABufferSize) {
+    uint32_t size = ABufferSize / 2;
+    WWaveform->setBufferSize(size);
+    MWaveformBufferSize = size;
+    MWaveformBufferSizeInv = 1.0 / (float)size;
+  }
+
+  //----------
+
+  void set_waveform_grid(uint32_t ASlices, uint32_t AMajor) {
+    WWaveform->setNumGrid(ASlices);
+    WWaveform->setNumGridMajor(AMajor);
+  }
+
+  //----------
+
+  // MInvBufferSize
+
+  void set_waveform_write_pos(uint32_t AWritePos) {
+    float writepos = (float)AWritePos * MWaveformBufferSizeInv;
+    WWaveform->setMarkerPos(0,writepos);
+  }
+
+  //----------
+
+  // MInvBufferSize
+
+  void set_waveform_read_pos(uint32_t AReadPos) {
+    float readpos = (float)AReadPos * MWaveformBufferSizeInv;
+    WWaveform->setMarkerPos(1,readpos);
+  }
+
+  //----------
+
+  void set_waveform_range(uint32_t AStartSlice, uint32_t ANumSlices, uint32_t AMaxSlices) {
+    float max_slices = (float)AMaxSlices;
+    float pos  = AStartSlice / max_slices;
+    float size = ANumSlices / max_slices;
+    WWaveform->setAreaPosSize(0,pos,size);
+  }
+
+  //----------
+
+  void set_waveform_loop(uint32_t AStartSlice, uint32_t ANumSlices, uint32_t AMaxSlices, uint32_t ASubdiv) {
+    float max_slices = (float)AMaxSlices;
+    float pos  = AStartSlice / max_slices;
+    float size = ANumSlices / max_slices;
+    if (ASubdiv > 0) size /= (float)ASubdiv;
+    WWaveform->setAreaPosSize(1,pos,size);
+  }
+
+  //----------
+
+  void redraw_waveform() {
+    WWaveform->redraw();
+  }
+
 
 //------------------------------
 public:
