@@ -23,7 +23,7 @@ private:
 //------------------------------
 
   uint32_t  MWaveformBufferSize     = 0;
-  float     MWaveformBufferSizeInv  = 0.0;
+  //float     MWaveformBufferSizeInv  = 0.0;
 
 //------------------------------
 public: //private:
@@ -95,9 +95,10 @@ public:
     WWaveform->setNumMarkers(2);
     WWaveform->setMarkerColor(0,KODE_COLOR_BRIGHT_RED);
     WWaveform->setMarkerColor(1,KODE_COLOR_BRIGHT_GREEN);
-    WWaveform->setNumAreas(2);
+    WWaveform->setNumAreas(3);
     WWaveform->setAreaColor(0,KODE_COLOR_GREEN);
     WWaveform->setAreaColor(1,KODE_COLOR_DARK_GREEN);
+    WWaveform->setAreaColor(2,KODE_Color(0.37));
     appendWidget(WWaveform);
 
     // tabs
@@ -141,10 +142,10 @@ public:
   //----------
 
   void set_waveform_buffer_size(uint32_t ABufferSize) {
-    uint32_t size = ABufferSize / 2;
+    uint32_t size = ABufferSize;// / 2;
     WWaveform->setBufferSize(size);
     MWaveformBufferSize = size;
-    MWaveformBufferSizeInv = 1.0 / (float)size;
+    //MWaveformBufferSizeInv = 1.0 / (float)size;
   }
 
   //----------
@@ -158,8 +159,8 @@ public:
 
   // MInvBufferSize
 
-  void set_waveform_write_pos(uint32_t AWritePos) {
-    float writepos = (float)AWritePos * MWaveformBufferSizeInv;
+  void set_waveform_write_pos(float AWritePos) {
+    float writepos = (float)AWritePos;// * MWaveformBufferSizeInv;
     WWaveform->setMarkerPos(0,writepos);
   }
 
@@ -167,8 +168,8 @@ public:
 
   // MInvBufferSize
 
-  void set_waveform_read_pos(uint32_t AReadPos) {
-    float readpos = (float)AReadPos * MWaveformBufferSizeInv;
+  void set_waveform_read_pos(float AReadPos) {
+    float readpos = (float)AReadPos;// * MWaveformBufferSizeInv;
     WWaveform->setMarkerPos(1,readpos);
   }
 
@@ -176,8 +177,8 @@ public:
 
   void set_waveform_range(uint32_t AStartSlice, uint32_t ANumSlices, uint32_t AMaxSlices) {
     float max_slices = (float)AMaxSlices;
-    float pos  = AStartSlice / max_slices;
-    float size = ANumSlices / max_slices;
+    float pos  = (float)AStartSlice / max_slices;
+    float size = (float)ANumSlices / max_slices;
     WWaveform->setAreaPosSize(0,pos,size);
   }
 
@@ -185,10 +186,18 @@ public:
 
   void set_waveform_loop(uint32_t AStartSlice, uint32_t ANumSlices, uint32_t AMaxSlices, uint32_t ASubdiv) {
     float max_slices = (float)AMaxSlices;
-    float pos  = AStartSlice / max_slices;
-    float size = ANumSlices / max_slices;
+    float pos  = (float)AStartSlice / max_slices;
+    float size = (float)ANumSlices / max_slices;
     if (ASubdiv > 0) size /= (float)ASubdiv;
     WWaveform->setAreaPosSize(1,pos,size);
+  }
+
+  //----------
+
+  void set_waveform_slice(uint32_t ASlice, uint32_t ANumSlices) {
+    float pos  = (float)ASlice / (float)ANumSlices;
+    float size = 1.0 / (float)ANumSlices;
+    WWaveform->setAreaPosSize(2,pos,size);
   }
 
   //----------
