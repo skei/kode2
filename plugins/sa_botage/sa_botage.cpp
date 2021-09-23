@@ -374,6 +374,26 @@ private:
 
   //----------
 
+  void next_loop() {
+
+    // speed
+
+    float speed_prob = KODE_Random();
+    if (speed_prob < PLoopSpeedProb) {
+      MLoopSpeed *= PLoopSpeedAmt;
+      MLoopSpeed =  KODE_Clamp(MLoopSpeed, (1.0/16.0), 16.0);
+    }
+
+    // size
+
+    float size_prob = KODE_Random();
+    if (size_prob < PLoopSizeProb) {
+      MLoopLength *= PLoopSizeAmt;
+      MLoopLength =  KODE_Max(MLoopLength,1.0);
+    }
+
+  }
+
 //------------------------------
 public:
 //------------------------------
@@ -463,6 +483,7 @@ public:
           MLoopCounter += MLoopSpeed;
           if (MLoopCounter >= MLoopLength) {
             MLoopCounter -= MLoopLength;
+            next_loop();
           }
         } // has loop
         else {

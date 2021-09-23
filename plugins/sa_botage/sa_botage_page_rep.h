@@ -84,45 +84,65 @@ public:
 
     //-----
 
+
+
+
     // PAR_LOOP_SIZE_PROB
 
-    slider = new KODE_SliderWidget(KODE_FRect(210,0,150,20));
+    //slider = new KODE_SliderWidget(KODE_FRect(210,0,150,20));
+    slider = new KODE_SliderWidget(KODE_FRect(210,0,200,20));
     slider->setDrawLabel(true);
     appendWidget(slider);
     AEditor->connectParameter(slider,7);
 
     // PAR_LOOP_SIZE_AMT
 
-    slider = new KODE_SliderWidget(KODE_FRect(370,0,80,20));
+    //slider = new KODE_SliderWidget(KODE_FRect(370,0,80,20));
+    slider = new KODE_SliderWidget(KODE_FRect(210,25,95,20));
     slider->setDrawLabel(true);
     appendWidget(slider);
     AEditor->connectParameter(slider,8);
 
+    slider = new KODE_SliderWidget(KODE_FRect(315,25,95,20));
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,8);
+
+
+
     // PAR_LOOP_SPEED_PROB
 
-    slider = new KODE_SliderWidget(KODE_FRect(210,25,150,20));
+    //slider = new KODE_SliderWidget(KODE_FRect(210,50,150,20));
+    slider = new KODE_SliderWidget(KODE_FRect(210,60,200,20));
     slider->setDrawLabel(true);
     appendWidget(slider);
     AEditor->connectParameter(slider,9);
 
     // PAR_LOOP_SPEED_AMT
 
-    slider = new KODE_SliderWidget(KODE_FRect(370,25,80,20));
+    //slider = new KODE_SliderWidget(KODE_FRect(370,25,80,20));
+    slider = new KODE_SliderWidget(KODE_FRect(210,85,95,20));
     slider->setDrawLabel(true);
     appendWidget(slider);
     AEditor->connectParameter(slider,10);
+
+    //slider = new KODE_SliderWidget(KODE_FRect(370,25,80,20));
+    slider = new KODE_SliderWidget(KODE_FRect(315,85,95,20));
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,10);
 
     //-----
 
     // PAR_XFADE_MODE
 
-    slider = new KODE_SliderWidget(KODE_FRect(470,0,100,20));
+    slider = new KODE_SliderWidget(KODE_FRect(420,0,200,20));
     appendWidget(slider);
     AEditor->connectParameter(slider,11);
 
     // PAR_XFADE_AM
 
-    slider = new KODE_SliderWidget(KODE_FRect(470,25,100,20));
+    slider = new KODE_SliderWidget(KODE_FRect(420,25,200,20));
     appendWidget(slider);
     AEditor->connectParameter(slider,12);
 

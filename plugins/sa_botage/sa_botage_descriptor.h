@@ -24,7 +24,7 @@ enum sa_botage_params {
 };
 
 const char* xfade_mode_txt[4] = {
-  "off", "fwd", "rev", "bi"
+  "off", "forward", "reverse", "bidirectional"
 };
 
 //----------------------------------------------------------------------
@@ -46,6 +46,8 @@ public:
 
     setAuthor("skei.audio");
     setVersion(0x00000001);
+    setEmail("tor.helge.skei@gmail.com");
+    setUrl("https://torhelgeskei.com");
     //setIsSynth(true);
 
     appendInput(  new KODE_PluginPort("input1")  );
