@@ -90,6 +90,7 @@ private:
   //uint32_t            MBufferSize                 = 0;
   bool                MBufferSizeUpdated          = false;
 
+  //float               MReadPos                    = 0.0;
   uint32_t            MWritePos                   = 0;
   uint32_t            MNumSlices                  = 0;
 
@@ -123,16 +124,18 @@ private:
   // range
 
   bool                MHasRange                   = false;
-  uint32_t            MRangeStartSlice            = 0;
-  uint32_t            MRangeLength                = 0;
   uint32_t            MRangeCounter               = 0;
+//  uint32_t            MRangeStartSlice            = 0;
+//  uint32_t            MRangeLength                = 0;
+//  uint32_t            MRangeCounter               = 0;
 
-//  // loop
+  // loop
 
   bool                MHasLoop                    = false;
-  uint32_t            MLoopLength                 = 0;
-  uint32_t            MLoopCounter                = 0;
-//uint32_t            MLoopStart                  = 0;
+  uint32_t            MLoopStart                  = 0;
+  float               MLoopCounter                = 0.0;
+  float               MLoopLength                 = 0.0;
+  float               MLoopSpeed                  = 0.0;
 
 //------------------------------
 public:
@@ -198,10 +201,11 @@ private: // update_editor
   //----------
 
   bool update_waveform_slice(bool ARedraw=false) {
-    uint32_t num_slices = PNumBeats * PBeatSubdiv;
-    MEditor->set_waveform_slice(MGuiCurrentSlice,num_slices);
-    if (ARedraw) MEditor->redraw_waveform();
-    return true;
+    //uint32_t num_slices = PNumBeats * PBeatSubdiv;
+    //MEditor->set_waveform_slice(MGuiCurrentSlice,num_slices);
+    //if (ARedraw) MEditor->redraw_waveform();
+    //return true;
+    return false;
   }
 
   //----------
@@ -232,6 +236,13 @@ private: // update_editor
     }
     return false;
   }
+
+//------------------------------
+private:
+//------------------------------
+
+
+
 
 //------------------------------
 public:
@@ -333,6 +344,35 @@ public:
 private:
 //------------------------------
 
+  void next_slice(uint32_t ACurrentSlice, uint32_t ANumSlices, float ASliceLength) {
+    if (ACurrentSlice >= ANumSlices) return;
+    if (MHasRange) {
+      MRangeCounter -= 1;
+      if (MRangeCounter > 0) return;
+      MHasRange = false;
+      MHasLoop = false;
+    }
+
+    float prob = KODE_Random();
+    if (prob < PRepeatProb) {
+      int32_t  left = ANumSlices - ACurrentSlice - 1;
+      uint32_t num  = KODE_RandomRangeInt(PRangeMinSlices,KODE_MinI(PRangeMaxSlices,left));
+      uint32_t div  = KODE_RandomRangeInt(PRangeMinSubdiv,PRangeMaxSubdiv);
+      MHasRange             = true;
+      MRangeCounter         = num;
+      MGuiRangeStartSlice   = MCurrentSlice;
+      MGuiRangeNumSlices    = num;
+      MHasLoop              = true;
+      MLoopStart            = MWritePos;
+      MLoopCounter          = 0.0;
+      MLoopLength           = (ASliceLength * num) / div;
+      MLoopSpeed            = 1.0;
+      MGuiLoopDivisions     = div;
+    }
+
+  }
+
+  //----------
 
 //------------------------------
 public:
@@ -344,11 +384,11 @@ public:
 
     uint32_t num_slices = (PNumBeats * PBeatSubdiv);
     if (num_slices != MNumSlices) {
-      KODE_DPrint("MNumSlices changed\n");
+      //KODE_DPrint("MNumSlices changed\n");
       MNumSlices = num_slices;
     }
 
-    // slice length
+    // buffer length
 
     float samples_per_minute  = AContext->samplerate * 60.0;
     float samples_per_beat    = samples_per_minute / AContext->tempo;
@@ -369,7 +409,7 @@ public:
     // starting
 
     if (is_starting) {
-      KODE_DPrint("is_starting\n");
+      //KODE_DPrint("is_starting\n");
       MWritePos = 0;
       MSliceCounter = 0;
       MCurrentSlice = 0;
@@ -378,10 +418,11 @@ public:
     // stopping
 
     if (is_stopping) {
-      KODE_DPrint("is_stopping\n");
     }
 
     // per sample
+
+    int32_t readpos = 0;//MWritePos;
 
     float*   input_0      = AContext->inputs[0];
     float*   input_1      = AContext->inputs[1];
@@ -399,55 +440,46 @@ public:
       if (is_playing) {
 
         if (MWritePos == 0) {
-          KODE_DPrint("buffer start\n");
+          next_slice(MCurrentSlice,num_slices,samples_per_slice);
         }
 
         // slice
 
-        if (MSliceCounter == 0) {
-          if (MCurrentSlice < num_slices) {
-            KODE_DPrint("slice %i start\n",MCurrentSlice);
-          }
-          else {
-            // slices finished before range/buffer
-          }
-        }
         MSliceCounter += 1;
         if (MSliceCounter >= MSliceLength) {
           MSliceCounter = 0;
-          KODE_DPrint("slice %i end\n",MCurrentSlice);
+          //KODE_DPrint("slice %i end\n",MCurrentSlice);
           MCurrentSlice += 1;
+          //if (MCurrentSlice < num_slices) {
+          //  KODE_DPrint("slice %i\n",MCurrentSlice);
+          //}
+          next_slice(MCurrentSlice,num_slices,samples_per_slice);
         }
 
-        // range
+        // loop
 
-//        if (MHasRange) {
-//          if (MRangeCounter == 0) {
-//            KODE_DPrint("start range\n");
-//          }
-//          if (MHasLoop) {
-//            if (MLoopCounter == 0) {
-//              KODE_DPrint("start loop\n");
-//            }
-//            MRangeCounter += 1;
-//            if (MRangeCounter >= MRangeLength) {
-//              KODE_DPrint("end loop\n");
-//            }
-//          } // has loop
-//          MRangeCounter += 1;
-//          if (MRangeCounter >= MRangeLength) {
-//            KODE_DPrint("end range\n");
-//          }
-//        } // has range
+        if (MHasLoop) {
+          readpos = MLoopStart + (int32_t)MLoopCounter;
+          MLoopCounter += MLoopSpeed;
+          if (MLoopCounter >= MLoopLength) {
+            MLoopCounter -= MLoopLength;
+          }
+        } // has loop
+        else {
+          readpos = MWritePos;
+        }
 
         // write
 
         MBuffer[(MWritePos*2)  ] = in0;
         MBuffer[(MWritePos*2)+1] = in1;
 
+        out0 = MBuffer[(readpos*2)  ];
+        out1 = MBuffer[(readpos*2)+1];
+
         MWritePos += 1;
         if (MWritePos >= buffer_length) {
-            KODE_DPrint("end buffer\n");
+          //KODE_DPrint("end buffer\n");
           MWritePos     = 0;
           MCurrentSlice = 0;
           MSliceCounter = 0;
@@ -473,15 +505,9 @@ public:
     // gui
 
     MGuiBufferLength      = buffer_length;
-    MGuiReadPos           = 0.0; //read_pos / buffer_length;
+    MGuiReadPos           = readpos / buffer_length;
     MGuiWritePos          = (float)MWritePos / buffer_length;
     MGuiCurrentSlice      = MCurrentSlice;
-
-  //MGuiRangeStartSlice   =
-  //MGuiRangeNumSlices    =
-  //MGuiLoopNumDivisions  =
-
-
 
   }
 
