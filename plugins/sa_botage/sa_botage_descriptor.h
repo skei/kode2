@@ -16,9 +16,13 @@ enum sa_botage_params {
   PAR_RANGE_MIN_SUBDIV,
   PAR_RANGE_MAX_SUBDIV,
   PAR_LOOP_SIZE_PROB,
-  PAR_LOOP_SIZE_AMT,
+  //PAR_LOOP_SIZE_AMT,
+  PAR_LOOP_SIZE_MIN,
+  PAR_LOOP_SIZE_MAX,
   PAR_LOOP_SPEED_PROB,
-  PAR_LOOP_SPEED_AMT,
+  //PAR_LOOP_SPEED_AMT,
+  PAR_LOOP_SPEED_MIN,
+  PAR_LOOP_SPEED_MAX,
   PAR_XFADE_MODE,
   PAR_XFADE_AMT
 };
@@ -60,22 +64,26 @@ public:
     //__KODE_UNUSED
     //KODE_Parameter* parameter;
 
-    /*parameter = */appendParameter( new KODE_IntParameter("Beats",       4,    1, 8) );
-    /*parameter = */appendParameter( new KODE_IntParameter("Subdiv",      2,    1, 8) );
-    /*parameter = */appendParameter( new KODE_IntParameter("Repeat", "%", 35,   0, 100) );
-    /*parameter = */appendParameter( new KODE_IntParameter("Min slices",  1,    1, 8) );
-    /*parameter = */appendParameter( new KODE_IntParameter("Max slices",  4,    1, 8) );
-    /*parameter = */appendParameter( new KODE_IntParameter("Min subdiv",  1,    1, 8) );
-    /*parameter = */appendParameter( new KODE_IntParameter("Max subdiv",  4,    1, 8) );
-    /*parameter = */appendParameter( new KODE_IntParameter("Size", "%",   25,   0, 100) );
-    /*parameter = */appendParameter( new KODE_PowParameter("amt", "%",    100,  2,  true, 50, 200, 1));
-    /*parameter = */appendParameter( new KODE_IntParameter("Speed", "%",  25,   0, 100) );
-    /*parameter = */appendParameter( new KODE_PowParameter("amt", "%",    100,  2,  true, 50, 200, 1));
-    /*parameter = */appendParameter( new KODE_TextParameter("xfade",      0,    4,  xfade_mode_txt));
-    /*parameter = */appendParameter( new KODE_FloatParameter("amt",       0     ));
+    appendParameter( new KODE_IntParameter(   "Beats",            4,    1, 8    ));
+    appendParameter( new KODE_IntParameter(   "Slices",           2,    1, 8    ));
+    appendParameter( new KODE_IntParameter(   "Repeat",     "%",  30,   0, 100  ));
+    appendParameter( new KODE_IntParameter(   "Min Slices",       1,    1, 8    ));
+    appendParameter( new KODE_IntParameter(   "Max Slices",       3,    1, 8    ));
+    appendParameter( new KODE_IntParameter(   "Min Div",          2,    1, 8    ));
+    appendParameter( new KODE_IntParameter(   "Max Div",          4,    1, 8    ));
+    appendParameter( new KODE_IntParameter(   "Loop Size",  "%",  0,    0, 100  ));
+    appendParameter( new KODE_PowParameter(   "Min",        "%",  100,  2,  true, 50, 200, 1));
+    appendParameter( new KODE_PowParameter(   "Max",        "%",  100,  2,  true, 50, 200, 1));
+    appendParameter( new KODE_IntParameter(   "Loop Speed", "%",  0,    0, 100  ));
+    appendParameter( new KODE_PowParameter(   "Min",        "%",  100,  2,  true, 50, 200, 1));
+    appendParameter( new KODE_PowParameter(   "Max",        "%",  100,  2,  true, 50, 200, 1));
+    appendParameter( new KODE_TextParameter(  "Xfade",            0,    4,  xfade_mode_txt));
+    appendParameter( new KODE_FloatParameter( "Amount",           0     ));
 
-    MParameters[PAR_LOOP_SIZE_AMT]->setNumDigits(0);
-    MParameters[PAR_LOOP_SPEED_AMT]->setNumDigits(0);
+    MParameters[PAR_LOOP_SIZE_MIN]->setNumDigits(0);
+    MParameters[PAR_LOOP_SIZE_MAX]->setNumDigits(0);
+    MParameters[PAR_LOOP_SPEED_MIN]->setNumDigits(0);
+    MParameters[PAR_LOOP_SPEED_MAX]->setNumDigits(0);
 
     #ifndef KODE_NO_GUI
       setHasEditor(true);

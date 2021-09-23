@@ -79,13 +79,13 @@ public:
     WNumBeats->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
     WNumBeats->setText("Num Beats");
     appendWidget(WNumBeats);
-    connectParameter(WNumBeats,0);
+    connectParameter(WNumBeats,PAR_NUM_BEATS);
 
     WBeatDiv = new KODE_SliderWidget(KODE_FRect(150,20));
     WBeatDiv->layout.alignment = KODE_WIDGET_ALIGN_STACK_HORIZ;
     WBeatDiv->setText("Beat Div");
     appendWidget(WBeatDiv);
-    connectParameter(WBeatDiv,1);
+    connectParameter(WBeatDiv,PAR_BEAT_SUBDIV);
 
     // waveform
 
@@ -184,12 +184,16 @@ public:
 
   //----------
 
-  void set_waveform_loop(uint32_t AStartSlice, uint32_t ANumSlices, uint32_t AMaxSlices, uint32_t ASubdiv) {
-    float max_slices = (float)AMaxSlices;
-    float pos  = (float)AStartSlice / max_slices;
-    float size = (float)ANumSlices / max_slices;
-    if (ASubdiv > 0) size /= (float)ASubdiv;
-    WWaveform->setAreaPosSize(1,pos,size);
+  //void set_waveform_loop(uint32_t AStartSlice, uint32_t ANumSlices, uint32_t AMaxSlices, uint32_t ASubdiv, float AScale) {
+  //  float max_slices = (float)AMaxSlices;
+  //  float pos  = (float)AStartSlice / max_slices;
+  //  float size = (float)ANumSlices / max_slices;
+  //  if (ASubdiv > 0) size /= (float)ASubdiv;
+  //  WWaveform->setAreaPosSize(1,pos,size*AScale);
+  //}
+
+  void set_waveform_loop(float AStart, float ALength) {
+    WWaveform->setAreaPosSize(1,AStart,ALength);
   }
 
   //----------

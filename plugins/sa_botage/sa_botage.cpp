@@ -78,9 +78,11 @@ private:
   uint32_t            PRangeMinSubdiv             = 0;
   uint32_t            PRangeMaxSubdiv             = 0;
   float               PLoopSizeProb               = 0;
-  float               PLoopSizeAmt                = 0;
+  float               PLoopSizeMin                = 0;
+  float               PLoopSizeMax                = 0;
   float               PLoopSpeedProb              = 0;
-  float               PLoopSpeedAmt               = 0;
+  float               PLoopSpeedMin               = 0;
+  float               PLoopSpeedMax               = 0;
   uint32_t            PXFadeMode                  = 0;
   float               PXFadeAmt                   = 0;
 
@@ -226,12 +228,22 @@ private: // update_editor
   //----------
 
   bool update_waveform_loop() {
-    uint32_t num_slices = PNumBeats * PBeatSubdiv;
     if (MHasLoop) {
-      MEditor->set_waveform_loop(MGuiRangeStartSlice,MGuiRangeNumSlices,num_slices,MGuiLoopDivisions);
+      float pos = 0;
+      float size = 0;
+      if (MGuiBufferLength > 0) {
+        pos  = (float)MLoopStart / MGuiBufferLength;
+        size = (float)MLoopLength / MGuiBufferLength;
+      }
+      else {
+        pos = 0;
+        size = 0;
+      }
+      MEditor->set_waveform_loop(pos,size);
+      return false;
     }
     else {
-      MEditor->set_waveform_loop(0,0,num_slices,0);
+      MEditor->set_waveform_loop(0,0);
       return true;
     }
     return false;
@@ -332,9 +344,11 @@ public:
       case PAR_RANGE_MIN_SUBDIV:  PRangeMinSubdiv = AValue;         break;
       case PAR_RANGE_MAX_SUBDIV:  PRangeMaxSubdiv = AValue;         break;
       case PAR_LOOP_SIZE_PROB:    PLoopSizeProb   = AValue * 0.01;  break;
-      case PAR_LOOP_SIZE_AMT:     PLoopSizeAmt    = AValue * 0.01;  break;
+      case PAR_LOOP_SIZE_MIN:     PLoopSizeMin    = AValue * 0.01;  break;
+      case PAR_LOOP_SIZE_MAX:     PLoopSizeMax    = AValue * 0.01;  break;
       case PAR_LOOP_SPEED_PROB:   PLoopSpeedProb  = AValue * 0.01;  break;
-      case PAR_LOOP_SPEED_AMT:    PLoopSpeedAmt   = AValue * 0.01;  break;
+      case PAR_LOOP_SPEED_MIN:    PLoopSpeedMin   = AValue * 0.01;  break;
+      case PAR_LOOP_SPEED_MAX:    PLoopSpeedMax   = AValue * 0.01;  break;
       case PAR_XFADE_MODE:        PXFadeMode      = AValue;         break;
       case PAR_XFADE_AMT:         PXFadeAmt       = AValue;         break;
     }
@@ -380,7 +394,16 @@ private:
 
     float speed_prob = KODE_Random();
     if (speed_prob < PLoopSpeedProb) {
-      MLoopSpeed *= PLoopSpeedAmt;
+      float lsmin = PLoopSpeedMin;
+      float lsmax = PLoopSpeedMax;
+      if (lsmin >= lsmax) {
+        float temp = lsmin;
+        lsmin = lsmax;
+        lsmax = temp;
+      }
+      float range = lsmax - lsmin;
+      float amount = range * KODE_Random();
+      MLoopSpeed *= (lsmin + amount);
       MLoopSpeed =  KODE_Clamp(MLoopSpeed, (1.0/16.0), 16.0);
     }
 
@@ -388,7 +411,16 @@ private:
 
     float size_prob = KODE_Random();
     if (size_prob < PLoopSizeProb) {
-      MLoopLength *= PLoopSizeAmt;
+      float lsmin = PLoopSizeMin;
+      float lsmax = PLoopSizeMax;
+      if (lsmin >= lsmax) {
+        float temp = lsmin;
+        lsmin = lsmax;
+        lsmax = temp;
+      }
+      float range = lsmax - lsmin;
+      float amount = range * KODE_Random();
+      MLoopLength *= (lsmin + amount);
       MLoopLength =  KODE_Max(MLoopLength,1.0);
     }
 
