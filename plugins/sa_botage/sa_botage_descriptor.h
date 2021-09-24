@@ -49,7 +49,7 @@ public:
     #endif
 
     setAuthor("skei.audio");
-    setVersion(0x00000001);
+    setVersion(0x00000002);
     setEmail("tor.helge.skei@gmail.com");
     setUrl("https://torhelgeskei.com");
     //setIsSynth(true);

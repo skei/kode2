@@ -101,8 +101,6 @@
 				<Compiler>
 					<Add option="-O3" />
 					<Add option="-fPIC" />
-					<Add option="-msse4" />
-					<Add option="-mfpmath=sse" />
 					<Add option="-DKODE_PLUGIN_VST3" />
 				</Compiler>
 				<Linker>
