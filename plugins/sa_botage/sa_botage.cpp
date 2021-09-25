@@ -19,10 +19,14 @@
 #include "plugin/kode_plugin.h"
 #include "plugin/kode_voice_manager.h"
 
+//#include "audio/filters/kode_rc_filter.h"
+//#include "audio/modulation/kode_envelope.h"
+
 #include "sa_botage_descriptor.h"
 
 #ifndef KODE_NO_GUI
   #include "sa_botage_editor.h"
+  //#include "sa_botage_editor2.h"
 #endif // KODE_NO_GUI
 
 //----------------------------------------------------------------------
@@ -83,61 +87,52 @@ private:
   float               PLoopSpeedProb              = 0;
   float               PLoopSpeedMin               = 0;
   float               PLoopSpeedMax               = 0;
-  uint32_t            PXFadeMode                  = 0;
-  float               PXFadeAmt                   = 0;
+  float               PLoopReverseProb            = 0;
 
-  // buffer
+  float               PSliceEnvAtt                = 0;
+  float               PSliceEnvDec                = 0;
+  float               PLoopEnvAtt                 = 0;
+  float               PLoopEnvDec                 = 0;
 
-  float               MBuffer[BUFFERSIZE]         = {0};
-  //uint32_t            MBufferSize                 = 0;
-  bool                MBufferSizeUpdated          = false;
-
-  //float               MReadPos                    = 0.0;
-  uint32_t            MWritePos                   = 0;
-  uint32_t            MNumSlices                  = 0;
-
-  // state
-
-  bool                MWasPlaying                 = false;
-
-  // editor
+  //uint32_t            PXFadeMode                  = 0;
+  //float               PXFadeAmt                   = 0;
 
   sa_botage_editor*   MEditor                     = KODE_NULL;
-//float               MEditorBuffer[BUFFERSIZE]   = {0};
-//KODE_WritePosQueue  MWritePosQueue;
-//uint32_t            MWritePosPrev               = 0;
+  //float               MEditorBuffer[BUFFERSIZE]   = {0};
+  //uint32_t            MWritePosPrev               = 0;
+  //KODE_WritePosQueue  MWritePosQueue;
 
-  // set bu process(), read by editor
-  float               MGuiBufferLength            = 0.0;
-  float               MGuiReadPos                 = 0.0;
-  float               MGuiWritePos                = 0.0;
-  uint32_t            MGuiCurrentSlice            = 0;
+  float               MSamplesPerMinute           = 0.0;
+  float               MSamplesPerBeat             = 0.0;
 
-  uint32_t            MGuiRangeStartSlice         = 0;
-  uint32_t            MGuiRangeNumSlices          = 0;
-  uint32_t            MGuiLoopDivisions           = 0;
+  float               MBuffer[BUFFERSIZE]         = {0};
+  float               MBufferLength               = 0.0;
+  bool                MBufferSizeUpdated          = false;
 
-  // slices
-
-  uint32_t            MCurrentSlice               = 0;
-  uint32_t            MSliceLength                = 0;
-  uint32_t            MSliceCounter               = 0;
-
-  // range
+  float               MReadPos                    = 0.0;
+  uint32_t            MWritePos                   = 0;
+  uint32_t            MNumSlices                  = 0;
+  bool                MWasPlaying                 = false;
 
   bool                MHasRange                   = false;
   uint32_t            MRangeCounter               = 0;
-//  uint32_t            MRangeStartSlice            = 0;
-//  uint32_t            MRangeLength                = 0;
-//  uint32_t            MRangeCounter               = 0;
-
-  // loop
+  uint32_t            MRangeNumSlices             = 0;
+  uint32_t            MRangeStartSlice            = 0;
+  uint32_t            MLoopDivisions              = 0;
+  uint32_t            MCurrentSlice               = 0;
+  uint32_t            MSliceLength                = 0;
+  uint32_t            MSliceCounter               = 0;
 
   bool                MHasLoop                    = false;
   uint32_t            MLoopStart                  = 0;
   float               MLoopCounter                = 0.0;
   float               MLoopLength                 = 0.0;
   float               MLoopSpeed                  = 0.0;
+  bool                MLoopReverse                = false;
+
+  //KODE_RcFilter       MSliceEnv;
+  //KODE_RcFilter       MLoopEnv;
+  //KODE_Envelope
 
 //------------------------------
 public:
@@ -153,7 +148,7 @@ public:
   //}
 
 //------------------------------
-private: // update_editor
+private:
 //------------------------------
 
 //  bool copy_buffer_editor(int32_t writepos) {
@@ -175,24 +170,38 @@ private: // update_editor
 //    return true;
 //  }
 
-  //----------
+//------------------------------
+private:
+//------------------------------
 
-  bool update_waveform() {
-    MEditor->set_waveform_buffer_size(MGuiBufferLength);
-    MEditor->set_waveform_read_pos(MGuiReadPos);
-    MEditor->set_waveform_write_pos(MGuiWritePos);
+  /*
+    MBufferLength
+    MReadPos
+    MWritePos
+  */
+
+  bool update_editor_waveform_cursors() {
+    MEditor->set_waveform_buffer_size(MBufferLength);
+    float rp = MReadPos / MBufferLength;
+    float wp = (float)MWritePos / MBufferLength;
+    MEditor->set_waveform_read_pos(rp);
+    MEditor->set_waveform_write_pos(wp);
     //return copy_buffer_editor(writepos);
     return true;
   }
 
   //----------
 
-  bool update_waveform_grid(bool ARedraw=false) {
-    uint32_t num_slices = PNumBeats * PBeatSubdiv;
+  /*
+    MNumSlices
+    PBeatSubdiv
+  */
+
+  bool update_editor_waveform_grid(bool ARedraw=false) {
     if (MEditor) {
       uint32_t old_num = MEditor->get_waveform_grid();
-      if (num_slices != old_num) {
-        MEditor->set_waveform_grid(num_slices,PBeatSubdiv);
+      if (MNumSlices != old_num) {
+        MEditor->set_waveform_grid(MNumSlices,PBeatSubdiv);
         if (ARedraw) MEditor->redraw_waveform();
         return true;
       }
@@ -202,7 +211,12 @@ private: // update_editor
 
   //----------
 
-  bool update_waveform_slice(bool ARedraw=false) {
+  /*
+    MNumSlices
+    MCurrentSlice
+  */
+
+  bool update_editor_waveform_slice(bool ARedraw=false) {
     //uint32_t num_slices = PNumBeats * PBeatSubdiv;
     //MEditor->set_waveform_slice(MGuiCurrentSlice,num_slices);
     //if (ARedraw) MEditor->redraw_waveform();
@@ -212,14 +226,21 @@ private: // update_editor
 
   //----------
 
-  bool update_waveform_range() {
-    uint32_t num_slices = PNumBeats * PBeatSubdiv;
+  /*
+    MHasRange
+    MRangeStartSlice
+    MRangeNumSlices
+    MNumSlices
+  */
+
+  bool update_editor_waveform_range() {
+    //uint32_t num_slices = PNumBeats * PBeatSubdiv;
     if (MHasRange) {
-      MEditor->set_waveform_range(MGuiRangeStartSlice,MGuiRangeNumSlices,num_slices);
+      MEditor->set_waveform_range(MRangeStartSlice,MRangeNumSlices,MNumSlices);
       return true;
     }
     else {
-      MEditor->set_waveform_range(0,0,num_slices);
+      MEditor->set_waveform_range(0,0,MNumSlices);
       return true;
     }
   return false;
@@ -227,13 +248,20 @@ private: // update_editor
 
   //----------
 
-  bool update_waveform_loop() {
+  /*
+    MHasLoop
+    MLoopStart
+    MLoopLength
+    MBufferLength
+  */
+
+  bool update_editor_waveform_loop() {
     if (MHasLoop) {
       float pos = 0;
       float size = 0;
-      if (MGuiBufferLength > 0) {
-        pos  = (float)MLoopStart / MGuiBufferLength;
-        size = (float)MLoopLength / MGuiBufferLength;
+      if (MBufferLength > 0) {
+        pos  = (float)MLoopStart / MBufferLength;
+        size = (float)MLoopLength / MBufferLength;
       }
       else {
         pos = 0;
@@ -253,113 +281,8 @@ private: // update_editor
 private:
 //------------------------------
 
-
-
-
-//------------------------------
-public:
-//------------------------------
-
-  //void on_plugin_open() final {}
-  //void on_plugin_close() final {}
-  //void on_plugin_initialize() final {}
-  //void on_plugin_terminate() final {}
-  //void on_plugin_activate() final {}
-  //void on_plugin_deactivate() final {}
-
-  void on_plugin_prepare(float ASamplerate, uint32_t ABlocksize) final {
-  }
-
-  //uint32_t on_plugin_saveState(void** ABuffer, uint32_t AMode) final { *ABuffer = KODE_NULL; return 0; }
-  //void on_plugin_restoreState(uint32_t ASize, void* APointer, uint32_t AMode) final {}
-  //void on_plugin_midi(uint32_t AOffset, uint8_t AMsg1, uint8_t AMsg2, uint8_t AMsg3, uint32_t AMode=0) final {}
-
-//------------------------------
-public:
-//------------------------------
-
-  #ifndef KODE_NO_GUI
-
-  KODE_BaseEditor* on_plugin_openEditor(void* AParent) final {
-    MEditor = new sa_botage_editor(this,AParent);
-    MEditor->set_waveform_grid((PNumBeats * PBeatSubdiv), PBeatSubdiv);
-    MEditor->set_waveform_buffer(MBuffer);
-    MEditor->set_waveform_buffer_size(MGuiBufferLength);
-    return MEditor;
-  }
-
-  //----------
-
-  void  on_plugin_closeEditor(KODE_BaseEditor* AEditor) final {
-    if (MEditor) {
-      delete MEditor;
-      MEditor = KODE_NULL;
-    }
-  }
-
-  //----------
-
-  void on_plugin_updateEditor(KODE_BaseEditor* AEditor) final {
-    if (MEditor) {
-//      uint32_t writepos = MWritePosPrev;
-//      while (MWritePosQueue.read(&writepos)) { } // get last message
-      bool changed = false;
-      changed |= update_waveform();
-      changed |= update_waveform_grid();
-      changed |= update_waveform_range();
-      changed |= update_waveform_loop();
-      changed |= update_waveform_slice();
-//      MWritePosPrev = writepos;
-      if (changed) { MEditor->redraw_waveform(); }
-    }
-  }
-
-  #endif
-
-//------------------------------
-public:
-//------------------------------
-
-  void on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) final {
-    switch (AIndex) {
-      case PAR_NUM_BEATS:
-        PNumBeats = AValue;
-        //MNumSlices = PNumBeats * PBeatSubdiv;
-        //MBufferSizeUpdated = true;
-        #ifdef KODE_PLUGIN_EXE
-          update_waveform_grid(true);
-        #endif
-        break;
-      case PAR_BEAT_SUBDIV:
-        PBeatSubdiv = AValue;
-        //MNumSlices = PNumBeats * PBeatSubdiv;
-        //MBufferSizeUpdated = true;
-        #ifdef KODE_PLUGIN_EXE
-          update_waveform_grid(true);
-        #endif
-        break;
-      case PAR_REPEAT_PROB:       PRepeatProb     = AValue * 0.01;  break;
-      case PAR_RANGE_MIN_SLICES:  PRangeMinSlices = AValue;         break;
-      case PAR_RANGE_MAX_SLICES:  PRangeMaxSlices = AValue;         break;
-      case PAR_RANGE_MIN_SUBDIV:  PRangeMinSubdiv = AValue;         break;
-      case PAR_RANGE_MAX_SUBDIV:  PRangeMaxSubdiv = AValue;         break;
-      case PAR_LOOP_SIZE_PROB:    PLoopSizeProb   = AValue * 0.01;  break;
-      case PAR_LOOP_SIZE_MIN:     PLoopSizeMin    = AValue * 0.01;  break;
-      case PAR_LOOP_SIZE_MAX:     PLoopSizeMax    = AValue * 0.01;  break;
-      case PAR_LOOP_SPEED_PROB:   PLoopSpeedProb  = AValue * 0.01;  break;
-      case PAR_LOOP_SPEED_MIN:    PLoopSpeedMin   = AValue * 0.01;  break;
-      case PAR_LOOP_SPEED_MAX:    PLoopSpeedMax   = AValue * 0.01;  break;
-      case PAR_XFADE_MODE:        PXFadeMode      = AValue;         break;
-      case PAR_XFADE_AMT:         PXFadeAmt       = AValue;         break;
-    }
-  }
-
-//------------------------------
-private:
-//------------------------------
-
-  void next_slice(uint32_t ACurrentSlice, uint32_t ANumSlices, float ASliceLength) {
-    if (ACurrentSlice >= ANumSlices) return;
+  void next_slice() {
+    if (MCurrentSlice >= MNumSlices) return;
     if (MHasRange) {
       MRangeCounter -= 1;
       if (MRangeCounter > 0) return;
@@ -369,19 +292,20 @@ private:
 
     float prob = KODE_Random();
     if (prob < PRepeatProb) {
-      int32_t  left = ANumSlices - ACurrentSlice - 1;
-      uint32_t num  = KODE_RandomRangeInt(PRangeMinSlices,KODE_MinI(PRangeMaxSlices,left));
-      uint32_t div  = KODE_RandomRangeInt(PRangeMinSubdiv,PRangeMaxSubdiv);
-      MHasRange             = true;
-      MRangeCounter         = num;
-      MGuiRangeStartSlice   = MCurrentSlice;
-      MGuiRangeNumSlices    = num;
-      MHasLoop              = true;
-      MLoopStart            = MWritePos;
-      MLoopCounter          = 0.0;
-      MLoopLength           = (ASliceLength * num) / div;
-      MLoopSpeed            = 1.0;
-      MGuiLoopDivisions     = div;
+      int32_t  left     = MNumSlices - MCurrentSlice - 1;
+      uint32_t num      = KODE_RandomRangeInt(PRangeMinSlices,KODE_MinI(PRangeMaxSlices,left));
+      uint32_t div      = KODE_RandomRangeInt(PRangeMinSubdiv,PRangeMaxSubdiv);
+      MHasRange         = true;
+      MRangeCounter     = num;
+      MRangeStartSlice  = MCurrentSlice;
+      MRangeNumSlices   = num;
+      MHasLoop          = true;
+      MLoopStart        = MWritePos;
+      MLoopCounter      = 0.0;
+      MLoopLength       = (MSliceLength * num) / div;
+      MLoopSpeed        = 1.0;
+      MLoopReverse      = false;
+      MLoopDivisions    = div;
     }
 
   }
@@ -421,39 +345,40 @@ private:
       float range = lsmax - lsmin;
       float amount = range * KODE_Random();
       MLoopLength *= (lsmin + amount);
-      MLoopLength =  KODE_Max(MLoopLength,1.0);
+      float range_length = MNumSlices * MSliceLength;
+      MLoopLength =  KODE_Clamp(MLoopLength,16,range_length);
     }
+
+    // reverse
+
+    float reverse_prob = KODE_Random();
+    // toggle or set?
+    if (reverse_prob < PLoopReverseProb) MLoopReverse = true;
+    else MLoopReverse = false;
 
   }
 
-//------------------------------
-public:
-//------------------------------
+  //----------
 
-  void on_plugin_process(KODE_ProcessContext* AContext) final {
-
+  void process(KODE_ProcessContext* AContext) {
     // num slices
 
     uint32_t num_slices = (PNumBeats * PBeatSubdiv);
     if (num_slices != MNumSlices) {
-      //KODE_DPrint("MNumSlices changed\n");
       MNumSlices = num_slices;
     }
 
     // buffer length
 
-    float samples_per_minute  = AContext->samplerate * 60.0;
-    float samples_per_beat    = samples_per_minute / AContext->tempo;
-    float samples_per_slice   = samples_per_beat / PBeatSubdiv;
-    float buffer_length       = samples_per_beat * PNumBeats;
-
-    while (MWritePos >= buffer_length) MWritePos -= buffer_length;
-    MSliceLength = samples_per_slice;
+    MSamplesPerMinute = AContext->samplerate * 60.0;
+    MSamplesPerBeat   = MSamplesPerMinute / AContext->tempo;
+    MSliceLength      = MSamplesPerBeat / PBeatSubdiv;
+    MBufferLength     = MSamplesPerBeat * PNumBeats;
+    while (MWritePos >= MBufferLength) MWritePos -= MBufferLength;
 
     // state
 
     bool is_playing  = (AContext->playstate & KODE_PLUGIN_PLAYSTATE_PLAYING);
-    //is_playing |= (MBufferSize > 0);
     bool is_starting = (is_playing && !MWasPlaying);
     bool is_stopping = (MWasPlaying && !is_playing);
     MWasPlaying = is_playing;
@@ -474,13 +399,14 @@ public:
 
     // per sample
 
-    int32_t readpos = 0;//MWritePos;
+    uint32_t readpos = 0;
 
     float*   input_0      = AContext->inputs[0];
     float*   input_1      = AContext->inputs[1];
     float*   output_0     = AContext->outputs[0];
     float*   output_1     = AContext->outputs[1];
     uint32_t num_samples  = AContext->numsamples;
+
     for (uint32_t i=0; i<num_samples; i++) {
       float in0 = *input_0++;
       float in1 = *input_1++;
@@ -492,7 +418,7 @@ public:
       if (is_playing) {
 
         if (MWritePos == 0) {
-          next_slice(MCurrentSlice,num_slices,samples_per_slice);
+          next_slice();
         }
 
         // slice
@@ -505,24 +431,39 @@ public:
           //if (MCurrentSlice < num_slices) {
           //  KODE_DPrint("slice %i\n",MCurrentSlice);
           //}
-          next_slice(MCurrentSlice,num_slices,samples_per_slice);
+          next_slice();
         }
 
         // loop
 
         if (MHasLoop) {
           readpos = MLoopStart + (int32_t)MLoopCounter;
-          MLoopCounter += MLoopSpeed;
-          if (MLoopCounter >= MLoopLength) {
-            MLoopCounter -= MLoopLength;
-            next_loop();
+
+          if (MLoopReverse) {
+            MLoopCounter -= MLoopSpeed;
+            if (MLoopCounter < 0.0) {
+              MLoopCounter += MLoopLength;
+              next_loop();
+            }
           }
+          else {
+            MLoopCounter += MLoopSpeed;
+            if (MLoopCounter >= MLoopLength) {
+              MLoopCounter -= MLoopLength;
+              next_loop();
+            }
+          }
+
         } // has loop
         else {
           readpos = MWritePos;
         }
 
+
         // write
+
+        //readpos = KODE_Clamp(readpos,0,buffer_length);
+        //MWritePos = KODE_Clamp(MWritePos,0,buffer_length);
 
         MBuffer[(MWritePos*2)  ] = in0;
         MBuffer[(MWritePos*2)+1] = in1;
@@ -530,8 +471,29 @@ public:
         out0 = MBuffer[(readpos*2)  ];
         out1 = MBuffer[(readpos*2)+1];
 
+        // env
+
+        // where are we in slice?
+
+        float env = 1.0f;
+        float sa = MSliceLength * PSliceEnvAtt;
+        float sd = MSliceLength * PSliceEnvDec;
+        if (MSliceCounter < sa)                   env *= MSliceCounter / sa;
+        if (MSliceCounter >= (MSliceLength - sd)) env *= (MSliceLength - MSliceCounter) / sd;
+        if (MHasLoop) {
+          float la = MLoopLength * PLoopEnvAtt;
+          float ld = MLoopLength * PLoopEnvDec;
+          if (MLoopCounter < la)                  env *= MLoopCounter / la;
+          if (MLoopCounter >= (MLoopLength - ld)) env *= (MLoopLength - MLoopCounter) / ld;
+        }
+
+        out0 *= env;
+        out1 *= env;
+
+        //
+
         MWritePos += 1;
-        if (MWritePos >= buffer_length) {
+        if (MWritePos >= MBufferLength) {
           //KODE_DPrint("end buffer\n");
           MWritePos     = 0;
           MCurrentSlice = 0;
@@ -543,25 +505,131 @@ public:
 
       } // is_playing
 
-      //-----
+      //----------
 
       *output_0++ = out0;
       *output_1++ = out1;
+
     } // for all samples
 
-    //
+    //----------
 
     //if (is_playing) {
     //  MWritePosQueue.write(MWritePos);
     //}
 
-    // gui
+    MReadPos = readpos;
+  }
 
-    MGuiBufferLength      = buffer_length;
-    MGuiReadPos           = readpos / buffer_length;
-    MGuiWritePos          = (float)MWritePos / buffer_length;
-    MGuiCurrentSlice      = MCurrentSlice;
 
+//------------------------------
+public:
+//------------------------------
+
+  //void on_plugin_open() final {}
+  //void on_plugin_close() final {}
+  //void on_plugin_initialize() final {}
+  //void on_plugin_terminate() final {}
+  //void on_plugin_activate() final {}
+  //void on_plugin_deactivate() final {}
+
+  //void on_plugin_prepare(float ASamplerate, uint32_t ABlocksize) final {
+  //  MSliceEnv.setSampleRate(ASamplerate);
+  //  MLoopEnv.setSampleRate(ASamplerate);
+  //}
+
+  //uint32_t on_plugin_saveState(void** ABuffer, uint32_t AMode) final { *ABuffer = KODE_NULL; return 0; }
+  //void on_plugin_restoreState(uint32_t ASize, void* APointer, uint32_t AMode) final {}
+  //void on_plugin_midi(uint32_t AOffset, uint8_t AMsg1, uint8_t AMsg2, uint8_t AMsg3, uint32_t AMode=0) final {}
+
+//------------------------------
+public:
+//------------------------------
+
+  #ifndef KODE_NO_GUI
+
+  KODE_BaseEditor* on_plugin_openEditor(void* AParent) final {
+    MEditor = new sa_botage_editor(this,AParent);
+    MEditor->set_waveform_grid((PNumBeats * PBeatSubdiv), PBeatSubdiv);
+    MEditor->set_waveform_buffer(MBuffer);
+    MEditor->set_waveform_buffer_size(MBufferLength);
+    return MEditor;
+  }
+
+  //----------
+
+  void  on_plugin_closeEditor(KODE_BaseEditor* AEditor) final {
+    if (MEditor) {
+      delete MEditor;
+      MEditor = KODE_NULL;
+    }
+  }
+
+  //----------
+
+  void on_plugin_updateEditor(KODE_BaseEditor* AEditor) final {
+    if (MEditor) {
+      //uint32_t writepos = MWritePosPrev;
+      //while (MWritePosQueue.read(&writepos)) { } // get last message
+      bool changed = false;
+      changed |= update_editor_waveform_cursors();
+      changed |= update_editor_waveform_grid();
+      changed |= update_editor_waveform_range();
+      changed |= update_editor_waveform_loop();
+      changed |= update_editor_waveform_slice();
+      //MWritePosPrev = writepos;
+      if (changed) { MEditor->redraw_waveform(); }
+    }
+  }
+
+  #endif
+
+//------------------------------
+public:
+//------------------------------
+
+  void on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) final {
+    switch (AIndex) {
+      case PAR_NUM_BEATS:
+        PNumBeats = AValue;
+        MNumSlices = PNumBeats * PBeatSubdiv;
+        #ifdef KODE_PLUGIN_EXE
+          update_editor_waveform_grid(true);
+        #endif
+        break;
+      case PAR_BEAT_SUBDIV:
+        PBeatSubdiv = AValue;
+        MNumSlices = PNumBeats * PBeatSubdiv;
+        #ifdef KODE_PLUGIN_EXE
+          update_editor_waveform_grid(true);
+        #endif
+        break;
+      case PAR_REPEAT_PROB:       PRepeatProb       = AValue * 0.01;  break;
+      case PAR_RANGE_MIN_SLICES:  PRangeMinSlices   = AValue;         break;
+      case PAR_RANGE_MAX_SLICES:  PRangeMaxSlices   = AValue;         break;
+      case PAR_RANGE_MIN_SUBDIV:  PRangeMinSubdiv   = AValue;         break;
+      case PAR_RANGE_MAX_SUBDIV:  PRangeMaxSubdiv   = AValue;         break;
+      case PAR_LOOP_SIZE_PROB:    PLoopSizeProb     = AValue * 0.01;  break;
+      case PAR_LOOP_SIZE_MIN:     PLoopSizeMin      = AValue * 0.01;  break;
+      case PAR_LOOP_SIZE_MAX:     PLoopSizeMax      = AValue * 0.01;  break;
+      case PAR_LOOP_SPEED_PROB:   PLoopSpeedProb    = AValue * 0.01;  break;
+      case PAR_LOOP_SPEED_MIN:    PLoopSpeedMin     = AValue * 0.01;  break;
+      case PAR_LOOP_SPEED_MAX:    PLoopSpeedMax     = AValue * 0.01;  break;
+      case PAR_LOOP_REVERSE_PROB: PLoopReverseProb  = AValue * 0.01;  break;
+      case PAR_SLICE_ENV_ATT:     PSliceEnvAtt      = AValue * 0.01;  break;
+      case PAR_SLICE_ENV_DEC:     PSliceEnvDec      = AValue * 0.01;  break;
+      case PAR_LOOP_ENV_ATT:      PLoopEnvAtt       = AValue * 0.01;  break;
+      case PAR_LOOP_ENV_DEC:      PLoopEnvDec       = AValue * 0.01;  break;
+
+      //case PAR_XFADE_MODE:        PXFadeMode        = AValue;         break;
+      //case PAR_XFADE_AMT:         PXFadeAmt         = AValue;         break;
+    }
+  }
+
+  //----------
+
+  void on_plugin_process(KODE_ProcessContext* AContext) final {
+    process(AContext);
   }
 
 };

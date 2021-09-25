@@ -42,6 +42,7 @@
 #include "gui/widgets/kode_slider_bank_widget.h"
 #include "gui/widgets/kode_symbol_widget.h"
 #include "gui/widgets/kode_tabs_widget.h"
+#include "gui/widgets/kode_text_box_widget.h"
 #include "gui/widgets/kode_text_edit_widget.h"
 #include "gui/widgets/kode_text_widget.h"
 #include "gui/widgets/kode_value_graph_widget.h"

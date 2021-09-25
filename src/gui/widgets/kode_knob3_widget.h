@@ -42,22 +42,22 @@ public:
     float s   = getRect().h;
     float s05 = s * 0.5f;
     float ss = (getRect().w - B) - s;
-    wdg_knob  = new KODE_KnobWidget( KODE_FRect( 0, 0,   s, s    ) );
-    wdg_label = new KODE_TextWidget( KODE_FRect( s, 0,   B + ss, s05 ) );
-    wdg_value = new KODE_TextWidget( KODE_FRect( s, s05, B + ss, s05 ) );
+    wdg_knob  = new KODE_KnobWidget( KODE_FRect(     0, 0,   s,      s   ) );
+    wdg_label = new KODE_TextWidget( KODE_FRect( 5 + s, 0,   B + ss, s05 ) );
+    wdg_value = new KODE_TextWidget( KODE_FRect( 5 + s, s05, B + ss, s05 ) );
     appendWidget(wdg_knob);
     appendWidget(wdg_label);
     appendWidget(wdg_value);
     #undef B
 
     //wdg_knob->setValue(AValue);
-    wdg_knob->setFillBackground(true);
+    wdg_knob->setFillBackground(false);
     wdg_knob->setBackgroundColor(KODE_Color(0.55));
     //wdg_knob->setBipolar(ABipolar);
 
     wdg_label->setText("knob3");
     //wdg_label->setTextSize(10);
-    wdg_label->setFillBackground(true);
+    wdg_label->setFillBackground(false);
     wdg_label->setBackgroundColor(KODE_Color(0.55));
     wdg_label->setDrawBorder(false);
     wdg_label->setTextColor(KODE_COLOR_BLACK);
@@ -65,7 +65,7 @@ public:
 
     wdg_value->setText(value_text);
     //wdg_value->setTextSize(10);
-    wdg_value->setFillBackground(true);
+    wdg_value->setFillBackground(false);
     wdg_value->setBackgroundColor(KODE_Color(0.55));
     wdg_value->setDrawBorder(false);
     wdg_value->setTextColor(KODE_COLOR_BLACK);

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1631895493 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+1632589082 source:/DISKS/sda2/code/git/kode2/build/build.cpp
 	"../plugins/sa_botage/sa_botage.cpp"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
@@ -230,7 +230,7 @@
 	"kode.h"
 	"gui/kode_drawable.h"
 
-1631564909 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
+1632591388 /DISKS/sda2/code/git/kode2/src/gui/kode_widget.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"gui/kode_surface.h"
@@ -339,7 +339,7 @@
 	"plugin/kode_plugin.h"
 	"plugin/kode_process_context.h"
 
-1630968418 /DISKS/sda2/code/git/kode2/src/gui/kode_widgets.h
+1632593128 /DISKS/sda2/code/git/kode2/src/gui/kode_widgets.h
 	"gui/widgets/kode_template_widget.h"
 	"gui/widgets/kode_button_widget.h"
 	"gui/widgets/kode_button_row_widget.h"
@@ -377,6 +377,7 @@
 	"gui/widgets/kode_slider_bank_widget.h"
 	"gui/widgets/kode_symbol_widget.h"
 	"gui/widgets/kode_tabs_widget.h"
+	"gui/widgets/kode_text_box_widget.h"
 	"gui/widgets/kode_text_edit_widget.h"
 	"gui/widgets/kode_text_widget.h"
 	"gui/widgets/kode_value_graph_widget.h"
@@ -438,7 +439,7 @@
 	"base/kode.h"
 	"gui/kode_painter.h"
 
-1631226334 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_widget.h
+1632591700 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_slider_widget.h
 	"gui/widgets/kode_drag_value_widget.h"
 
 1613243418 /DISKS/sda2/code/git/kode2/src/plugin/vst2/kode_vst2_instance.h
@@ -919,7 +920,7 @@
 	<lv2/urid/urid.h>
 	<lv2/lv2plug.in/ns/extensions/ui/ui.h>
 
-1630363626 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_utils.h
+1632525104 /DISKS/sda2/code/git/kode2/src/plugin/lv2/kode_lv2_utils.h
 	"kode.h"
 	"plugin/lv2/kode_lv2.h"
 
@@ -979,10 +980,10 @@
 1631645347 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_button_widget.h
 	"gui/widgets/kode_text_widget.h"
 
-1630439423 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_drag_value_widget.h
+1632591463 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_drag_value_widget.h
 	"gui/widgets/kode_value_widget.h"
 
-1630942830 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_knob_widget.h
+1632594389 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_knob_widget.h
 	"kode.h"
 	"gui/kode_painter.h"
 	"gui/kode_widget.h"
@@ -1116,10 +1117,10 @@
 	"gui/widgets/kode_panel_widget.h"
 	"gui/kode_widget.h"
 
-1630537048 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_knob2_widget.h
+1632593569 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_knob2_widget.h
 	"gui/kode_widget.h"
 
-1630537073 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_knob3_widget.h
+1632595655 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_knob3_widget.h
 	"gui/kode_widget.h"
 
 1630537098 /DISKS/sda2/code/git/kode2/src/gui/widgets/kode_knob4_widget.h
@@ -1258,7 +1259,7 @@
 	"sa_botage/sa_botage_descriptor.h"
 	"sa_botage/sa_botage_editor.h"
 
-1632436516 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_editor.h
+1632596736 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_editor.h
 	"kode.h"
 	"plugin/kode_editor.h"
 	"gui/kode_widgets.h"
@@ -1275,26 +1276,26 @@
 	"kode.h"
 	"gui/kode_widgets.h"
 
-1631895626 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_page_arr.h
+1632573141 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_page_arr.h
 	"kode.h"
 	"gui/kode_widgets.h"
 
-1631895631 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_page_fx.h
+1632573870 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_page_fx.h
 	"kode.h"
 	"gui/kode_widgets.h"
 
 1630363500 /DISKS/sda2/code/git/kode2/src/plugin/kode_default_editor.h
 	"plugin/kode_editor.h"
 
-1632436125 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_page_rep.h
+1632596557 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_page_rep.h
 	"kode.h"
 	"gui/kode_widgets.h"
 
-1632436090 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_descriptor.h
+1632599790 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_descriptor.h
 	"kode.h"
 	"plugin/kode_descriptor.h"
 
-1632436719 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage.cpp
+1632599860 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage.cpp
 	"kode.h"
 	"audio/kode_audio_utils.h"
 	"plugin/kode_parameters.h"
@@ -1302,4 +1303,13 @@
 	"plugin/kode_voice_manager.h"
 	"sa_botage_descriptor.h"
 	"sa_botage_editor.h"
+
+1632595729 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_editor2.h
+	"kode.h"
+	"plugin/kode_editor.h"
+	"gui/kode_widgets.h"
+	"sa_botage_header.h"
+
+1592065894 /DISKS/sda2/code/git/kode2/src/audio/filters/kode_rc_filter.h
+	<math.h>
 

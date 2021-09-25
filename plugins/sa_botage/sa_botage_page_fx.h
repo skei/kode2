@@ -19,20 +19,136 @@ public:
 
     layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
     layout.spacing = KODE_FPoint(5);
-    setDrawBorder(true);
+    setDrawBorder(false);
     setFillBackground(false);
 
-    //KODE_KeyboardWidget* keyboard = new KODE_KeyboardWidget(KODE_FRect(50,200));
-    //keyboard->layout.alignment = KODE_WIDGET_ALIGN_FILL_LEFT_TOP;
-    //keyboard->setVertical(true);
-    //appendWidget(keyboard);
+//    __KODE_UNUSED KODE_ButtonWidget* button = KODE_NULL;
+    __KODE_UNUSED KODE_SliderWidget* slider = KODE_NULL;
 
-    KODE_GridWidget* grid = new KODE_GridWidget(KODE_FRect(100,193),16,16);
-    grid->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
-    grid->setNumCells(16,16);
-    grid->setDrawLines(true,true);
-    //grid->setSelectMultipleCells(false);
-    appendWidget(grid);
+//    //KODE_KeyboardWidget* keyboard = new KODE_KeyboardWidget(KODE_FRect(50,200));
+//    //keyboard->layout.alignment = KODE_WIDGET_ALIGN_FILL_LEFT_TOP;
+//    //keyboard->setVertical(true);
+//    //appendWidget(keyboard);
+//
+//    KODE_GridWidget* grid = new KODE_GridWidget(KODE_FRect(100,193),16,16);
+//    grid->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
+//    grid->setNumCells(16,16);
+//    grid->setDrawLines(true,true);
+//    //grid->setSelectMultipleCells(false);
+//    appendWidget(grid);
+
+
+
+    // FILTER
+
+    slider = new KODE_SliderWidget(KODE_FRect(0,0,200,20));
+    slider->setText("Filter");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+    slider = new KODE_SliderWidget(KODE_FRect(0,25,200,20));
+    slider->setText("Type");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+    slider = new KODE_SliderWidget(KODE_FRect(0,50,95,20));
+    slider->setText("Freq");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+    slider = new KODE_SliderWidget(KODE_FRect(105,50,95,20));
+    slider->setText("Res");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+    // RINGMOD
+
+    slider = new KODE_SliderWidget(KODE_FRect(0,85,200,20));
+    slider->setText("Ringmod");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+    slider = new KODE_SliderWidget(KODE_FRect(0,110,95,20));
+    slider->setText("Freq");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+    slider = new KODE_SliderWidget(KODE_FRect(105,110,95,20));
+    slider->setText("Amt");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+
+
+    // DELAY
+
+    slider = new KODE_SliderWidget(KODE_FRect(210,0,200,20));
+    slider->setText("Delay");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+    slider = new KODE_SliderWidget(KODE_FRect(210,25,95,20));
+    slider->setText("Time");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+    slider = new KODE_SliderWidget(KODE_FRect(315,25,95,20));
+    slider->setText("FB");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+    // REVERB
+
+    slider = new KODE_SliderWidget(KODE_FRect(210,60,200,20));
+    slider->setText("Reverb");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+    slider = new KODE_SliderWidget(KODE_FRect(210,85,95,20));
+    slider->setText("Time");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+    slider = new KODE_SliderWidget(KODE_FRect(315,85,95,20));
+    slider->setText("Damp");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+
+
+    // LO-FO
+
+    slider = new KODE_SliderWidget(KODE_FRect(420,0,200,20));
+    slider->setText("LoFi");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+    slider = new KODE_SliderWidget(KODE_FRect(420,25,95,20));
+    slider->setText("SRate");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
+    slider = new KODE_SliderWidget(KODE_FRect(525,25,95,20));
+    slider->setText("Bits");
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    //AEditor->connectParameter(slider,PAR_FX_DELAY_PROB);
+
 
   }
 

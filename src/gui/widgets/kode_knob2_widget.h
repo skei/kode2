@@ -49,20 +49,20 @@ public:
 
     wdg_label->setText("knob2");
     //wdg_label->setTextSize(10);
-    wdg_label->setFillBackground(true);
+    wdg_label->setFillBackground(false);
     wdg_label->setBackgroundColor(KODE_Color(0.55));
     wdg_label->setDrawBorder(false);
     wdg_label->setTextColor(KODE_COLOR_BLACK);
     wdg_label->setTextAlignment(KODE_TEXT_ALIGN_CENTER);
 
     //wdg_knob->setValue(AValue);
-    wdg_knob->setFillBackground(true);
+    wdg_knob->setFillBackground(false);
     wdg_knob->setBackgroundColor(KODE_Color(0.55));
     //wdg_knob->setBipolar(ABipolar);
 
     wdg_value->setText(value_text);
     //wdg_value->setTextSize(10);
-    wdg_value->setFillBackground(true);
+    wdg_value->setFillBackground(false);
     wdg_value->setBackgroundColor(KODE_Color(0.55));
     wdg_value->setDrawBorder(false);
     wdg_value->setTextColor(KODE_COLOR_BLACK);

@@ -27,6 +27,7 @@ struct KODE_WidgetFlags {
   bool autoSize         = false;
   bool autoMouseLock    = false;
   bool autoMouseHide    = false;
+  bool autoMouseRedraw  = false;
   bool canDrag          = false;
   bool canDrop          = false;
 };

@@ -32,8 +32,10 @@ private:
   uint32_t    MQuantizeSteps  = 0;
   uint32_t    MQuantizeMode   = 1;
 
-  bool        MGrabCursor = false;
-  bool        MHideCursor = false;
+  //bool        MGrabCursor = false;
+  //bool        MHideCursor = false;
+
+  //KODE_Color  MInteractiveBarColor = KODE_COLOR_WHITE;
 
 //------------------------------
 protected:
@@ -57,9 +59,11 @@ public:
   : KODE_ValueWidget(ARect) {
     setName("KODE_DragValueWidget");
     setHint("dragvalue");
-    //options.autoMouseCursor   = false; // we handle it ourselves (on_enter)
-    //options.autoMouseHide     = false;
-    //options.autoMouseCapture  = false;
+
+    flags.autoMouseLock   = true;
+    flags.autoMouseHide   = true;
+    flags.autoMouseRedraw = true;
+
   }
 
   virtual ~KODE_DragValueWidget() {
@@ -83,8 +87,8 @@ public:
   virtual void      setQuantizeSteps(uint32_t ASteps)     { MQuantizeSteps = ASteps; }
   virtual void      setQuantizeMode(uint32_t AMode)       { MQuantizeMode = AMode; }
 
-  virtual void      setAutoHideCursor(bool AHide=true)    { MHideCursor = AHide; }
-  virtual void      setAutoGrabCursor(bool AGrab=true)    { MGrabCursor = AGrab; }
+  //virtual void      setAutoHideCursor(bool AHide=true)    { MHideCursor = AHide; }
+  //virtual void      setAutoGrabCursor(bool AGrab=true)    { MGrabCursor = AGrab; }
 
   //----------
 
@@ -96,6 +100,10 @@ public:
   virtual bool      getQuantize()                         { return MQuantize; }
   virtual uint32_t  getQuantizeSteps()                    { return MQuantizeSteps; }
   virtual uint32_t  getQuantizeMode()                     { return MQuantizeMode; }
+
+  //----------
+
+  virtual bool      isDragging()                          { return MIsDragging; }
 
 
 //------------------------------
@@ -148,8 +156,11 @@ public:
       MPrevClickTime = ATimeStamp;
 
       if (MCanDragValue) {
-        if (MGrabCursor) do_widget_setMouseCursor(this,KODE_CURSOR_GRAB);
-        if (MHideCursor) do_widget_setMouseCursor(this,KODE_CURSOR_HIDE);
+        //if (MGrabCursor) do_widget_setMouseCursor(this,KODE_CURSOR_GRAB);
+        //if (MHideCursor) do_widget_setMouseCursor(this,KODE_CURSOR_HIDE);
+        if (flags.autoMouseLock)    do_widget_setMouseCursor(this,KODE_CURSOR_GRAB);
+        if (flags.autoMouseHide)    do_widget_setMouseCursor(this,KODE_CURSOR_HIDE);
+        if (flags.autoMouseRedraw)  do_widget_redraw(this,getRect(),0);
         MPrevXpos = AXpos;
         MPrevYpos = AYpos;
         MIsDragging = true;
@@ -161,8 +172,11 @@ public:
   void on_widget_mouseRelease(float AXpos, float AYpos, uint32_t AButton, uint32_t AState, uint32_t ATimeStamp=0) override {
     if (MCanDragValue) {
       if (AButton == KODE_BUTTON_LEFT) {
-        if (MHideCursor) do_widget_setMouseCursor(this,KODE_CURSOR_SHOW);
-        if (MGrabCursor) do_widget_setMouseCursor(this,KODE_CURSOR_RELEASE);
+        //if (MHideCursor) do_widget_setMouseCursor(this,KODE_CURSOR_SHOW);
+        //if (MGrabCursor) do_widget_setMouseCursor(this,KODE_CURSOR_RELEASE);
+        if (flags.autoMouseHide)    do_widget_setMouseCursor(this,KODE_CURSOR_SHOW);
+        if (flags.autoMouseLock)    do_widget_setMouseCursor(this,KODE_CURSOR_RELEASE);
+        if (flags.autoMouseRedraw)  do_widget_redraw(this,getRect(),0);
         MIsDragging = false;
       }
     }

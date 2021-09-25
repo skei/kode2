@@ -13,10 +13,11 @@ class KODE_SliderWidget
 protected:
 //------------------------------
 
-  bool        MDrawValueBar       = true;
-  KODE_Color  MValueBarColor      = KODE_Color(0.45f, 0.45f, 0.45f);
-  uint32_t    MValueBarDirection  = KODE_RIGHT;
-  KODE_FRect  MValueBarOffset     = KODE_FRect(1,1,1,1);
+  bool        MDrawValueBar             = true;
+  KODE_Color  MValueBarColor            = KODE_Color(0.7);
+  uint32_t    MValueBarDirection        = KODE_RIGHT;
+  KODE_FRect  MValueBarOffset           = KODE_FRect(1,1,1,1);
+  KODE_Color  MInteractiveValueBarColor = KODE_Color(0.9);
 
 //------------------------------
 public:
@@ -27,10 +28,9 @@ public:
     setName("KODE_SliderWidget");
     setHint("slider");
     MDrawBorder       = true;
-    MBackgroundColor  = KODE_Color( 0.7,  0.7,  0.7 );
-    MTextColor        = KODE_Color( 0,    0,    0   );
-    MValueTextColor   = KODE_Color( 0,    0,    0   );
-    MValueBarColor    = KODE_Color( 0.55, 0.55, 0.55);
+    MBackgroundColor  = KODE_Color(0.7);
+    MTextColor        = KODE_Color(0);
+    MValueTextColor   = KODE_Color(0);
     MTextOffset       = KODE_FRect(6,0,0,0);
   }
 
@@ -78,7 +78,12 @@ public:
           rect.h = h;
           break;
       }
-      APainter->fillRectangle(rect,MValueBarColor);
+      if (isDragging()) {
+        APainter->fillRectangle(rect,MInteractiveValueBarColor);
+      }
+      else {
+        APainter->fillRectangle(rect,MValueBarColor);
+      }
     }
   }
 

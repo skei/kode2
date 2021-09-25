@@ -116,7 +116,7 @@ public:
     WPageFX  = new sa_botage_page_fx(this);
 
     WTabs->appendPage("Repeat",WPageRep);
-    WTabs->appendPage("Rearrange",WPageArr);
+    WTabs->appendPage("Reorder",WPageArr);
     WTabs->appendPage("Effects",WPageFX);
     WTabs->selectPage(0);
 

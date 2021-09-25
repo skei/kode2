@@ -87,7 +87,7 @@ void KODE_Lv2CreateManifest(KODE_Descriptor* descriptor, char* manifest_ttl, cha
     sprintf(temp,"<urn:%s/%s_ui>\n",descriptor->getAuthor(),descriptor->getName()); //"urn:skei.audio/kode_debug_ui";
     strcat(manifest_ttl,temp);
     strcat(manifest_ttl,"  a ui:X11UI ;\n");
-    sprintf(temp,"  ui:binary <%s.so>  ;\n",descriptor->getName());                     // TODO: this.filename?
+    sprintf(temp,"  ui:binary <%s.so>  .\n",descriptor->getName());                     // TODO: this.filename?
     strcat(manifest_ttl,temp);
     //strcat(manifest_ttl,"  lv2:extensionData ui:idle; .\n");
     strcat(manifest_ttl,"\n");

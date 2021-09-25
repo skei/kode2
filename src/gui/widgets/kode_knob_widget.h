@@ -19,20 +19,21 @@ class KODE_KnobWidget
 private:
 //------------------------------
 
-  bool        MDrawKnob     = true;
-  KODE_Color  MKnobColor    = KODE_COLOR_LIGHT_GRAY;
-  KODE_Color  MKnobBack     = KODE_COLOR_DARK_GRAY;
-  //uint32_t    MKnobSize     = 5.0f;
+  bool        MDrawKnob             = true;
+  KODE_Color  MKnobColor            = KODE_COLOR_LIGHT_GRAY;
+  KODE_Color  MInteractiveKnobColor = KODE_COLOR_WHITE;
+  KODE_Color  MKnobBack             = KODE_COLOR_DARK_GRAY;
+  //uint32_t    MKnobSize             = 5.0f;
 
-  bool        MBipolar      = false;
+  bool        MBipolar              = false;
 
-  float       MArcThickness     = 0.20;
-  float       MNeedleLength     = 0.25;
-  float       MNeedleThickness  = 0.10;
-  KODE_Color  MNeedleColor      = KODE_COLOR_LIGHT_GRAY;
+  float       MArcThickness         = 0.20;
+  float       MNeedleLength         = 0.25;
+  float       MNeedleThickness      = 0.10;
+  KODE_Color  MNeedleColor          = KODE_COLOR_LIGHT_GRAY;
 
-  bool        MDrawSteppedArc = true;
-  KODE_Color  MStepColor      = KODE_COLOR_GRAY;
+  bool        MDrawSteppedArc       = false;
+  KODE_Color  MStepColor            = KODE_COLOR_GRAY;
 
 //------------------------------
 public:
@@ -56,6 +57,7 @@ public:
 
   virtual void setDrawKnob(bool ADraw=true)               { MDrawKnob = ADraw; }
   virtual void setKnobColor(KODE_Color AColor)            { MKnobColor = AColor; }
+  virtual void setInteractiveKnobColor(KODE_Color AColor)            { MInteractiveKnobColor = AColor; }
   virtual void setKnobBackgroundColor(KODE_Color AColor)  { MKnobBack = AColor; }
   virtual void setBipolar(bool bi=true)                   { MBipolar = bi; }
 
@@ -66,6 +68,10 @@ public:
   void setNeedleThickness(float AThickness)     { MNeedleThickness = AThickness; }
   void setNeedleColor(KODE_Color AColor)        { MNeedleColor = AColor; }
 
+  void setDrawSteppedArc(bool ADraw=true) { MDrawSteppedArc = ADraw; }
+  void setStepColor(KODE_Color AColor)    { MStepColor = AColor; }
+
+  //----------
 
 //------------------------------
 public:
@@ -118,7 +124,12 @@ public:
       //APainter->drawArc(r,a1,a2);
 
       //r.shrink(2.0f);
-      APainter->drawArc(r,a1,a2,MKnobColor,arc_thickness);
+      if (isDragging()) {
+        APainter->drawArc(r,a1,a2,MInteractiveKnobColor,arc_thickness);
+      }
+      else {
+        APainter->drawArc(r,a1,a2,MKnobColor,arc_thickness);
+      }
 
       // steps
 
@@ -129,7 +140,7 @@ public:
       if (getQuantize() && MDrawSteppedArc) {
         //APainter->setDrawColor(MStepColor);
         //APainter->setPenSize(1);
-        uint32_t num = getQuantizeSteps();//param->getNumSteps();
+        uint32_t num = getQuantizeSteps() + 1;//param->getNumSteps();
         if (num > 2) {
           float va = 1.0f / (float)(num - 1);
           float vv = va;

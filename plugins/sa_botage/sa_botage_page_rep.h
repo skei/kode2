@@ -105,9 +105,11 @@ public:
     appendWidget(slider);
     AEditor->connectParameter(slider,PAR_LOOP_SIZE_MAX);
 
+
+
+
     // PAR_LOOP_SPEED_PROB
 
-    //slider = new KODE_SliderWidget(KODE_FRect(210,50,150,20));
     slider = new KODE_SliderWidget(KODE_FRect(210,60,200,20));
     slider->setDrawLabel(true);
     appendWidget(slider);
@@ -115,31 +117,63 @@ public:
 
     // PAR_LOOP_SPEED_MIN/MAX
 
-    //slider = new KODE_SliderWidget(KODE_FRect(370,25,80,20));
     slider = new KODE_SliderWidget(KODE_FRect(210,85,95,20));
     slider->setDrawLabel(true);
     appendWidget(slider);
     AEditor->connectParameter(slider,PAR_LOOP_SPEED_MIN);
 
-    //slider = new KODE_SliderWidget(KODE_FRect(370,25,80,20));
     slider = new KODE_SliderWidget(KODE_FRect(315,85,95,20));
     slider->setDrawLabel(true);
     appendWidget(slider);
     AEditor->connectParameter(slider,PAR_LOOP_SPEED_MAX);
 
+
+
+    // PAR_LOOP_REVERSE_PROB
+
+    slider = new KODE_SliderWidget(KODE_FRect(210,120,200,20));
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    AEditor->connectParameter(slider,PAR_LOOP_REVERSE_PROB);
+
+
+
     //-----
 
-    // PAR_XFADE_MODE
+    // PAR_LOOP_REVERSE_PROB
 
     slider = new KODE_SliderWidget(KODE_FRect(420,0,200,20));
+    slider->setDrawLabel(true);
     appendWidget(slider);
-    AEditor->connectParameter(slider,PAR_XFADE_MODE);
-
-    // PAR_XFADE_AM
+    AEditor->connectParameter(slider,PAR_SLICE_ENV_ATT);
 
     slider = new KODE_SliderWidget(KODE_FRect(420,25,200,20));
+    slider->setDrawLabel(true);
     appendWidget(slider);
-    AEditor->connectParameter(slider,PAR_XFADE_AMT);
+    AEditor->connectParameter(slider,PAR_SLICE_ENV_DEC);
+
+    slider = new KODE_SliderWidget(KODE_FRect(420,50,200,20));
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    AEditor->connectParameter(slider,PAR_LOOP_ENV_ATT);
+
+    slider = new KODE_SliderWidget(KODE_FRect(420,75,200,20));
+    slider->setDrawLabel(true);
+    appendWidget(slider);
+    AEditor->connectParameter(slider,PAR_LOOP_ENV_DEC);
+
+
+//    // PAR_XFADE_MODE
+//
+//    slider = new KODE_SliderWidget(KODE_FRect(420,0,200,20));
+//    appendWidget(slider);
+//    AEditor->connectParameter(slider,PAR_XFADE_MODE);
+//
+//    // PAR_XFADE_AM
+//
+//    slider = new KODE_SliderWidget(KODE_FRect(420,25,200,20));
+//    appendWidget(slider);
+//    AEditor->connectParameter(slider,PAR_XFADE_AMT);
 
   }
 
