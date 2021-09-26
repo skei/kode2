@@ -14,13 +14,15 @@
 //----------
 
 #include "kode.h"
+
 #include "audio/kode_audio_utils.h"
+//#include "audio/filters/kode_rc_filter.h"
+#include "audio/filters/kode_ms20_filter.h"
+//#include "audio/modulation/kode_envelope.h"
+
 #include "plugin/kode_parameters.h"
 #include "plugin/kode_plugin.h"
 #include "plugin/kode_voice_manager.h"
-
-//#include "audio/filters/kode_rc_filter.h"
-//#include "audio/modulation/kode_envelope.h"
 
 #include "sa_botage_descriptor.h"
 
@@ -94,8 +96,15 @@ private:
   float               PLoopEnvAtt                 = 0;
   float               PLoopEnvDec                 = 0;
 
-  //uint32_t            PXFadeMode                  = 0;
-  //float               PXFadeAmt                   = 0;
+  float               PFXFilterProb               = 0;
+  uint32_t            PFXFilterType               = 0;
+  float               PFXFilterFreq               = 0;
+  float               PFXFilterRes                = 0;
+  float               PFXFilterClip               = 0;
+  float               PFXFilterPre                = 0;
+  float               PFXFilterPost               = 0;
+  float               PFXFilterFreqMin            = 0;
+  float               PFXFilterFreqMax            = 0;
 
   sa_botage_editor*   MEditor                     = KODE_NULL;
   //float               MEditorBuffer[BUFFERSIZE]   = {0};
@@ -130,9 +139,13 @@ private:
   float               MLoopSpeed                  = 0.0;
   bool                MLoopReverse                = false;
 
-  //KODE_RcFilter       MSliceEnv;
-  //KODE_RcFilter       MLoopEnv;
-  //KODE_Envelope
+//  KODE_SvfFilter      MFxFilter0;
+//  KODE_SvfFilter      MFxFilter1;
+
+  KODE_Ms20Filter    MFilter0;
+  KODE_Ms20Filter    MFilter1;
+
+  float MFilterFreq = 0;
 
 //------------------------------
 public:
@@ -306,8 +319,25 @@ private:
       MLoopSpeed        = 1.0;
       MLoopReverse      = false;
       MLoopDivisions    = div;
-    }
 
+      // random filter
+
+      MFilterFreq = PFXFilterFreq;
+
+      if (KODE_Random() < PFXFilterProb) {
+        float fmin = PFXFilterFreqMin;
+        float fmax = PFXFilterFreqMax;
+        if (fmin >= fmax) {
+          float temp = fmin;
+          fmin = fmax;
+          fmax = temp;
+        }
+        float range = fmax - fmin;
+        float amount = range * KODE_Random();
+        MFilterFreq *= (fmin + amount);
+      } // rnd filter
+
+    }
   }
 
   //----------
@@ -356,11 +386,33 @@ private:
     if (reverse_prob < PLoopReverseProb) MLoopReverse = true;
     else MLoopReverse = false;
 
+    // ----- fx -----
+
+    // filter
+
+    float filter_prob = KODE_Random();
+    if (filter_prob < PFXFilterProb) {
+      float fmin = PFXFilterFreqMin;
+      float fmax = PFXFilterFreqMax;
+      if (fmin >= fmax) {
+        float temp = fmin;
+        fmin = fmax;
+        fmax = temp;
+      }
+      float range = fmax - fmin;
+      float amount = range * KODE_Random();
+      MFilterFreq *= (fmin + amount);
+      MFilterFreq = KODE_Clamp(MFilterFreq, 0, 1);
+    }
+
   }
 
   //----------
 
   void process(KODE_ProcessContext* AContext) {
+
+    float samplerate = AContext->samplerate;
+
     // num slices
 
     uint32_t num_slices = (PNumBeats * PBeatSubdiv);
@@ -390,6 +442,8 @@ private:
       MWritePos = 0;
       MSliceCounter = 0;
       MCurrentSlice = 0;
+//      MFxFilter0.reset();
+//      MFxFilter1.reset();
     }
 
     // stopping
@@ -459,7 +513,6 @@ private:
           readpos = MWritePos;
         }
 
-
         // write
 
         //readpos = KODE_Clamp(readpos,0,buffer_length);
@@ -471,26 +524,53 @@ private:
         out0 = MBuffer[(readpos*2)  ];
         out1 = MBuffer[(readpos*2)+1];
 
-        // env
-
-        // where are we in slice?
+        // envelopes
 
         float env = 1.0f;
-        float sa = MSliceLength * PSliceEnvAtt;
-        float sd = MSliceLength * PSliceEnvDec;
-        if (MSliceCounter < sa)                   env *= MSliceCounter / sa;
-        if (MSliceCounter >= (MSliceLength - sd)) env *= (MSliceLength - MSliceCounter) / sd;
+        float sa = PSliceEnvAtt * MSliceLength;
+        float sd = PSliceEnvDec * MSliceLength;
+        if ((sa > 0) && (MSliceCounter < sa)) env *= MSliceCounter / sa;
+        if ((sd > 0) && (MSliceCounter >= (MSliceLength - sd))) env *= (MSliceLength - MSliceCounter) / sd;
         if (MHasLoop) {
-          float la = MLoopLength * PLoopEnvAtt;
-          float ld = MLoopLength * PLoopEnvDec;
-          if (MLoopCounter < la)                  env *= MLoopCounter / la;
-          if (MLoopCounter >= (MLoopLength - ld)) env *= (MLoopLength - MLoopCounter) / ld;
+          float la = PLoopEnvAtt * (samplerate / 10.0);
+          float ld = PLoopEnvDec * (samplerate / 10.0);
+          if ((la > 0) && (MLoopCounter < la)) env *= MLoopCounter / la;
+          if ((ld > 0) && (MLoopCounter >= (MLoopLength - ld))) env *= (MLoopLength - MLoopCounter) / ld;
         }
 
         out0 *= env;
         out1 *= env;
 
-        //
+        //----------
+        // FX
+        //----------
+
+        float flt0 = out0;
+        float flt1 = out1;
+
+        //if (MHasLoop) {
+          //MFilterFreq = PFXFilterFreq;
+        //}
+        //else {
+        //  MFilterFreq = PFXFilterFreq;
+        //}
+
+        switch (PFXFilterType) {
+          case 0: // lowpass
+            flt0 = MFilter0.tick_lp(MFilterFreq * 0.5, PFXFilterRes, PFXFilterClip, out0 * PFXFilterPre) * PFXFilterPost;
+            flt1 = MFilter1.tick_lp(MFilterFreq * 0.5, PFXFilterRes, PFXFilterClip, out1 * PFXFilterPre) * PFXFilterPost;
+            break;
+          case 1: // highpass
+            flt0 = MFilter0.tick_hp(MFilterFreq * 0.5, PFXFilterRes, PFXFilterClip, out0 * PFXFilterPre) * PFXFilterPost;
+            flt1 = MFilter1.tick_hp(MFilterFreq * 0.5, PFXFilterRes, PFXFilterClip, out1 * PFXFilterPre) * PFXFilterPost;
+            break;
+        }
+
+
+        if (MHasRange) {
+          out0 = flt0;
+          out1 = flt1;
+        }
 
         MWritePos += 1;
         if (MWritePos >= MBufferLength) {
@@ -534,8 +614,6 @@ public:
   //void on_plugin_deactivate() final {}
 
   //void on_plugin_prepare(float ASamplerate, uint32_t ABlocksize) final {
-  //  MSliceEnv.setSampleRate(ASamplerate);
-  //  MLoopEnv.setSampleRate(ASamplerate);
   //}
 
   //uint32_t on_plugin_saveState(void** ABuffer, uint32_t AMode) final { *ABuffer = KODE_NULL; return 0; }
@@ -604,22 +682,31 @@ public:
           update_editor_waveform_grid(true);
         #endif
         break;
-      case PAR_REPEAT_PROB:       PRepeatProb       = AValue * 0.01;  break;
-      case PAR_RANGE_MIN_SLICES:  PRangeMinSlices   = AValue;         break;
-      case PAR_RANGE_MAX_SLICES:  PRangeMaxSlices   = AValue;         break;
-      case PAR_RANGE_MIN_SUBDIV:  PRangeMinSubdiv   = AValue;         break;
-      case PAR_RANGE_MAX_SUBDIV:  PRangeMaxSubdiv   = AValue;         break;
-      case PAR_LOOP_SIZE_PROB:    PLoopSizeProb     = AValue * 0.01;  break;
-      case PAR_LOOP_SIZE_MIN:     PLoopSizeMin      = AValue * 0.01;  break;
-      case PAR_LOOP_SIZE_MAX:     PLoopSizeMax      = AValue * 0.01;  break;
-      case PAR_LOOP_SPEED_PROB:   PLoopSpeedProb    = AValue * 0.01;  break;
-      case PAR_LOOP_SPEED_MIN:    PLoopSpeedMin     = AValue * 0.01;  break;
-      case PAR_LOOP_SPEED_MAX:    PLoopSpeedMax     = AValue * 0.01;  break;
-      case PAR_LOOP_REVERSE_PROB: PLoopReverseProb  = AValue * 0.01;  break;
-      case PAR_SLICE_ENV_ATT:     PSliceEnvAtt      = AValue * 0.01;  break;
-      case PAR_SLICE_ENV_DEC:     PSliceEnvDec      = AValue * 0.01;  break;
-      case PAR_LOOP_ENV_ATT:      PLoopEnvAtt       = AValue * 0.01;  break;
-      case PAR_LOOP_ENV_DEC:      PLoopEnvDec       = AValue * 0.01;  break;
+      case PAR_REPEAT_PROB:         PRepeatProb       = AValue * 0.01;  break;
+      case PAR_RANGE_MIN_SLICES:    PRangeMinSlices   = AValue;         break;
+      case PAR_RANGE_MAX_SLICES:    PRangeMaxSlices   = AValue;         break;
+      case PAR_RANGE_MIN_SUBDIV:    PRangeMinSubdiv   = AValue;         break;
+      case PAR_RANGE_MAX_SUBDIV:    PRangeMaxSubdiv   = AValue;         break;
+      case PAR_LOOP_SIZE_PROB:      PLoopSizeProb     = AValue * 0.01;  break;
+      case PAR_LOOP_SIZE_MIN:       PLoopSizeMin      = AValue * 0.01;  break;
+      case PAR_LOOP_SIZE_MAX:       PLoopSizeMax      = AValue * 0.01;  break;
+      case PAR_LOOP_SPEED_PROB:     PLoopSpeedProb    = AValue * 0.01;  break;
+      case PAR_LOOP_SPEED_MIN:      PLoopSpeedMin     = AValue * 0.01;  break;
+      case PAR_LOOP_SPEED_MAX:      PLoopSpeedMax     = AValue * 0.01;  break;
+      case PAR_LOOP_REVERSE_PROB:   PLoopReverseProb  = AValue * 0.01;  break;
+      case PAR_SLICE_ENV_ATT:       PSliceEnvAtt      = AValue * 0.01;  break;
+      case PAR_SLICE_ENV_DEC:       PSliceEnvDec      = AValue * 0.01;  break;
+      case PAR_LOOP_ENV_ATT:        PLoopEnvAtt       = AValue * 0.01;  break;
+      case PAR_LOOP_ENV_DEC:        PLoopEnvDec       = AValue * 0.01;  break;
+      case PAR_FX_FILTER_PROB:      PFXFilterProb     = AValue * 0.01;  break;
+      case PAR_FX_FILTER_TYPE:      PFXFilterType     = AValue;         break;
+      case PAR_FX_FILTER_FREQ:      PFXFilterFreq     = AValue;         break;
+      case PAR_FX_FILTER_RES:       PFXFilterRes      = AValue;         break;
+      case PAR_FX_FILTER_CLIP:      PFXFilterClip     = AValue;         break;
+      case PAR_FX_FILTER_PRE:       PFXFilterPre      = AValue;         break;
+      case PAR_FX_FILTER_POST:      PFXFilterPost     = AValue;         break;
+      case PAR_FX_FILTER_FREQ_MIN:  PFXFilterFreqMin  = AValue * 0.01;  break;
+      case PAR_FX_FILTER_FREQ_MAX:  PFXFilterFreqMax  = AValue * 0.01;  break;
 
       //case PAR_XFADE_MODE:        PXFadeMode        = AValue;         break;
       //case PAR_XFADE_AMT:         PXFadeAmt         = AValue;         break;

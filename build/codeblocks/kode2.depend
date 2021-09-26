@@ -325,7 +325,7 @@
 	<locale>
 	<codecvt>
 
-1630363843 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_plugin.h
+1632608996 /DISKS/sda2/code/git/kode2/src/plugin/vst3/kode_vst3_plugin.h
 	"plugin/vst3/kode_vst3.h"
 	"plugin/vst3/kode_vst3_instance.h"
 	"plugin/vst3/kode_vst3_utils.h"
@@ -1259,7 +1259,7 @@
 	"sa_botage/sa_botage_descriptor.h"
 	"sa_botage/sa_botage_editor.h"
 
-1632596736 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_editor.h
+1632603569 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_editor.h
 	"kode.h"
 	"plugin/kode_editor.h"
 	"gui/kode_widgets.h"
@@ -1280,7 +1280,7 @@
 	"kode.h"
 	"gui/kode_widgets.h"
 
-1632573870 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_page_fx.h
+1632611275 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_page_fx.h
 	"kode.h"
 	"gui/kode_widgets.h"
 
@@ -1291,13 +1291,14 @@
 	"kode.h"
 	"gui/kode_widgets.h"
 
-1632599790 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_descriptor.h
+1632611969 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_descriptor.h
 	"kode.h"
 	"plugin/kode_descriptor.h"
 
-1632599860 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage.cpp
+1632612312 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage.cpp
 	"kode.h"
 	"audio/kode_audio_utils.h"
+	"audio/filters/kode_ms20_filter.h"
 	"plugin/kode_parameters.h"
 	"plugin/kode_plugin.h"
 	"plugin/kode_voice_manager.h"
@@ -1312,4 +1313,9 @@
 
 1592065894 /DISKS/sda2/code/git/kode2/src/audio/filters/kode_rc_filter.h
 	<math.h>
+
+1632603450 /DISKS/sda2/code/git/kode2/src/audio/filters/kode_svf_filter.h
+	"base/utils/kode_math.h"
+
+1632610823 /DISKS/sda2/code/git/kode2/src/audio/filters/kode_ms20_filter.h
 
