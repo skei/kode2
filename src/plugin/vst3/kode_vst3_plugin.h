@@ -230,32 +230,29 @@ bool vst3_module_exit(void) VST3_MODULE_EXIT_SYMBOL;
   __KODE_DLLEXPORT                                                    \
   KODE_Vst3IPluginFactory* KODE_VST3_PLUGIN_API vst3_entrypoint() {   \
     KODE_Vst3Print("\n");                                             \
-    return new KODE_Vst3Plugin<DESC,INST>();                     \
+    return new KODE_Vst3Plugin<DESC,INST>();                          \
   }                                                                   \
                                                                       \
-  void* moduleHandle = 0;                                             \
-  /*int counter = 0;*/                                                \
-  static int counter {0};                                             \
+/*  void* moduleHandle = nullptr;              */                     \
+/*  static int counter {0};                    */                     \
                                                                       \
   __KODE_DLLEXPORT                                                    \
   bool vst3_module_entry(void* sharedLibraryHandle) {                 \
-    KODE_Vst3Print("\n");                                             \
-    if (++counter == 1) {                                             \
-      moduleHandle = sharedLibraryHandle;                             \
-      /* init plugin here */                                          \
-      return true;                                                    \
-    }                                                                 \
+/*  KODE_Vst3Print("\n");                      */                     \
+/*    if (++counter == 1) {                    */                     \
+/*      moduleHandle = sharedLibraryHandle;    */                     \
+/*      return true;                           */                     \
+/*    }                                        */                     \
     return true;                                                      \
   }                                                                   \
                                                                       \
   __KODE_DLLEXPORT                                                    \
   bool vst3_module_exit(void) {                                       \
-    KODE_Vst3Print("\n");                                             \
-    if (--counter == 0) {                                             \
-      moduleHandle = nullptr;                                         \
-      /* cleanup plugin here */                                       \
-      return true;                                                    \
-    }                                                                 \
+/*    KODE_Vst3Print("\n");                    */                     \
+/*    if (--counter == 0) {                    */                     \
+/*      moduleHandle = nullptr;                */                     \
+/*      return true;                           */                     \
+/*    }                                        */                     \
     return true;                                                      \
   }
 
