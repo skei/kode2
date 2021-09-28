@@ -60,6 +60,7 @@ public:
   //----------
 
   virtual void drawBorder(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
+    APainter->setLineWidth(1);
     if (MDrawBorder) {
 
       switch (MBorderEdges) {

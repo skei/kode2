@@ -35,13 +35,14 @@ public:
     MTitleBar->layout.alignment = KODE_WIDGET_ALIGN_FILL_TOP;
     MTitleBar->setIsToggle();
     MTitleBar->setText("Open","Closed");
-    MTitleBar->setBackgroundColor(KODE_Color(0.6),KODE_Color(0.4));
+    MTitleBar->setBackgroundColor(KODE_Color(0.4),KODE_Color(0.4));
+    MTitleBar->setTextColor(KODE_Color(0.8),KODE_Color(0.8));
 
     MContainer = new KODE_PanelWidget();
     MContainer->layout.alignment = KODE_WIDGET_ALIGN_FILL_CLIENT;
-    MContainer->setFillBackground(true);
+    MContainer->setFillBackground(false);
     MContainer->setDrawBorder(false);
-    MContainer->setCursor(KODE_CURSOR_CROSS);
+    //MContainer->setCursor(KODE_CURSOR_CROSS);
 
     KODE_Widget::appendWidget( MTitleBar );
     KODE_Widget::appendWidget( MContainer );
@@ -51,14 +52,14 @@ public:
 
     MClosable = true;
     MClosed = AClosed;
-    //if (MClosed) {
+    if (MClosed) {
     //  close();
-    //  MTitleBar->setValue(0);
-    //}
-    //else {
+      MTitleBar->setValue(0);
+    }
+    else {
     //  open();
-    //  MTitleBar->setValue(1);
-    //}
+      MTitleBar->setValue(1);
+    }
 
   }
 
@@ -153,6 +154,9 @@ public:
           do_widget_realign(this);
         }
       }
+    }
+    else {
+      KODE_Widget::do_widget_update(ASender);
     }
   }
 

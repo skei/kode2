@@ -53,22 +53,22 @@ public:
     MIsToggle = AIsToggle;
   }
 
-  virtual void setText(const char* AOn, const char* AOff) {
+  virtual void setText(const char* AOff, const char* AOn) {
     MOnText = AOn;
     MOffText = AOff;
   }
 
-  virtual void setTextAlignment(uint32_t AOn, uint32_t AOff) {
+  virtual void setTextAlignment(uint32_t AOff, uint32_t AOn) {
     MOnTextAlignment = AOn;
     MOffTextAlignment = AOff;
   }
 
-  virtual void setTextColor(KODE_Color AOn, KODE_Color AOff) {
+  virtual void setTextColor(KODE_Color AOff, KODE_Color AOn) {
     MOnTextColor = AOn;
     MOffTextColor = AOff;
   }
 
-  virtual void setBackgroundColor(KODE_Color AOn, KODE_Color AOff) {
+  virtual void setBackgroundColor(KODE_Color AOff, KODE_Color AOn) {
     MOnBackgroundColor = AOn;
     MOffBackgroundColor = AOff;
   }

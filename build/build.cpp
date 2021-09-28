@@ -16,6 +16,14 @@
 
 //----------------------------------------------------------------------
 //
+// test
+//
+//----------------------------------------------------------------------
+
+//#include "../test/test_widget.cpp"
+
+//----------------------------------------------------------------------
+//
 // plugins
 //
 //----------------------------------------------------------------------
@@ -23,75 +31,117 @@
 #include "../plugins/sa_botage/sa_botage.cpp"
 
 // fx_cutter          sa_botage
-// fx_frac_delay
+// fx_frac_delay      sa_
 // fx_tempo_delay     sa_eculum
-// fx_speech
-// midi_automata
+// fx_speech          sa_ying
+// midi_automata      sa_
 // midi_fibonacci     sa_cred
 
 //----------------------------------------------------------------------
 
 /*
+  sa.baoth
+  sa.bel
+  sa.bertooth
   sa.bina/brina
   sa.ble
-* sa.botage
+  sa.botage, boteur
+  sa.botasje, botør
   sa.bre
-  sa.bulum - lat. gravel
-  sa,cellum - lat. chapel
   sa.crament
-  sa.cratus - lat. sacred
-* sa.cred
+  sa.cred
   sa.crifice
   sa.crilege
   sa.crosanct
+  sa.del
   sa.dist
-* sa.eculum - lat. age, generation
-  sa.epio - lat. to fence in, surround
-  sa.evitia - lat. savageness
-  sa.evus - lat. savage, violent
   sa.fari
   sa.fe, sa.fely, sa.fety
+  sa.fir
+  sa.ga
   sa.gacity
   sa.ge
-  sa.gino - lat. to fatten
-  sa.gitta - lat. arrow
+  sa.gittarus
+  sa.igon
   sa.ilor
   sa.int
+  sa.ke
   sa.lad
   sa.lamander
+  sa.lami
   sa.lary
-  sa.lebra - lat. roughness
-  sa.liaris - lat. splendid
+  sa.lem
   sa.lient
+  sa.lig
   sa.line
-  sa.lio, sa.lium - lat. jump
   sa.liva
+  sa.lomon
+  sa.long
   sa.loon
-  sa.lubris - lat. health-giving, beneficial
-  sa.lum - lat. sea
+  sa.lt
   sa.lute
+  sa.lutt
   sa.lvation
+  sa.lær
+  sa.mael
   sa.mantha
   sa.marithan
+  sa.moa
+  sa.mojed[y]
+  sa.muel
   sa.murai
-  sa.natio - lat. cure
-  sa.nitas - lat. health
-  sa.nity
-  sa.pidus - lat. tasty
+  sa.natorium
+  sa.nere, nering, naritet
+  sa.nitet
+  sa.nity, nitize
+  sa.piens
   sa.pphire
+  sa.rah
+  sa.rajevo
+  sa.rin
+  sa.rong
+  sa.ruman
   sa.tan
+  sa.telitt
   sa.tellite
   sa.tire
-  sa.tisfaction
+  sa.tisfy, tisfaction, tisfied
+  sa.toshi
   sa.turate
+  sa.turday
   sa.turn/us
   sa.tyr
   sa.usage
   sa.vage
+  sa.vannah
   sa.vant
+  sa.ved
   sa.viour
+  sa.vory
   sa.vour
+  sa.vvy
+  sa.wing
+  sa.xophone
+  sa.ying
+  sa.yonara
 
+  sa.bulum (gravel)
+  sa,cellum (chapel)
+  sa.cratus (sacred)
+  sa.eculum (age, generation)
+  sa.epio (to fence in, surround)
+  sa.evitia (savageness)
+  sa.evus (savage, violent)
+  sa.gino (to fatten)
+  sa.gitta (arrow)
+  sa.lebra (roughness)
+  sa.liaris (splendid)
+  sa.lio, sa.lium (jump)
+  sa.lubris (health-giving, beneficial)
+  sa.lum (sea)
+  sa.natio (cure)
+  sa.nitas (health)
+  sa.pidus (tasty)
 
 */
 

@@ -19,34 +19,52 @@
 */
 
 
-#include "gui/kode_widget.h"
+#include "gui/widgets/kode_panel_widget.h"
 
 //----------------------------------------------------------------------
 
 class KODE_RangeSliderWidget
-: public KODE_Widget {
+: public KODE_PanelWidget {
 //: public KODE_DragValueWidget {
 
 //------------------------------
 protected:
 //------------------------------
 
-  KODE_Color  MBackgroundColor  = KODE_COLOR_DARK_GRAY;
-  KODE_Color  MBarColor         = KODE_COLOR_LIGHT_GRAY;
-  KODE_Color  MEdgeColor        = KODE_COLOR_WHITE;
-  uint32_t    MEdgeWidth        = 3;
-  float       MWidgetValue2     = 0.0f;
-  int32_t     MHoverEdge        = -1;
-  bool        MIsDragging1      = false;
-  bool        MIsDragging2      = false;
-  int32_t     MEdgeDistance     = 3;
+  float       MValue2               = 0.0f;
+  bool        MDrawValueText        = true;
+
+  KODE_Color  MBackgroundColor      = KODE_COLOR_GRAY;
+  KODE_Color  MBarColor             = KODE_COLOR_LIGHT_GRAY;
+
+  KODE_Color  MEdgeColor            = KODE_COLOR_WHITE;
+  uint32_t    MEdgeWidth            = 3;
+  int32_t     MHoverEdge            = -1;
+  bool        MIsDragging1          = false;
+  bool        MIsDragging2          = false;
+  int32_t     MEdgeDistance         = 3;
+
+  char        MValue1Text[32]       = {0};
+  char        MValue2Text[32]       = {0};
+
+  KODE_Color  MValue1TextColor      = KODE_Color(0.0f);
+  uint32_t    MValue1TextAlignment  = KODE_TEXT_ALIGN_LEFT;
+  KODE_FRect  MValue1TextOffset     = KODE_FRect(2,2,2,2);
+
+  KODE_Color  MValue2TextColor      = KODE_Color(0.0f);
+  uint32_t    MValue2TextAlignment  = KODE_TEXT_ALIGN_RIGHT;
+  KODE_FRect  MValue2TextOffset     = KODE_FRect(2,2,2,2);
+
+  bool        MDrawLabel            = true;
+  const char* MLabel                = "";
+  KODE_Color  MLabelColor           = KODE_COLOR_BLACK;
 
 //------------------------------
 public:
 //------------------------------
 
   KODE_RangeSliderWidget(KODE_FRect ARect)
-  : KODE_Widget(ARect) {
+  : KODE_PanelWidget(ARect) {
     setName("KODE_RangeSliderWidget");
     setHint("rangeslider");
   }
@@ -59,8 +77,13 @@ public:
   virtual void setBarColor(KODE_Color AColor)         { MBarColor = AColor; }
   virtual void setEdgeColor(KODE_Color AColor)        { MEdgeColor = AColor; }
 
-  virtual float getValue2(void)         { return MWidgetValue2; }
-  virtual void  setValue2(float AValue) { MWidgetValue2 = AValue; }
+  virtual float getValue2(void) {
+    return MValue2;
+  }
+
+  virtual void  setValue2(float AValue) {
+    MValue2 = AValue;
+  }
 
 //------------------------------
 public:
@@ -114,25 +137,75 @@ public:
     }
   }
 
+  //----------
+
+  void drawValues(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
+    if (MDrawValueText) {
+      float value1 = getValue();
+      float value2 = getValue2();
+      const char* label = "";
+      KODE_Parameter* param = getParameter();
+      if (param) {
+        label = param->getLabel();
+        param->getDisplayString(value1,MValue1Text);
+        param->getDisplayString(value2,MValue2Text);
+      }
+      else {
+        label = MLabel;
+        KODE_FloatToString(MValue1Text,value1);
+        KODE_FloatToString(MValue2Text,value2);
+      }
+      KODE_FRect value1_rect = getRect();
+      KODE_FRect value2_rect = getRect();
+      KODE_FRect label_rect = getRect();
+      value1_rect.shrink(MValue1TextOffset);
+      value2_rect.shrink(MValue2TextOffset);
+      //label_rect.shrink(MValueTextOffset);
+      //if (MDrawLabel) {
+      //  float width = APainter->getTextWidth(label);
+      //  label_rect.x = value_rect.x2() - width;
+      //  label_rect.w = width;
+      //  value_rect.w -= (width + KODE_VALUE_WIDGET_LABEL_SPACE);
+      //}
+      if (MDrawValueText) {
+//        APainter->setFontSize(14);
+        APainter->drawText(value1_rect,MValue1Text,MValue1TextAlignment,MValue1TextColor);
+        APainter->drawText(value2_rect,MValue2Text,MValue2TextAlignment,MValue2TextColor);
+      }
+      if (MDrawLabel) {
+        APainter->drawText(label_rect,label,KODE_TEXT_ALIGN_CENTER,MLabelColor);
+      }
+    }
+  }
+
 //------------------------------
 public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) final {
     KODE_FRect mrect = getRect();
-    APainter->fillRectangle( mrect, MBackgroundColor );
+    //APainter->fillRectangle( mrect, MBackgroundColor );
+    fillBackground(APainter,ARect,AMode);
     float x1 = mrect.x + (mrect.w * getValue());
     float x2 = mrect.x + (mrect.w * getValue2()) - 1;
     float w  = (x2 - x1 + 1);
-    if (w > 0) {
-      APainter->fillRectangle( KODE_FRect(x1,mrect.y,w,mrect.h), MBarColor );
-    }
+    //if (w > 0) {
+      if (w < 3) {
+        APainter->fillRectangle( KODE_FRect(x1-1,mrect.y,2,mrect.h), MBarColor );
+      }
+      else {
+        APainter->fillRectangle( KODE_FRect(x1,mrect.y,w,mrect.h), MBarColor );
+      }
+    //}
     if (MHoverEdge == 0) {
       APainter->fillRectangle( KODE_FRect(x1,mrect.y,MEdgeWidth,mrect.h), MEdgeColor );
     }
     else if (MHoverEdge == 1) {
       APainter->fillRectangle( KODE_FRect(x2-MEdgeWidth,mrect.y,MEdgeWidth,mrect.h), MEdgeColor );
     }
+    //drawLabel(APainter,ARect,AMode);
+    drawValues(APainter,ARect,AMode);
+    drawBorder(APainter,ARect,AMode);
   }
 
   //----------
@@ -208,6 +281,7 @@ public:
         setValue(value1);
         setValue2(value2);
       }
+      do_widget_update(this);
       do_widget_redraw(this,mrect,0);
     }
     else {

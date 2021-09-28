@@ -25,6 +25,9 @@ protected:
   KODE_Color  MTextColor                = KODE_COLOR_WHITE;
   KODE_Color  MActiveColor              = KODE_COLOR_DARK_GRAY;
 
+  bool        MValueIsBits              = false;
+  uint32_t    MNumBits                  = 0;
+
 //------------------------------
 public:
 //------------------------------
@@ -42,7 +45,7 @@ public:
 
     MMode                 = AMode;
     MSelected             = 0;
-    MDrawSelectedCells = false;
+    MDrawSelectedCells    = false;
 
 
     // grid
@@ -71,14 +74,43 @@ public:
 public:
 //------------------------------
 
+  void setValueIsBits(bool AIsBits=true, uint32_t ANumBits=8) {
+    MValueIsBits = AIsBits;
+    MNumBits = ANumBits;
+  }
+
   int32_t getSelected(void)         { return MSelected; }
   bool    getState(uint32_t AIndex) { return MStates[AIndex]; }
 
   //----------
 
+  float getValue() override {
+    if (MValueIsBits) {
+      uint32_t bits = getButtonBits();
+      //KODE_Print("getButtonBits %i\n",bits);
+      float v = (float)bits / 255.0;
+      KODE_GridWidget::setValue(v);
+      return v;
+    }
+    else {
+      return KODE_GridWidget::getValue();
+    }
+  }
+
+  //----------
+
   void setValue(float AValue) override {
-    KODE_GridWidget::setValue(AValue);
-    selectValue(AValue);
+    if (MValueIsBits) {
+      float f = AValue * 255.0;
+      int i = (int)f;
+      setButtonBits(i);
+      //KODE_Print("setButtonBits %i\n",i);
+      KODE_GridWidget::setValue(AValue);
+    }
+    else {
+      KODE_GridWidget::setValue(AValue);
+      selectValue(AValue);
+    }
   }
 
 
@@ -154,6 +186,30 @@ public:
       //do_update(self);
     }
 
+    //----------
+
+    uint32_t getButtonBits() {
+      uint32_t bits = 0;
+      for (uint32_t i=0; i<MNumBits; i++) {
+        if (MStates[i] == true) bits |= (1 << i);
+      }
+      return bits;
+    }
+
+    //----------
+
+    // value 0..1
+    // valuee 0..255
+    // value int
+    // &  << i, MStates
+
+    void setButtonBits(uint32_t ABits) {
+      for (uint32_t i=0; i<MNumBits; i++) {
+        bool b = ( ABits & (1 << i) );
+        MStates[i] = b;
+      }
+    }
+
 //------------------------------
 public:
 //------------------------------
@@ -167,6 +223,8 @@ public:
   //----------
 
   void on_paintCell(/*KWidget* AWidget,*/ KODE_Painter* APainter, KODE_FRect ARect, int32_t AX, int32_t AY) override {
+    //KODE_Print("%i %i\n",AX,AY);
+
     char buf[256];
     //APainter->setPenSize(1);
     //if (MStates[AX]) APainter->setFillColor( MActiveColor );

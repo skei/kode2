@@ -15,9 +15,10 @@ protected:
 
   bool        MDrawText       = true;
   const char* MText           = "";
-  KODE_Color  MTextColor      = KODE_Color(1.0f);
+  KODE_Color  MTextColor      = KODE_COLOR_DARK_GRAY;
   uint32_t    MTextAlignment  = KODE_TEXT_ALIGN_LEFT;
   KODE_FRect  MTextOffset     = KODE_FRect(2,2,2,2);
+  float       MTextSize       = 10;
 
 //------------------------------
 public:
@@ -47,6 +48,7 @@ public:
   virtual void setTextOffset(float x)                 { MTextOffset = KODE_FRect(x,x,x,x); }
   virtual void setTextOffset(float x, float y)        { MTextOffset = KODE_FRect(x,y); }
   virtual void setText(const char* AText)             { MText = AText; }
+  virtual void setTextSize(float ASize)               { MTextSize = ASize; }
 
   virtual const char* getText()                       { return MText; }
 
@@ -56,13 +58,13 @@ public:
     KODE_FRect rect = getRect();
     rect.shrink(MTextOffset);
     if (MDrawText) {
-      KODE_Parameter* param = getParameter();
-      if (param) {
-        APainter->drawText(rect,param->getName(),MTextAlignment,MTextColor);
-      }
-      else {
+      //KODE_Parameter* param = getParameter();
+      //if (param) {
+      //  APainter->drawText(rect,param->getName(),MTextAlignment,MTextColor);
+      //}
+      //else {
         APainter->drawText(rect,MText,MTextAlignment,MTextColor);
-      }
+      //}
     }
   }
 

@@ -8,16 +8,14 @@
 
 struct KODE_WaveformMarker {
   //int32_t     pos;
-  float       pos;
-  KODE_Color  color;
+  float       pos   = 0.0;;
+  KODE_Color  color = KODE_COLOR_BLACK;;
 };
 
 struct KODE_WaveformArea {
-  //int32_t   pos;
-  //int32_t   size;
-  float       pos;
-  float       size;
-  KODE_Color  color;
+  float       pos   = 0.0;
+  float       size  = 0.0;;
+  KODE_Color  color = KODE_COLOR_DARK_RED;
 };
 
 //typedef KArray<KWaveformMarker> KWaveformMarkers;
@@ -287,6 +285,7 @@ public:
 //------------------------------
 
   void on_widget_paint(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) override {
+    APainter->setLineWidth(1);
     fillBackground(APainter,ARect,AMode);
     drawAreas(APainter,ARect,AMode);
     drawWaveform(APainter,ARect,AMode);

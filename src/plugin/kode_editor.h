@@ -103,7 +103,10 @@ public:
       //float v = parameter->from01(AValue);
       //MEditorParameterValues[AIndex] = AValue;
       //widget->setValue(AValue);
-      widget->MValue = AValue;
+
+      //widget->MValue = AValue;
+      widget->setValue(AValue);
+
       if (ARedraw) widget->redraw();
     }
   }
