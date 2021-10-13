@@ -2,17 +2,20 @@
 #define kode_waveform_widget_included
 //----------------------------------------------------------------------
 
+#include "audio/kode_audio_math.h"
 #include "gui/kode_widgets.h"
 
 //----------------------------------------------------------------------
 
 struct KODE_WaveformMarker {
+  bool        visible = true;
   //int32_t     pos;
   float       pos   = 0.0;;
   KODE_Color  color = KODE_COLOR_BLACK;;
 };
 
 struct KODE_WaveformArea {
+  bool        visible = true;
   float       pos   = 0.0;
   float       size  = 0.0;;
   KODE_Color  color = KODE_COLOR_DARK_RED;
@@ -39,19 +42,19 @@ private:
 protected:
 //------------------------------
 
-    //KODE_Color            MBackColor      = KODE_COLOR_DARK_GRAY;
     KODE_Color            MWaveColor      = KODE_COLOR_LIGHT_GRAY;
     KODE_Color            MGridColor      = KODE_COLOR_GRAY;
-    KODE_Color            MGridMajorColor = KODE_Color(0.9);
+    KODE_Color            MGridSubColor   = KODE_Color(0.9);
     KODE_Color            MZeroColor      = KODE_COLOR_GRAY;
-    //bool                  MDrawBackground = true;
     int32_t               MNumMarkers     = 0;
     int32_t               MNumAreas       = 0;
     KODE_WaveformMarker*  MMarkers        = KODE_NULL;
     KODE_WaveformArea*    MAreas          = KODE_NULL;
     int32_t               MNumGrid        = 0;
-    int32_t               MNumGridMajor   = 4;
+    int32_t               MNumGridSub     = 4;
     //bool                  MMono           = false;
+
+    uint32_t MMarkerWidth = 1;
 
 //------------------------------
 public:
@@ -75,7 +78,7 @@ public:
 //------------------------------
 
   int32_t getNumGrid()      { return MNumGrid; }
-  int32_t getNumGridMajor() { return MNumGridMajor; }
+  int32_t getNumGridSub()   { return MNumGridSub; }
   int32_t getNumMarkers()   { return MNumMarkers; }
   int32_t getNumAreas()     { return MNumAreas; }
 
@@ -89,30 +92,22 @@ public:
     MBufferSize = ASize;
   }
 
-  //void setBackColor(KODE_Color AColor) {
-  //  MBackColor = AColor;
-  //}
-
   void setWaveColor(KODE_Color AColor) {
     MWaveColor = AColor;
   }
 
-  //void drawBackground(bool ADraw=true) {
-  //  MDrawBackground = ADraw;
-  //}
+  //
 
   void setNumMarkers(int32_t ANum) {
     MNumMarkers = ANum;
     //SetLength(MMarkers,ANum);
     if (MMarkers) free(MMarkers);
     MMarkers = (KODE_WaveformMarker*)malloc(ANum * sizeof(KODE_WaveformMarker));
-  }
-
-  void setNumAreas(int32_t ANum) {
-    MNumAreas = ANum;
-    //SetLength(MAreas,ANum);
-    if (MAreas) free(MAreas);
-    MAreas = (KODE_WaveformArea*)malloc(ANum * sizeof(KODE_WaveformArea));
+    for (int32_t i=0; i<MNumMarkers; i++) {
+      MMarkers[i].visible = true;
+      MMarkers[i].pos     = 0.0;
+      MMarkers[i].color   = KODE_COLOR_BLACK;
+    }
   }
 
   //void setMarker(int32_t AIndex, int32_t APos, KODE_Color AColor) {
@@ -130,25 +125,40 @@ public:
     MMarkers[AIndex].color = AColor;
   }
 
-  //void setArea(int32_t AIndex, int32_t APos, int32_t ASize, KODE_Color AColor) {
+  void setMarkerVisible(int32_t AIndex,bool AVisible = true) {
+    MMarkers[AIndex].visible = AVisible;
+  }
+
+  //
+
+  void setNumAreas(int32_t ANum) {
+    MNumAreas = ANum;
+    //SetLength(MAreas,ANum);
+    if (MAreas) free(MAreas);
+    MAreas = (KODE_WaveformArea*)malloc(ANum * sizeof(KODE_WaveformArea));
+    for (int32_t i=0; i<MNumAreas; i++) {
+      MAreas[i].visible = true;
+      MAreas[i].pos     = 0.0;
+      MAreas[i].size    = 0.0;
+      MAreas[i].color   = KODE_COLOR_BLACK;
+    }
+  }
+
   void setArea(int32_t AIndex, float APos, float ASize, KODE_Color AColor) {
     MAreas[AIndex].pos = APos;
     MAreas[AIndex].size = ASize;
     MAreas[AIndex].color = AColor;
   }
 
-  //void setAreaPos(int32_t AIndex, int32_t APos) {
   void setAreaPos(int32_t AIndex, float APos) {
     MAreas[AIndex].pos = APos;
   }
 
-  //void setAreaPosSize(int32_t AIndex, int32_t APos, int32_t ASize) {
   void setAreaPosSize(int32_t AIndex, float APos, float ASize) {
     MAreas[AIndex].pos = APos;
     MAreas[AIndex].size = ASize;
   }
 
-  //void setAreaSize(int32_t AIndex, int32_t ASize) {
   void setAreaSize(int32_t AIndex, float ASize) {
     MAreas[AIndex].size = ASize;
   }
@@ -157,17 +167,33 @@ public:
     MAreas[AIndex].color = AColor;
   }
 
+  void setAreaVisible(int32_t AIndex, bool AVisible = true) {
+    MAreas[AIndex].visible = AVisible;
+  }
+
   void setNumGrid(int32_t ANum) {
     MNumGrid = ANum;
   }
 
-  void setNumGridMajor(int32_t ANum) {
-    MNumGridMajor = ANum;
+  void setNumGridSub(int32_t ANum) {
+    MNumGridSub = ANum;
   }
 
   //void setMono(bool AMono=true) {
   //  MMono = AMono;
   //}
+
+  void setGridColor(KODE_Color AColor) {
+    MGridColor = AColor;
+  }
+
+  void setGridSubColor(KODE_Color AColor) {
+    MGridSubColor = AColor;
+  }
+
+  void setZeroColor(KODE_Color AColor) {
+    MZeroColor = AColor;
+  }
 
 //------------------------------
 public:
@@ -176,14 +202,20 @@ public:
   virtual void drawAreas(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
     KODE_FRect mrect = getRect();
     for (int32_t i=0; i<MNumAreas; i++) {
-      if (MAreas[i].size > 0.0f) {
-        float x = MAreas[i].pos;// / (float)MBufferSize;
-        float w = MAreas[i].size;// / (float)MBufferSize;
-        int32_t ix = mrect.x + ( x * mrect.w );
-        //int32_t iw = ix + ( w * mrect.w );
-        int32_t iw =  ( w * mrect.w );
-        //APainter->fillRectangle(KODE_FRect(ix,mrect.y,iw,mrect.y2()), MAreas[i].color);
-        APainter->fillRectangle(KODE_FRect(ix,mrect.y,iw,mrect.h), MAreas[i].color);
+      //KODE_DPrint("area %i\n",i);
+      if (MAreas[i].visible) {
+        //KODE_DPrint("- visible\n");
+        if (MAreas[i].size > 0.0f) {
+          //KODE_DPrint("- size > 0\n");
+          float x = MAreas[i].pos;// / (float)MBufferSize;
+          float w = MAreas[i].size;// / (float)MBufferSize;
+          float ix = mrect.x + ( x * mrect.w );
+          //int32_t iw = ix + ( w * mrect.w );
+          float iw =  ( w * mrect.w );
+          //APainter->fillRectangle(KODE_FRect(ix,mrect.y,iw,mrect.y2()), MAreas[i].color);
+          APainter->fillRectangle(KODE_FRect(ix,mrect.y,iw,mrect.h), MAreas[i].color);
+          //KODE_DPrint("%.2f, %.2f, %.2f, %.2f\n",(float)ix,mrect.y,(float)iw,mrect.h);
+        }
       }
     }
   }
@@ -210,12 +242,17 @@ public:
             //else s = ( MBuffer[ index*2 ] + MBuffer[ index*2 + 1 ] ) * 0.5;
             float s = 0.0f;
             switch (MStereoMode) {
-              case 0: s =  MBuffer[index * 2];                                    break; // mono
-              case 1: s = (MBuffer[index * 2] + MBuffer[(index * 2) + 1]) * 0.5f; break; // stereo mixdown
-              case 2: s =  MBuffer[index * 2];                                    break; // stereo left
-              case 3: s =  MBuffer[(index * 2) + 1] ;                             break; // stereo right
+              case 0: s =  MBuffer[ index * 2     ];                                    break; // mono
+              case 1: s = (MBuffer[ index * 2     ] + MBuffer[(index * 2) + 1]) * 0.5f; break; // stereo mixdown
+              case 2: s =  MBuffer[ index * 2     ];                                    break; // stereo left
+              case 3: s =  MBuffer[(index * 2) + 1] ;                                   break; // stereo right
             }
             // todo: if (MDrawDb) s = KVolumeToDb(s);
+
+            //s = 20.0 * log10(s);
+            //s = KODE_VolumeToDb(s) * (1.0/90.0);
+            //s = KODE_Curve(s,0.33);
+
             s *=  h2;
             int32_t ix = mrect.x + i;
             int32_t iy = s;
@@ -239,10 +276,12 @@ public:
   virtual void drawMarkers(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
     KODE_FRect mrect = getRect();
     for (int32_t i=0; i<MNumMarkers; i++) {
-      float x = MMarkers[i].pos;// / (float)MBufferSize;
-      if ((x >= 0.0f) && (x <= 1.0f)) {
-        int32_t ix = mrect.x + ( (int)( x * mrect.w ) );
-        APainter->drawLine( ix, mrect.y, ix, mrect.y2(), MMarkers[i].color );
+      if (MMarkers[i].visible) {
+        float x = MMarkers[i].pos;// / (float)MBufferSize;
+        if ((x >= 0.0f) && (x <= 1.0f)) {
+          float ix = mrect.x + ( x * mrect.w );
+          APainter->drawLine( ix, mrect.y, ix, mrect.y2(), MMarkers[i].color, MMarkerWidth );
+        }
       }
     }
   }
@@ -260,7 +299,7 @@ public:
       for (int32_t i=1; i<MNumGrid; i++) {
         int32_t ix = x;
 
-        if ((i % MNumGridMajor) == 0) APainter->setColor(MGridMajorColor);
+        if ((i % MNumGridSub) == 0) APainter->setColor(MGridSubColor);
         else APainter->setColor(MGridColor);
         //APainter->drawLine( ix, mrect.y, ix, mrect.y2(), MGridColor );
         APainter->moveTo( ix, mrect.y);
