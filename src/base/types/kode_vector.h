@@ -72,6 +72,13 @@ struct KODE_Vector2 {
     y *= il;
   }
 
+  void rotate(float AAngle) {
+    float sa = sin(AAngle);
+    float ca = cos(AAngle);
+    x = (x * ca) - (y * sa);
+    y = (x * sa) + (y * ca);
+  }
+
 };
 
 //----------------------------------------------------------------------
