@@ -54,6 +54,8 @@ const char* KODE_XCB_WM_CURSORS[20] = {
 
 //----------------------------------------------------------------------
 
+  pid_t _kode_xcb_event_thread_pid = 0;
+  pid_t _kode_xcb_event_thread_tid = 0;
 
 //----------------------------------------------------------------------
 
@@ -912,6 +914,8 @@ private:
 
   static
   void* xcb_event_thread_proc(void* AWindow) {
+  _kode_xcb_event_thread_pid = getpid();
+  _kode_xcb_event_thread_tid = getpid();
   KODE_XcbWindow* window = (KODE_XcbWindow*)AWindow;
     if (window) {
       xcb_connection_t* connection = window->MConnection;
