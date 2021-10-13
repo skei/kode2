@@ -19,6 +19,16 @@ protected:
   KODE_FRect  MValueBarOffset           = KODE_FRect(1,1,1,1);
   KODE_Color  MInteractiveValueBarColor = KODE_Color(0.9);
 
+  //bool        MDrawValueBarQuantized    = false;
+  //KODE_Color  MValueBarQuantizedColor   = KODE_Color(0.3);
+
+  bool        MDrawQuantized    = false;
+  KODE_Color  MQuantizedColor   = KODE_Color(0.3);
+
+  bool        MDrawSnap         = false;
+  KODE_Color  MSnapColor        = KODE_Color(0.3);
+
+
 //------------------------------
 public:
 //------------------------------
@@ -53,6 +63,22 @@ public:
     MValueBarDirection = ADirection;
   }
 
+  virtual void setDrawQuantized(bool ADraw=true) {
+    MDrawQuantized = ADraw;
+  }
+
+  virtual void setQuantizedColor(KODE_Color AColor) {
+    MQuantizedColor = AColor;
+  }
+
+  virtual void setDrawSnap(bool ADraw=true) {
+    MDrawSnap = ADraw;
+  }
+
+  virtual void setSnapColor(KODE_Color AColor) {
+    MSnapColor = AColor;
+  }
+
   //----------
 
   virtual void drawValueBar(KODE_BasePainter* APainter, KODE_FRect ARect, uint32_t AMode) {
@@ -84,6 +110,34 @@ public:
       else {
         APainter->fillRectangle(rect,MValueBarColor);
       }
+      //if (getQuantize()) {
+        if (MDrawQuantized) {
+          uint32_t num = getQuantizeSteps();
+          if (num > 0) {
+            KODE_FRect r = getRect();
+            float step = r.w / (float)(num-1);
+            float x = r.x + step;
+            for (uint32_t i=0; i<num-1; i++) {
+              APainter->setColor(MQuantizedColor);
+              APainter->setLineWidth(1);
+              APainter->moveTo(x,rect.y);
+              APainter->lineTo(x,rect.y2());
+              APainter->strokePath();
+              x += step;
+            } // for
+          } // num > 0
+        } // draw q
+      //} // quantize
+      if (MDrawSnap) {
+        KODE_FRect r = getRect();
+        float x = r.x + (r.w * getSnapPos());
+        APainter->setColor(MSnapColor);
+        APainter->setLineWidth(1);
+        APainter->moveTo(x,rect.y);
+        APainter->lineTo(x,rect.y2());
+        APainter->strokePath();
+      } // draw snap
+
     }
   }
 
