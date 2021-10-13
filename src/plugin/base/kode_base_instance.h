@@ -17,6 +17,7 @@ public:
   virtual ~KODE_BaseInstance() {}
 public:
   virtual KODE_Descriptor*  getDescriptor() { return KODE_NULL; }
+  virtual const char*       getHostName() { return ""; }
 public:
   virtual void              setDefaultParameterValues() {}
   virtual void              updateAllParameters() {}

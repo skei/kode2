@@ -77,7 +77,8 @@ private:
   KODE_Editor*                  MEditor                 = KODE_NULL;
   #endif
 
-
+  pid_t MHostPid = 0;
+  pid_t MHostTid = 0;
 
 //------------------------------
 public:
@@ -107,6 +108,13 @@ public:
   KODE_Descriptor* getDescriptor() override {
     KODE_VST3PRINT;
     return MDescriptor;
+  }
+
+  pid_t getHostPid() { return MHostPid; }
+  pid_t getHostTid() { return MHostTid; }
+
+  const char* getHostName() override {
+    return MHostName;
   }
 
 //------------------------------
@@ -1277,7 +1285,7 @@ public: // IAudioProcessor
         MProcessContext.numsamples   = data.numSamples;
         //MProcessContext.oversample    = 1;
         MProcessContext.samplerate   = data.processContext->sampleRate;
-        MProcessContext.samplepos    = data.processContext->continousTimeSamples;
+        MProcessContext.samplepos    = data.processContext->projectTimeSamples;//continousTimeSamples;
         MProcessContext.beatpos      = data.processContext->projectTimeMusic;
         MProcessContext.tempo        = data.processContext->tempo;
         MProcessContext.timesignum   = data.processContext->timeSigNumerator;
@@ -1902,6 +1910,8 @@ public: // IEditController
   int32_t KODE_VST3_PLUGIN_API setComponentHandler(KODE_Vst3IComponentHandler* handler) final {
     KODE_Vst3Print("handler: %p -> Ok\n",handler);
     MComponentHandler = handler;
+    MHostPid = getpid();
+    MHostTid = gettid();
     return kode_vst3_ResultOk;
   }
 
