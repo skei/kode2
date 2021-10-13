@@ -3,20 +3,22 @@
 //----------------------------------------------------------------------
 
 /*
-  uses calculated gotos ('goto **MIP++')..
+  uses calculated gotos ('goto **ip++')..
 
 
-  bk : byte kode
-  kbc, kode bytce code
+  bk  : byte kode
+  kbc : kode bytce code
 
   todo:
   - call external functions
 */
 
-#include <stdio.h>  // printf
+//----------
 
-//#include "src/KODE_Debug.h"
+#include <stdio.h>  // printf
 #include "base/kode_stack.h"
+
+//----------
 
 #define KODE_VM_CALL_STACK_SIZE   1024
 #define KODE_VM_DATA_STACK_SIZE   1024
@@ -61,17 +63,17 @@ class KODE_VirtualMachine {
 private:
 //------------------------------
 
-  KODE_Opcode*    MOpcodes                                = KODE_NULL;
-  int             MNumOpcodes                             = 0;
   int             MCodeSegment_size                       = 0;
   KODE_Cell       MCodeSegment[KODE_VM_CODE_SEGMENT_SIZE] = {0};
   KODE_Cell       MDataSegment[KODE_VM_DATA_SEGMENT_SIZE] = {0};
   KODE_Cell       MRegisters[KODE_VM_NUM_REGISTERS]       = {0};
-  KODE_CallStack  MCallStack;
-  KODE_DataStack  MDataStack;
-  KODE_Cell*      MIP                                     = KODE_NULL;
   uint32_t        MNumExternals                           = 0;
   KODE_External   MExternals[KODE_VM_MAX_EXTERNALS]       = {0};
+  int             MNumOpcodes                             = 0;
+  KODE_Opcode*    MOpcodes                                = KODE_NULL;
+  KODE_Cell*      MIP                                     = KODE_NULL;
+  KODE_CallStack  MCallStack;
+  KODE_DataStack  MDataStack;
 
 //------------------------------
 public:
@@ -129,7 +131,7 @@ public:
       //------------------------------
 
       #define VM_NEXT       goto **MIP++
-      #define VM_NEXT_cell *MIP++
+      #define VM_NEXT_cell  *MIP++
       #define VM_PUSH_call  MCallStack.push(MIP)
       #define VM_POP_call   MIP = MCallStack.pop()
       #define VM_PUSH(x)    MDataStack.push((KODE_Cell)x)

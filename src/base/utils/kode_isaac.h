@@ -2,6 +2,14 @@
 #define kode_isaac_included
 //----------------------------------------------------------------------
 
+/*
+  ISAAC (indirection, shift, accumulate, add, and count)
+  cryptographically secure pseudorandom number generator and stream cipher
+  reference implementation source code - public domain
+*/
+
+//----------
+
 // TODO: check, double-check, triple-check..
 
 /*
@@ -38,15 +46,15 @@
 
 //----------------------------------------------------------------------
 
-#define kode_isaac_mix(a,b,c,d,e,f,g,h) {  \
-  a^=b<<11; d+=a; b+=c;               \
-  b^=c>>2;  e+=b; c+=d;               \
-  c^=d<<8;  f+=c; d+=e;               \
-  d^=e>>16; g+=d; e+=f;               \
-  e^=f<<10; h+=e; f+=g;               \
-  f^=g>>4;  a+=f; g+=h;               \
-  g^=h<<8;  b+=g; h+=a;               \
-  h^=a>>9;  c+=h; a+=b;               \
+#define kode_isaac_mix(a,b,c,d,e,f,g,h) { \
+  a^ = b << 11;   d += a;   b += c;       \
+  b^ = c >> 2;    e += b;   c += d;       \
+  c^ = d << 8;    f += c;   d += e;       \
+  d^ = e >> 16;   g += d;   e += f;       \
+  e^ = f << 10;   h += e;   f += g;       \
+  f^ = g >> 4;    a += f;   g += h;       \
+  g^ = h << 8;    b += g;   h += a;       \
+  h^ = a >> 9;    c += h;   a += b;       \
 }
 
 //----------
@@ -113,14 +121,14 @@ public:
     for (i=0; i<256; ++i) {
       x = mm[i];
       switch (i%4) {
-        case 0: aa = aa^(aa<<13); break;
-        case 1: aa = aa^(aa>> 6); break;
-        case 2: aa = aa^(aa<< 2); break;
-        case 3: aa = aa^(aa>>16); break;
+        case 0: aa = aa ^ (aa << 13); break;
+        case 1: aa = aa ^ (aa >>  6); break;
+        case 2: aa = aa ^ (aa <<  2); break;
+        case 3: aa = aa ^ (aa >> 16); break;
       }
-      aa              = mm[(i+128)%256] + aa;
-      mm[i]      = y  = mm[(x>> 2)%256] + aa + bb;
-      randrsl[i] = bb = mm[(y>>10)%256] + x;
+      aa              = mm[(i + 128) % 256] + aa;
+      mm[i]      = y  = mm[(x >> 2)  % 256] + aa + bb;
+      randrsl[i] = bb = mm[(y >> 10) % 256] + x;
       /*
         Note that bits 2..9 are chosen from x but 10..17 are chosen from y.
         The only important thing here is that 2..9 and 10..17 don't overlap.

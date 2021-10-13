@@ -2,6 +2,21 @@
 #define kode_debug_print_included
 //----------------------------------------------------------------------
 
+// #define KODE_DEBUG_PRINT_TIME
+// #define KODE_DEBUG_PRINT_THREAD
+//
+// #define KODE_DEBUG_PRINT_SOCKET
+// nc -U -l -k /tmp/kode.socket
+//
+// KODE_PRINT;
+// KODE_Print("test %i\n",i);
+// KODE_DPrint("test %i\n",i);
+// KODE_NoPrint(...);
+//
+// [time:thread:file:func:line] ..
+
+//----------------------------------------------------------------------
+
 /*
 see socket output by entering this in a console:
 nc -U -l -k /tmp/kode.socket

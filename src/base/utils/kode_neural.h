@@ -34,7 +34,7 @@
 //
 //----------------------------------------------------------------------
 
-class KODE_Neural_Dendrite {
+class KODE_NeuralDendrite {
 
   public:
 
@@ -43,7 +43,7 @@ class KODE_Neural_Dendrite {
 
   public:
 
-    KODE_Neural_Dendrite(float weight=0.0, uint32_t points_to=0) {
+    KODE_NeuralDendrite(float weight=0.0, uint32_t points_to=0) {
       MWeight = weight;
       MPointsTo = points_to;
     }
@@ -56,7 +56,7 @@ class KODE_Neural_Dendrite {
 //
 //----------------------------------------------------------------------
 
-class KODE_Neural_Neuron {
+class KODE_NeuralNeuron {
 
   public:
 
@@ -64,11 +64,11 @@ class KODE_Neural_Neuron {
     float               MValue;     // Value which Neuron currently is holding
     float               MBias;      // Bias of the neuron
     float               MDelta;     // Used in back  prop. Note it is backprop specific
-    KODE_Neural_Dendrite* MDendrites; // Dendrites
+    KODE_NeuralDendrite* MDendrites; // Dendrites
 
   public:
 
-    KODE_Neural_Neuron(uint32_t ID=0,float value=0.0,float bias=0.0) {
+    KODE_NeuralNeuron(uint32_t ID=0,float value=0.0,float bias=0.0) {
       MID     = ID;
       MValue = value;
       MBias  = bias;
@@ -79,7 +79,7 @@ class KODE_Neural_Neuron {
 
     void SetDendrites(uint32_t dendrite) {
       //Set the dendrites from the neuron to given dendrite
-      MDendrites = KODE_New KODE_Neural_Dendrite[dendrite];
+      MDendrites = KODE_New KODE_NeuralDendrite[dendrite];
       for (uint32_t i=0; i<dendrite; i++) {
         // Initialize the dendrite to attach to next layer
         MDendrites[i].MPointsTo = i;
@@ -94,39 +94,39 @@ class KODE_Neural_Neuron {
 //
 //----------------------------------------------------------------------
 
-class KODE_Neural_Layer {
+class KODE_NeuralLayer {
 
   public:
 
-    KODE_Neural_Neuron *MNeurons; //Pointer to array of neurons
+    KODE_NeuralNeuron *MNeurons; //Pointer to array of neurons
 
-    //KODE_Neural_Layer(uint32_t size=1)
+    //KODE_NeuralLayer(uint32_t size=1)
     //{
     //  //size is no. of neurons in it
-    //  MNeurons = KODE_New KODE_Neural_Neuron [size];
+    //  MNeurons = KODE_New KODE_NeuralNeuron [size];
     //}
 
   public:
 
     void Initialize(uint32_t size) {
-      MNeurons = KODE_New KODE_Neural_Neuron[size];
+      MNeurons = KODE_New KODE_NeuralNeuron[size];
     }
 
     //----------
 
-    ~KODE_Neural_Layer() {
+    ~KODE_NeuralLayer() {
       //KODE_Delete MNeurons;
     }
 
     //----------
 
-    KODE_Neural_Neuron GetNeuron(uint32_t index) {
+    KODE_NeuralNeuron GetNeuron(uint32_t index) {
       return MNeurons[index];
     }
 
     //----------
 
-    void SetNeuron(KODE_Neural_Neuron neuron,uint32_t index) {
+    void SetNeuron(KODE_NeuralNeuron neuron,uint32_t index) {
       MNeurons[index]=neuron;
     }
 
@@ -138,12 +138,12 @@ class KODE_Neural_Layer {
 //
 //----------------------------------------------------------------------
 
-class KODE_Neural_Network {
+class KODE_NeuralNetwork {
 
   public:
 
     float               MLearningRate;  // Learning rate of network
-    KODE_Neural_Layer*  MLayers;        // The total layers in network
+    KODE_NeuralLayer*  MLayers;        // The total layers in network
     uint32_t            Mtot_layers;    // Number of layers
     float*              Minputs;        // Input array
     float*              Moutputs;       // Output layers
@@ -152,12 +152,12 @@ class KODE_Neural_Network {
 
   public:
 
-    KODE_Neural_Network() {
+    KODE_NeuralNetwork() {
     }
 
     //----------
 
-    ~KODE_Neural_Network() {
+    ~KODE_NeuralNetwork() {
       KODE_Delete MLayers;
     }
 
@@ -168,7 +168,7 @@ class KODE_Neural_Network {
       if (tot_layers<2) return -1;
       MLearningRate = learning_rate;
       Mlayers = KODE_New uint32_t[tot_layers];
-      MLayers = KODE_New KODE_Neural_Layer[tot_layers];
+      MLayers = KODE_New KODE_NeuralLayer[tot_layers];
       for (uint32_t i=0; i<tot_layers; i++) {
         Mlayers[i] = layers[i];
         // Initialize each layer with the specified size
@@ -354,7 +354,7 @@ class KODE_Neural_Network {
 #if 0
 
 int neural_test() {
-  KODE_Neural_Network my;
+  KODE_NeuralNetwork my;
   uint32_t inp  = 2;
   uint32_t hid  = 2;
   uint32_t outp = 1;

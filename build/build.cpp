@@ -28,7 +28,11 @@
 //
 //----------------------------------------------------------------------
 
+//#include "../plugins/kode_debug/kode_debug.cpp"
+
 #include "../plugins/sa_botage/sa_botage.cpp"
+//#include "../plugins/sa_botage/sa_botage2.cpp"
+//#include "../plugins/sa_botage2/sa_botage.cpp"
 
 // fx_cutter          sa_botage
 // fx_frac_delay      sa_
@@ -81,7 +85,6 @@
   sa.lt
   sa.lute
   sa.lutt
-  sa.lvation
   sa.lær
   sa.mael
   sa.mantha

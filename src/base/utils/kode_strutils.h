@@ -208,6 +208,8 @@ char* KODE_InsertChar(char* ABuffer, int32_t APos, char AChar) {
 
 //----------
 
+// A -> a
+
 void KODE_LowerCase(char* buffer) {
   char* ptr = buffer;
   int c;
@@ -298,6 +300,7 @@ bool KODE_SearchWildcards(char* buffer, const char* wildcards) {
 
 //----------
 
+// file.txt -> file
 // problem if there is a dot in the path
 // todo: find last dot..
 // modifies APath
@@ -330,6 +333,8 @@ char* KODE_StripPath(char* APath) {
 }
 
 //----------
+
+// a -> A
 
 void KODE_UpperCase(char* buffer) {
   char* ptr = buffer;

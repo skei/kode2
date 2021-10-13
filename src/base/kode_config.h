@@ -43,16 +43,19 @@
 //#define KODE_NO_AUTODELETE
 //#define KODE_NO_BITMAP_DRAW
 //#define KODE_NO_BITMAP_FONT
+//#define KODE_NO_BITMAP_GEN
 //#define KODE_NO_BITMAP_PNG
 //#define KODE_NO_BITMAP_PNG_FILE
 //#define KODE_NO_BITMAP_PROC
-//#define KODE_NO_BITMAP_GEN
 //#define KODE_NO_GUI
 //#define KODE_NO_PLUGIN
 //#define KODE_NO_STDLIB
 //#define KODE_NO_WINDOW_BUFFERING
 
+//#define KODE_PLUGIN_DSSI
 //#define KODE_PLUGIN_EXE
+//#define KODE_PLUGIN_LADSPA
+//#define KODE_PLUGIN_LV2
 //#define KODE_PLUGIN_VST2
 //#define KODE_PLUGIN_VST3
 

@@ -6,6 +6,10 @@
 #include "plugin/kode_program.h"
 
 //----------------------------------------------------------------------
+//
+//
+//
+//---------------------------------------------------------------------
 
 struct KODE_PluginOptions {
   bool isSynth        = false;
@@ -21,7 +25,7 @@ struct KODE_PluginPort {
   bool        isInput = false;  // else output
   const char* name    = "";
   //
-  KODE_PluginPort(const char* AName, bool AIsAudio=true) {
+  KODE_PluginPort(const char* AName, bool AIsAudio=true/*, bool AIsInput=false*/) {
     name    = AName;
     isAudio = AIsAudio;
     //isInput = AIsInput;
@@ -30,7 +34,11 @@ struct KODE_PluginPort {
 
 typedef KODE_Array<KODE_PluginPort*> KODE_PluginPorts;
 
-//----------------------------------------------------------------------
+//---------------------------------------------------------------------
+//
+//
+//
+//---------------------------------------------------------------------
 
 class KODE_Descriptor {
 
@@ -48,7 +56,7 @@ protected:
   const char*         MAuthor   = "author";
   const char*         MUrl      = "https://internet.com";
   const char*         MEmail    = "author@email.com";
-  uint32_t            MVersion  = 0x00000000;
+  uint32_t            MVersion  = 0x00000000; // 00.00.0000
   KODE_PluginOptions  MOptions;
   KODE_Parameters     MParameters;
   KODE_Programs       MPrograms;

@@ -17,12 +17,20 @@ int32   KODE_RandomSignedInt(void);
 int32   KODE_RandomRangeInt(int32 minval, int32 maxval);
 */
 
-#define KODE_Random           KODE_Random_System
-#define KODE_RandomSigned     KODE_RandomSigned_System
-#define KODE_RandomRange      KODE_RandomRange_System
-#define KODE_RandomInt        KODE_RandomInt_System
-#define KODE_RandomSignedInt  KODE_RandomSignedInt_System
-#define KODE_RandomRangeInt   KODE_RandomRangeInt_System
+
+//#define KODE_RANDOM_SYSTEM
+//#define KODE_RANDOM_XORSHIFT
+// etc..
+
+
+//#ifdef KODE_RANDOM_SYSTEM
+  #define KODE_Random           KODE_Random_System
+  #define KODE_RandomSigned     KODE_RandomSigned_System
+  #define KODE_RandomRange      KODE_RandomRange_System
+  #define KODE_RandomInt        KODE_RandomInt_System
+  #define KODE_RandomSignedInt  KODE_RandomSignedInt_System
+  #define KODE_RandomRangeInt   KODE_RandomRangeInt_System
+//#endif
 
 //----------------------------------------------------------------------
 // KODE_Random
@@ -62,7 +70,7 @@ class KODE_Random_Rand {
 //inline float KODE_RandomSigned(void) { return KODE_RANDOM.randomSigned(); }
 
 //----------------------------------------------------------------------
-//
+// system
 //----------------------------------------------------------------------
 
 /*

@@ -14,6 +14,7 @@
 #include "gui/widgets/kode_container_widget.h"
 #include "gui/widgets/kode_curve_widget.h"
 #include "gui/widgets/kode_drag_value_widget.h"
+#include "gui/widgets/kode_drag_value2_widget.h"
 #include "gui/widgets/kode_grid_widget.h"
 #include "gui/widgets/kode_graph_widget.h"
 #include "gui/widgets/kode_group_box_widget.h"

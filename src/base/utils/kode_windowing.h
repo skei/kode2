@@ -44,10 +44,10 @@ float KODE_Windowing_Welch(float pos) {
 }
 
 float KODE_Windowing_Bartlett(float pos) {
- if (pos == 0.0) return 1.0;
- else if (pos > -1.0 && pos < 0.0) return pos + 1.0;
- else if (pos > 0.0 && pos < 1.0) return 1.0 - pos;
- else return 0.0;
+  if (pos == 0.0) return 1.0;
+  else if (pos > -1.0 && pos < 0.0) return pos + 1.0;
+  else if (pos > 0.0 && pos < 1.0) return 1.0 - pos;
+  else return 0.0;
 }
 
 //----------------------------------------------------------------------

@@ -49,7 +49,7 @@ protected:
   KODE_Widget*  MMouseHoverWidget       = KODE_NULL;
   KODE_Widget*  MMouseModalWidget       = KODE_NULL;
   KODE_Widget*  MMouseClickedWidget     = KODE_NULL;
-  KODE_Widget*  MMouseLockeddWidget     = KODE_NULL;
+  KODE_Widget*  MMouseLockedWidget      = KODE_NULL;
   KODE_Widget*  MKeyInputWidget         = KODE_NULL;
   int32_t       MMouseX                 = 0;
   int32_t       MMouseY                 = 0;
@@ -121,6 +121,12 @@ public:
     return MBufferPainter;
     #endif
   }
+
+  KODE_Widget* getMouseHoverWidget()    { return MMouseHoverWidget; }
+  KODE_Widget* getMouseModalWidget()    { return MMouseModalWidget; }
+  KODE_Widget* getMouseClickedWidget()  { return MMouseClickedWidget; }
+  KODE_Widget* getMouseLockedWidget()  { return MMouseLockedWidget; }
+  KODE_Widget* getKeyInputWidget()      { return MKeyInputWidget; }
 
 //------------------------------
 public: // painted
@@ -372,7 +378,7 @@ public: // base window
     MMouseX = AXpos;
     MMouseY = AYpos;
     if (MMouseClickedWidget) {
-      if (MMouseLockeddWidget) {
+      if (MMouseLockedWidget) {
         if ((AXpos == MMouseClickedX) && (AYpos == MMouseClickedY)) {
           MMousePrevX = AXpos;
           MMousePrevY = AYpos;
@@ -491,7 +497,7 @@ public: // "widget listener"
   void do_widget_grabMouseCursor(KODE_Widget* ASender) override {
     //if (ASender) grabMouseCursor();
     //else releaseMouseCursor();
-    MMouseLockeddWidget = ASender;
+    MMouseLockedWidget = ASender;
   }
 
   //----------
@@ -518,11 +524,11 @@ public: // "widget listener"
     switch (ACursor) {
       case KODE_CURSOR_GRAB:
         grabMouseCursor();
-        MMouseLockeddWidget = AWidget;
+        MMouseLockedWidget = AWidget;
         break;
       case KODE_CURSOR_RELEASE:
         releaseMouseCursor();
-        MMouseLockeddWidget = KODE_NULL;
+        MMouseLockedWidget = KODE_NULL;
         break;
       case KODE_CURSOR_SHOW:
         showMouseCursor();

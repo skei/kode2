@@ -14,7 +14,7 @@ protected:
 //------------------------------
 
   bool        MIsToggle           = false;
-  bool        MDrawTriangle       = true;
+  bool        MDrawTriangle       = false;
 
   const char* MOnText             = "On";
   KODE_Color  MOnBackgroundColor  = KODE_Color(0.7f);

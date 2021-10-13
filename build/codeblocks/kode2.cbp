@@ -198,6 +198,16 @@
 		<Unit filename="../../doc/makedocs.sh" />
 		<Unit filename="../../doc/readme.txt" />
 		<Unit filename="../../doc/todo.txt" />
+		<Unit filename="../../plugins/kode_debug/kode_debug.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../plugins/kode_debug/kode_debug_descriptor.h" />
+		<Unit filename="../../plugins/kode_debug/kode_debug_editor.h" />
+		<Unit filename="../../plugins/kode_debug/kode_debug_gui_panel.h" />
+		<Unit filename="../../plugins/kode_debug/kode_debug_host_panel.h" />
+		<Unit filename="../../plugins/kode_debug/kode_debug_process_panel.h" />
+		<Unit filename="../../plugins/kode_debug/kode_debug_voice.h" />
 		<Unit filename="../../plugins/misc/sa_brickwall.cpp">
 			<Option compile="0" />
 			<Option link="0" />
@@ -306,17 +316,14 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
+		<Unit filename="../../plugins/sa_botage/kode_debug_watch_panel.h" />
 		<Unit filename="../../plugins/sa_botage/sa_botage.cpp">
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
 		<Unit filename="../../plugins/sa_botage/sa_botage_descriptor.h" />
 		<Unit filename="../../plugins/sa_botage/sa_botage_editor.h" />
-		<Unit filename="../../plugins/sa_botage/sa_botage_editor2.h" />
-		<Unit filename="../../plugins/sa_botage/sa_botage_header.h" />
-		<Unit filename="../../plugins/sa_botage/sa_botage_page_arr.h" />
-		<Unit filename="../../plugins/sa_botage/sa_botage_page_fx.h" />
-		<Unit filename="../../plugins/sa_botage/sa_botage_page_rep.h" />
+		<Unit filename="../../plugins/sa_botage/sa_botage_instance.h" />
 		<Unit filename="../../plugins/sa_botage/sa_botage_process.h" />
 		<Unit filename="../../plugins/templates/effect_template.cpp">
 			<Option compile="0" />
@@ -583,6 +590,7 @@
 		<Unit filename="../../src/gui/widgets/kode_circular_waveform_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_container_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_curve_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_drag_value2_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_drag_value_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_graph_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_grid_widget.h" />
