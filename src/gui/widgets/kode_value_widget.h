@@ -21,26 +21,28 @@ private:
 protected:
 //------------------------------
 
+  uint32_t    MDigits             = 3;
+
   // value text
   bool        MDrawValueText      = true;
-  KODE_Color  MValueTextColor     = KODE_Color(1.0f);
+  KODE_Color  MValueTextColor     = KODE_COLOR_WHITE;
   uint32_t    MValueTextAlignment = KODE_TEXT_ALIGN_RIGHT;
   KODE_FRect  MValueTextOffset    = KODE_FRect(2,2,2,2);
 
   // label
   bool        MDrawLabel          = false;
   const char* MLabel              = "";
-  KODE_Color  MLabelColor         = KODE_Color(0.8f);
-
+  KODE_Color  MLabelColor         = KODE_Color(0.7f);
 
 //------------------------------
 public:
 //------------------------------
 
-  KODE_ValueWidget(KODE_FRect ARect)
+  KODE_ValueWidget(KODE_FRect ARect, const char* AText="")
   : KODE_TextWidget(ARect) {
     setName("KODE_ValueWidget");
     setHint("value");
+    MText = AText;
   }
 
   virtual ~KODE_ValueWidget() {
@@ -49,6 +51,10 @@ public:
 //------------------------------
 public:
 //------------------------------
+
+  virtual void setDigits(uint32_t ADigits) {
+    MDigits = ADigits;
+  }
 
   virtual void setDrawValueText(bool ADraw=true) {
     MDrawValueText = ADraw;
@@ -97,7 +103,7 @@ public:
       }
       else {
         label = MLabel;
-        KODE_FloatToString(MValueText,value);
+        KODE_FloatToString(MValueText,value,MDigits);
       }
 
       KODE_FRect value_rect = getRect();
