@@ -40,6 +40,7 @@ struct KODE_WidgetLayout {
   KODE_FPoint maxSize       = KODE_FPoint(999999,999999);
   KODE_FRect  extraBorder   = KODE_FRect(0,0);              // extra space/border for each widget
   bool        contentBorder = true;                       // true if content rect includes innerBorder of parent
+  float       scale         = 1.0;
 };
 
 class KODE_Widget;
@@ -176,6 +177,15 @@ public: // set
   //virtual void setSelectedParameter(uint32_t AIndex)    { MSelectedParameter = AIndex; }
   //virtual void setParameterPtr(KODE_Parameter* p)       { MParameterPtr = p; }
 
+  virtual void setScale(float AScale, bool ARecursive=true) {
+    layout.scale = AScale;
+    if (ARecursive) {
+      for (uint32_t i=0; i<MChildren.size(); i++) {
+        MChildren[i]->setScale(AScale,ARecursive);
+      }
+    }
+  }
+
 //------------------------------
 public: // get
 //------------------------------
@@ -187,6 +197,7 @@ public: // get
   virtual const char*         getHint()                     { return MHint; }
   virtual int32_t             getIndex()                    { return MIndex; }
   virtual KODE_FRect          getInitialRect()              { return MInitialRect; }
+  virtual const char*         getName()                     { return MName; }
   virtual uint32_t            getNumChildren()              { return MChildren.size(); }
   virtual KODE_Parameter*     getParameter(uint32_t i=0)    { return MParameters[i]; }
   virtual KODE_Widget*        getParent()                   { return MParent; }
@@ -720,10 +731,15 @@ public:
         rect.h = KODE_Clamp(rect.h, child->layout.minSize.h, child->layout.maxSize.h);
         rect.shrink(child->layout.extraBorder);
         content.combine(rect);
+
         child->MRect.x = rect.x + MChildrenXOffset;
         child->MRect.y = rect.y + MChildrenYOffset;
         child->MRect.w = rect.w;
         child->MRect.h = rect.h;
+
+//
+        child->MRect.scale(child->layout.scale);
+//
 
         if (ARecursive) child->alignChildren(ARecursive);
 
