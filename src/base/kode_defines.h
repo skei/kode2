@@ -74,14 +74,29 @@
     #define KODE_PLUGINGUI_DEFINED
   #endif
 
+  #ifdef KODE_PLUGIN_DSSI
+    #define KODE_PLUGIN_DEFINED
+    #define KODE_DSSI
+  #endif
+
   #ifdef KODE_PLUGIN_EXE
     #define KODE_PLUGIN_DEFINED
     #define KODE_EXE
   #endif
 
+  #ifdef KODE_PLUGIN_LADSPA
+    #define KODE_PLUGIN_DEFINED
+    #define KODE_LADSPA
+  #endif
+
   #ifdef KODE_PLUGIN_LV2
     #define KODE_PLUGIN_DEFINED
     #define KODE_LV2
+  #endif
+
+  #ifdef KODE_PLUGIN_VST2
+    #define KODE_PLUGIN_DEFINED
+    #define KODE_VST2
   #endif
 
   #ifdef KODE_PLUGIN_VST3
@@ -91,8 +106,6 @@
 
 #ifndef KODE_PLUGIN_DEFINED
   #warning no plugin format defined!
-  #undef KODE_EXE
-  #undef KODE_VST3
   #define KODE_NO_PLUGIN
   //#define KODE_EXE
   //#define KODE_PLUGIN_EXE
