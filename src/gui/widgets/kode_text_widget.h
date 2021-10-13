@@ -14,6 +14,7 @@ protected:
 //------------------------------
 
   bool        MDrawText       = true;
+  bool        MDrawParamText  = true;
   const char* MText           = "";
   KODE_Color  MTextColor      = KODE_COLOR_DARK_GRAY;
   uint32_t    MTextAlignment  = KODE_TEXT_ALIGN_LEFT;
@@ -42,6 +43,7 @@ public:
 //------------------------------
 
   virtual void setDrawText(bool ADraw)                { MDrawText = ADraw; }
+  virtual void setDrawParamText(bool ADraw)           { MDrawParamText = ADraw; }
   virtual void setTextAlignment(uint32_t AAlignment)  { MTextAlignment = AAlignment; }
   virtual void setTextColor(KODE_Color AColor)        { MTextColor = AColor; }
   virtual void setTextOffset(KODE_FRect AOffset)      { MTextOffset = AOffset; }
@@ -58,13 +60,19 @@ public:
     KODE_FRect rect = getRect();
     rect.shrink(MTextOffset);
     if (MDrawText) {
-      //KODE_Parameter* param = getParameter();
-      //if (param) {
-      //  APainter->drawText(rect,param->getName(),MTextAlignment,MTextColor);
-      //}
+      const char* txt = MText;
+      if (MDrawParamText) {
+        KODE_Parameter* param = getParameter();
+        if (param) {
+          //APainter->drawText(rect,param->getName(),MTextAlignment,MTextColor);
+          txt = param->getName();
+        }
+      }
       //else {
-        APainter->drawText(rect,MText,MTextAlignment,MTextColor);
+      //  //APainter->drawText(rect,MText,MTextAlignment,MTextColor);
+      //  txt = MText;
       //}
+      APainter->drawText(rect,txt,MTextAlignment,MTextColor);
     }
   }
 
