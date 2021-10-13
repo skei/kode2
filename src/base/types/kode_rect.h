@@ -96,6 +96,16 @@ public:
 
   //----------
 
+  void scale(T AScale) {
+    x *= AScale;
+    y *= AScale;
+    w *= AScale;
+    h *= AScale;
+  }
+
+
+  //----------
+
   void add(T AValue) {
     x += AValue;
     y += AValue;
