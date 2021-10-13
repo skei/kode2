@@ -4,9 +4,12 @@
 
 // -lrt
 
-#include <time.h>     // timer
-#include <signal.h>   // sigval
-#include <errno.h>    // errno
+//#include <time.h>     // timer
+#include <sys/time.h>
+#include <signal.h>     // sigval
+#include <errno.h>      // errno
+
+
 
 #include "base/kode_const.h"
 #include "base/utils/kode_math.h"
@@ -23,12 +26,17 @@
   return the same value approximately every 72 minutes.
 */
 
+//
+
 // http://man7.org/linux/man-pages/man2/timer_create.2.html
 
 double KODE_GetTimeMS(void) {
-  clock_t curtime = clock();
-  return (double)(curtime * 1000.0) / CLOCKS_PER_SEC;
-  //return (double)curtime;
+  //clock_t curtime = clock();
+  //return (double)curtime / (double)CLOCKS_PER_SEC * 1000.0;
+  struct timeval time;
+  gettimeofday(&time,NULL);
+  double t = (double)time.tv_sec + (double)time.tv_usec * .000001;
+  return t * 1000.0;
 }
 
 //----------
