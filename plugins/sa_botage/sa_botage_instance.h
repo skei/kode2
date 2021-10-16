@@ -38,47 +38,49 @@ public:
 //------------------------------
 
   void update_waveform() {
-    KODE_WaveformWidget* waveform = MEditor->MWaveform;
-    if (waveform) {
-      waveform->setBuffer(MProcess.MBuffer);
-      waveform->setBufferSize(MProcess.MBufferLength);
-      waveform->setNumGrid(MProcess.MBufferNumBeats * MProcess.MBufferNumSlices);
-      waveform->setNumGridSub(MProcess.MBufferNumSlices);
-      float bufferlength = MProcess.MBufferLength;
-      if (bufferlength > 0.0) {
-        float invbufferlength = 1.0 / bufferlength;
+    if (MEditor) {
+      KODE_WaveformWidget* waveform = MEditor->getWaveformWidget();//wdg_Waveform;
+      if (waveform) {
+        waveform->setBuffer(MProcess.MBuffer);
+        waveform->setBufferSize(MProcess.MBufferLength);
+        waveform->setNumGrid(MProcess.par_BufferNumBeats * MProcess.par_BufferNumSlices);
+        waveform->setNumGridSub(MProcess.par_BufferNumSlices);
+        float bufferlength = MProcess.MBufferLength;
+        if (bufferlength > 0.0) {
+          float invbufferlength = 1.0 / bufferlength;
 
-        float writepos = MProcess.MBufferPos * invbufferlength;
-        waveform->setMarkerPos(0,writepos);
+          float writepos = MProcess.MBufferPos * invbufferlength;
+          waveform->setMarkerPos(0,writepos);
 
-        float readpos = MProcess.MReadPos * invbufferlength;
-        waveform->setMarkerPos(1,readpos);
+          float readpos = MProcess.MReadPos * invbufferlength;
+          waveform->setMarkerPos(1,readpos);
 
-        if (MProcess.MRangeActive) {
-          float rangestart  = (MProcess.MRangeStart) * invbufferlength;
-          float rangelength = (MProcess.MRangeNumSlices * MProcess.MSliceLength) * invbufferlength;;
-          waveform->setAreaVisible(0,true);
-          waveform->setAreaPosSize(0,rangestart,rangelength);
-          if (MProcess.MLoopActive) {
-            float loopstart   = (MProcess.MLoopStart) * invbufferlength;
-            float looplength  = MProcess.MLoopLength * invbufferlength;
-            waveform->setAreaVisible(1,true);
-            waveform->setAreaPosSize(1,loopstart,looplength);
+          if (MProcess.MRangeActive) {
+            float rangestart  = (MProcess.MRangeStart) * invbufferlength;
+            float rangelength = (MProcess.MRangeNumSlices * MProcess.MSliceLength) * invbufferlength;;
+            waveform->setAreaVisible(0,true);
+            waveform->setAreaPosSize(0,rangestart,rangelength);
+            if (MProcess.MLoopActive) {
+              float loopstart   = (MProcess.MLoopStart) * invbufferlength;
+              float looplength  = MProcess.MLoopLength * invbufferlength;
+              waveform->setAreaVisible(1,true);
+              waveform->setAreaPosSize(1,loopstart,looplength);
+            }
+            waveform->setAreaVisible(2,false);
           }
-          waveform->setAreaVisible(2,false);
-        }
-        else {
-          waveform->setAreaVisible(0,false);
-          waveform->setAreaVisible(1,false);
-          float slicestart = (MProcess.MSliceCounter * MProcess.MSliceLength) * invbufferlength;
-          float slicelength = MProcess.MSliceLength * invbufferlength;
-          waveform->setAreaVisible(2,true);
-          waveform->setAreaPosSize(2,slicestart,slicelength);
-        }
+          else {
+            waveform->setAreaVisible(0,false);
+            waveform->setAreaVisible(1,false);
+            float slicestart = (MProcess.MSliceCounter * MProcess.MSliceLength) * invbufferlength;
+            float slicelength = MProcess.MSliceLength * invbufferlength;
+            waveform->setAreaVisible(2,true);
+            waveform->setAreaPosSize(2,slicestart,slicelength);
+          }
 
-      } // buffer length > 0
-      waveform->redraw();
-    } // waveform
+        } // buffer length > 0
+        waveform->redraw();
+      } // waveform
+    } // editor
   }
 
 //------------------------------
@@ -96,11 +98,11 @@ public:
 
   void on_plugin_prepare(float ASamplerate, uint32_t ABlocksize) final {
     //KODE_PRINT;
-    MProcess.MRepeatProb          = 0.5;
-    MProcess.MRepeatProbMinSlices = 1;
-    MProcess.MRepeatProbMaxSlices = 4;
-    MProcess.MRepeatProbMinDivide = 1;
-    MProcess.MRepeatProbMaxDivide = 4;
+//    MProcess.par_RepeatProb       = 0.5;
+//    MProcess.par_RepeatMinSlices  = 1;
+//    MProcess.par_RepeatMaxSlices  = 4;
+//    MProcess.par_RepeatMinDivide  = 1;
+//    MProcess.par_RepeatMaxDivide  = 4;
     MProcess.start();
   }
 
@@ -112,13 +114,62 @@ public:
 
   //----------
 
+  #ifdef KODE_PLUGIN_EXE
+    #define UPDATE update_waveform();
+  #else
+    #define UPDATE
+  #endif
+
   void on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) final {
     //KODE_Print("ofs %i idx %i val %.3f mode %i\n",AOffset,AIndex,AValue,AMode);
     switch (AIndex) {
-      case 0: MProcess.MBufferNumBeats   = AValue; /*MProcess.MBufferChanged = true;*/ break;
-      case 1: MProcess.MBufferNumSlices  = AValue; /*MProcess.MBufferChanged = true;*/ break;
+
+      case P_BUFFER_NUM_BEATS:      MProcess.par_BufferNumBeats     = AValue; UPDATE; break;
+      case P_BUFFER_NUM_SLICES:     MProcess.par_BufferNumSlices    = AValue; UPDATE; break;
+      case P_REPEAT_PROB:           MProcess.par_RepeatProb         = AValue; break;
+      case P_REPEAT_SLICE_BITS:     MProcess.par_RepeatSliceBits    = AValue; break;
+      case P_REPEAT_SPLIT_BITS:     MProcess.par_RepeatSplitBits    = AValue; break;
+
+      case P_LOOPSIZE_RANGE_PROB:   MProcess.par_LoopsizeRangeProb  = AValue; break;
+      case P_LOOPSIZE_RANGE_MIN:    MProcess.par_LoopsizeRangeMin   = AValue * 0.01; break;
+      case P_LOOPSIZE_RANGE_MAX:    MProcess.par_LoopsizeRangeMax   = AValue * 0.01; break;
+      case P_LOOPSIZE_LOOP_PROB:    MProcess.par_LoopsizeLoopProb   = AValue; break;
+      case P_LOOPSIZE_LOOP_MIN:     MProcess.par_LoopsizeLoopMin    = AValue * 0.01; break;
+      case P_LOOPSIZE_LOOP_MAX:     MProcess.par_LoopsizeLoopMax    = AValue * 0.01; break;
+
+      case P_LOOPSPEED_RANGE_PROB:  MProcess.par_LoopspeedRangeProb = AValue; break;
+      case P_LOOPSPEED_RANGE_MIN:   MProcess.par_LoopspeedRangeMin  = AValue * 0.01; break;
+      case P_LOOPSPEED_RANGE_MAX:   MProcess.par_LoopspeedRangeMax  = AValue * 0.01; break;
+      case P_LOOPSPEED_LOOP_PROB:   MProcess.par_LoopspeedLoopProb  = AValue; break;
+      case P_LOOPSPEED_LOOP_MIN:    MProcess.par_LoopspeedLoopMin   = AValue * 0.01; break;
+      case P_LOOPSPEED_LOOP_MAX:    MProcess.par_LoopspeedLoopMax   = AValue * 0.01; break;
+
+      case P_REVERSE_RANGE_PROB:    MProcess.par_ReverseRangeProb   = AValue; break;
+      case P_REVERSE_LOOP_PROB:     MProcess.par_ReverseLoopProb    = AValue; break;
+
+      case P_FX_MULTI:              MProcess.par_FXMulti            = AValue; break;
+      case P_FX_RANGE_PROB:         MProcess.par_FXRangeProb        = AValue; break;
+      case P_FX_RANGE_MIN:          MProcess.par_FXRangeMin         = AValue * 0.01; break;
+      case P_FX_RANGE_MAX:          MProcess.par_FXRangeMax         = AValue * 0.01; break;
+      case P_FX_LOOP_PROB:          MProcess.par_FXLoopProb         = AValue; break;
+      case P_FX_LOOP_MIN:           MProcess.par_FXLoopMin          = AValue * 0.01; break;
+      case P_FX_LOOP_MAX:           MProcess.par_FXLoopMax          = AValue * 0.01; break;
+
+//      case P_ENV_LOOP_ATT:          MProcess.par_EnvLoopAtt         = AValue; break;
+//      case P_ENV_LOOP_DEC:          MProcess.par_EnvLoopDec         = AValue; break;
+//      case P_ENV_SLICE_ATT:         MProcess.par_EnvSliceAtt        = AValue * 0.01; break;
+//      case P_ENV_SLICE_DEC:         MProcess.par_EnvSliceDec        = AValue * 0.01; break;
+
+      case P_ENV_LOOP_ATT:          MProcess.par_EnvLoopAtt         = AValue * 0.01; break;
+      case P_ENV_LOOP_DEC:          MProcess.par_EnvLoopDec         = AValue * 0.01; break;
+      case P_ENV_SLICE_ATT:         MProcess.par_EnvSliceAtt        = AValue * 0.01; break;
+      case P_ENV_SLICE_DEC:         MProcess.par_EnvSliceDec        = AValue * 0.01; break;
+
+
     }
   }
+
+  #undef UPDATE
 
   //----------
 
@@ -134,47 +185,6 @@ public:
 
   KODE_BaseEditor* on_plugin_openEditor(void* AParent) final {
     MEditor = new myEditor(this,AParent);
-    KODE_DebugWatchPanel* watchpanel = MEditor->getWatchPanel();
-    if (watchpanel) {
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_BOOL,  "MIsPlaying",           &MProcess.MIsPlaying          );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_SEPARATOR );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MBeatsPerSecond",      &MProcess.MBeatsPerSecond     );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MBeatsPerSample",      &MProcess.MBeatsPerSample     );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MSamplesPerBeat",      &MProcess.MSamplesPerBeat     );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MSamplesPerSlice",     &MProcess.MSamplesPerSlice    );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_SEPARATOR );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_INT,   "MBufferNumBeats",      &MProcess.MBufferNumBeats     );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_INT,   "MBufferNumSlices",     &MProcess.MBufferNumSlices    );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MBufferPos",           &MProcess.MBufferPos          );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MBufferLength",        &MProcess.MBufferLength       );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_SEPARATOR );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MBeatPos",             &MProcess.MBeatPos            );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MBeatSpeed",           &MProcess.MBeatSpeed          );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_SEPARATOR );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_SEPARATOR );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_SEPARATOR );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_SEPARATOR );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_INT,   "MSliceCounter",        &MProcess.MSliceCounter       );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MSlicePos",            &MProcess.MSlicePos           );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MSliceLength",         &MProcess.MSliceLength        );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MSliceSpeed",          &MProcess.MSliceSpeed         );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_SEPARATOR );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_BOOL,  "MRangeActive",         &MProcess.MRangeActive        );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_INT,   "MRangeNumSlices",      &MProcess.MRangeNumSlices     );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MRangePos",            &MProcess.MRangePos           );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MRangeLength",         &MProcess.MRangeLength        );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_SEPARATOR );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_SEPARATOR );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_SEPARATOR );
-      //watchpanel->appendWatch(  KODE_DEBUG_WATCH_SEPARATOR );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_BOOL,  "MLoopActive",          &MProcess.MLoopActive         );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_INT,   "MLoopNumDivide",       &MProcess.MLoopNumDivide      );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_INT,   "MLoopCounter",         &MProcess.MLoopCounter        );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MLoopPos",             &MProcess.MLoopPos            );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MLoopStart",           &MProcess.MLoopStart          );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MLoopLength",          &MProcess.MLoopLength         );
-      watchpanel->appendWatch(  KODE_DEBUG_WATCH_FLOAT, "MLoopSpeed",           &MProcess.MLoopSpeed          );
-    }
     return MEditor;
   }
 
@@ -190,57 +200,8 @@ public:
   //----------
 
   void on_plugin_updateEditor(KODE_BaseEditor* AEditor) final {
-    //KODE_Print("\n");
     if (MEditor) {
-
-      MEditor->updateWatches();
       update_waveform();
-
-//      KODE_WaveformWidget* waveform = MEditor->MWaveform;
-//      if (waveform) {
-//        waveform->setBuffer(MProcess.MBuffer);
-//        waveform->setBufferSize(MProcess.MBufferLength);
-//        waveform->setNumGrid(MProcess.MBufferNumBeats * MProcess.MBufferNumSlices);
-//        waveform->setNumGridSub(MProcess.MBufferNumSlices);
-//
-//        float bufferlength = MProcess.MBufferLength;
-//
-//        if (bufferlength > 0.0) {
-//          float invbufferlength = 1.0 / bufferlength;
-//
-//          float readpos = 0.0;//MProcess.MBufferPos / MProcess.MBufferLength;
-//          waveform->setMarkerPos(0,readpos);
-//
-//          float writepos = MProcess.MBufferPos * invbufferlength;
-//          waveform->setMarkerPos(1,writepos);
-//
-//          if (MProcess.MRangeActive) {
-//            float rangestart  = (MProcess.MRangeStart) * invbufferlength;
-//            float rangelength = (MProcess.MRangeNumSlices * MProcess.MSliceLength) * invbufferlength;;
-//            waveform->setAreaVisible(0,true);
-//            waveform->setAreaPosSize(0,rangestart,rangelength);
-//            if (MProcess.MLoopActive) {
-//              float loopstart   = (MProcess.MLoopStart) * invbufferlength;
-//              float looplength  = MProcess.MLoopLength * invbufferlength;
-//              waveform->setAreaVisible(1,true);
-//              waveform->setAreaPosSize(1,loopstart,looplength);
-//            }
-//            waveform->setAreaVisible(2,false);
-//          }
-//          else {
-//            float slicestart = (MProcess.MSliceCounter * MProcess.MSliceLength) * invbufferlength;
-//            float slicelength = MProcess.MSliceLength * invbufferlength;
-//            waveform->setAreaVisible(0,false);
-//            waveform->setAreaVisible(1,false);
-//            waveform->setAreaVisible(2,true);
-//            waveform->setAreaPosSize(2,slicestart,slicelength);
-//          }
-//
-//        } // buffer length > 0
-//
-//        waveform->redraw();
-//      } // waveform
-
     } // editor
   }
 

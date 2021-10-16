@@ -8,6 +8,50 @@
 
 //----------------------------------------------------------------------
 
+enum myEParameters {
+
+  P_BUFFER_NUM_BEATS = 0,
+  P_BUFFER_NUM_SLICES,
+
+  P_REPEAT_PROB,
+  P_REPEAT_SLICE_BITS,
+  P_REPEAT_SPLIT_BITS,
+
+  P_LOOPSIZE_RANGE_PROB,
+  P_LOOPSIZE_RANGE_MIN,
+  P_LOOPSIZE_RANGE_MAX,
+  P_LOOPSIZE_LOOP_PROB,
+  P_LOOPSIZE_LOOP_MIN,
+  P_LOOPSIZE_LOOP_MAX,
+
+  P_LOOPSPEED_RANGE_PROB,
+  P_LOOPSPEED_RANGE_MIN,
+  P_LOOPSPEED_RANGE_MAX,
+  P_LOOPSPEED_LOOP_PROB,
+  P_LOOPSPEED_LOOP_MIN,
+  P_LOOPSPEED_LOOP_MAX,
+
+  P_REVERSE_RANGE_PROB,
+  P_REVERSE_LOOP_PROB,
+
+  P_FX_MULTI,
+  P_FX_RANGE_PROB,
+  P_FX_RANGE_MIN,
+  P_FX_RANGE_MAX,
+  P_FX_LOOP_PROB,
+  P_FX_LOOP_MIN,
+  P_FX_LOOP_MAX,
+
+  P_ENV_LOOP_ATT,
+  P_ENV_LOOP_DEC,
+  P_ENV_SLICE_ATT,
+  P_ENV_SLICE_DEC,
+
+  P_NUM_PARAMETERS
+};
+
+//----------------------------------------------------------------------
+
 class myDescriptor
 : public KODE_Descriptor {
 
@@ -34,7 +78,7 @@ public:
 
     #ifndef KODE_NO_GUI
       setHasEditor(true);
-      setEditorSize(800,600);
+      setEditorSize(546,546);
     #endif
 
     appendInput(  new KODE_PluginPort("input_1")  );
@@ -42,12 +86,60 @@ public:
     appendOutput( new KODE_PluginPort("output_1") );
     appendOutput( new KODE_PluginPort("output_2") );
 
-    //KODE_Parameter* parameter;
-    /*parameter =*/ appendParameter( new KODE_IntParameter("Beats",4,1,8));
-    /*parameter =*/ appendParameter( new KODE_IntParameter("Slices",2,1,8));
-    //parameter->setLabel("db");
-    //parameter = appendParameter( new KODE_Parameter("param3",0.4f) );
-    //parameter->setLabel("%");
+    appendParameter( new KODE_IntParameter(   "Beats",              4,    1, 8));
+    appendParameter( new KODE_IntParameter(   "Slices",             2,    1, 8));
+
+    appendParameter( new KODE_FloatParameter( "Repeat Prob",        0.3   ));
+    appendParameter( new KODE_IntParameter(   "Repeat Slice Bits",  0b00000111,    0, 255 ));
+    appendParameter( new KODE_IntParameter(   "Repeat Split Bits",  0b00001110,    0, 255 ));
+
+    appendParameter( new KODE_FloatParameter( "Size",               0.3   ));
+    appendParameter( new KODE_PowParameter(   "min", "%",           50,   2, true, 50, 200 ));
+    appendParameter( new KODE_PowParameter(   "max", "%",           200,  2, true, 50, 200 ));
+    appendParameter( new KODE_FloatParameter( "",                   0.3   ));
+    appendParameter( new KODE_PowParameter(   "min", "%",           50,   2, true, 50, 200 ));
+    appendParameter( new KODE_PowParameter(   "max", "%",           200,  2, true, 50, 200 ));
+
+    appendParameter( new KODE_FloatParameter( "Speed",              0.3   ));
+    appendParameter( new KODE_PowParameter(   "min", "%",           50,   2, true, 50, 200 ));
+    appendParameter( new KODE_PowParameter(   "max", "%",           200,  2, true, 50, 200 ));
+    appendParameter( new KODE_FloatParameter( "",                   0.3   ));
+    appendParameter( new KODE_PowParameter(   "min", "%",           50,   2, true, 50, 200 ));
+    appendParameter( new KODE_PowParameter(   "max", "%",           200,  2, true, 50, 200 ));
+
+    appendParameter( new KODE_FloatParameter( "Reverse 1",          0.3   ));
+    appendParameter( new KODE_FloatParameter( "Reverse",            0.3   ));
+
+    appendParameter( new KODE_IntParameter(   "FX multi",           0,    0, 1 ));
+    appendParameter( new KODE_FloatParameter( "FX 1",               0.3   ));
+    appendParameter( new KODE_PowParameter(   "min", "%",           50,   2, true, 50, 200 ));
+    appendParameter( new KODE_PowParameter(   "max", "%",           200,  2, true, 50, 200 ));
+    appendParameter( new KODE_FloatParameter( "FX",                 0.3   ));
+    appendParameter( new KODE_PowParameter(   "min", "%",           50,   2, true, 50, 200 ));
+    appendParameter( new KODE_PowParameter(   "max", "%",           200,  2, true, 50, 200 ));
+
+    appendParameter( new KODE_PowParameter(   "att", "ms",          1,    3,    true, 0, 100 ));
+    appendParameter( new KODE_PowParameter(   "dec", "ms",          1,    3,    true, 0, 100 ));
+    appendParameter( new KODE_PowParameter(   "att", "%",           0,    3,    true, 0, 100 ));
+    appendParameter( new KODE_PowParameter(   "dec", "%",           0,    3,    true, 0, 100 ));
+
+
+    MParameters[P_LOOPSIZE_RANGE_MIN]->setNumDigits(0);
+    MParameters[P_LOOPSIZE_RANGE_MAX]->setNumDigits(0);
+    MParameters[P_LOOPSIZE_LOOP_MIN]->setNumDigits(0);
+    MParameters[P_LOOPSIZE_LOOP_MAX]->setNumDigits(0);
+    MParameters[P_LOOPSPEED_RANGE_MIN]->setNumDigits(0);
+    MParameters[P_LOOPSPEED_RANGE_MAX]->setNumDigits(0);
+    MParameters[P_LOOPSPEED_LOOP_MIN]->setNumDigits(0);
+    MParameters[P_LOOPSPEED_LOOP_MAX]->setNumDigits(0);
+    MParameters[P_FX_RANGE_MIN]->setNumDigits(0);
+    MParameters[P_FX_RANGE_MAX]->setNumDigits(0);
+    MParameters[P_FX_LOOP_MIN]->setNumDigits(0);
+    MParameters[P_FX_LOOP_MAX]->setNumDigits(0);
+    MParameters[P_ENV_LOOP_ATT]->setNumDigits(2);
+    MParameters[P_ENV_LOOP_DEC]->setNumDigits(2);
+    MParameters[P_ENV_SLICE_ATT]->setNumDigits(0);
+    MParameters[P_ENV_SLICE_DEC]->setNumDigits(0);
 
   }
 };
