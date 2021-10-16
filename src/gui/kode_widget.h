@@ -247,7 +247,7 @@ public:
     delete painter;
   }
 
-  virtual void setImage(KODE_Drawable* ATarget, uint8_t* ABuffer, uint32_t ASize, KODE_Color ABackground) {
+  virtual void setImage(KODE_Drawable* ATarget, const uint8_t* ABuffer, uint32_t ASize, KODE_Color ABackground) {
     KODE_Bitmap* bitmap = new KODE_Bitmap(ABuffer,ASize);
     bitmap->premultAlpha( (uint32_t)ABackground );
     setImage(ATarget,bitmap);

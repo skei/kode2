@@ -157,6 +157,35 @@ protected:
     return value;
   }
 
+  //----------
+
+  float calcValueFromMouse(float AXpos, float AYpos, uint32_t AState) {
+    float value = getValue();
+    if (MCanDragValue) {
+      //float sens = MDragSensitivity;
+      //if (AState & KODE_KEY_SHIFT) sens *= MDragSensitivity2;
+      if (MIsDragging) {
+        float value = MDragValue;
+        float deltax = AXpos - MPrevXpos; // right is increasing
+        float deltay = MPrevYpos - AYpos; // up is increasing
+        bool shift = (AState & KODE_KEY_SHIFT);
+        //if (shift && !MPrevShift) {
+        //  //KODE_Print("shift pressed\n");
+        //  if (MQuantize) MDragValue = getValue();
+        //}
+        //if (!shift && MPrevShift) {
+        //  //KODE_Print("shift released\n");
+        //  if (MQuantize) MDragValue = getValue();
+        //}
+        //MPrevShift = shift;
+        value = calcValue(value,deltax,deltay,shift/*,sens*/);
+      }
+      MPrevXpos = AXpos;
+      MPrevYpos = AYpos;
+    }
+    return value;
+  }
+
 //------------------------------
 public:
 //------------------------------
@@ -232,39 +261,42 @@ public:
       //float sens = MDragSensitivity;
       //if (AState & KODE_KEY_SHIFT) sens *= MDragSensitivity2;
       if (MIsDragging) {
-
         float value = MDragValue;
         float deltax = AXpos - MPrevXpos; // right is increasing
         float deltay = MPrevYpos - AYpos; // up is increasing
-
         bool shift = (AState & KODE_KEY_SHIFT);
-//        if (shift && !MPrevShift) {
-//          //KODE_Print("shift pressed\n");
-//          if (MQuantize) MDragValue = getValue();
-//        }
-//        if (!shift && MPrevShift) {
-//          //KODE_Print("shift released\n");
-//          if (MQuantize) MDragValue = getValue();
-//        }
-//        MPrevShift = shift;
-
+        /*
+        if (shift && !MPrevShift) {
+          //KODE_Print("shift pressed\n");
+          if (MQuantize) MDragValue = getValue();
+        }
+        if (!shift && MPrevShift) {
+          //KODE_Print("shift released\n");
+          if (MQuantize) MDragValue = getValue();
+        }
+        MPrevShift = shift;
+        */
         value = calcValue(value,deltax,deltay,shift/*,sens*/);
+        //value = calcValueFromMouse(AXpos,AYpos,AState);
         setValue(value);
         update();
         redraw();
       } // is dragging
-//      if (MIsDragging2) {
-//        float value = MDragValue;
-//        float deltax = AXpos - MPrevXpos; // right is increasing
-//        float deltay = MPrevYpos - AYpos; // up is increasing
-//        value = calcValue(value,deltax,deltay,(AState & KODE_KEY_SHIFT)/*,sens*/);
-//        setValue2(value);
-//        update();
-//        redraw();
-//      } // is dragging
+      //if (MIsDragging2) {
+      //  float value = MDragValue;
+      //  float deltax = AXpos - MPrevXpos; // right is increasing
+      //  float deltay = MPrevYpos - AYpos; // up is increasing
+      //  value = calcValue(value,deltax,deltay,(AState & KODE_KEY_SHIFT)/*,sens*/);
+      //  setValue2(value);
+      //  update();
+      //  redraw();
+      //} // is dragging
+
       MPrevXpos = AXpos;
       MPrevYpos = AYpos;
+
     }
+
   }
 
   //----------

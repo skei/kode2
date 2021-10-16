@@ -16,6 +16,8 @@ public:
 public:
 
   KODE_Point() {
+    x = 0;
+    y = 0;
   }
 
   KODE_Point(T v) {

@@ -324,7 +324,9 @@
 		<Unit filename="../../plugins/sa_botage/sa_botage_descriptor.h" />
 		<Unit filename="../../plugins/sa_botage/sa_botage_editor.h" />
 		<Unit filename="../../plugins/sa_botage/sa_botage_instance.h" />
+		<Unit filename="../../plugins/sa_botage/sa_botage_logo.h" />
 		<Unit filename="../../plugins/sa_botage/sa_botage_process.h" />
+		<Unit filename="../../plugins/sa_botage/sa_botage_widgets.h" />
 		<Unit filename="../../plugins/templates/effect_template.cpp">
 			<Option compile="0" />
 			<Option link="0" />
@@ -592,6 +594,7 @@
 		<Unit filename="../../src/gui/widgets/kode_curve_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_drag_value2_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_drag_value_widget.h" />
+		<Unit filename="../../src/gui/widgets/kode_dual_slider_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_graph_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_grid_widget.h" />
 		<Unit filename="../../src/gui/widgets/kode_group_box_widget.h" />

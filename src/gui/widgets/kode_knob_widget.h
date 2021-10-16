@@ -19,6 +19,10 @@ class KODE_KnobWidget
 private:
 //------------------------------
 
+  //KODE_FPoint MKnobOffset   = KODE_FPoint(0,0);
+  //KODE_FPoint MLabelOffset  = KODE_FPoint(0,0);
+  //KODE_FPoint MValueOffset  = KODE_FPoint(0,0);
+
   bool        MDrawKnob             = true;
   KODE_Color  MKnobColor            = KODE_COLOR_LIGHT_GRAY;
   KODE_Color  MInteractiveKnobColor = KODE_COLOR_WHITE;
@@ -79,6 +83,7 @@ public:
 
   virtual void drawKnob(KODE_Painter* APainter, KODE_FRect ARect, uint32_t AMode) {
     if (MDrawKnob) {
+
       float     value             = getValue();
       float     S                 = (float)getRect().w;
       int32_t   arc_thickness     = S * MArcThickness;

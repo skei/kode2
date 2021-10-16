@@ -299,12 +299,14 @@ public:
       for (int32_t i=1; i<MNumGrid; i++) {
         int32_t ix = x;
 
-        if ((i % MNumGridSub) == 0) APainter->setColor(MGridSubColor);
-        else APainter->setColor(MGridColor);
-        //APainter->drawLine( ix, mrect.y, ix, mrect.y2(), MGridColor );
-        APainter->moveTo( ix, mrect.y);
-        APainter->lineTo( ix, mrect.y2());
-        APainter->strokePath();
+        //if ((i % MNumGridSub) == 0) APainter->setColor(MGridSubColor);
+        //else APainter->setColor(MGridColor);
+        KODE_Color color = MGridColor;
+        if ((i % MNumGridSub) == 0) color = MGridSubColor;
+        //APainter->moveTo( ix, mrect.y);
+        //APainter->lineTo( ix, mrect.y2());
+        //APainter->strokePath();
+        APainter->drawLine( ix, mrect.y, ix, mrect.y2(), color );
         x += xadd;
       }
 

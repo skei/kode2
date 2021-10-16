@@ -22,8 +22,8 @@ protected:
   bool        MStates[KODE_MAX_STATES]  = {0};
   const char* MLabels[KODE_MAX_STATES]  = {0};
 
-  KODE_Color  MTextColor                = KODE_COLOR_WHITE;
-  KODE_Color  MActiveColor              = KODE_COLOR_DARK_GRAY;
+  KODE_Color  MTextColor                = KODE_Color(0.8);
+  KODE_Color  MActiveColor              = KODE_Color(0.4);
 
   bool        MValueIsBits              = false;
   uint32_t    MNumBits                  = 0;
