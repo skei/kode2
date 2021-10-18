@@ -83,6 +83,13 @@ public:
   float     par_LoopspeedLoopMin    = 0.0;
   float     par_LoopspeedLoopMax    = 0.0;
 
+  float     par_OffsetRangeProb     = 0.0;
+  int32_t   par_OffsetRangeMin      = 0.0;
+  int32_t   par_OffsetRangeMax      = 0.0;
+  float     par_OffsetLoopProb      = 0.0;
+  int32_t   par_OffsetLoopMin       = 0.0;
+  int32_t   par_OffsetLoopMax       = 0.0;
+
   float     par_ReverseRangeProb    = 0.0;
   float     par_ReverseLoopProb     = 0.0;
 
@@ -146,6 +153,8 @@ public:
   uint32_t  MLoopCounter        = 0;
   float     MFXAmount           = 0;
 
+  float     MOffset             = 0.0;
+
 //------------------------------
 public:
 //------------------------------
@@ -188,13 +197,14 @@ private:
   void handle_tempo(float ATempo) {
     if (ATempo != MPrevTempo) {
       //KODE_Print("tempo %f\n",ATempo);
-      MRangeActive = false;
-      MLoopActive = false;
-      MLoopReverse = false;
-      //MBufferPos = 0;
-      //MRangePos = 0;
-      MSlicePos = 0;
-      //MLoopPos = 0;
+      MRangeActive  = false;
+      MLoopActive   = false;
+      MLoopReverse  = false;
+      //MBufferPos    = 0;
+      //MRangePos     = 0;
+      MSlicePos     = 0;
+      //MLoopPos      = 0;
+      //MOffset       = 0;
     }
     MPrevTempo = ATempo;
   }
@@ -231,30 +241,37 @@ private:
   //----------
 
   void prob_start() {
+
+    MOffset = 0.0;
+
     uint32_t slicesleft = ((par_BufferNumBeats * par_BufferNumSlices) - MSliceCounter);
     uint32_t numslices = KODE_MaxI(1, KODE_RandomIntFromBits(par_RepeatSliceBits) );
     numslices = KODE_MinI(numslices,slicesleft);
     range_start(numslices);
     uint32_t numdiv = KODE_MaxI(1, KODE_RandomIntFromBits(par_RepeatSplitBits) );
     loop_start(MBufferPos,numdiv,1.0,false);
+
+
   }
 
   //----------
 
   void prob_range() {
-    if (KODE_Random() < par_LoopsizeRangeProb) set_random_loopsize(par_LoopsizeRangeMin,par_LoopsizeRangeMax);
+    if (KODE_Random() < par_LoopsizeRangeProb)  set_random_loopsize(par_LoopsizeRangeMin,par_LoopsizeRangeMax);
     if (KODE_Random() < par_LoopspeedRangeProb) set_random_loopspeed(par_LoopspeedRangeMin,par_LoopspeedRangeMax);
-    if (KODE_Random() < par_ReverseRangeProb) toggle_random_reverse();
-    if (KODE_Random() < par_FXRangeProb) set_random_fx(par_FXRangeMin,par_FXRangeMax);
+    if (KODE_Random() < par_OffsetRangeProb)    set_random_offset(par_OffsetRangeMin,par_OffsetRangeMax);
+    if (KODE_Random() < par_ReverseRangeProb)   toggle_random_reverse();
+    if (KODE_Random() < par_FXRangeProb)        set_random_fx(par_FXRangeMin,par_FXRangeMax);
   }
 
   //----------
 
   void prob_loop() {
-    if (KODE_Random() < par_LoopsizeLoopProb) set_random_loopsize(par_LoopsizeLoopMin,par_LoopsizeLoopMax);
-    if (KODE_Random() < par_LoopspeedLoopProb) set_random_loopspeed(par_LoopspeedLoopMin,par_LoopspeedLoopMax);
-    if (KODE_Random() < par_ReverseLoopProb) toggle_random_reverse();
-    if (KODE_Random() < par_FXLoopProb) set_random_fx(par_FXLoopMin,par_FXLoopMax);
+    if (KODE_Random() < par_LoopsizeLoopProb)   set_random_loopsize(par_LoopsizeLoopMin,par_LoopsizeLoopMax);
+    if (KODE_Random() < par_LoopspeedLoopProb)  set_random_loopspeed(par_LoopspeedLoopMin,par_LoopspeedLoopMax);
+    if (KODE_Random() < par_OffsetLoopProb)     set_random_offset(par_OffsetLoopMin,par_OffsetLoopMax);
+    if (KODE_Random() < par_ReverseLoopProb)    toggle_random_reverse();
+    if (KODE_Random() < par_FXLoopProb)         set_random_fx(par_FXLoopMin,par_FXLoopMax);
   }
 
 //------------------------------
@@ -286,6 +303,20 @@ private:
     float amount = range * KODE_Random();
     MLoopSpeed *= (AMin + amount);
     MLoopSpeed =  KODE_Clamp(MLoopSpeed, (1.0/16.0), 16.0);
+  }
+
+  //----------
+
+  void set_random_offset(int32_t AMin, int32_t AMax) {
+    if (AMin >= AMax) {
+      int32_t temp = AMin;
+      AMin = AMax;
+      AMax = temp;
+    }
+
+    int32_t num = KODE_RandomRangeInt(AMin,AMax);
+    MOffset = (float)num * MSliceLength;
+
   }
 
   //----------
@@ -327,6 +358,7 @@ private:
 
   void buffer_start() {
     MBufferPos = 0.0;
+//    MOffset = 0.0;
     MBufferWrapped = false;
     slice_start();
     MRangeActive = false;
@@ -345,6 +377,7 @@ private:
     MSliceWrapped = false;
     MRangeActive = false;
     MLoopActive = false;
+//    MOffset = 0.0;
     handle_next_slice(MSliceCounter);
   }
 
@@ -360,6 +393,7 @@ private:
     MSlicePos = 0.0;
     MSliceSpeed = 1.0;
     MSliceWrapped = false;
+    //MOffset = 0.0;
   }
 
   //----------
@@ -381,6 +415,9 @@ private:
 
   void range_start_prob() {
     if (KODE_Random() < par_RepeatProb) {
+
+MOffset = 0.0;
+
       prob_start();
       prob_range();
     }
@@ -399,6 +436,7 @@ private:
     MRangeNumSlices = ANumSlices;
     MRangeWrapped   = false;
     MFXAmount       = 0.0;
+//    MOffset         = 0.0;
   }
 
   //----------
@@ -415,6 +453,7 @@ private:
     MRangeWrapped   = false;
     loop_end();
     MFXAmount       = 0.0;
+//    MOffset         = 0.0;
 }
 
   //--------------------
@@ -447,6 +486,8 @@ private:
     if (AReverse) MLoopPos = MLoopLength - MLoopSpeed;
     else MLoopPos = 0.0;
 
+//    MOffset         = 0.0;
+
   }
 
   //----------
@@ -474,6 +515,9 @@ private:
     MLoopStart      = 0.0;
     MLoopWrapped    = false;
     MLoopCounter    = 0;
+
+//    MOffset         = 0.0;
+
   }
 
 //------------------------------
@@ -534,29 +578,11 @@ private:
         MRangeWrapped = true;
       }
       if (MLoopActive) {
-
-        //if (MLoopReverse) {
-        //  MLoopPos -= MLoopSpeed;
-        //  if (MLoopPos < 0.0) {
-        //    while (MLoopPos < 0.0) MLoopPos += MLoopLength;
-        //    MLoopWrapped = true;
-        //  }
-        //}
-        //else {
-
         MLoopPos += MLoopSpeed;
-
         if (MLoopPos >= MLoopLength) {
           MLoopPos = KODE_Modulo(MLoopPos,MLoopLength);
           MLoopWrapped = true;
         }
-
-        //}
-
-        //if ((MLoopPos < 0.0) || (MLoopPos >= MLoopLength)) MLoopWrapped = true;
-        //while (MLoopPos < 0.0) MLoopPos += MLoopLength;
-        //while (MLoopPos >= MLoopLength) MLoopPos -= MLoopLength;
-
         if ((MLoopPos >= MLoopLength) && (!MLoopReverse)) {
           while (MLoopPos >= MLoopLength) MLoopPos -= MLoopLength;
           MLoopWrapped = true;
@@ -637,9 +663,12 @@ if (MIsPlaying /*|| MMFreeWheeling*/) {
         else {
           MReadPos = MLoopStart + MLoopPos;
         }
+
+        MReadPos += MOffset;
+        MReadPos = KODE_Modulo (MReadPos,MBufferLength);
         uint32_t readpos = (uint32_t)MReadPos * 2;
 
-        readpos %= (BUFFERSIZE-1);
+        readpos %= (BUFFERSIZE-1); // needed ???
 
         out0 = MBuffer[readpos  ];
         out1 = MBuffer[readpos+1];

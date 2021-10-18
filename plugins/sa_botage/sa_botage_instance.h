@@ -144,6 +144,13 @@ public:
       case P_LOOPSPEED_LOOP_MIN:    MProcess.par_LoopspeedLoopMin   = AValue * 0.01; break;
       case P_LOOPSPEED_LOOP_MAX:    MProcess.par_LoopspeedLoopMax   = AValue * 0.01; break;
 
+      case P_OFFSET_RANGE_PROB:     MProcess.par_OffsetRangeProb    = AValue; break;
+      case P_OFFSET_RANGE_MIN:      MProcess.par_OffsetRangeMin     = AValue; break;
+      case P_OFFSET_RANGE_MAX:      MProcess.par_OffsetRangeMax     = AValue; break;
+      case P_OFFSET_LOOP_PROB:      MProcess.par_OffsetLoopProb     = AValue; break;
+      case P_OFFSET_LOOP_MIN:       MProcess.par_OffsetLoopMin      = AValue; break;
+      case P_OFFSET_LOOP_MAX:       MProcess.par_OffsetLoopMax      = AValue; break;
+
       case P_REVERSE_RANGE_PROB:    MProcess.par_ReverseRangeProb   = AValue; break;
       case P_REVERSE_LOOP_PROB:     MProcess.par_ReverseLoopProb    = AValue; break;
 
