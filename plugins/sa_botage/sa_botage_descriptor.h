@@ -74,7 +74,7 @@ public:
       setName("sa_botage");
     #endif
 
-    setVersion(0x00000008);
+    setVersion(0x00000009);
     setAuthor("skei.audio");
     setUrl("https://torhelgeskei.com");
     setEmail("tor.helge.skei@gmail.com");
@@ -94,43 +94,43 @@ public:
     appendOutput( new KODE_PluginPort("output_2") );
 
     appendParameter( new KODE_IntParameter(   "Beats",              4,    1, 8));
-    appendParameter( new KODE_IntParameter(   "Slices",             2,    1, 8));
+    appendParameter( new KODE_IntParameter(   "Slices",             1,    1, 8));
 
-    appendParameter( new KODE_FloatParameter( "Repeat Prob",        0.2   ));
-    appendParameter( new KODE_IntParameter(   "Repeat Slice Bits",  0b00000111,    0, 255 ));
-    appendParameter( new KODE_IntParameter(   "Repeat Split Bits",  0b00001110,    0, 255 ));
+    appendParameter( new KODE_FloatParameter( "Repeat Prob",        0.0   ));
+    appendParameter( new KODE_IntParameter(   "Repeat Slice Bits",  0b00000001,    0, 255 ));
+    appendParameter( new KODE_IntParameter(   "Repeat Split Bits",  0b00000001,    0, 255 ));
 
-    appendParameter( new KODE_FloatParameter( "Size",               0.2   ));
-    appendParameter( new KODE_PowParameter(   "min", "%",           75,   2, true, 50, 200 ));
-    appendParameter( new KODE_PowParameter(   "max", "%",           150,  2, true, 50, 200 ));
-    appendParameter( new KODE_FloatParameter( "",                   0.2   ));
-    appendParameter( new KODE_PowParameter(   "min", "%",           75,   2, true, 50, 200 ));
-    appendParameter( new KODE_PowParameter(   "max", "%",           150,  2, true, 50, 200 ));
+    appendParameter( new KODE_FloatParameter( "Size",               0.0   ));
+    appendParameter( new KODE_PowParameter(   "min", "%",           100,  2, true, 50, 200 ));
+    appendParameter( new KODE_PowParameter(   "max", "%",           100,  2, true, 50, 200 ));
+    appendParameter( new KODE_FloatParameter( "",                   0.0   ));
+    appendParameter( new KODE_PowParameter(   "min", "%",           100,  2, true, 50, 200 ));
+    appendParameter( new KODE_PowParameter(   "max", "%",           100,  2, true, 50, 200 ));
 
-    appendParameter( new KODE_FloatParameter( "Speed",              0.2   ));
-    appendParameter( new KODE_PowParameter(   "min", "%",           75,   2, true, 50, 200 ));
-    appendParameter( new KODE_PowParameter(   "max", "%",           150,  2, true, 50, 200 ));
-    appendParameter( new KODE_FloatParameter( "",                   0.2   ));
-    appendParameter( new KODE_PowParameter(   "min", "%",           75,   2, true, 50, 200 ));
-    appendParameter( new KODE_PowParameter(   "max", "%",           150,  2, true, 50, 200 ));
+    appendParameter( new KODE_FloatParameter( "Speed",              0.0   ));
+    appendParameter( new KODE_PowParameter(   "min", "%",           100,  2, true, 50, 200 ));
+    appendParameter( new KODE_PowParameter(   "max", "%",           100,  2, true, 50, 200 ));
+    appendParameter( new KODE_FloatParameter( "",                   0.0   ));
+    appendParameter( new KODE_PowParameter(   "min", "%",           100,  2, true, 50, 200 ));
+    appendParameter( new KODE_PowParameter(   "max", "%",           100,  2, true, 50, 200 ));
 
-    appendParameter( new KODE_FloatParameter( "Offset",             0.2   ));
+    appendParameter( new KODE_FloatParameter( "Offset",             0.0   ));
     appendParameter( new KODE_IntParameter(   "min", "sl",         -4,    -16, 16 ));
     appendParameter( new KODE_IntParameter(   "max", "sl",          4,    -16, 16 ));
-    appendParameter( new KODE_FloatParameter( "",                   0.2   ));
+    appendParameter( new KODE_FloatParameter( "",                   0.0   ));
     appendParameter( new KODE_IntParameter(   "min", "sl",         -4,    -16, 16 ));
     appendParameter( new KODE_IntParameter(   "max",  "sl",         4,    -16, 16 ));
 
-    appendParameter( new KODE_FloatParameter( "Reverse 1",          0.2   ));
-    appendParameter( new KODE_FloatParameter( "Reverse",            0.2   ));
+    appendParameter( new KODE_FloatParameter( "Reverse 1",          0.0   ));
+    appendParameter( new KODE_FloatParameter( "Reverse",            0.0   ));
 
     appendParameter( new KODE_IntParameter(   "FX multi",           0,    0, 1 ));
-    appendParameter( new KODE_FloatParameter( "FX 1",               0.2   ));
-    appendParameter( new KODE_PowParameter(   "min", "%",           75,   2, true, 50, 200 ));
-    appendParameter( new KODE_PowParameter(   "max", "%",           150,  2, true, 50, 200 ));
-    appendParameter( new KODE_FloatParameter( "FX",                 0.2   ));
-    appendParameter( new KODE_PowParameter(   "min", "%",           75,   2, true, 50, 200 ));
-    appendParameter( new KODE_PowParameter(   "max", "%",           150,  2, true, 50, 200 ));
+    appendParameter( new KODE_FloatParameter( "FX 1",               0.0   ));
+    appendParameter( new KODE_PowParameter(   "min", "%",           100,  2, true, 50, 200 ));
+    appendParameter( new KODE_PowParameter(   "max", "%",           100,  2, true, 50, 200 ));
+    appendParameter( new KODE_FloatParameter( "FX",                 0.0   ));
+    appendParameter( new KODE_PowParameter(   "min", "%",           100,  2, true, 50, 200 ));
+    appendParameter( new KODE_PowParameter(   "max", "%",           100,  2, true, 50, 200 ));
 
     appendParameter( new KODE_PowParameter(   "att", "ms",          1,    3,    true, 0, 100 ));
     appendParameter( new KODE_PowParameter(   "dec", "ms",          1,    3,    true, 0, 100 ));

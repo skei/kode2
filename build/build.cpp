@@ -54,6 +54,7 @@
   sa.botasje, botør
   sa.bre
   sa.crament
+  sa.crebleu
   sa.cred
   sa.crifice
   sa.crilege

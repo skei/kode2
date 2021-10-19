@@ -177,60 +177,32 @@ public:
 private:
 //------------------------------
 
-  // called from:
-  //   process
-
-  void handle_playback_start() {
-    buffer_start();
+  void buffer_start() {
+    MBufferPos      = 0.0;
+    //MOffset       = 0.0;
+    MBufferWrapped  = false;
+    /* slice_start(); */
+    MSliceCounter   = 0;
+    MSlicePos       = 0.0;
+    MSliceSpeed     = 1.0;
+    MSliceWrapped   = false;
+    //MOffset       = 0.0;
+    MRangeActive    = false;
+    MLoopActive     = false;
+    handle_next_slice(MSliceCounter);
   }
 
   //----------
-
-  // called from:
-  //   process
-
-  void handle_playback_stop() {
-  }
-
-  //----------
-
-  void handle_tempo(float ATempo) {
-    if (ATempo != MPrevTempo) {
-      //KODE_Print("tempo %f\n",ATempo);
-      MRangeActive  = false;
-      MLoopActive   = false;
-      MLoopReverse  = false;
-      //MBufferPos    = 0;
-      //MRangePos     = 0;
-      MSlicePos     = 0;
-      //MLoopPos      = 0;
-      //MOffset       = 0;
-    }
-    MPrevTempo = ATempo;
-  }
-
-  //----------
-
-  // called from:
-  //   buffer_start
-  //   buffer_wraparound
-  //   slice_wraparound
 
   void handle_next_slice(uint32_t ACounter) {
-    if (MRangeActive) {
-    }
-    else {
+    if (!MRangeActive) {
       if (KODE_Random() < par_RepeatProb) {
-        prob_start();
         prob_range();
       }
     }
   }
 
   //----------
-
-  // called from:
-  //   loop_wraparound
 
   void handle_next_loop(uint32_t ACounter) {
     if (MLoopActive) {
@@ -240,23 +212,34 @@ private:
 
   //----------
 
-  void prob_start() {
-
+  void prob_range() {
     MOffset = 0.0;
-
     uint32_t slicesleft = ((par_BufferNumBeats * par_BufferNumSlices) - MSliceCounter);
     uint32_t numslices = KODE_MaxI(1, KODE_RandomIntFromBits(par_RepeatSliceBits) );
     numslices = KODE_MinI(numslices,slicesleft);
-    range_start(numslices);
+    MRangeActive    = true;
+    MRangeStart     = MBufferPos;
+    MRangePos       = 0.0;
+    MRangeLength    = (MSliceLength * (float)numslices) - 1.0;
+    MRangeNumSlices = numslices;
+    MRangeWrapped   = false;
+    MFXAmount       = 0.0;
+    //MOffset         = 0.0;
     uint32_t numdiv = KODE_MaxI(1, KODE_RandomIntFromBits(par_RepeatSplitBits) );
-    loop_start(MBufferPos,numdiv,1.0,false);
+    MLoopActive     = true;
+    MLoopNumDivide  = KODE_MaxI(1,numdiv);
+    MLoopStart      = MBufferPos;
+    MLoopSpeed      = 1.0;
+    float mult      = 1.0 / (float)MLoopNumDivide;
+    MLoopLength     = MRangeLength * mult;
+    MLoopReverse    = false;
+    MLoopWrapped    = false;
+    MLoopCounter    = 0;
+    //if (MLoopReverse) MLoopPos = MLoopLength - MLoopSpeed;
+    //else
+    MLoopPos = 0.0;
+    //MOffset         = 0.0;
 
-
-  }
-
-  //----------
-
-  void prob_range() {
     if (KODE_Random() < par_LoopsizeRangeProb)  set_random_loopsize(par_LoopsizeRangeMin,par_LoopsizeRangeMax);
     if (KODE_Random() < par_LoopspeedRangeProb) set_random_loopspeed(par_LoopspeedRangeMin,par_LoopspeedRangeMax);
     if (KODE_Random() < par_OffsetRangeProb)    set_random_offset(par_OffsetRangeMin,par_OffsetRangeMax);
@@ -275,7 +258,7 @@ private:
   }
 
 //------------------------------
-//
+// 'modulation'
 //------------------------------
 
   void set_random_loopsize(float AMin, float AMax) {
@@ -345,219 +328,61 @@ private:
   }
 
 //------------------------------
-private:
+// process
 //------------------------------
-
-  //--------------------
-  // buffer
-  //--------------------
-
-  // called from:
-  //   start
-  //   handle_playback_start
-
-  void buffer_start() {
-    MBufferPos = 0.0;
-//    MOffset = 0.0;
-    MBufferWrapped = false;
-    slice_start();
-    MRangeActive = false;
-    MLoopActive = false;
-    handle_next_slice(MSliceCounter);
-  }
-
-  //----------
-
-  // called from:
-  //   pre_process
-
-  void buffer_wraparound() {
-    MSliceCounter = 0;
-    MSlicePos = 0.0;
-    MSliceWrapped = false;
-    MRangeActive = false;
-    MLoopActive = false;
-//    MOffset = 0.0;
-    handle_next_slice(MSliceCounter);
-  }
-
-  //--------------------
-  // slice
-  //--------------------
-
-  // called from:
-  //   buffer_start
-
-  void slice_start() {
-    MSliceCounter = 0;
-    MSlicePos = 0.0;
-    MSliceSpeed = 1.0;
-    MSliceWrapped = false;
-    //MOffset = 0.0;
-  }
-
-  //----------
-
-  // called from:
-  //   pre_process
-
-  void slice_wraparound() {
-    MSliceCounter += 1;
-    handle_next_slice(MSliceCounter);
-  }
-
-  //--------------------
-  // range
-  //--------------------
-
-  // called from:
-  //   handle_next_slice
-
-  void range_start_prob() {
-    if (KODE_Random() < par_RepeatProb) {
-
-MOffset = 0.0;
-
-      prob_start();
-      prob_range();
-    }
-  }
-
-  //----------
-
-  // called from:
-  //   range_start_prob
-
-  void range_start(uint32_t ANumSlices) {
-    MRangeActive    = true;
-    MRangeStart     = MBufferPos;
-    MRangePos       = 0.0;
-    MRangeLength    = (MSliceLength * (float)ANumSlices) - 1.0;
-    MRangeNumSlices = ANumSlices;
-    MRangeWrapped   = false;
-    MFXAmount       = 0.0;
-//    MOffset         = 0.0;
-  }
-
-  //----------
-
-  // called from:
-  //   pre_process
-
-  void range_end() {
-    MRangeActive    = false;
-    MRangeStart     = 0.0;
-    MRangePos       = 0.0;
-    MRangeLength    = 0.0;
-    MRangeNumSlices = 0;
-    MRangeWrapped   = false;
-    loop_end();
-    MFXAmount       = 0.0;
-//    MOffset         = 0.0;
-}
-
-  //--------------------
-  // loop
-  //--------------------
-
-  // called from:
-  //   handle_next_loop
-
-  //void loop_start_prob() {
-  //}
-
-  //----------
-
-  // called from:
-  //   range_start_prob
-
-  void loop_start(float AStartPos, uint32_t ANumDiv=1, float ASpeed=1.0, bool AReverse=false) {
-
-    MLoopActive     = true;
-    MLoopNumDivide  = KODE_MaxI(1,ANumDiv);
-    MLoopStart      = AStartPos;
-    MLoopSpeed      = ASpeed;
-    float mult      = 1.0 / (float)MLoopNumDivide;
-    MLoopLength     = MRangeLength * mult;
-    MLoopReverse    = AReverse;
-    MLoopWrapped    = false;
-    MLoopCounter    = 0;
-
-    if (AReverse) MLoopPos = MLoopLength - MLoopSpeed;
-    else MLoopPos = 0.0;
-
-//    MOffset         = 0.0;
-
-  }
-
-  //----------
-
-  // called from:
-  //   pre_process
-
-  void loop_wraparound() {
-    MLoopCounter += 1;
-    handle_next_loop(MLoopCounter);
-  }
-
-  //----------
-
-  // called from:
-  //   range_end
-
-  void loop_end() {
-    MLoopActive     = false;
-    MLoopNumDivide  = 0;;
-    MLoopPos        = 0.0;
-    MLoopLength     = 0.0;
-    MLoopSpeed      = 0.0;
-    MLoopReverse    = false;
-    MLoopStart      = 0.0;
-    MLoopWrapped    = false;
-    MLoopCounter    = 0;
-
-//    MOffset         = 0.0;
-
-  }
-
-//------------------------------
-//
-//------------------------------
-
-  // called from:
-  //   process
 
   void pre_process() {
     if (MBufferWrapped) {
-      MBufferWrapped = false;
-      buffer_wraparound();
+      MBufferWrapped  = false;
+      MSliceCounter   = 0;
+      MSlicePos       = 0.0;
+      MSliceWrapped   = false;
+      MRangeActive    = false;
+      MLoopActive     = false;
+      //MOffset       = 0.0;
+      handle_next_slice(MSliceCounter);
     }
     else {
       if (MRangeActive) {
         if (MRangeWrapped) {
-          MRangeWrapped = false;
-          range_end();
+          MRangeWrapped   = false;
+          MRangeActive    = false;
+          MRangeStart     = 0.0;
+          MRangePos       = 0.0;
+          MRangeLength    = 0.0;
+          MRangeNumSlices = 0;
+          MRangeWrapped   = false;
+          MLoopActive     = false;
+          MLoopNumDivide  = 0;;
+          MLoopPos        = 0.0;
+          MLoopLength     = 0.0;
+          MLoopSpeed      = 0.0;
+          MLoopReverse    = false;
+          MLoopStart      = 0.0;
+          MLoopWrapped    = false;
+          MLoopCounter    = 0;
+          MFXAmount       = 0.0;
+          //MOffset         = 0.0;
         }
         else {
           if (MLoopActive) {
             if (MLoopWrapped) {
               MLoopWrapped = false;
-              loop_wraparound();
+              MLoopCounter += 1;
+              handle_next_loop(MLoopCounter);
             }
           } // loop_active
         }
       } // range_active
       if (MSliceWrapped) {
         MSliceWrapped = false;
-        slice_wraparound();
+        MSliceCounter += 1;
+        handle_next_slice(MSliceCounter);
       }
     } // buffer_wrapped
   }
 
   //----------
-
-  // called from:
-  //   process
 
   void post_process() {
     MBufferPos  += 1.0;
@@ -592,7 +417,6 @@ MOffset = 0.0;
           while (MLoopPos < 0.0) MLoopPos += MLoopLength;
           MLoopWrapped = true;
         }
-
       } // loop_active
     } // range_active
   }
@@ -607,20 +431,32 @@ public:
     KODE_Assert(AContext->samplerate > 0.0);
     KODE_Assert(AContext->tempo > 0.0);
 
-    // start/stop
+    // playing
 
     MIsPlaying = (AContext->playstate & KODE_PLUGIN_PLAYSTATE_PLAYING);
     if (MIsPlaying & !MWasPlaying) {
-      handle_playback_start();
+      buffer_start();
+
     }
     if (MWasPlaying & !MIsPlaying) {
-      handle_playback_stop();
     }
     MWasPlaying = MIsPlaying;
 
-    //
+    // tempo
 
-    handle_tempo(AContext->tempo);
+    if (AContext->tempo != MPrevTempo) {
+      MRangeActive  = false;
+      MLoopActive   = false;
+      MLoopReverse  = false;
+      //MBufferPos    = 0;
+      //MRangePos     = 0;
+      MSlicePos     = 0;
+      //MLoopPos      = 0;
+      //MOffset       = 0;
+    }
+    MPrevTempo = AContext->tempo;
+
+    // precalc
 
     MBeatPos          = KODE_Modulo(AContext->beatpos,(float)par_BufferNumBeats);
     MBlockSize        = AContext->numsamples;
@@ -630,10 +466,6 @@ public:
     MBufferLength     = MSamplesPerBeat * par_BufferNumBeats;
     MSliceLength      = MSamplesPerBeat / par_BufferNumSlices;
     MBeatSpeed        = MBeatsPerSample;
-
-    //if (AContext->tempo != MPrevTempo) {
-    //  handle_tempo(AContext->tempo)
-    //}
 
     //
 
@@ -647,63 +479,51 @@ public:
       float out0 = in0;
       float out1 = in1;
 
-if (MIsPlaying /*|| MMFreeWheeling*/) {
-
-      pre_process();
-      uint32_t writepos = (uint32_t)MBufferPos * 2;
-
-      writepos %= (BUFFERSIZE-1);
-
-      MBuffer[writepos  ] = in0;
-      MBuffer[writepos+1] = in1;
-      if (MLoopActive) {
-        if (MLoopReverse) {
-          MReadPos = MLoopStart + MLoopLength - MLoopPos;
+      if (MIsPlaying /*|| MMFreeWheeling*/) {
+        pre_process();
+        // writepos
+        uint32_t writepos = (uint32_t)MBufferPos * 2;
+        writepos %= (BUFFERSIZE-1);
+        MBuffer[writepos  ] = in0;
+        MBuffer[writepos+1] = in1;
+        // readpos
+        if (MLoopActive) {
+          if (MLoopReverse) {
+            MReadPos = MLoopStart + MLoopLength - MLoopPos;
+          }
+          else {
+            MReadPos = MLoopStart + MLoopPos;
+          }
+          MReadPos += MOffset;
+          MReadPos = KODE_Modulo (MReadPos,MBufferLength);
+          uint32_t readpos = (uint32_t)MReadPos * 2;
+          readpos %= (BUFFERSIZE-1); // needed ???
+          out0 = MBuffer[readpos  ];
+          out1 = MBuffer[readpos+1];
         }
         else {
-          MReadPos = MLoopStart + MLoopPos;
+          MReadPos = MBufferPos;
         }
-
-        MReadPos += MOffset;
-        MReadPos = KODE_Modulo (MReadPos,MBufferLength);
-        uint32_t readpos = (uint32_t)MReadPos * 2;
-
-        readpos %= (BUFFERSIZE-1); // needed ???
-
-        out0 = MBuffer[readpos  ];
-        out1 = MBuffer[readpos+1];
-      }
-      else {
-        MReadPos = MBufferPos;
-      }
-
-      // envelopes
-
-      float env = 1.0f;
-      float sa = par_EnvSliceAtt * MSliceLength;
-      float sd = par_EnvSliceDec * MSliceLength;
-      if ((sa > 0) && (MSlicePos < sa)) env *= MSlicePos / sa;
-      if ((sd > 0) && (MSlicePos >= (MSliceLength - sd))) env *= (MSliceLength - MSlicePos) / sd;
-      if (MLoopActive) {
-        float la = par_EnvLoopAtt * (AContext->samplerate / 10.0); // 0.01 in on_parameter,  1/100 / 10 = 1/1000
-        float ld = par_EnvLoopDec * (AContext->samplerate / 10.0);
-        if ((la > 0) && (MLoopPos < la)) env *= MLoopPos / la;
-        if ((ld > 0) && (MLoopPos >= (MLoopLength - ld))) env *= (MLoopLength - MLoopPos) / ld;
-      }
-      out0 *= env;
-      out1 *= env;
-
-      //
-
-      post_process();
-
-} // playing
-
+        // envelopes
+        float env = 1.0f;
+        float sa = par_EnvSliceAtt * MSliceLength;
+        float sd = par_EnvSliceDec * MSliceLength;
+        if ((sa > 0) && (MSlicePos < sa)) env *= MSlicePos / sa;
+        if ((sd > 0) && (MSlicePos >= (MSliceLength - sd))) env *= (MSliceLength - MSlicePos) / sd;
+        if (MLoopActive) {
+          float la = par_EnvLoopAtt * (AContext->samplerate / 10.0); // 0.01 in on_parameter,  1/100 / 10 = 1/1000
+          float ld = par_EnvLoopDec * (AContext->samplerate / 10.0);
+          if ((la > 0) && (MLoopPos < la)) env *= MLoopPos / la;
+          if ((ld > 0) && (MLoopPos >= (MLoopLength - ld))) env *= (MLoopLength - MLoopPos) / ld;
+        }
+        out0 *= env;
+        out1 *= env;
+        //
+        post_process();
+      } // playing
       *output0++ = out0;
       *output1++ = out1;
     }
-    //KODE_DPrint("%f\n",MLoopPos);
-
   }
 
   //----------
