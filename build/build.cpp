@@ -20,6 +20,7 @@
 //
 //----------------------------------------------------------------------
 
+#include "../test/test_clap.cpp"
 //#include "../test/test_widget.cpp"
 
 //----------------------------------------------------------------------
@@ -31,7 +32,7 @@
 
 
 //#include "../plugins/kode_debug/kode_debug.cpp"
-#include "../plugins/sa_botage/sa_botage.cpp"
+//#include "../plugins/sa_botage/sa_botage.cpp"
 
 
 

@@ -1,6 +1,6 @@
 # depslib dependency file v1.0
-1634339257 source:/DISKS/sda2/code/git/kode2/build/build.cpp
-	"../plugins/sa_botage/sa_botage.cpp"
+1634669743 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+	"../test/test_clap.cpp"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
 	"kode_config.h"
@@ -1427,4 +1427,7 @@
 	"sa_botage_logo.h"
 
 1634393612 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_logo.h
+
+1634669817 /DISKS/sda2/code/git/kode2/test/test_clap.cpp
+	"kode.h"
 
