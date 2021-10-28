@@ -28,18 +28,13 @@ public:
   : KODE_Instance(ADescriptor) {
   }
 
-  //----------
-
-  //virtual ~myInstance() {
-  //}
-
 //------------------------------
 public:
 //------------------------------
 
   void update_waveform() {
     if (MEditor) {
-      KODE_WaveformWidget* waveform = MEditor->getWaveformWidget();//wdg_Waveform;
+      KODE_WaveformWidget* waveform = MEditor->getWaveformWidget();
       if (waveform) {
         waveform->setBuffer(MProcess.MBuffer);
         waveform->setBufferSize(MProcess.MBufferLength);
@@ -87,30 +82,9 @@ public:
 public:
 //------------------------------
 
-  //void on_plugin_open() final {}
-  //void on_plugin_close() final {}
-  //void on_plugin_initialize() final {}
-  //void on_plugin_terminate() final {}
-  //void on_plugin_activate() final {}
-  //void on_plugin_deactivate() final {}
-
-  //----------
-
   void on_plugin_prepare(float ASamplerate, uint32_t ABlocksize) final {
-    //KODE_PRINT;
-//    MProcess.par_RepeatProb       = 0.5;
-//    MProcess.par_RepeatMinSlices  = 1;
-//    MProcess.par_RepeatMaxSlices  = 4;
-//    MProcess.par_RepeatMinDivide  = 1;
-//    MProcess.par_RepeatMaxDivide  = 4;
     MProcess.start();
   }
-
-  //----------
-
-  //uint32_t on_plugin_saveState(void** ABuffer, uint32_t AMode) final {}
-  //void on_plugin_restoreState(uint32_t ASize, void* APointer, uint32_t AMode) final {}
-  //void on_plugin_midi(uint32_t AOffset, uint8_t AMsg1, uint8_t AMsg2, uint8_t AMsg3, uint32_t AMode=0) final {}
 
   //----------
 
@@ -120,46 +94,39 @@ public:
     #define UPDATE
   #endif
 
+  //
+
   void on_plugin_parameter(uint32_t AOffset, uint32_t AIndex, float AValue, uint32_t AMode=0) final {
-    //KODE_Print("ofs %i idx %i val %.3f mode %i\n",AOffset,AIndex,AValue,AMode);
     switch (AIndex) {
-
-      case P_BUFFER_NUM_BEATS:      MProcess.par_BufferNumBeats     = AValue; UPDATE; break;
-      case P_BUFFER_NUM_SLICES:     MProcess.par_BufferNumSlices    = AValue; UPDATE; break;
-
+      case P_BUFFER_NUM_BEATS:      MProcess.par_BufferNumBeats     = AValue; MProcess.start(); UPDATE; break;
+      case P_BUFFER_NUM_SLICES:     MProcess.par_BufferNumSlices    = AValue; MProcess.start(); UPDATE; break;
       case P_ENV_LOOP_ATT:          MProcess.par_EnvLoopAtt         = AValue * 0.01; break;
       case P_ENV_LOOP_DEC:          MProcess.par_EnvLoopDec         = AValue * 0.01; break;
       case P_ENV_SLICE_ATT:         MProcess.par_EnvSliceAtt        = AValue * 0.01; break;
       case P_ENV_SLICE_DEC:         MProcess.par_EnvSliceDec        = AValue * 0.01; break;
-
       case P_REPEAT_PROB:           MProcess.par_RepeatProb         = AValue; break;
       case P_REPEAT_SLICE_BITS:     MProcess.par_RepeatSliceBits    = AValue; break;
       case P_REPEAT_SPLIT_BITS:     MProcess.par_RepeatSplitBits    = AValue; break;
-
       case P_LOOPSIZE_RANGE_PROB:   MProcess.par_LoopsizeRangeProb  = AValue; break;
       case P_LOOPSIZE_RANGE_MIN:    MProcess.par_LoopsizeRangeMin   = AValue * 0.01; break;
       case P_LOOPSIZE_RANGE_MAX:    MProcess.par_LoopsizeRangeMax   = AValue * 0.01; break;
       case P_LOOPSIZE_LOOP_PROB:    MProcess.par_LoopsizeLoopProb   = AValue; break;
       case P_LOOPSIZE_LOOP_MIN:     MProcess.par_LoopsizeLoopMin    = AValue * 0.01; break;
       case P_LOOPSIZE_LOOP_MAX:     MProcess.par_LoopsizeLoopMax    = AValue * 0.01; break;
-
       case P_LOOPSPEED_RANGE_PROB:  MProcess.par_LoopspeedRangeProb = AValue; break;
       case P_LOOPSPEED_RANGE_MIN:   MProcess.par_LoopspeedRangeMin  = AValue * 0.01; break;
       case P_LOOPSPEED_RANGE_MAX:   MProcess.par_LoopspeedRangeMax  = AValue * 0.01; break;
       case P_LOOPSPEED_LOOP_PROB:   MProcess.par_LoopspeedLoopProb  = AValue; break;
       case P_LOOPSPEED_LOOP_MIN:    MProcess.par_LoopspeedLoopMin   = AValue * 0.01; break;
       case P_LOOPSPEED_LOOP_MAX:    MProcess.par_LoopspeedLoopMax   = AValue * 0.01; break;
-
       case P_OFFSET_RANGE_PROB:     MProcess.par_OffsetRangeProb    = AValue; break;
       case P_OFFSET_RANGE_MIN:      MProcess.par_OffsetRangeMin     = AValue; break;
       case P_OFFSET_RANGE_MAX:      MProcess.par_OffsetRangeMax     = AValue; break;
       case P_OFFSET_LOOP_PROB:      MProcess.par_OffsetLoopProb     = AValue; break;
       case P_OFFSET_LOOP_MIN:       MProcess.par_OffsetLoopMin      = AValue; break;
       case P_OFFSET_LOOP_MAX:       MProcess.par_OffsetLoopMax      = AValue; break;
-
       case P_REVERSE_RANGE_PROB:    MProcess.par_ReverseRangeProb   = AValue; break;
       case P_REVERSE_LOOP_PROB:     MProcess.par_ReverseLoopProb    = AValue; break;
-
       case P_FX_MULTI:              MProcess.par_FXMulti            = AValue; break;
       case P_FX_RANGE_PROB:         MProcess.par_FXRangeProb        = AValue; break;
       case P_FX_RANGE_MIN:          MProcess.par_FXRangeMin         = AValue * 0.01; break;
@@ -167,13 +134,14 @@ public:
       case P_FX_LOOP_PROB:          MProcess.par_FXLoopProb         = AValue; break;
       case P_FX_LOOP_MIN:           MProcess.par_FXLoopMin          = AValue * 0.01; break;
       case P_FX_LOOP_MAX:           MProcess.par_FXLoopMax          = AValue * 0.01; break;
-
       case P_FX_FILTER_PROB:        MProcess.par_FXFilterProb       = AValue; break;
       case P_FX_FILTER_FREQ:        MProcess.par_FXFilterFreq       = AValue; break;
-      case P_FX_FILTER_RES:         MProcess.par_FXFilterRes        = AValue; break;
-
+      case P_FX_FILTER_BW:          MProcess.par_FXFilterBW         = AValue; break;
+      case P_FX_FILTER_TYPE:        MProcess.par_FXFilterType       = AValue; break;
     }
   }
+
+  //
 
   #undef UPDATE
 
@@ -212,49 +180,6 @@ public:
   }
 
   #endif
-
-//------------------------------
-private:
-//------------------------------
-
-  //void queueProcessMessage(uint32_t AMessage) {
-  //  MProcessMessageQueue.write(AMessage);
-  //}
-
-  //----------
-
-  //void queueGuiMessage(uint32_t AMessage) {
-  //  MGuiMessageQueue.write(AMessage);
-  //}
-
-  //----------
-
-  //void flushProcessMessages() {
-  //  uint32_t message = 0;
-  //  while (MProcessMessageQueue.read(&message)) {
-  //    //KODE_Print("%i\n",message);
-  //  }
-  //}
-
-  //----------
-
-  //void flushGuiMessages() {
-  //  uint32_t message = 0;
-  //  while (MGuiMessageQueue.read(&message)) {
-  //    //KODE_Print("%i\n",message);
-  //  }
-  //}
-
-  //----------
-
-  //void recalc(KODE_ProcessContext* AContext) {
-  //  //KODE_PRINT;
-  //}
-
-  //----------
-
-  //void processSample(KODE_ProcessContext* AContext, float spl0, float spl1) {
-  //}
 
 };
 

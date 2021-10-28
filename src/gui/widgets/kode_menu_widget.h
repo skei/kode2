@@ -33,7 +33,7 @@ protected:
 
   KODE_MenuListener*  MListener     = KODE_NULL;
   KODE_MenuItems      MItems;
-  uint32_t            MBorderSize   = 0;//1;
+  uint32_t            MBorderSize   = 5; //0; //1;
   float               MMenuWidth    = 96;
   float               MMenuHeight   = 16;
   uint32_t            MItemWidth    = 96;

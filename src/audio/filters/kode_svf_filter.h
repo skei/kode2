@@ -28,8 +28,8 @@ class KODE_SvfFilter {
     uint32_t  MMode = kft_none;
     float     MFreq = 1;
     float     MBW   = 0;
-    float     z1 = 0;
-    float     z2 = 0;
+    float     z1    = 0;
+    float     z2    = 0;
 
   public:
 
@@ -48,10 +48,11 @@ class KODE_SvfFilter {
     }
 
     void setMode(uint32_t AMode) {
+      //KODE_Print("%i\n",AMode);
       MMode = AMode;
       //z1 = 0;
       //z2 = 0;
-      reset();
+      //reset();
     }
 
     void setFreq(float AFreq) {
@@ -68,7 +69,7 @@ class KODE_SvfFilter {
 
     float process(float AValue) {
       //result := 0;
-      if (MMode==0) return AValue;
+      if (MMode==kft_none) return AValue;
       else {
         float L   = z2 + MFreq * z1;
         float H   = AValue - L - MBW   * z1;
