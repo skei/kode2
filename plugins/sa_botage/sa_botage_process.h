@@ -6,6 +6,8 @@
 #include "base/utils/kode_random.h"
 #include "plugin/kode_process_context.h"
 
+#include "audio/filters/kode_rc2_filter.h"
+
 //----------------------------------------------------------------------
 
 /*
@@ -65,6 +67,11 @@ public:
   uint32_t  par_BufferNumBeats      = 0;
   uint32_t  par_BufferNumSlices     = 0;
 
+  float     par_EnvLoopAtt          = 0.0;
+  float     par_EnvLoopDec          = 0.0;
+  float     par_EnvSliceAtt         = 0.0;
+  float     par_EnvSliceDec         = 0.0;
+
   float     par_RepeatProb          = 0.0;
   uint32_t  par_RepeatSliceBits     = 0;
   uint32_t  par_RepeatSplitBits     = 0;
@@ -101,10 +108,21 @@ public:
   float     par_FXLoopMin           = 0.0;
   float     par_FXLoopMax           = 0.0;
 
-  float     par_EnvLoopAtt          = 0.0;
-  float     par_EnvLoopDec          = 0.0;
-  float     par_EnvSliceAtt         = 0.0;
-  float     par_EnvSliceDec         = 0.0;
+  float     par_FXFilterProb        = 0.0;
+  float     par_FXFilterFreq        = 0.0;
+  float     par_FXFilterRes         = 0.0;
+
+//------------------------------
+private:
+//------------------------------
+
+  KODE_Rc2Filter        MFilter0;
+  KODE_Rc2Filter        MFilter1;
+
+  //sa_botage_filter      MFilter;
+  //sa_botage_reverb      Mreverb;
+  //sa_botage_delay       MDelaay;
+  //sa_botage_distortion  MDistortion;
 
 //------------------------------
 //private:
@@ -151,9 +169,10 @@ public:
   bool      MLoopWrapped        = false;
   uint32_t  MLoopNumDivide      = 0;
   uint32_t  MLoopCounter        = 0;
-  float     MFXAmount           = 0;
-
+  float     MFXAmount           = 0.0;
   float     MOffset             = 0.0;
+  bool      MFilterActive       = false;
+  float     MFilterFreq         = 0.0;
 
 //------------------------------
 public:
@@ -213,48 +232,136 @@ private:
   //----------
 
   void prob_range() {
-    MOffset = 0.0;
     uint32_t slicesleft = ((par_BufferNumBeats * par_BufferNumSlices) - MSliceCounter);
-    uint32_t numslices = KODE_MaxI(1, KODE_RandomIntFromBits(par_RepeatSliceBits) );
-    numslices = KODE_MinI(numslices,slicesleft);
-    MRangeActive    = true;
-    MRangeStart     = MBufferPos;
-    MRangePos       = 0.0;
-    MRangeLength    = (MSliceLength * (float)numslices) - 1.0;
-    MRangeNumSlices = numslices;
-    MRangeWrapped   = false;
-    MFXAmount       = 0.0;
-    //MOffset         = 0.0;
-    uint32_t numdiv = KODE_MaxI(1, KODE_RandomIntFromBits(par_RepeatSplitBits) );
-    MLoopActive     = true;
-    MLoopNumDivide  = KODE_MaxI(1,numdiv);
-    MLoopStart      = MBufferPos;
-    MLoopSpeed      = 1.0;
-    float mult      = 1.0 / (float)MLoopNumDivide;
-    MLoopLength     = MRangeLength * mult;
-    MLoopReverse    = false;
-    MLoopWrapped    = false;
-    MLoopCounter    = 0;
-    //if (MLoopReverse) MLoopPos = MLoopLength - MLoopSpeed;
-    //else
-    MLoopPos = 0.0;
-    //MOffset         = 0.0;
+    uint32_t numslices  = KODE_MaxI(1, KODE_RandomIntFromBits(par_RepeatSliceBits) );
+    numslices           = KODE_MinI(numslices,slicesleft);
+    MRangeActive        = true;
+    MRangeStart         = MBufferPos;
+    MRangePos           = 0.0;
+    MRangeLength        = (MSliceLength * (float)numslices) - 1.0;
+    MRangeNumSlices     = numslices;
+    MRangeWrapped       = false;
+    uint32_t numdiv     = KODE_MaxI(1, KODE_RandomIntFromBits(par_RepeatSplitBits) );
+    MLoopActive         = true;
+    MLoopNumDivide      = KODE_MaxI(1,numdiv);
+    MLoopStart          = MBufferPos;
+    MLoopSpeed          = 1.0;
+    float mult          = 1.0 / (float)MLoopNumDivide;
+    MLoopLength         = MRangeLength * mult;
+    MLoopReverse        = false;
+    MLoopWrapped        = false;
+    MLoopCounter        = 0;
+    MLoopPos            = 0.0;
+    MOffset             = 0.0;
+    MFXAmount           = 0.0;
+    MFilterActive       = false;
+    MFilterFreq         = par_FXFilterFreq;
 
     if (KODE_Random() < par_LoopsizeRangeProb)  set_random_loopsize(par_LoopsizeRangeMin,par_LoopsizeRangeMax);
     if (KODE_Random() < par_LoopspeedRangeProb) set_random_loopspeed(par_LoopspeedRangeMin,par_LoopspeedRangeMax);
     if (KODE_Random() < par_OffsetRangeProb)    set_random_offset(par_OffsetRangeMin,par_OffsetRangeMax);
     if (KODE_Random() < par_ReverseRangeProb)   toggle_random_reverse();
-    if (KODE_Random() < par_FXRangeProb)        set_random_fx(par_FXRangeMin,par_FXRangeMax);
+    if (KODE_Random() < par_FXRangeProb)        MFXAmount = get_random_fx(par_FXRangeMin,par_FXRangeMax);
+
+    if (par_FXMulti) {
+      if (KODE_Random() < par_FXFilterProb) {
+        MFilterActive = true;
+        //set_random_filter();
+        //MFilterFreq *= MFXAmount;
+        MFilterFreq *= (par_FXRangeMin + MFXAmount);
+        MFilterFreq = KODE_Clamp(MFilterFreq, 0, 1);
+      }
+      //if (KODE_Random() < par_FXDistortionProb) {
+      //}
+      //if (KODE_Random() < par_FXDelayProb) {
+      //}
+      //if (KODE_Random() < par_FXReverbProb) {
+      //}
+    }
+    else { // single
+      //uint32_t rnd = KODE_RandomRangeInt(0,4);
+      //switch(rnd) {
+      //  case 0:
+      //    break;
+      //  case 1:
+          if (KODE_Random() < par_FXFilterProb) {
+            MFilterActive = true;
+            //set_random_filter();
+            //MFilterFreq *= MFXAmount;
+            MFilterFreq *= (par_FXRangeMin + MFXAmount);
+            MFilterFreq = KODE_Clamp(MFilterFreq, 0, 1);
+          }
+      //    break;
+      //  case 2:
+      //    /* distortion */
+      //    break;
+      //  case 3:
+      //    /* delay */
+      //    break;
+      //  case 4:
+      //    /* reverb */
+      //    break;
+      //}
+    }
+
   }
 
   //----------
 
   void prob_loop() {
+
+    float amount = 1.0;
+
     if (KODE_Random() < par_LoopsizeLoopProb)   set_random_loopsize(par_LoopsizeLoopMin,par_LoopsizeLoopMax);
     if (KODE_Random() < par_LoopspeedLoopProb)  set_random_loopspeed(par_LoopspeedLoopMin,par_LoopspeedLoopMax);
     if (KODE_Random() < par_OffsetLoopProb)     set_random_offset(par_OffsetLoopMin,par_OffsetLoopMax);
     if (KODE_Random() < par_ReverseLoopProb)    toggle_random_reverse();
-    if (KODE_Random() < par_FXLoopProb)         set_random_fx(par_FXLoopMin,par_FXLoopMax);
+    if (KODE_Random() < par_FXLoopProb)         amount = get_random_fx(par_FXLoopMin,par_FXLoopMax);
+
+    if (par_FXMulti) {
+      //if (KODE_Random() < par_FXFilterProb) {
+      if (KODE_Random() < par_FXLoopProb) {
+//        MFilterActive = true;
+        //set_random_filter();
+        //MFilterFreq *= MFXAmount;
+        MFilterFreq *= (par_FXLoopMin + amount);
+        MFilterFreq = KODE_Clamp(MFilterFreq, 0, 1);
+      }
+      //if (KODE_Random() < par_FXDistortionProb) {
+      //}
+      //if (KODE_Random() < par_FXDelayProb) {
+      //}
+      //if (KODE_Random() < par_FXReverbProb) {
+      //}
+    }
+    else { // single
+      //uint32_t rnd = KODE_RandomRangeInt(0,4);
+      //switch(rnd) {
+      //  case 0:
+      //    break;
+      //  case 1:
+          //if (KODE_Random() < par_FXFilterProb) {
+          if (KODE_Random() < par_FXLoopProb) {
+//            MFilterActive = true;
+            //set_random_filter();
+            //MFilterFreq *= MFXAmount;
+            MFilterFreq *= (par_FXRangeMin + MFXAmount);
+            MFilterFreq = KODE_Clamp(MFilterFreq, 0, 1);
+          }
+      //    break;
+      //  case 2:
+      //    /* distortion */
+      //    break;
+      //  case 3:
+      //    /* delay */
+      //    break;
+      //  case 4:
+      //    /* reverb */
+      //    break;
+      //}
+    }
+
+
   }
 
 //------------------------------
@@ -296,10 +403,8 @@ private:
       AMin = AMax;
       AMax = temp;
     }
-
     int32_t num = KODE_RandomRangeInt(AMin,AMax);
     MOffset = (float)num * MSliceLength;
-
   }
 
   //----------
@@ -315,7 +420,7 @@ private:
 
   //----------
 
-  void set_random_fx(float AMin, float AMax) {
+  float get_random_fx(float AMin, float AMax) {
     if (AMin >= AMax) {
       float temp = AMin;
       AMin = AMax;
@@ -323,9 +428,26 @@ private:
     }
     float range = AMax - AMin;
     float amount = range * KODE_Random();
-    MFXAmount *= (AMin + amount);
-    MFXAmount = KODE_Clamp(MFXAmount, 0, 1);
+    //MFXAmount *= (AMin + amount);
+    //MFXAmount = (AMin + amount);
+    //MFXAmount = amount;
+    return amount;
+    //MFXAmount = KODE_Clamp(MFXAmount, 0, 1);
+    //set_random_filter(AMin + amount);
   }
+
+  //----------
+
+//  void set_random_filter() {
+//    if (KODE_Random() < par_FXFilterProb) {
+//      MFilterActive = true;
+//      MFilterFreq *= MFXAmount;
+//      MFilterFreq = KODE_Clamp(MFilterFreq, 0, 1);
+//    }
+//    else {
+//      MFilterActive = false;
+//    }
+//  }
 
 //------------------------------
 // process
@@ -340,6 +462,7 @@ private:
       MRangeActive    = false;
       MLoopActive     = false;
       //MOffset       = 0.0;
+      MFilterActive   = false;
       handle_next_slice(MSliceCounter);
     }
     else {
@@ -363,6 +486,7 @@ private:
           MLoopCounter    = 0;
           MFXAmount       = 0.0;
           //MOffset         = 0.0;
+          MFilterActive   = false;
         }
         else {
           if (MLoopActive) {
@@ -481,12 +605,16 @@ public:
 
       if (MIsPlaying /*|| MMFreeWheeling*/) {
         pre_process();
+
         // writepos
+
         uint32_t writepos = (uint32_t)MBufferPos * 2;
         writepos %= (BUFFERSIZE-1);
         MBuffer[writepos  ] = in0;
         MBuffer[writepos+1] = in1;
+
         // readpos
+
         if (MLoopActive) {
           if (MLoopReverse) {
             MReadPos = MLoopStart + MLoopLength - MLoopPos;
@@ -504,7 +632,9 @@ public:
         else {
           MReadPos = MBufferPos;
         }
+
         // envelopes
+
         float env = 1.0f;
         float sa = par_EnvSliceAtt * MSliceLength;
         float sd = par_EnvSliceDec * MSliceLength;
@@ -520,10 +650,27 @@ public:
         out1 *= env;
         //
         post_process();
-      } // playing
+      } // if playing
+
+      // filter
+
+      if (MFilterActive) {
+        //MFilter0.setCutoff(par_FXFilterFreq);
+        MFilter0.setCutoff(MFilterFreq);
+        MFilter0.setResonance(par_FXFilterRes);
+        //MFilter1.setCutoff(par_FXFilterFreq);
+        MFilter1.setCutoff(MFilterFreq);
+        MFilter1.setResonance(par_FXFilterRes);
+        out0 = MFilter0.process(out0);
+        out1 = MFilter1.process(out1);
+      }
+
+      //
+
       *output0++ = out0;
       *output1++ = out1;
-    }
+    } // for all samples
+
   }
 
   //----------

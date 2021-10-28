@@ -30,15 +30,23 @@ public:
   sa_botage_waveform* wdg_Waveform            = KODE_NULL;
   sa_botage_qslider*  wdg_BufferNumBeats      = KODE_NULL;
   sa_botage_qslider*  wdg_BufferNumSlices     = KODE_NULL;
+
+  sa_botage_slider*   wdg_EnvLoopAtt          = KODE_NULL;
+  sa_botage_slider*   wdg_EnvLoopDec          = KODE_NULL;
+  sa_botage_slider*   wdg_EnvSliceAtt         = KODE_NULL;
+  sa_botage_slider*   wdg_EnvSliceDec         = KODE_NULL;
+
   sa_botage_knob*     wdg_RepeatProb          = KODE_NULL;
   sa_botage_buttons*  wdg_RepeatSliceBits     = KODE_NULL;
   sa_botage_buttons*  wdg_RepeatSplitBits     = KODE_NULL;
+
   sa_botage_knob*     wdg_LoopsizeRangeProb   = KODE_NULL;
   sa_botage_slider*   wdg_LoopsizeRangeMin    = KODE_NULL;
   sa_botage_slider*   wdg_LoopsizeRangeMax    = KODE_NULL;
   sa_botage_knob*     wdg_LoopsizeLoopProb    = KODE_NULL;
   sa_botage_slider*   wdg_LoopsizeLoopMin     = KODE_NULL;
   sa_botage_slider*   wdg_LoopsizeLoopMax     = KODE_NULL;
+
   sa_botage_knob*     wdg_LoopspeedRangeProb  = KODE_NULL;
   sa_botage_slider*   wdg_LoopspeedRangeMin   = KODE_NULL;
   sa_botage_slider*   wdg_LoopspeedRangeMax   = KODE_NULL;
@@ -55,6 +63,7 @@ public:
 
   sa_botage_knob*     wdg_ReverseRangeProb    = KODE_NULL;
   sa_botage_knob*     wdg_ReverseLoopProb     = KODE_NULL;
+
   sa_botage_switch*   wdg_FXMulti             = KODE_NULL;
   sa_botage_knob*     wdg_FXRangeProb         = KODE_NULL;
   sa_botage_slider*   wdg_FXRangeMin          = KODE_NULL;
@@ -63,10 +72,9 @@ public:
   sa_botage_slider*   wdg_FXLoopMin           = KODE_NULL;
   sa_botage_slider*   wdg_FXLoopMax           = KODE_NULL;
 
-  sa_botage_slider*   wdg_EnvLoopAtt          = KODE_NULL;
-  sa_botage_slider*   wdg_EnvLoopDec          = KODE_NULL;
-  sa_botage_slider*   wdg_EnvSliceAtt         = KODE_NULL;
-  sa_botage_slider*   wdg_EnvSliceDec         = KODE_NULL;
+  sa_botage_knob*     wdg_FXFilterProb        = KODE_NULL;
+  KODE_SliderWidget*  wdg_FXFilterFreq        = KODE_NULL;
+  KODE_SliderWidget*  wdg_FXFilterRes         = KODE_NULL;
 
 //------------------------------
 public:
@@ -82,7 +90,7 @@ public:
     setFillBackground(true);
     setBackgroundColor(0.5f);
 
-    setTitle("SA_BOTAGE v0.0.7");
+    setTitle("SA_BOTAGE v0.0.10");
 
     wdg_Header              = (sa_botage_header*)   appendWidget( new sa_botage_header(       KODE_FRect(   0,   0,  400, 60 ), this, KODE_Color(0.5) ));
                                                     appendWidget( new sa_botage_text_small2(  KODE_FRect( 436,  10,  100, 15 ), descriptor->getVersionText()               ));
@@ -124,11 +132,11 @@ public:
 
                                                     appendWidget( new sa_botage_text_header2( KODE_FRect( 270, 390,  264, 20 ),"Offset"               ));
     wdg_OffsetRangeProb     = (sa_botage_knob*)     appendWidget( new sa_botage_knob(         KODE_FRect( 270, 420,   40, 40 )                        ));
-    wdg_OffsetRangeMin      = (sa_botage_slider2*)   appendWidget( new sa_botage_slider(       KODE_FRect( 320, 420,   74, 16 )                        ));
-    wdg_OffsetRangeMax      = (sa_botage_slider2*)   appendWidget( new sa_botage_slider(       KODE_FRect( 320, 440,   74, 16 )                        ));
+    wdg_OffsetRangeMin      = (sa_botage_slider2*)  appendWidget( new sa_botage_slider(       KODE_FRect( 320, 420,   74, 16 )                        ));
+    wdg_OffsetRangeMax      = (sa_botage_slider2*)  appendWidget( new sa_botage_slider(       KODE_FRect( 320, 440,   74, 16 )                        ));
     wdg_OffsetLoopProb      = (sa_botage_knob*)     appendWidget( new sa_botage_knob(         KODE_FRect( 410, 420,   40, 40 )                        ));
-    wdg_OffsetLoopMin       = (sa_botage_slider2*)   appendWidget( new sa_botage_slider(       KODE_FRect( 460, 420,   74, 16 )                        ));
-    wdg_OffsetLoopMax       = (sa_botage_slider2*)   appendWidget( new sa_botage_slider(       KODE_FRect( 460, 440,   74, 16 )                        ));
+    wdg_OffsetLoopMin       = (sa_botage_slider2*)  appendWidget( new sa_botage_slider(       KODE_FRect( 460, 420,   74, 16 )                        ));
+    wdg_OffsetLoopMax       = (sa_botage_slider2*)  appendWidget( new sa_botage_slider(       KODE_FRect( 460, 440,   74, 16 )                        ));
 
                                                     appendWidget( new sa_botage_text_header2( KODE_FRect( 270, 470,  264, 20 ),"Reverse"              ));
     wdg_ReverseRangeProb    = (sa_botage_knob*)     appendWidget( new sa_botage_knob(         KODE_FRect( 270, 500,   40, 40 )                        ));
@@ -153,10 +161,42 @@ public:
     wdg_EnvSliceAtt         = (sa_botage_slider*)   appendWidget( new sa_botage_slider2(      KODE_FRect(  10, 516,  115, 20 )                        ));
     wdg_EnvSliceDec         = (sa_botage_slider*)   appendWidget( new sa_botage_slider2(      KODE_FRect( 130, 516,  115, 20 )                        ));
 
+
+
+                                                    appendWidget( new sa_botage_text_header1( KODE_FRect( 546, 200,  126, 20 ),"FX"                   ));
+
+
+//                                                    appendWidget( new sa_botage_text_header2( KODE_FRect( 546, 230,  126, 20 ),"Distortion"           ));
+//                                                    appendWidget( new KODE_SelectorWidget(    KODE_FRect( 546, 260,  126, 16 )                        ));
+//                                                    appendWidget( new sa_botage_knob(         KODE_FRect( 546, 280,   40, 40 )                        ));
+//                                                    appendWidget( new KODE_SliderWidget(      KODE_FRect( 596, 280,   76, 16 )                        ));
+//                                                    appendWidget( new KODE_SliderWidget(      KODE_FRect( 596, 300,   76, 16 )                        ));
+//
+                                                    appendWidget( new sa_botage_text_header2( KODE_FRect( 546, 330,  126, 20 ),"Filter"               ));
+                                                    appendWidget( new KODE_SelectorWidget(    KODE_FRect( 546, 360,  126, 16 )                        ));
+    wdg_FXFilterProb        = (sa_botage_knob*)     appendWidget( new sa_botage_knob(         KODE_FRect( 546, 380,   40, 40 )                        ));
+    wdg_FXFilterFreq        = (KODE_SliderWidget*)  appendWidget( new KODE_SliderWidget(      KODE_FRect( 596, 380,   76, 16 )                        ));
+    wdg_FXFilterRes         = (KODE_SliderWidget*)  appendWidget( new KODE_SliderWidget(      KODE_FRect( 596, 400,   76, 16 )                        ));
+//
+//                                                    appendWidget( new sa_botage_text_header2( KODE_FRect( 546, 430,  126, 20 ),"Delay"                ));
+//                                                    appendWidget( new sa_botage_knob(         KODE_FRect( 546, 460,   40, 40 )                        ));
+//                                                    appendWidget( new KODE_SliderWidget(      KODE_FRect( 596, 460,   76, 16 )                        ));
+//                                                    appendWidget( new KODE_SliderWidget(      KODE_FRect( 596, 480,   76, 16 )                        ));
+//
+//                                                    appendWidget( new sa_botage_text_header2( KODE_FRect( 546, 510,  126, 20 ),"Reverb"               ));
+//                                                    appendWidget( new sa_botage_knob(         KODE_FRect( 546, 540,   40, 40 )                        ));
+//                                                    appendWidget( new KODE_SliderWidget(      KODE_FRect( 596, 540,   76, 16 )                        ));
+//                                                    appendWidget( new KODE_SliderWidget(      KODE_FRect( 596, 560,   76, 16 )                        ));
+
     //----------
 
     connectParameter(wdg_BufferNumBeats,P_BUFFER_NUM_BEATS);
     connectParameter(wdg_BufferNumSlices,P_BUFFER_NUM_SLICES);
+
+    connectParameter(wdg_EnvLoopAtt,P_ENV_LOOP_ATT);
+    connectParameter(wdg_EnvLoopDec,P_ENV_LOOP_DEC);
+    connectParameter(wdg_EnvSliceAtt,P_ENV_SLICE_ATT);
+    connectParameter(wdg_EnvSliceDec,P_ENV_SLICE_DEC);
 
     connectParameter(wdg_RepeatProb,P_REPEAT_PROB);
     connectParameter(wdg_RepeatSliceBits,P_REPEAT_SLICE_BITS);
@@ -194,10 +234,9 @@ public:
     connectParameter(wdg_FXLoopMin,P_FX_LOOP_MIN);
     connectParameter(wdg_FXLoopMax,P_FX_LOOP_MAX);
 
-    connectParameter(wdg_EnvLoopAtt,P_ENV_LOOP_ATT);
-    connectParameter(wdg_EnvLoopDec,P_ENV_LOOP_DEC);
-    connectParameter(wdg_EnvSliceAtt,P_ENV_SLICE_ATT);
-    connectParameter(wdg_EnvSliceDec,P_ENV_SLICE_DEC);
+    connectParameter(wdg_FXFilterProb,P_FX_FILTER_PROB);
+    connectParameter(wdg_FXFilterFreq,P_FX_FILTER_FREQ);
+    connectParameter(wdg_FXFilterRes,P_FX_FILTER_RES);
 
   }
 

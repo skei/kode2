@@ -1,6 +1,6 @@
 # depslib dependency file v1.0
-1634669743 source:/DISKS/sda2/code/git/kode2/build/build.cpp
-	"../test/test_clap.cpp"
+1634725277 source:/DISKS/sda2/code/git/kode2/build/build.cpp
+	"../plugins/sa_botage/sa_botage.cpp"
 
 1606667306 /DISKS/sda2/code/git/kode2/src/base/kode.h
 	"kode_config.h"
@@ -1263,17 +1263,18 @@
 	"sa_botage/sa_botage_descriptor.h"
 	"sa_botage/sa_botage_editor.h"
 
-1634555526 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_editor.h
+1635369590 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_editor.h
 	"kode.h"
 	"plugin/base/kode_base_instance.h"
 	"plugin/kode_editor.h"
 	"gui/kode_widgets.h"
 	"sa_botage_widgets.h"
 
-1634592423 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_process.h
+1635369720 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_process.h
 	"kode.h"
 	"base/utils/kode_random.h"
 	"plugin/kode_process_context.h"
+	"audio/filters/kode_rc2_filter.h"
 
 1631218116 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_header.h
 
@@ -1296,12 +1297,12 @@
 	"kode.h"
 	"gui/kode_widgets.h"
 
-1634573603 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_descriptor.h
+1635369608 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_descriptor.h
 	"kode.h"
 	"plugin/kode_descriptor.h"
 	"plugin/kode_parameters.h"
 
-1634404917 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage.cpp
+1635157773 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage.cpp
 	"kode.h"
 	"plugin/kode_plugin.h"
 	"sa_botage_descriptor.h"
@@ -1331,7 +1332,8 @@
 
 1633280876 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_looper.h
 
-1632911336 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_effects.h
+1635076474 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_effects.h
+	"kode.h"
 
 1632911371 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_gui.h
 
@@ -1408,7 +1410,7 @@
 
 1633980339 /DISKS/sda2/code/git/kode2/plugins/sa_botage2/sa_botage_instance.h
 
-1634554933 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_instance.h
+1635369617 /DISKS/sda2/code/git/kode2/plugins/sa_botage/sa_botage_instance.h
 	"kode.h"
 	"plugin/base/kode_base_editor.h"
 	"plugin/kode_instance.h"
@@ -1624,4 +1626,6 @@
 1634674228 /DISKS/sda2/code/git/kode2/src/plugin/clap/kode_clap_plugin.h
 	"kode.h"
 	"plugin/clap/kode_clap.h"
+
+1577314297 /DISKS/sda2/code/git/kode2/src/audio/filters/kode_rc2_filter.h
 

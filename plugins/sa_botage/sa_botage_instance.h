@@ -126,6 +126,12 @@ public:
 
       case P_BUFFER_NUM_BEATS:      MProcess.par_BufferNumBeats     = AValue; UPDATE; break;
       case P_BUFFER_NUM_SLICES:     MProcess.par_BufferNumSlices    = AValue; UPDATE; break;
+
+      case P_ENV_LOOP_ATT:          MProcess.par_EnvLoopAtt         = AValue * 0.01; break;
+      case P_ENV_LOOP_DEC:          MProcess.par_EnvLoopDec         = AValue * 0.01; break;
+      case P_ENV_SLICE_ATT:         MProcess.par_EnvSliceAtt        = AValue * 0.01; break;
+      case P_ENV_SLICE_DEC:         MProcess.par_EnvSliceDec        = AValue * 0.01; break;
+
       case P_REPEAT_PROB:           MProcess.par_RepeatProb         = AValue; break;
       case P_REPEAT_SLICE_BITS:     MProcess.par_RepeatSliceBits    = AValue; break;
       case P_REPEAT_SPLIT_BITS:     MProcess.par_RepeatSplitBits    = AValue; break;
@@ -162,16 +168,9 @@ public:
       case P_FX_LOOP_MIN:           MProcess.par_FXLoopMin          = AValue * 0.01; break;
       case P_FX_LOOP_MAX:           MProcess.par_FXLoopMax          = AValue * 0.01; break;
 
-//      case P_ENV_LOOP_ATT:          MProcess.par_EnvLoopAtt         = AValue; break;
-//      case P_ENV_LOOP_DEC:          MProcess.par_EnvLoopDec         = AValue; break;
-//      case P_ENV_SLICE_ATT:         MProcess.par_EnvSliceAtt        = AValue * 0.01; break;
-//      case P_ENV_SLICE_DEC:         MProcess.par_EnvSliceDec        = AValue * 0.01; break;
-
-      case P_ENV_LOOP_ATT:          MProcess.par_EnvLoopAtt         = AValue * 0.01; break;
-      case P_ENV_LOOP_DEC:          MProcess.par_EnvLoopDec         = AValue * 0.01; break;
-      case P_ENV_SLICE_ATT:         MProcess.par_EnvSliceAtt        = AValue * 0.01; break;
-      case P_ENV_SLICE_DEC:         MProcess.par_EnvSliceDec        = AValue * 0.01; break;
-
+      case P_FX_FILTER_PROB:        MProcess.par_FXFilterProb       = AValue; break;
+      case P_FX_FILTER_FREQ:        MProcess.par_FXFilterFreq       = AValue; break;
+      case P_FX_FILTER_RES:         MProcess.par_FXFilterRes        = AValue; break;
 
     }
   }
